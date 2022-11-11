@@ -1,0 +1,33 @@
+{
+  "name": "reddit",
+  "private": true,
+  "version": "0.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "vite ",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev2": "concurrently \"vite build --watch\" \"nodemon server/server.js\""
+  },
+  "dependencies": {
+    "@prisma/client": "^4.6.1",
+    "axios": "^1.1.3",
+    "body-parser": "^1.20.1",
+    "concurrently": "^7.5.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3",
+    "scss-loader": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@vitejs/plugin-react": "^2.2.0",
+    "nodemon": "^2.0.20",
+    "prisma": "^4.6.0",
+    "vite": "^3.2.3"
+  }
+}
