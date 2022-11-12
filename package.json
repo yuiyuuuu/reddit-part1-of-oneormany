@@ -19,8 +19,7 @@
     "morgan": "^1.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.3",
-    "scss-loader": "^0.0.1"
+    "react-router-dom": "^6.4.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",
@@ -28,6 +27,8 @@
     "@vitejs/plugin-react": "^2.2.0",
     "nodemon": "^2.0.20",
     "prisma": "^4.6.0",
+    "sass": "^1.56.1",
+    "scss-loader": "^0.0.1",
     "vite": "^3.2.3"
   }
 }

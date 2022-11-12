@@ -4,17 +4,13 @@ const app = express();
 const morgan = require("morgan");
 const parser = require("body-parser");
 
-const { PrismaClient } = require("@prisma/client");
-
 app.use("/api", require("./api/api"));
 
-app.use("/", express.static(path.join(__dirname, "..", "dist")));
+app.use(express.static(path.join(__dirname, "..", "dist")));
 app.use(morgan("dev"));
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
 app.use(express.json());
-
-const prisma = new PrismaClient();
 
 // app.get("/", async (req, res) => {
 //   //find all post if nothing is passed into findmany function
