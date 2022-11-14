@@ -1,9 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300&display=swap");
+
 * {
-  background-color: #dae0e6;
+  // background-color: #dae0e6;
   margin: 0;
 }
 
 html,
 body {
   margin: 0;
+  font-family: "IBM Plex Sans";
+  background-color: #dae0e6;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+input {
+  color: #1c1c1c;
 }
