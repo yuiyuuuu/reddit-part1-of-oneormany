@@ -20,7 +20,6 @@ const Nav = () => {
       $(".nav-3-searchinner").css("background-color", "#ffffff");
       $(".overlay-nav-search").css("border", "1px solid #0079d3 ");
       $(".input-search").focusout(() => {
-        console.log("ran");
         $(".nav-3-searchinner").css("background-color", "#f6f7f8");
         $(".overlay-nav-search").css("border", "none ");
       });
