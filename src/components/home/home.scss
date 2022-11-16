@@ -29,6 +29,9 @@
 .home-newcommunities {
   width: 312px;
   margin-left: 24px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
 }
 
 .home-createpost {
@@ -76,4 +79,115 @@
   &:hover {
     background-color: #f6f7f8;
   }
+}
+
+.newcommunities {
+  display: flex;
+  flex-direction: column;
+}
+
+.newcommunities-bgimage {
+  height: 80px;
+  background-position: 50%;
+  position: relative;
+
+  &::before {
+    width: 100%;
+    height: 100%;
+    content: "";
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), transparent);
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
+}
+
+.top-communities {
+  position: absolute;
+  bottom: 8px;
+  left: 5%;
+  color: white;
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.li-newcommunities {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  height: 49px;
+  background-color: white;
+  border-bottom: 1px solid #edeff1;
+}
+
+.anchor-newcommunities {
+  display: flex;
+  margin-left: 12px;
+  margin-right: 12px;
+  align-items: center;
+  width: 70%;
+  overflow: hidden;
+}
+
+.container-li {
+  display: flex;
+  flex-direction: row;
+  height: 32px;
+  align-items: center;
+}
+
+.number-list {
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 20px;
+  text-align: right;
+}
+
+.imageicon-newcommunities {
+  margin-left: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+}
+
+.name-community {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.join-newcommunities {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  min-width: 24px;
+  min-height: 24px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 16px;
+  padding-left: 16px;
+  background-color: #0079d3;
+  border-radius: 9999px;
+  margin-right: 12px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.viewall-newcommunities {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0079d3;
+  font-size: 14.5px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  cursor: pointer;
+  color: white;
+  font-family: Noto Sans, Arial, sans-serif;
+  font-weight: 700;
 }

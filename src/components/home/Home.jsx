@@ -1,12 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./home.scss";
 import ClipSvg from "./homesvgs/ClipSvg";
 import DefaultPfp from "./homesvgs/DefaultPfp";
 import ImageIcon from "./homesvgs/ImageIcon";
 
+import { newcommunities } from "./newcommunities/newcommunitiesobj";
+
 import $ from "jquery";
+import GreenArrow from "./homesvgs/GreenArrow";
 
 const Home = () => {
+  const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
+
+  function randomIntFromInterval(min, max) {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  useEffect(() => {
+    const v = randomIntFromInterval(1, 4);
+
+    switch (v) {
+      case 1:
+        setSelectedNewCommunity(newcommunities.news);
+        break;
+      case 2:
+        setSelectedNewCommunity(newcommunities.aww);
+        break;
+
+      case 3:
+        setSelectedNewCommunity(newcommunities.gaming);
+        break;
+
+      case 4:
+        setSelectedNewCommunity(newcommunities.sports);
+        break;
+    }
+  }, []);
+
   useEffect(() => {
     $(".input-createpost").focus(() => {
       $(".input-createpost").css("background-color", "#ffffff");
@@ -38,7 +69,56 @@ const Home = () => {
             </div>
           </div>
 
-          <div className='home-newcommunities'>Right</div>
+          <div className='home-newcommunities'>
+            <div className='newcommunities'>
+              <div
+                className='newcommunities-bgimage'
+                style={{
+                  backgroundImage: `url(${selectedNewCommunity.banner})`,
+                }}
+              >
+                <div className='top-communities'>
+                  Top<span>&nbsp; {selectedNewCommunity.name}&nbsp;</span>{" "}
+                  Communities
+                </div>
+              </div>
+              {selectedNewCommunity.communities?.map((item) => (
+                <div
+                  className='li-newcommunities'
+                  key={item.id}
+                  style={{
+                    borderBottom:
+                      item.id ===
+                      selectedNewCommunity.communities[
+                        selectedNewCommunity.communities.length - 1
+                      ].id
+                        ? "none"
+                        : "",
+                  }}
+                >
+                  <a className='anchor-newcommunities'>
+                    <div className='container-li'>
+                      <span className='number-list'>{item.index}</span>
+                      <GreenArrow />
+                      <img
+                        src={item.image}
+                        className='imageicon-newcommunities'
+                      />
+
+                      <div className='name-community'>{item.name}</div>
+                    </div>
+                  </a>
+
+                  <a href={`/r/${item.id}`} className='join-newcommunities'>
+                    Join
+                  </a>
+                </div>
+              ))}
+              <div style={{ padding: "12px" }}>
+                <div className='viewall-newcommunities'>View All</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

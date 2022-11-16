@@ -7,6 +7,7 @@ const parser = require("body-parser");
 app.use("/api", require("./api/api"));
 
 app.use(express.static(path.join(__dirname, "..", "dist")));
+app.use("/assets", express.static(path.join(__dirname, "..", "assets")));
 app.use(morgan("dev"));
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
