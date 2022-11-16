@@ -114,8 +114,51 @@ const Home = () => {
                   </a>
                 </div>
               ))}
-              <div style={{ padding: "12px" }}>
+              <div
+                style={{
+                  padding: "12px",
+                  backgroundColor: "white",
+                  borderBottomRightRadius: "4px",
+                  borderBottomLeftRadius: "4px",
+                }}
+              >
                 <div className='viewall-newcommunities'>View All</div>
+              </div>
+            </div>
+
+            <div className='home-right2'>
+              <div className='right2-inner'>
+                <div className='banner-right2' />
+                <div style={{ padding: "12px 12px 12px 12px" }}>
+                  <div className='right2-imagecontainer'>
+                    <div className='right2-image' />
+                    <div
+                      style={{
+                        marginTop: "30px",
+                        marginLeft: "10px",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Home
+                    </div>
+                  </div>
+
+                  <div className='right2-text'>
+                    Your personal Reddit frontpage. Come here to check in with
+                    your favorite communities.
+                  </div>
+
+                  <div className='right2-divider' />
+
+                  <div className='right2-buttoncontainer'>
+                    <div className='right2-button right2-createpost'>
+                      Create Post
+                    </div>
+                    <div className='right2-button right2-createcommunity'>
+                      Create Community
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

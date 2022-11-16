@@ -14,6 +14,11 @@
   flex-direction: row;
   padding-top: 20px;
   justify-content: center;
+  width: 100%;
+
+  @media only screen and (max-width: 960px) {
+    padding: 20px 24px;
+  }
 }
 
 .home-feed {
@@ -31,7 +36,10 @@
   margin-left: 24px;
   display: flex;
   flex-direction: column;
-  background-color: white;
+
+  @media only screen and (max-width: 960px) {
+    display: none;
+  }
 }
 
 .home-createpost {
@@ -84,12 +92,16 @@
 .newcommunities {
   display: flex;
   flex-direction: column;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 .newcommunities-bgimage {
   height: 80px;
   background-position: 50%;
   position: relative;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 
   &::before {
     width: 100%;
@@ -99,6 +111,8 @@
     top: 0;
     left: 0;
     position: absolute;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
   }
 }
 
@@ -190,4 +204,88 @@
   color: white;
   font-family: Noto Sans, Arial, sans-serif;
   font-weight: 700;
+}
+
+.home-right2 {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.right2-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.banner-right2 {
+  height: 34px;
+  width: 100%;
+  background-image: url(../../../assets/banner-right2.png);
+  border-radius: 3px 3px 0 0;
+  background-position: center;
+  background-size: cover;
+}
+
+.right2-imagecontainer {
+  display: flex;
+  align-items: center;
+  margin-top: -23px;
+  margin-bottom: 8px;
+}
+
+.right2-image {
+  height: 68px;
+  width: 40px;
+  background-image: url(../../../assets/right2-redditicon.png);
+  background-size: 40px 68px;
+}
+
+.right2-text {
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.right2-divider {
+  height: 1px;
+  background-color: rgba(26, 26, 27, 0.07);
+  width: 100%;
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
+
+.right2-buttoncontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.right2-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.right2-createpost {
+  color: white;
+  background-color: #0079d3;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.right2-createcommunity {
+  color: #0079d3;
+  margin-top: 12px;
+  border: 1px solid #0079d3;
+
+  &:hover {
+    background-color: #f7f6f6;
+  }
 }
