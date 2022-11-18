@@ -8,15 +8,43 @@ import { newcommunities } from "./newcommunities/newcommunitiesobj";
 
 import $ from "jquery";
 import GreenArrow from "./homesvgs/GreenArrow";
+import Post from "./posts/Post";
+
+import { postsobj } from "./posts/postsobj";
+import ShareOverlay from "./ShareOverlay";
 
 const Home = () => {
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
+
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [overlayId, setOverlayId] = useState("");
+  const [overlayTop, setOverlayTop] = useState(0);
+  const [overlayLeft, setOverlayLeft] = useState(0);
 
   function randomIntFromInterval(min, max) {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  useEffect(() => {
+    let v = 0;
+    $(document).click(function (event) {
+      var $target = $(event.target);
+      if (
+        !$target.closest("#share-overlay").length &&
+        $("#share-overlay").is(":visible")
+      ) {
+        if (v === 0) {
+          v += 1;
+          return;
+        } else {
+          v = 0;
+          setShowOverlay(false);
+        }
+      }
+    });
+  }, []);
+  console.log(showOverlay);
   useEffect(() => {
     const v = randomIntFromInterval(1, 4);
 
@@ -66,6 +94,17 @@ const Home = () => {
               <div className='home-iconcontainer' style={{ marginLeft: "2px" }}>
                 <ClipSvg />
               </div>
+            </div>
+            <div className='posts-container'>
+              {postsobj.map((item) => (
+                <Post
+                  post={item}
+                  setOverlayLeft={setOverlayLeft}
+                  setOverlayTop={setOverlayTop}
+                  setShowOverlay={setShowOverlay}
+                  setOverlayId={setOverlayId}
+                />
+              ))}
             </div>
           </div>
 
@@ -129,7 +168,11 @@ const Home = () => {
             <div className='home-right2'>
               <div className='right2-inner'>
                 <div className='banner-right2' />
-                <div style={{ padding: "12px 12px 12px 12px" }}>
+                <div
+                  style={{
+                    padding: "12px 12px 12px 12px",
+                  }}
+                >
                   <div className='right2-imagecontainer'>
                     <div className='right2-image' />
                     <div
@@ -162,6 +205,11 @@ const Home = () => {
               </div>
             </div>
           </div>
+          <ShareOverlay
+            showOverlay={showOverlay}
+            overlayLeft={overlayLeft}
+            overlayTop={overlayTop}
+          />
         </div>
       </div>
     </div>

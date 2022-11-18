@@ -156,4 +156,119 @@ const newcommunities = {
   },
 };
 
-export { newcommunities };
+const communities = [
+  {
+    id: "worldnews",
+    name: "r/worldnews",
+    image: "/assets/newcommunities/news/worldnews.png",
+  },
+
+  {
+    id: "nottheonion",
+    name: "r/nottheonion",
+    image: "/assets/newcommunities/news/nottheonion.png",
+  },
+
+  {
+    id: "technews",
+    name: "r/technews",
+    image: "/assets/newcommunities/news/technews.png",
+  },
+
+  {
+    id: "savedyouaclick",
+    name: "r/savedyouaclick",
+    image: "/assets/newcommunities/news/savedyouaclick.png",
+  },
+
+  {
+    id: "wholesomememes",
+    name: "r/wholesomememes",
+    image: "/assets/newcommunities/aww/wholesomememes.png",
+  },
+
+  {
+    id: "WhatsWrongWithYourDog",
+    name: "r/WhatsWrongWithYourDog",
+    image: "/assets/newcommunities/aww/whatswrongwithyourdog.jpeg",
+  },
+
+  {
+    id: "NatureIsFuckingLit",
+    name: "r/NatureIsFuckingLit",
+    image: "/assets/newcommunities/aww/natureisfuckingwild.png",
+  },
+
+  {
+    id: "Eyebleach",
+    name: "r/Eyebleach",
+    image: "/assets/newcommunities/aww/eyebleach.png",
+  },
+
+  {
+    id: "AnimalsBeingJerks",
+    name: "r/AnimalsBeingJerks",
+    image: "/assets/newcommunities/aww/animalsbeingjerks.png",
+  },
+
+  {
+    id: "Steam",
+    name: "r/Steam",
+    image: "/assets/newcommunities/gaming/steam.png",
+  },
+  {
+    id: "leagueoflegends",
+    name: "r/leagueoflegends",
+    image: "/assets/newcommunities/gaming/leagueoflegends.png",
+  },
+
+  {
+    id: "StardewValley",
+    name: "r/StardewValley",
+    image: "/assets/newcommunities/gaming/stardewvalley.png",
+  },
+
+  {
+    id: "yugioh",
+    name: "r/yugioh",
+    image: "/assets/newcommunities/gaming/yugioh.png",
+  },
+
+  {
+    id: "dndnext",
+    name: "r/dndnext",
+    image: "/assets/newcommunities/gaming/dndnext.png",
+  },
+
+  {
+    id: "sports",
+    name: "r/sports",
+    image: "/assets/newcommunities/sports/sports.png",
+  },
+
+  {
+    id: "tennis",
+    name: "r/tennis",
+    image: "/assets/newcommunities/sports/tennis.png",
+  },
+
+  {
+    id: "climbing",
+    name: "r/climbing",
+    image: "/assets/newcommunities/sports/climbing.jpeg",
+  },
+
+  {
+    id: "fantasyfootball",
+    name: "r/fantasyfootball",
+    image: "/assets/newcommunities/sports/fantasyfootball.png",
+  },
+
+  {
+    id: "leafs",
+    name: "r/leafs",
+    image: "/assets/newcommunities/sports/leafs.png",
+  },
+];
+
+export { newcommunities, communities };

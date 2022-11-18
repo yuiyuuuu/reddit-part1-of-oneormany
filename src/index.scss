@@ -8,8 +8,9 @@
 html,
 body {
   margin: 0;
-  font-family: "IBM Plex Sans";
+  font-family: "IBM Plex Sans", sans-serif;
   background-color: #dae0e6;
+  font-weight: 300;
 }
 
 textarea:focus,
@@ -19,4 +20,21 @@ input:focus {
 
 input {
   color: #1c1c1c;
+}
+
+@font-face {
+  font-family: "verdana";
+  src: url("../fonts/webfontkit-20221117-005822/verdana-webfont.eot");
+  src: url("../fonts/webfontkit-20221117-005822/verdana-webfont.eot?#iefix")
+      format("embedded-opentype"),
+    url("../fonts/webfontkit-20221117-005822/verdana-webfont.woff2")
+      format("woff2"),
+    url("../fonts/webfontkit-20221117-005822/verdana-webfont.woff")
+      format("woff"),
+    url("../fonts/webfontkit-20221117-005822/verdana-webfont.ttf")
+      format("truetype"),
+    url("../fonts/webfontkit-20221117-005822/verdana-webfont.svg#verdana")
+      format("svg");
+  font-weight: normal;
+  font-style: normal;
 }

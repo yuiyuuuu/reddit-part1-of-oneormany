@@ -19,6 +19,10 @@
   @media only screen and (max-width: 960px) {
     padding: 20px 24px;
   }
+
+  @media only screen and (max-width: 640px) {
+    padding: 20px 0px;
+  }
 }
 
 .home-feed {
@@ -216,6 +220,7 @@
   display: flex;
   flex-direction: column;
   background-color: white;
+  border-radius: 3px;
 }
 
 .banner-right2 {
@@ -288,4 +293,30 @@
   &:hover {
     background-color: #f7f6f6;
   }
+}
+
+.shareoverlay-container {
+  position: absolute;
+  top: 0;
+  border: 1px solid #edeff1;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(28, 28, 28, 0.2);
+}
+
+.shareoverlay-inner {
+  padding: 8px;
+  cursor: pointer;
+  border-top: 1px solid #edeff1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  // width: 100%;
+
+  &:hover {
+    background-color: #e9f5fd;
+  }
+}
+
+.text-shareoverlay {
+  margin-left: 6px;
 }

@@ -1,0 +1,203 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap");
+
+.posts-container {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.single-postcontainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid #898989;
+  }
+}
+
+.posts-vote {
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  padding: 8px 4px 8px;
+}
+
+.post-votebut {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(26, 26, 27, 0.1);
+  }
+}
+
+.posts-votecount {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.posts-maincontainer {
+  padding-top: 8px;
+  margin-left: 8px;
+}
+
+.posts-serveranduser {
+  display: flex;
+  flex-direction: row;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.post-communityicon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.posts-communityname {
+  font-size: 12px;
+  font-weight: bolder;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.dot-posts {
+  font-size: 7px;
+  vertical-align: middle;
+  margin: 0px 4px;
+  color: #7c7c7c;
+}
+
+.post-topdesc {
+  color: #787c7e;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.user-anchor {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.container-titleanddesc {
+  padding: 0px 8px 8px 0;
+  mask-image: linear-gradient(180deg, #000 60%, transparent);
+}
+
+.posttitle-container {
+  font-size: 18px;
+  line-height: 22px;
+  max-height: 200px;
+  font-weight: 500;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.postdesc-container {
+  font-size: 14px;
+  line-height: 21px;
+  padding-top: 5px;
+  margin-top: 8px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+}
+
+.posts-bottomcontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 40px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(135, 138, 140);
+}
+
+.posts-comment {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 2px;
+
+  &:hover {
+    background-color: rgba(26, 26, 27, 0.1);
+  }
+}
+
+.span-comment {
+}
+
+.threedot {
+  padding: 0px 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  height: 22px;
+  &:hover {
+    background-color: rgba(26, 26, 27, 0.1);
+  }
+}
+
+.post-share {
+  @media only screen and (max-width: 520px) {
+    display: none;
+  }
+}
+
+.post-award {
+  @media only screen and (max-width: 460px) {
+    display: none;
+  }
+}
+
+.post-voteleft {
+  @media only screen and (max-width: 640px) {
+    display: none;
+  }
+}
+
+.vote-smallscreen {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  @media only screen and (min-width: 640px) {
+    display: none;
+  }
+}
+
+.posts-upvote:hover {
+  & > svg > .upvote-svg-fill {
+    fill: red;
+  }
+
+  & > svg > .upvote-svg-stroke {
+    stroke: red;
+  }
+}
+
+.posts-downvote:hover {
+  & > svg > .upvote-svg-fill {
+    fill: #7193ff;
+  }
+
+  & > svg > .upvote-svg-stroke {
+    stroke: #7193ff;
+  }
+}
