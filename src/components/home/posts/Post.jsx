@@ -19,6 +19,9 @@ const Post = ({
   setOverlayLeft,
   setShowOverlay,
   setOverlayId,
+  overlayId,
+  showOverlay,
+  val,
 }) => {
   const community = communities.find((i) => i.id === post.communityid);
   const [upvoteActive, setUpvoteActive] = useState(false); //change to userid later when sql
@@ -39,13 +42,36 @@ const Post = ({
   }
 
   function set() {
-    setShowOverlay((prev) => !prev);
+    // if (!showOverlay) {
+    //   val = 0;
+    // } else {
+    //   val = 1;
+    // }
+    if (overlayId === post.id && showOverlay) {
+      setShowOverlay(false);
+      val = 0;
+
+      return;
+    } else if (overlayId !== post.id && showOverlay) {
+      val = 1;
+      const v = document
+        .getElementById(`share-${post.id}`)
+        .getBoundingClientRect();
+      setOverlayLeft(v.left);
+      setOverlayTop(v.top + v.height);
+      setOverlayId(post.id);
+      setShowOverlay(true);
+      return;
+    }
+
+    val = 1;
     const v = document
       .getElementById(`share-${post.id}`)
       .getBoundingClientRect();
     setOverlayLeft(v.left);
     setOverlayTop(v.top + v.height);
     setOverlayId(post.id);
+    setShowOverlay(true);
   }
 
   useEffect(() => {

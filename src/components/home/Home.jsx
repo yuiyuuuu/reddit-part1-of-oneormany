@@ -20,6 +20,7 @@ const Home = () => {
   const [overlayId, setOverlayId] = useState("");
   const [overlayTop, setOverlayTop] = useState(0);
   const [overlayLeft, setOverlayLeft] = useState(0);
+  let val = 0;
 
   function randomIntFromInterval(min, max) {
     // min and max included
@@ -27,24 +28,37 @@ const Home = () => {
   }
 
   useEffect(() => {
-    let v = 0;
     $(document).click(function (event) {
+      let run = true;
       var $target = $(event.target);
+
+      //prevents run if the element clicked is another share button
+      const l = document.getElementsByClassName("post-share");
+      Array.prototype.forEach.call(l, function (r) {
+        if ($target.closest(r).length) {
+          run = false;
+          return false;
+        }
+      });
+
       if (
         !$target.closest("#share-overlay").length &&
-        $("#share-overlay").is(":visible")
+        $("#share-overlay").is(":visible") &&
+        run
       ) {
-        if (v === 0) {
-          v += 1;
-          return;
-        } else {
-          v = 0;
-          setShowOverlay(false);
-        }
+        setShowOverlay(false);
       }
     });
   }, []);
-  console.log(showOverlay);
+
+  // if (v === 0) {
+  //   v += 1;
+  //   return;
+  // } else {
+  //   v = 0;
+  //   setShowOverlay(false);
+  // }
+
   useEffect(() => {
     const v = randomIntFromInterval(1, 4);
 
@@ -103,6 +117,9 @@ const Home = () => {
                   setOverlayTop={setOverlayTop}
                   setShowOverlay={setShowOverlay}
                   setOverlayId={setOverlayId}
+                  overlayId={overlayId}
+                  showOverlay={showOverlay}
+                  val={val}
                 />
               ))}
             </div>
