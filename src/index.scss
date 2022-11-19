@@ -22,6 +22,11 @@ input {
   color: #1c1c1c;
 }
 
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
 @font-face {
   font-family: "verdana";
   src: url("../fonts/webfontkit-20221117-005822/verdana-webfont.eot");

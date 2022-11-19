@@ -6,14 +6,19 @@ import HideSvg from "../posts/postssvgs/HideSvg";
 import SaveSvg2 from "../posts/postssvgs/SaveSvg2";
 import ReportSvg from "../posts/postssvgs/ReportSvg";
 
-const ThreeDotOverlay = ({ showOverlay2, overlayTop2, overlayLeft2 }) => {
+const ThreeDotOverlay = ({
+  showOverlay2,
+  overlayTop2,
+  overlayLeft2,
+  scrollPos,
+}) => {
   return (
     <div
       className='shareoverlay-container'
       id='tdot-overlay'
       style={{
         display: showOverlay2 ? "" : "none",
-        top: overlayTop2,
+        top: overlayTop2 + scrollPos,
         left: overlayLeft2,
       }}
     >

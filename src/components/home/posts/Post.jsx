@@ -28,6 +28,7 @@ const Post = ({
   setOverlayId2,
   overlayId2,
   showOverlay2,
+  setScrollpos,
 }) => {
   const community = communities.find((i) => i.id === post.communityid);
   const [upvoteActive, setUpvoteActive] = useState(false); //change to userid later when sql
@@ -53,6 +54,7 @@ const Post = ({
 
       return;
     } else if (overlayId !== post.id && showOverlay) {
+      setScrollpos(window.scrollY);
       const v = document
         .getElementById(`share-${post.id}`)
         .getBoundingClientRect();
@@ -63,6 +65,7 @@ const Post = ({
       return;
     }
 
+    setScrollpos(window.scrollY);
     const v = document
       .getElementById(`share-${post.id}`)
       .getBoundingClientRect();
@@ -78,6 +81,8 @@ const Post = ({
       setShowOverlay2(false);
       return;
     }
+
+    setScrollpos(window.scrollY);
 
     const v = document
       .getElementById(`threedot-${post.id}`)
@@ -163,12 +168,12 @@ const Post = ({
           </div>
           <div className='posts-comment'>
             <CommentSvg />
-            <span className='span-comemnt'>33 Comment</span>
+            <span className='span-comment'>33 Comment</span>
           </div>
 
           <div className='posts-comment post-award'>
             <AwardSvg />
-            <span className='span-comemnt'>Award</span>
+            <span className='span-comment'>Award</span>
           </div>
 
           <div
@@ -178,12 +183,12 @@ const Post = ({
             onClick={() => set()}
           >
             <ShareSvg />
-            <span className='span-comemnt'>Share</span>
+            <span className='span-comment'>Share</span>
           </div>
 
           <div className='posts-comment post-save'>
             <SaveSvg />
-            <span className='span-comemnt'>Save</span>
+            <span className='span-comment'>Save</span>
           </div>
 
           <div

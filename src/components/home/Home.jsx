@@ -13,9 +13,11 @@ import Post from "./posts/Post";
 import { postsobj } from "./posts/postsobj";
 import ShareOverlay from "./overlays/ShareOverlay";
 import ThreeDotOverlay from "./overlays/ThreeDotOverlay";
+import TOS from "./TOS";
 
 const Home = () => {
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
+  const [scrollPos, setScrollpos] = useState(0);
 
   //share overlay
   const [showOverlay, setShowOverlay] = useState(false);
@@ -84,12 +86,27 @@ const Home = () => {
     setShowOverlay2(false);
   }, []);
 
+  const scroll = useCallback(() => {
+    //prevent scrollpos being updated if either overlay is visible
+    if (
+      $("#share-overlay").is(":visible") ||
+      $("#tdot-overlay").is(":visible")
+    ) {
+      return;
+    }
+
+    setScrollpos(window.scrollY);
+  }, []);
+
   useEffect(() => {
     window.addEventListener("resize", resizeShare);
     window.addEventListener("resize", resizeTdot);
+    window.addEventListener("scroll", scroll);
+
     return () => {
       window.removeEventListener("resize", resizeShare);
       window.removeEventListener("resize", resizeTdot);
+      window.removeEventListener("scroll", scroll);
     };
   }, []);
 
@@ -162,6 +179,7 @@ const Home = () => {
                   setOverlayId2={setOverlayId2}
                   overlayId2={overlayId2}
                   showOverlay2={showOverlay2}
+                  setScrollpos={setScrollpos}
                 />
               ))}
             </div>
@@ -263,17 +281,29 @@ const Home = () => {
                 </div>
               </div>
             </div>
+
+            <TOS />
+            <div
+              className='home-gototop'
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              Back to Top
+            </div>
           </div>
           <ShareOverlay
             showOverlay={showOverlay}
             overlayLeft={overlayLeft}
             overlayTop={overlayTop}
+            scrollPos={scrollPos}
           />
 
           <ThreeDotOverlay
             showOverlay2={showOverlay2}
             overlayTop2={overlayTop2}
             overlayLeft2={overlayLeft2}
+            scrollPos={scrollPos}
           />
         </div>
       </div>

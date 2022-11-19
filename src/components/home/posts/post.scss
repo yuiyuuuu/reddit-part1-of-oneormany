@@ -140,6 +140,10 @@
   &:hover {
     background-color: rgba(26, 26, 27, 0.1);
   }
+
+  .span-comment {
+    user-select: none;
+  }
 }
 
 .threedot {

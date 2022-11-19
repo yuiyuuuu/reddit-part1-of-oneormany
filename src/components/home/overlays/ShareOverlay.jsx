@@ -6,14 +6,14 @@ import EmbedSvg from "../homesvgs/EmbedSvg";
 
 import "./overlay.scss";
 
-const ShareOverlay = ({ showOverlay, overlayLeft, overlayTop }) => {
+const ShareOverlay = ({ showOverlay, overlayLeft, overlayTop, scrollPos }) => {
   return (
     <div
       className='shareoverlay-container'
       id='share-overlay'
       style={{
         display: showOverlay ? "" : "none",
-        top: overlayTop,
+        top: overlayTop + scrollPos,
         left: overlayLeft,
       }}
     >

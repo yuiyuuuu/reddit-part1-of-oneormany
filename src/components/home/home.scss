@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
+
 .heightholder {
   height: 48px;
   width: 100%;
@@ -293,4 +295,56 @@
   &:hover {
     background-color: #f7f6f6;
   }
+}
+
+.tos-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+  position: sticky;
+  top: 57px;
+}
+
+.tos-inner {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  padding: 8px 0;
+  border-bottom: 1px solid #e9ebed;
+  margin-left: 12px;
+}
+
+.tos-two {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  padding: 0px 4px;
+}
+
+.tos-text {
+  margin-bottom: 3px;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.home-gototop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: #0079d3;
+  padding: 4px 16px;
+  position: sticky;
+  bottom: 0;
+  border-radius: 9999px;
+  cursor: pointer;
+  top: calc(100vh - 40px);
+  width: 110px;
+  align-self: center;
+  user-select: none;
 }
