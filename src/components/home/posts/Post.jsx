@@ -11,6 +11,7 @@ import ShareSvg from "./postssvgs/ShareSvg";
 import ThreeDotSvg from "./postssvgs/ThreeDotSvg";
 import UpVoteSvg from "./postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
+import SaveSvg from "./postssvgs/SaveSvg";
 //all posts
 
 const Post = ({
@@ -21,7 +22,12 @@ const Post = ({
   setOverlayId,
   overlayId,
   showOverlay,
-  val,
+  setOverlayTop2,
+  setOverlayLeft2,
+  setShowOverlay2,
+  setOverlayId2,
+  overlayId2,
+  showOverlay2,
 }) => {
   const community = communities.find((i) => i.id === post.communityid);
   const [upvoteActive, setUpvoteActive] = useState(false); //change to userid later when sql
@@ -42,18 +48,11 @@ const Post = ({
   }
 
   function set() {
-    // if (!showOverlay) {
-    //   val = 0;
-    // } else {
-    //   val = 1;
-    // }
     if (overlayId === post.id && showOverlay) {
       setShowOverlay(false);
-      val = 0;
 
       return;
     } else if (overlayId !== post.id && showOverlay) {
-      val = 1;
       const v = document
         .getElementById(`share-${post.id}`)
         .getBoundingClientRect();
@@ -64,14 +63,31 @@ const Post = ({
       return;
     }
 
-    val = 1;
     const v = document
       .getElementById(`share-${post.id}`)
       .getBoundingClientRect();
     setOverlayLeft(v.left);
     setOverlayTop(v.top + v.height);
     setOverlayId(post.id);
+    setShowOverlay2(false);
     setShowOverlay(true);
+  }
+
+  function set2() {
+    if (overlayId2 === post.id && showOverlay2) {
+      setShowOverlay2(false);
+      return;
+    }
+
+    const v = document
+      .getElementById(`threedot-${post.id}`)
+      .getBoundingClientRect();
+
+    setOverlayLeft2(v.left);
+    setOverlayTop2(v.top + v.height);
+    setOverlayId2(post.id);
+    setShowOverlay(false); //sets other one to false
+    setShowOverlay2(true);
   }
 
   useEffect(() => {
@@ -165,7 +181,16 @@ const Post = ({
             <span className='span-comemnt'>Share</span>
           </div>
 
-          <div className='threedot' id={`threedot-${post.id}`}>
+          <div className='posts-comment post-save'>
+            <SaveSvg />
+            <span className='span-comemnt'>Save</span>
+          </div>
+
+          <div
+            className='threedot'
+            id={`threedot-${post.id}`}
+            onClick={() => set2()}
+          >
             <ThreeDotSvg />
           </div>
         </div>

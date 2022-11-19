@@ -48,6 +48,7 @@
 .posts-votecount {
   margin-top: 4px;
   margin-bottom: 4px;
+  user-select: none;
 }
 
 .posts-maincontainer {
@@ -141,9 +142,6 @@
   }
 }
 
-.span-comment {
-}
-
 .threedot {
   padding: 0px 2px;
   border-radius: 2px;
@@ -199,5 +197,11 @@
 
   & > svg > .upvote-svg-stroke {
     stroke: #7193ff;
+  }
+}
+
+.post-save {
+  @media only screen and (max-width: 1080px) {
+    display: none;
   }
 }

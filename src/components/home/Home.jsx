@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./home.scss";
 import ClipSvg from "./homesvgs/ClipSvg";
 import DefaultPfp from "./homesvgs/DefaultPfp";
@@ -11,16 +11,23 @@ import GreenArrow from "./homesvgs/GreenArrow";
 import Post from "./posts/Post";
 
 import { postsobj } from "./posts/postsobj";
-import ShareOverlay from "./ShareOverlay";
+import ShareOverlay from "./overlays/ShareOverlay";
+import ThreeDotOverlay from "./overlays/ThreeDotOverlay";
 
 const Home = () => {
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
 
+  //share overlay
   const [showOverlay, setShowOverlay] = useState(false);
   const [overlayId, setOverlayId] = useState("");
   const [overlayTop, setOverlayTop] = useState(0);
   const [overlayLeft, setOverlayLeft] = useState(0);
-  let val = 0;
+
+  //three dots overlay
+  const [showOverlay2, setShowOverlay2] = useState(false);
+  const [overlayId2, setOverlayId2] = useState("");
+  const [overlayTop2, setOverlayTop2] = useState(0);
+  const [overlayLeft2, setOverlayLeft2] = useState(0);
 
   function randomIntFromInterval(min, max) {
     // min and max included
@@ -30,16 +37,33 @@ const Home = () => {
   useEffect(() => {
     $(document).click(function (event) {
       let run = true;
+      let run2 = true;
       var $target = $(event.target);
 
       //prevents run if the element clicked is another share button
       const l = document.getElementsByClassName("post-share");
+      const m = document.getElementsByClassName("threedot");
       Array.prototype.forEach.call(l, function (r) {
         if ($target.closest(r).length) {
           run = false;
           return false;
         }
       });
+
+      Array.prototype.forEach.call(m, function (r) {
+        if ($target.closest(r).length) {
+          run2 = false;
+          return false;
+        }
+      });
+
+      if (
+        !$target.closest("#tdot-overlay").length &&
+        $("#tdot-overlay").is(":visible") &&
+        run2
+      ) {
+        setShowOverlay2(false);
+      }
 
       if (
         !$target.closest("#share-overlay").length &&
@@ -51,14 +75,25 @@ const Home = () => {
     });
   }, []);
 
-  // if (v === 0) {
-  //   v += 1;
-  //   return;
-  // } else {
-  //   v = 0;
-  //   setShowOverlay(false);
-  // }
+  //resize handling
+  const resizeShare = useCallback(() => {
+    setShowOverlay(false);
+  }, []);
 
+  const resizeTdot = useCallback(() => {
+    setShowOverlay2(false);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", resizeShare);
+    window.addEventListener("resize", resizeTdot);
+    return () => {
+      window.removeEventListener("resize", resizeShare);
+      window.removeEventListener("resize", resizeTdot);
+    };
+  }, []);
+
+  //top communities random generator
   useEffect(() => {
     const v = randomIntFromInterval(1, 4);
 
@@ -80,6 +115,7 @@ const Home = () => {
     }
   }, []);
 
+  //create post input
   useEffect(() => {
     $(".input-createpost").focus(() => {
       $(".input-createpost").css("background-color", "#ffffff");
@@ -89,6 +125,7 @@ const Home = () => {
       });
     });
   }, []);
+
   return (
     <div>
       <div className='heightholder' />
@@ -119,7 +156,12 @@ const Home = () => {
                   setOverlayId={setOverlayId}
                   overlayId={overlayId}
                   showOverlay={showOverlay}
-                  val={val}
+                  setOverlayLeft2={setOverlayLeft2}
+                  setOverlayTop2={setOverlayTop2}
+                  setShowOverlay2={setShowOverlay2}
+                  setOverlayId2={setOverlayId2}
+                  overlayId2={overlayId2}
+                  showOverlay2={showOverlay2}
                 />
               ))}
             </div>
@@ -226,6 +268,12 @@ const Home = () => {
             showOverlay={showOverlay}
             overlayLeft={overlayLeft}
             overlayTop={overlayTop}
+          />
+
+          <ThreeDotOverlay
+            showOverlay2={showOverlay2}
+            overlayTop2={overlayTop2}
+            overlayLeft2={overlayLeft2}
           />
         </div>
       </div>
