@@ -1,6 +1,6 @@
 import React from "react";
 
-const ImageIcon = () => {
+const ImageIcon = ({ history }) => {
   return (
     <svg
       width='21'
@@ -10,6 +10,7 @@ const ImageIcon = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
       style={{ zIndex: 2 }}
+      onClick={() => history("/submit", { state: { from: "image" } })}
     >
       <rect width='28' height='25' fill='url(#pattern02315)' />
       <defs>

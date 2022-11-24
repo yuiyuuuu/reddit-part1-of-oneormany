@@ -13,8 +13,24 @@ datasource db {
 model Post {
   id       String    @id @default(uuid())
   title    String
-  body     String
+  body     String?
   comments Comment[]
+  upvotes String[]
+  downvotes String[]
+  community Community @relation(fields:[communityId], references: [id], onDelete: Cascade)
+  communityId String
+  user User @relation(fields:[userId], references: [id]) 
+  userId String
+}
+
+model Community{
+  id String @id @default(uuid())
+  name String
+  tag String
+  rules String?
+  users User[]
+  posts Post[] 
+  image Bytes @db.ByteA
 }
 
 model User {
@@ -22,6 +38,8 @@ model User {
   name     String
   comments Comment[]
   likes    Like[]
+  communities Community[]
+  posts Post[] 
 }
 
 model Comment {

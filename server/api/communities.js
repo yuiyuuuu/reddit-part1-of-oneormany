@@ -5,14 +5,13 @@ module.exports = router;
 
 router.get("/", async (req, res, next) => {
   try {
-    const posts = await prisma.post.findMany({
-      select: {
-        id: true,
-        title: true,
+    const communities = await prisma.community.findMany({
+      include: {
+        users: true,
+        posts: true,
       },
     });
-
-    res.send(posts);
+    res.send(communities);
   } catch (error) {
     next(error);
   }

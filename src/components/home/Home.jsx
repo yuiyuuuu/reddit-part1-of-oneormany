@@ -14,8 +14,11 @@ import { postsobj } from "./posts/postsobj";
 import ShareOverlay from "./overlays/ShareOverlay";
 import ThreeDotOverlay from "./overlays/ThreeDotOverlay";
 import TOS from "./TOS";
+import { useNavigate } from "react-router";
 
 const Home = () => {
+  const history = useNavigate();
+
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
   const [scrollPos, setScrollpos] = useState(0);
 
@@ -154,13 +157,17 @@ const Home = () => {
                 <DefaultPfp />
               </a>
 
-              <input className='input-createpost' placeHolder='Create Post' />
+              <input
+                className='input-createpost'
+                placeHolder='Create Post'
+                onClick={() => history("/submit")}
+              />
               <div className='home-iconcontainer'>
-                <ImageIcon />
+                <ImageIcon history={history} />
               </div>
 
               <div className='home-iconcontainer' style={{ marginLeft: "2px" }}>
-                <ClipSvg />
+                <ClipSvg history={history} />
               </div>
             </div>
             <div className='posts-container'>

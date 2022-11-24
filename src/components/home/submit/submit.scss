@@ -1,0 +1,167 @@
+.submit-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.submit-heightholder {
+  width: 100%;
+  height: 48px;
+}
+
+.submit-inner1 {
+  width: 100%;
+}
+
+.submit-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 20px 24px;
+  justify-content: center;
+}
+
+.submit-left {
+  display: flex;
+  flex-direction: column;
+  max-width: 740px;
+  width: 100%;
+}
+
+.submit-createpost {
+  display: flex;
+  flex-direction: row;
+  margin: 16px 0px;
+  padding: 4px;
+  border-bottom: 1px solid #edeff1;
+  height: 34px;
+}
+
+.submit-createposttext {
+  font-size: 18px;
+  color: black;
+  flex-grow: 1;
+  font-weight: 500;
+}
+
+.submit-drafts {
+  min-width: 32px;
+  padding: 4px 16px;
+  color: #0079d3;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #cbd0d6;
+  }
+}
+
+.submit-draftcount {
+  margin-left: 4px;
+  background: #878a8c;
+  border-radius: 2px;
+  padding: 1px 3px;
+  color: white;
+  font-size: 12px;
+}
+
+.submit-selectedcommunity {
+  margin-bottom: 8px;
+}
+
+.submit-selectedcommunityinner {
+  padding: 0px 8px;
+  display: flex;
+  align-items: center;
+  width: 300px;
+  height: 40px;
+  background-color: white;
+}
+
+.submit-imageicon {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+}
+
+.submit-selectedcommunitiesname {
+  margin-left: 8px;
+  font-size: 14px;
+  flex-grow: 1;
+  font-weight: 500;
+}
+
+.submit-inputcontainer {
+  background: white;
+  border-radius: 5px;
+}
+
+.submit-selecttype {
+  display: flex;
+  flex-direction: row;
+  height: 51px;
+  //   width: 100%;
+  align-items: center;
+}
+
+.submit-selectchoice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 17px;
+  border: 1px solid #edeff1;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: "IBM Plex Sans", sans-serif;
+  flex-grow: 1;
+
+  &:hover {
+    background-color: rgba(0, 121, 211, 0.05);
+  }
+}
+
+.submit-selecttext {
+  font-size: 14px;
+  font-weight: 500;
+  color: #878a8c;
+}
+
+.submit-textcontainer {
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-title {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.submit-titletext {
+  padding: 12px 68px 12px 8px;
+  resize: none;
+  border: 1px solid #edeff1;
+  height: 15px;
+  width: 100%;
+  border-radius: 4px;
+  background-color: transparent;
+  overflow: hidden;
+  color: rgb(28, 28, 28);
+  transition: all 0.1s ease;
+}
+
+.submit-titlecount {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #878a8c;
+  font-size: 10px;
+  user-select: none;
+}

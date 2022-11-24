@@ -6,6 +6,7 @@ import RedditName from "./navsvgs/RedditName";
 import SearchIconSvg from "./navsvgs/SearchIconSvg";
 
 import $ from "jquery";
+
 import PopularIcon from "./navsvgs/PopularIcon";
 import CoinsIconSvg from "./navsvgs/CoinsIconSvg";
 import MessageIconSvg from "./navsvgs/MessageIconSvg";
