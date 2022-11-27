@@ -34,10 +34,10 @@ const Nav = () => {
   return (
     <div className='nav-parent'>
       <div className='nav-inner-1'>
-        <div className='nav-1'>
+        <a className='nav-1' href='/'>
           <RedditIcon />
           <RedditName />
-        </div>
+        </a>
 
         <div className='nav-2-communities'>
           <button className='nav-2-button'>

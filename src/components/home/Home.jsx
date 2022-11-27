@@ -14,10 +14,11 @@ import { postsobj } from "./posts/postsobj";
 import ShareOverlay from "./overlays/ShareOverlay";
 import ThreeDotOverlay from "./overlays/ThreeDotOverlay";
 import TOS from "./TOS";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { makeGetRequest } from "../../requests/helperFunction";
 
 const Home = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
   const [scrollPos, setScrollpos] = useState(0);
@@ -34,10 +35,20 @@ const Home = () => {
   const [overlayTop2, setOverlayTop2] = useState(0);
   const [overlayLeft2, setOverlayLeft2] = useState(0);
 
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   function randomIntFromInterval(min, max) {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
+
+  useEffect(async () => {
+    const v = await makeGetRequest("posts");
+
+    setPosts(v);
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     $(document).click(function (event) {
@@ -146,6 +157,8 @@ const Home = () => {
     });
   }, []);
 
+  if (loading) return "loading";
+
   return (
     <div>
       <div className='heightholder' />
@@ -157,21 +170,19 @@ const Home = () => {
                 <DefaultPfp />
               </a>
 
-              <input
-                className='input-createpost'
-                placeHolder='Create Post'
-                onClick={() => history("/submit")}
-              />
+              <a href='/submit' className='input-createpost'>
+                <input className='input-con' placeHolder='Create Post' />
+              </a>
               <div className='home-iconcontainer'>
-                <ImageIcon history={history} />
+                <ImageIcon history={navigate} />
               </div>
 
               <div className='home-iconcontainer' style={{ marginLeft: "2px" }}>
-                <ClipSvg history={history} />
+                <ClipSvg history={navigate} />
               </div>
             </div>
             <div className='posts-container'>
-              {postsobj.map((item) => (
+              {posts.map((item) => (
                 <Post
                   post={item}
                   setOverlayLeft={setOverlayLeft}

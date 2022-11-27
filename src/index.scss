@@ -16,6 +16,7 @@ body {
 textarea {
   font-family: "IBM Plex Sans", sans-serif;
   font-weight: 300;
+  border: none;
 }
 
 textarea:focus,
@@ -49,12 +50,19 @@ a {
   font-style: normal;
 }
 
+button {
+  background: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-button {
-  background: none;
+.grow {
+  flex-grow: 1;
 }

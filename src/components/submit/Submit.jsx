@@ -12,19 +12,50 @@ import PollSelected from "./submitsvgs/poll/PollSelected";
 import Poll from "./submitsvgs/poll/Poll";
 
 import $ from "jquery";
+import PostText from "./submit-components/PostText";
+import ImageVideoText from "./submit-components/ImageVideoText";
+import LinkText from "./submit-components/LinkText";
+import PollText from "./submit-components/PollText";
+import { makePostRequest } from "../../requests/helperFunction";
+import { useNavigate } from "react-router-dom";
 
 const Submit = () => {
+  const history = useNavigate();
   const [selected, setSelected] = useState("post");
 
   const [title, setTitle] = useState("");
+  const [text, setText] = useState(""); //used for post and poll only
+  const [url, setUrl] = useState(""); //used for url only
+  const [images, setImages] = useState([]); //image inputs
+  const [imagePreviews, setImagePreviews] = useState([]);
+
+  async function handleSubmit() {
+    const v = await makePostRequest("posts", {
+      title: title,
+      body: text,
+      userId: "8f2d36f1-9613-454b-b283-97d955c5b28d",
+      communityId: "ec1640a1-b1bc-4599-862f-ea6780f5a070",
+    });
+
+    history("/");
+  }
 
   useEffect(() => {
+    //change color of border on focus of title textarea
     $(".submit-titletext").on("focus", () => {
       $(".submit-titletext").css("border", "1px solid #1A1A1B");
 
       $(".submit-titletext").on("focusout", () => {
         $(".submit-titletext").css("border", "1px solid #edeff1");
       });
+    });
+
+    //prevents new line on enter
+    $(".submit-titletext").keydown(function (e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        return false;
+      }
     });
   }, []);
 
@@ -169,10 +200,45 @@ const Submit = () => {
                   />
                   <div className='submit-titlecount'>{title.length}/300</div>
                 </div>
+                {selected === "post" ? (
+                  <PostText text={text} setText={setText} />
+                ) : selected === "image/video" ? (
+                  <ImageVideoText
+                    setImages={setImages}
+                    images={images}
+                    imagePreviews={imagePreviews}
+                    setImagePreviews={setImagePreviews}
+                  />
+                ) : selected === "link" ? (
+                  <LinkText url={url} setUrl={setUrl} />
+                ) : selected === "poll" ? (
+                  <PollText />
+                ) : (
+                  ""
+                )}
+              </div>
+              <div className='submit-flairandpost'>
+                <div className='submit-flaircontainer'>
+                  <div className='submit-flair'>flair1</div>
+                  <div className='submit-submitcontainer'>
+                    <div className='grow' style={{ height: "100%" }} />
+                    <div className='submit-l'>
+                      <button className='submit-draftbut'>Save Draft</button>
+                      <button
+                        className='submit-postbut'
+                        onClick={() => handleSubmit()}
+                      >
+                        Post
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div style={{ width: "312px" }}>right</div>
+          <div style={{ width: "312px" }}>
+            <img id='test123' />
+          </div>
         </div>
       </div>
     </div>

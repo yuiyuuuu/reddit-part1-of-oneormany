@@ -30,7 +30,6 @@ const Post = ({
   showOverlay2,
   setScrollpos,
 }) => {
-  const community = communities.find((i) => i.id === post.communityid);
   const [upvoteActive, setUpvoteActive] = useState(false); //change to userid later when sql
   const [downvoteActive, setDownvoteActive] = useState(false);
 
@@ -117,7 +116,9 @@ const Post = ({
         <div className='posts-upvote post-votebut' onClick={() => fillRed()}>
           <UpVoteSvg id={post.id} upvoteActive={upvoteActive} />
         </div>
-        <div className='posts-votecount'>111</div>
+        <div className='posts-votecount'>
+          {post.upvotes.length - post.downvotes.length}
+        </div>
         <div className='posts-downvote post-votebut' onClick={() => fillRed2()}>
           <DownVoteSvg id={post.id} downvoteActive={downvoteActive} />
         </div>
@@ -125,8 +126,8 @@ const Post = ({
 
       <div className='posts-maincontainer'>
         <div className='posts-serveranduser'>
-          <img src={community.image} className='post-communityicon' />
-          <div className='posts-communityname'>{community.name}</div>
+          <img src={communities[1].image} className='post-communityicon' />
+          <div className='posts-communityname'>{post.community.tag}</div>
           <div className='dot-posts'>•</div>
           <div className='post-topdesc' style={{ marginRight: "3px" }}>
             Post by
@@ -136,16 +137,16 @@ const Post = ({
             className='post-topdesc user-anchor'
             style={{ marginRight: "3px" }}
           >
-            {post.user}
+            {post.user.name}
           </a>
           <div className='post-topdesc'>5 hours ago</div>
         </div>
 
         <div className='container-titleanddesc'>
           <div className='posttitle-container'>{post.title}</div>
-          {post.description !== "" && (
+          {post.body !== "" && (
             <div className='postdesc-container' id={`${post.id}-title`}>
-              {post.description}
+              {post.body}
             </div>
           )}
         </div>
@@ -168,7 +169,9 @@ const Post = ({
           </div>
           <div className='posts-comment'>
             <CommentSvg />
-            <span className='span-comment'>33 Comment</span>
+            <span className='span-comment'>
+              {post.comments.length} Comments
+            </span>
           </div>
 
           <div className='posts-comment post-award'>

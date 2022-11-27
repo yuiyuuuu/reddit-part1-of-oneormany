@@ -9,3 +9,15 @@ export async function makeGetRequest(url) {
     console.log(error);
   }
 }
+
+//api post
+export async function makePostRequest(url, body) {
+  try {
+    console.log(body);
+    const { data } = await axios.post(`/api/${url}`, body);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}

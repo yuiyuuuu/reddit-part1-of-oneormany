@@ -1,0 +1,160 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
+
+.posttext-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #edeff1;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.posttext-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 42px;
+  background: #f6f7f8;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.posttext-textarea {
+  resize: vertical;
+  min-height: 138px;
+  padding: 8px 16px;
+  color: #1c1c1c;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.linktext-container {
+  width: 100%;
+  border: 1px solid #edeff1;
+  border-radius: 4px 4px 0px 0px;
+  display: flex;
+}
+
+.linktext-textarea {
+  width: 100%;
+  font-size: 14px;
+  resize: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.imagevideo-container {
+  width: 100%;
+  min-height: 280px;
+  border: 1px dashed #edeff1;
+  display: flex;
+  align-items: center;
+}
+
+.imagevideo-text {
+  color: #fc471e;
+  width: 100%;
+  text-align: center;
+}
+
+.imagevideo-uploadbut {
+  border: 1px solid #fc471e;
+  color: #fc471e;
+  border-radius: 9999px;
+  margin: 10px 8px;
+  padding: 4px 16px;
+  font-weight: 700;
+  font-family: Noto Sans, Arial, sans-serif;
+  font-size: 14px;
+
+  &:hover {
+    background-color: rgba(237, 239, 241, 0.4);
+  }
+}
+
+.imagevideo-previewcontainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.imagevideo-previewinner {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+
+.imagevideo-previewimage {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+}
+
+.imagevideo-previewp {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  margin-right: 12px;
+  opacity: 0.5;
+  position: relative;
+  border-radius: 4px;
+
+  &:hover {
+    opacity: 1;
+
+    & > div {
+      display: flex;
+    }
+  }
+}
+
+.x-containerimagevideo {
+  width: 23px;
+  height: 23px;
+  position: absolute;
+  top: 2.5px;
+  right: 2.5px;
+  background: white;
+  display: none;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+
+.x-imagevideopreview {
+  width: 25px;
+  height: 25px;
+}
+
+.imagevideo-add {
+  width: 100px;
+  height: 100px;
+
+  &:hover > svg {
+    fill: black;
+  }
+}
+
+.imagevideo-addsvg {
+  width: 36px;
+  height: 36px;
+  fill: #878589;
+}
+
+.imagevideo-mainpreview {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.imagevideo-mainl {
+  height: 324px;
+  width: 324px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-img {
+  max-width: 100%;
+  max-height: 100%;
+}

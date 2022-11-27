@@ -1,6 +1,6 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Home from "./components/home/Home";
-import Submit from "./components/home/submit/Submit";
+import Submit from "./components/submit/Submit";
 import Nav from "./components/nav/Nav";
 import Posts from "./components/Posts";
 import SinglePost from "./components/SinglePost";
