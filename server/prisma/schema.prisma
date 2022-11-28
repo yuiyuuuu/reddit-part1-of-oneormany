@@ -21,7 +21,7 @@ model Post {
   communityId String
   user User @relation(fields:[userId], references: [id]) 
   userId String
-  image Bytes? @db.ByteA
+  image String?
 }
 
 model Community{
@@ -31,7 +31,7 @@ model Community{
   rules String?
   users User[]
   posts Post[] 
-  image Bytes? @db.ByteA
+  image String?
   allowimagesandvideo Boolean @default(false)
   allowlink Boolean @default(false)
   allowpoll Boolean @default(false)
