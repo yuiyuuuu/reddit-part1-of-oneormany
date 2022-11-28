@@ -30,12 +30,24 @@ const Submit = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
 
   async function handleSubmit() {
-    const v = await makePostRequest("posts", {
-      title: title,
-      body: text,
-      userId: "8f2d36f1-9613-454b-b283-97d955c5b28d",
-      communityId: "ec1640a1-b1bc-4599-862f-ea6780f5a070",
-    });
+    switch (selected) {
+      case "post":
+        const v = await makePostRequest("posts", {
+          title: title,
+          body: text,
+          userId: "bd87595f-adb4-4900-af90-095c037e1495",
+          communityId: "4931a159-f5d4-457f-bc28-ea58ff1c1b82",
+        });
+        break;
+      case "image/video":
+        const a = await makePostRequest("posts", {
+          title: title,
+          body: text,
+          userId: "bd87595f-adb4-4900-af90-095c037e1495",
+          communityId: "4931a159-f5d4-457f-bc28-ea58ff1c1b82",
+          image: images,
+        });
+    }
 
     history("/");
   }

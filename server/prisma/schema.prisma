@@ -21,7 +21,7 @@ model Post {
   communityId String
   user User @relation(fields:[userId], references: [id]) 
   userId String
-  image String?
+  image String? @db.VarChar(1048576)
 }
 
 model Community{

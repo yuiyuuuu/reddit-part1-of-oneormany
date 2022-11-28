@@ -8,7 +8,7 @@ app.use(express.static(path.join(__dirname, "..", "dist")));
 app.use("/assets", express.static(path.join(__dirname, "..", "assets")));
 app.use(morgan("dev"));
 
-app.use(express.json());
+app.use(express.json({ extended: true, limit: "30mb" }));
 app.use(express.urlencoded());
 
 app.use(parser.json());

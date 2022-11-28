@@ -149,6 +149,15 @@ const Post = ({
               {post.body}
             </div>
           )}
+
+          {post.image && (
+            <div className='center' style={{ width: "100%" }}>
+              <img
+                src={`data:image/png;base64,${post.image}`}
+                className='posts-mainimage'
+              />
+            </div>
+          )}
         </div>
 
         <div className='posts-bottomcontainer'>

@@ -14,8 +14,11 @@ import BellIconSvg from "./navsvgs/BellIconSvg";
 import PlusSvgIcon from "./navsvgs/PlusSvgIcon";
 import AdvertiseIconSvg from "./navsvgs/AdvertiseIconSvg";
 import DownArrowPfp from "./navsvgs/DownArrowPfp";
+import { useLocation } from "react-router";
 
 const Nav = () => {
+  const location = useLocation();
+
   function textFocusChangeBGColor() {
     $(".input-search").focus(() => {
       $(".nav-3-searchinner").css("background-color", "#ffffff");
@@ -32,7 +35,14 @@ const Nav = () => {
   }, []);
 
   return (
-    <div className='nav-parent'>
+    <div
+      className='nav-parent'
+      style={{
+        display:
+          (location.pathname === "/login" || location.pathname === "/signup") &&
+          "none",
+      }}
+    >
       <div className='nav-inner-1'>
         <a className='nav-1' href='/'>
           <RedditIcon />

@@ -54,6 +54,7 @@
 .posts-maincontainer {
   padding-top: 8px;
   margin-left: 8px;
+  width: 100%;
 }
 
 .posts-serveranduser {
@@ -129,6 +130,10 @@
   font-size: 12px;
   font-weight: 700;
   color: rgb(135, 138, 140);
+}
+
+.posts-mainimage {
+  max-width: 100%;
 }
 
 .posts-comment {

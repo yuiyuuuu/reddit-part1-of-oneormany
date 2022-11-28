@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import $ from "jquery";
 
+import { Buffer } from "buffer";
+
 const ImageVideoText = ({
   setImages,
   images,
@@ -17,33 +19,11 @@ const ImageVideoText = ({
     const v = document.getElementById("upload-image2").click();
   }
 
-  function getBase64Image(img) {
-    console.log(img);
-    // // Create an empty canvas element
-    // var canvas = document.createElement("canvas");
-    // canvas.width = img.width;
-    // canvas.height = img.height;
-
-    // // Copy the image contents to the canvas
-    // var ctx = canvas.getContext("2d");
-    // ctx.drawImage(img, 0, 0);
-
-    // // Get the data-URL formatted image
-    // // Firefox supports PNG and JPEG. You could check img.src to
-    // // guess the original format, but be aware the using "image/jpg"
-    // // will re-encode the image.
-    // var dataURL = canvas.toDataURL("image/png");
-
-    // setImages(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
-
-    // if (img.files && img.files[0]) {
-    // setImages(img);
-    // var reader = new FileReader();
-    // reader.onload = function (e) {
-    //   $("#test123").attr("src", e.target.result).width(150).height(200);
-    // };
-    // reader.readAsDataURL(images.files[0]);
-    // // }
+  async function getBase64Image(img) {
+    const arrayBuffer = await (await fetch(img)).arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer).toString("base64");
+    console.log(buffer);
+    setImages(buffer);
   }
 
   function readURL(input) {
@@ -65,6 +45,8 @@ const ImageVideoText = ({
     const objecturl = URL.createObjectURL(e.target.files[0]);
     setImagePreviews((prev) => [...prev, objecturl]);
     setSelectedPreview(objecturl);
+
+    getBase64Image(objecturl);
   };
 
   return (
