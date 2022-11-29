@@ -7,12 +7,9 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  console.log(username);
-
   useEffect(() => {
     $("#username-input").hover(
       function () {
-        console.log(username);
         $("#labelfor-username").addClass("movetopleft");
         $(this).css("background-color", "white");
       },
@@ -112,6 +109,27 @@ const Login = () => {
             <label className='auth-inputlabel' id='labelfor-password'>
               PASSWORD
             </label>
+          </div>
+          <button type='submit' className='auth-submit'>
+            LOG IN
+          </button>
+          <div
+            className='auth-smalltext'
+            style={{ marginTop: "8px", marginBottom: "20px" }}
+          >
+            Forgot your <span className='auth-bluetext'>username</span> or{" "}
+            <span className='auth-bluetext'>password</span>?
+          </div>
+
+          <div className='auth-smalltext' style={{ marginTop: "8px" }}>
+            New to Reddit?{" "}
+            <a
+              className='auth-bluetext'
+              style={{ fontWeight: "400" }}
+              href='/signup'
+            >
+              SIGN UP
+            </a>
           </div>
         </form>
       </div>
