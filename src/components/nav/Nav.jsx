@@ -15,9 +15,11 @@ import PlusSvgIcon from "./navsvgs/PlusSvgIcon";
 import AdvertiseIconSvg from "./navsvgs/AdvertiseIconSvg";
 import DownArrowPfp from "./navsvgs/DownArrowPfp";
 import { useLocation } from "react-router";
+import { useSelector } from "react-redux";
 
 const Nav = () => {
   const location = useLocation();
+  const authState = useSelector((state) => state.auth);
 
   function textFocusChangeBGColor() {
     $(".input-search").focus(() => {

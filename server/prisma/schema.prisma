@@ -41,7 +41,10 @@ model Community{
 
 model User {
   id       String    @id @default(uuid())
-  name     String
+  email    String
+  password String
+  name     String   
+  photo String?
   comments Comment[]
   likes    Like[]
   communities Community[]

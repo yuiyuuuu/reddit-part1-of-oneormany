@@ -1,9 +1,9 @@
 import axios from "axios";
 
 //api get
-export async function makeGetRequest(url) {
+export async function makeGetRequest(url, body) {
   try {
-    const { data } = await axios.get(`/api/${url}`);
+    const { data } = await axios.get(`/api/${url}`, body);
     return data;
   } catch (error) {
     console.log(error);

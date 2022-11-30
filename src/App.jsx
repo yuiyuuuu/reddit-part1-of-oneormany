@@ -8,7 +8,17 @@ import "./index.scss";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 
+import { getLocalData } from "./store/auth";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getLocalData());
+  }, []);
+
   return (
     <BrowserRouter>
       <Nav />

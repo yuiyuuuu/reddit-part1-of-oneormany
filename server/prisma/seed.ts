@@ -1,14 +1,25 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const dotenv = require("dotenv").config();
+const bcrypt = require("bcrypt");
+
+async function hash(v) {
+  const a = await bcrypt.hash(v, 10);
+
+  return a;
+}
 
 async function seed() {
   await prisma.post.deleteMany();
   await prisma.user.deleteMany();
   await prisma.community.deleteMany();
 
-  const jack = await prisma.user.create({ data: { name: "Jack" } });
-  const rachel = await prisma.user.create({ data: { name: "rachel" } });
+  const jack = await prisma.user.create({
+    data: { name: "Jack", email: "jack@gmail.com", password: "123" },
+  });
+  const rachel = await prisma.user.create({
+    data: { name: "rachel", email: "rachel@gmail.com", password: "123" },
+  });
 
   const community1 = await prisma.community.create({
     data: {
@@ -16,7 +27,7 @@ async function seed() {
       tag: "r/memes",
       rules: "please follow these rules",
       users: {
-        create: [{ name: "hi" }],
+        create: [{ name: "hi", email: "hi@gmail.com", password: "123" }],
       },
     },
   });
@@ -68,6 +79,7 @@ async function seed() {
 }
 
 try {
+  console.log(hash("123"));
   seed();
 } catch (err) {
   console.error(err);

@@ -5,8 +5,13 @@ import $ from "jquery";
 
 import { adjectives, nouns, dashes } from "./words";
 import SignupStep2 from "./SignupStep2";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const auth = useSelector((state) => state.auth);
+  const history = useNavigate();
+
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
 
@@ -54,6 +59,12 @@ const Signup = () => {
       $("#email-error").css("display", "block");
     }
   };
+
+  useEffect(() => {
+    if (auth?.id) {
+      history("/");
+    }
+  }, [auth]);
 
   useEffect(() => {
     //generate suggestion names for signup
@@ -156,6 +167,7 @@ const Signup = () => {
           setSuggestionList2={setSuggestionList2}
           setStep={setStep}
           setEmail={setEmail}
+          email={email}
         />
       )}
     </div>

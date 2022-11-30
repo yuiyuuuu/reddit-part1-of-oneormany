@@ -1,18 +1,49 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { signup } from "../../store/auth";
 import "./auth.scss";
 
 import ReloadIcon from "./ReloadIcon";
 
 import $ from "jquery";
+import { useNavigate } from "react-router-dom";
 
 const SignupStep2 = ({
   suggestionList,
   setSuggestionList2,
   setStep,
   setEmail,
+  email,
 }) => {
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const state = useSelector((state) => state.auth);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    if (password.length < 8) {
+      $("#signup-passworderror").css("display", "block");
+      $("#signup-password").css("border", "1px solid red");
+      return;
+    }
+    const object = {
+      username: username,
+      password: password,
+      email: email,
+    };
+    const res = dispatch(signup(object)).then((resp) => {
+      console.log(resp);
+      if (resp.auth.id) {
+        history("/");
+      }
+    });
+
+    if (res === "successful") {
+      history("/");
+    }
+  };
 
   useEffect(() => {
     //if user clicks suggestion name, we will move label out of way
@@ -110,8 +141,16 @@ const SignupStep2 = ({
               className='signup-inputfield'
               id='signup-password'
               value={password}
+              type='password'
               onChange={(e) => setPassword(e.target.value)}
             />
+          </div>
+          <div
+            className='auth-redtext nodisplay'
+            style={{ marginTop: "4px" }}
+            id='signup-passworderror'
+          >
+            Password must be at least 8 characters long
           </div>
         </div>
         <div className='signup-namesuggestions'>
@@ -145,7 +184,9 @@ const SignupStep2 = ({
           Back
         </div>
         <div className='grow' />
-        <button className='signup-signup'>SIGN UP</button>
+        <button className='signup-signup' onClick={() => handleSubmit()}>
+          SIGN UP
+        </button>
       </div>
     </div>
   );
