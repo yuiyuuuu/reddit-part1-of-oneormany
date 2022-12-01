@@ -207,6 +207,7 @@
   position: absolute;
   left: 0;
   top: 0;
+  border-radius: 4px;
 }
 
 .desc-nav {
@@ -224,4 +225,69 @@
 
 .profile-karma {
   color: #a8aaab;
+}
+
+.nav-signupbutton {
+  border-radius: 9999px;
+  color: #0079d3;
+  border: 1px solid #0079d3;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 16px;
+
+  @media only screen and (min-width: 1180px) {
+    padding: 4px 40px;
+  }
+
+  &:hover {
+    background-color: #f5fafd;
+  }
+}
+
+.nav-loginbutton {
+  border-radius: 9999px;
+  color: white;
+  background-color: #0079d3;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 16px;
+  margin-left: 16px;
+
+  @media only screen and (min-width: 1180px) {
+    padding: 4px 40px;
+  }
+
+  &:hover {
+    background-color: #1484d6;
+  }
+}
+
+.nav-rightoverlayhover:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.nav-rightoverlay {
+  width: 252px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  right: 2px;
+  top: 47.5px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid #edeff1;
+}
+
+.nav-logout {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 40px;
+}
+
+.nav-logouttext {
+  margin-right: 20px;
+  margin-left: 12px;
+  font-size: 14px;
 }

@@ -18,9 +18,12 @@ import LinkText from "./submit-components/LinkText";
 import PollText from "./submit-components/PollText";
 import { makePostRequest } from "../../requests/helperFunction";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import auth from "../../store/auth";
 
 const Submit = () => {
   const history = useNavigate();
+  const authState = useSelector((state) => state.auth);
   const [selected, setSelected] = useState("post");
 
   const [title, setTitle] = useState("");
@@ -35,16 +38,16 @@ const Submit = () => {
         const v = await makePostRequest("posts", {
           title: title,
           body: text,
-          userId: "bd87595f-adb4-4900-af90-095c037e1495",
-          communityId: "4931a159-f5d4-457f-bc28-ea58ff1c1b82",
+          userId: authState.id,
+          communityId: "184a67e6-280c-4b1c-a39b-623b228334df",
         });
         break;
       case "image/video":
         const a = await makePostRequest("posts", {
           title: title,
           body: text,
-          userId: "bd87595f-adb4-4900-af90-095c037e1495",
-          communityId: "4931a159-f5d4-457f-bc28-ea58ff1c1b82",
+          userId: authState.id,
+          communityId: "184a67e6-280c-4b1c-a39b-623b228334df",
           image: images,
         });
     }
@@ -70,6 +73,11 @@ const Submit = () => {
       }
     });
   }, []);
+
+  if (!authState?.id) {
+    //try and fix this later. if user is on this page without logged in, we do something
+    return <div>Not logged in</div>;
+  }
 
   return (
     <div className='submit-container'>

@@ -19,7 +19,7 @@ model Post {
   downvotes String[]
   community Community @relation(fields:[communityId], references: [id], onDelete: Cascade)
   communityId String
-  user User @relation(fields:[userId], references: [id]) 
+  user User @relation(fields:[userId], references: [id], onDelete: Cascade) 
   userId String
   image String? @db.VarChar(1048576)
 }
@@ -36,14 +36,22 @@ model Community{
   allowlink Boolean @default(false)
   allowpoll Boolean @default(false)
   allowtalk Boolean @default(false)
+  visibility visibility @default(public)
+  NSFW Boolean @default(false)
+}
 
+enum visibility{
+  public
+  restricted
+  private
 }
 
 model User {
   id       String    @id @default(uuid())
-  email    String
+  email    String    @unique
   password String
-  name     String   
+  name     String  @unique  
+  karma Int @default(0)
   photo String?
   comments Comment[]
   likes    Like[]

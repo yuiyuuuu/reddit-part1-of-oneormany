@@ -2,10 +2,44 @@ import React, { useEffect, useState } from "react";
 import "./auth.scss";
 
 import $ from "jquery";
+import { useDispatch, useSelector } from "react-redux";
+import auth, { authenticate } from "../../store/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const authState = useSelector((state) => state.auth);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  function wrongPasswordResponse() {
+    $("#login-errortext").css("display", "block");
+    $("#password-input").css("border", "1px solid red");
+  }
+
+  async function handleSubmit(e) {
+    $("#login-errortext").css("display", "none");
+    $("#password-input").css("border", "1px solid rgba(0,0,0,.1);");
+    if (username === "" || password.length < 8) {
+      wrongPasswordResponse();
+      return;
+    }
+
+    e.preventDefault();
+
+    //if wrong password, set input to red and show the error message, else redirect to home
+    const data = dispatch(authenticate(username, password)).then((res) => {
+      res === "wrongpassword" ? wrongPasswordResponse() : history("/");
+    });
+  }
+
+  useEffect(() => {
+    if (authState.id) {
+      history("/");
+    }
+  }, [authState]);
 
   useEffect(() => {
     $("#username-input").hover(
@@ -110,7 +144,14 @@ const Login = () => {
               PASSWORD
             </label>
           </div>
-          <button type='submit' className='auth-submit'>
+          <div
+            className='auth-redtext'
+            id='login-errortext'
+            style={{ marginTop: "4px", display: "none" }}
+          >
+            Wrong username or password
+          </div>
+          <button className='auth-submit' onClick={(e) => handleSubmit(e)}>
             LOG IN
           </button>
           <div

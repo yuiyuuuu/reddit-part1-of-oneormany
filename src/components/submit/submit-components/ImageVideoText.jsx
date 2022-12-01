@@ -22,7 +22,7 @@ const ImageVideoText = ({
   async function getBase64Image(img) {
     const arrayBuffer = await (await fetch(img)).arrayBuffer();
     const buffer = Buffer.from(arrayBuffer).toString("base64");
-    console.log(buffer);
+
     setImages(buffer);
   }
 

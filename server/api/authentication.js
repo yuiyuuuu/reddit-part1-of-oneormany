@@ -29,7 +29,7 @@ router.post("/signup", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
-  const user = prisma.user.findUnique({
+  const user = await prisma.user.findFirst({
     where: {
       name: username,
     },
@@ -41,10 +41,12 @@ router.post("/login", async (req, res, next) => {
   }
 
   try {
-    if (bcrypt.compare(password, user.password)) {
+    if (await bcrypt.compare(password, user.password)) {
+      console.log("user", user);
+      console.log("bcrypt", await bcrypt.compare(password, user.password));
       res.send(user).status(200);
     } else {
-      res.status(401).send("wrongpassword");
+      res.send("wrongpassword").status(401);
       return;
     }
   } catch (error) {

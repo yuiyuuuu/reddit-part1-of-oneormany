@@ -19,8 +19,6 @@ export function getLocalData() {
           },
         });
 
-        console.log(user, "   userrrrr");
-
         dispatch(setAuth(user));
       }
     } catch (error) {
@@ -36,10 +34,12 @@ export function authenticate(username, password) {
         username: username,
         password: password,
       });
-      //fix
-      dispatch(getLocalData());
+
+      if (data === "wrongpassword") {
+        return data;
+      }
+      dispatch(setAuth(data));
       return "successful";
-      //finish
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +56,13 @@ export function signup(object) {
     } catch (error) {
       console.log(error);
     }
+  };
+}
+
+export function logout() {
+  return (dispatch) => {
+    window.localStorage.removeItem("token");
+    dispatch(setAuth({}));
   };
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./nav.scss";
 import DownArrowCommunities from "./navsvgs/DownArrowCommunities";
 import RedditIcon from "./navsvgs/RedditIcon";
@@ -15,11 +15,37 @@ import PlusSvgIcon from "./navsvgs/PlusSvgIcon";
 import AdvertiseIconSvg from "./navsvgs/AdvertiseIconSvg";
 import DownArrowPfp from "./navsvgs/DownArrowPfp";
 import { useLocation } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import NotLoggedInPfp from "./navsvgs/NotLoggedInPfp";
+import LogoutIcon from "./navsvgs/rightoverlay/LogoutIcon";
+
+import { logout } from "../../store/auth";
+import LogoutIcon2 from "./navsvgs/rightoverlay/LogoutIcon2";
 
 const Nav = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
+
+  const [showRightOverlay, setShowRightOverlay] = useState(false);
+
+  //block display when user is not logged in
+  function showWhenNoLogin(v) {
+    if (!authState.id) {
+      return v;
+    } else {
+      return "none";
+    }
+  }
+
+  //block display when user is logged in
+  function showWhenLoggedIn(v) {
+    if (authState.id) {
+      return v;
+    } else {
+      return "none";
+    }
+  }
 
   function textFocusChangeBGColor() {
     $(".input-search").focus(() => {
@@ -69,56 +95,115 @@ const Nav = () => {
         </div>
       </div>
 
-      <div className='nav-inner2'>
-        <div className='nav-twoicons'>
-          <div className='icon-container'>
-            <PopularIcon />
-          </div>
-
-          <div
-            className='icon-container'
-            style={{
-              marginLeft: "8px",
-            }}
-          >
-            <CoinsIconSvg />
-          </div>
-        </div>
-        <div className='nav-inner2-child'>
-          <div className='icon-container'>
-            <MessageIconSvg />
-          </div>
-
-          <div className='icon-container' style={{ marginLeft: "8px" }}>
-            <BellIconSvg />
-          </div>
-
-          <div className='icon-container' style={{ marginLeft: "8px" }}>
-            <PlusSvgIcon />
-          </div>
-
-          <div className='nav-advertise-icon'>
-            <AdvertiseIconSvg />
-            <div className='advertise-word'>Advertise</div>
-          </div>
-
-          <div className='userprofile-nav'>
-            <div className='pfp-container'>
-              <img
-                src='https://cdn.discordapp.com/attachments/779278654714675232/1039069016154718270/unknown.png'
-                className='pfp-nav'
-              />
+      {authState?.id ? (
+        <div className='nav-inner2'>
+          <div className='nav-twoicons'>
+            <div className='icon-container'>
+              <PopularIcon />
             </div>
 
-            <div className='text-container-nav'>
-              <div className='profile-name desc-nav'>Name</div>
-              <div className='profile-karma desc-nav'>Karma</div>
+            <div
+              className='icon-container'
+              style={{
+                marginLeft: "8px",
+              }}
+            >
+              <CoinsIconSvg />
+            </div>
+          </div>
+          <div className='nav-inner2-child'>
+            <div className='icon-container'>
+              <MessageIconSvg />
+            </div>
+
+            <div className='icon-container' style={{ marginLeft: "8px" }}>
+              <BellIconSvg />
+            </div>
+
+            <div className='icon-container' style={{ marginLeft: "8px" }}>
+              <PlusSvgIcon />
+            </div>
+
+            <div className='nav-advertise-icon'>
+              <AdvertiseIconSvg />
+              <div className='advertise-word'>Advertise</div>
+            </div>
+
+            <div
+              className='userprofile-nav'
+              onClick={() => setShowRightOverlay((prev) => !prev)}
+            >
+              <div className='pfp-container'>
+                <img
+                  src={authState?.image || "assets/defaultpfp.png"}
+                  className='pfp-nav'
+                  style={{ padding: "4px 0px" }}
+                />
+              </div>
+
+              <div className='text-container-nav'>
+                <div className='profile-name desc-nav'>{authState.name}</div>
+                <div className='profile-karma desc-nav'>Karma</div>
+              </div>
+
+              <DownArrowPfp />
+
+              <div className='overlay-hover-profile' />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className='nav-inner2'>
+          <a className='nav-signupbutton' href='signup'>
+            Sign Up
+          </a>
+          <a className='nav-loginbutton' href='login'>
+            Log In
+          </a>
+
+          <div
+            className='userprofile-nav'
+            style={{ marginLeft: "8px" }}
+            onClick={() => setShowRightOverlay((prev) => !prev)}
+          >
+            <div className='pfp-container'>
+              <NotLoggedInPfp />
             </div>
 
             <DownArrowPfp />
 
             <div className='overlay-hover-profile' />
           </div>
+        </div>
+      )}
+
+      <div
+        className='nav-rightoverlay'
+        style={{ display: showRightOverlay ? "flex" : "none" }}
+      >
+        <div style={{ width: "100%", height: "100%", padding: "8px 0px" }}>
+          {/* LOGGED IN */}
+          <button
+            className='nav-logout nav-rightoverlayhover'
+            style={{ display: showWhenLoggedIn("flex") }}
+          >
+            <LogoutIcon />
+            <span className='nav-logouttext' onClick={() => dispatch(logout())}>
+              Logout
+            </span>
+          </button>
+
+          {/*NOT LOGGED IN */}
+
+          <a
+            className='nav-logout nav-rightoverlayhover'
+            role='button'
+            style={{ display: showWhenNoLogin("flex") }}
+            href='/login'
+          >
+            <LogoutIcon2 />
+            <span className='nav-logouttext'>Log In / Sign Up</span>
+          </a>
         </div>
       </div>
     </div>
