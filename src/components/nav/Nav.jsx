@@ -28,6 +28,7 @@ const Nav = () => {
   const authState = useSelector((state) => state.auth);
 
   const [showRightOverlay, setShowRightOverlay] = useState(false);
+  const [showCommunitiesOverlay, setShowCommunitiesOverlay] = useState(false);
 
   //block display when user is not logged in
   function showWhenNoLogin(v) {
@@ -59,6 +60,13 @@ const Nav = () => {
   }
 
   useEffect(() => {
+    const v = document
+      .getElementsByClassName("nav-2-communities")[0]
+      .getBoundingClientRect();
+    $(".nav-communitiesoverlay").css("left", v.left + "px");
+  }, []);
+
+  useEffect(() => {
     textFocusChangeBGColor();
   }, []);
 
@@ -77,7 +85,13 @@ const Nav = () => {
           <RedditName />
         </a>
 
-        <div className='nav-2-communities'>
+        <div
+          className='nav-2-communities'
+          onClick={() => {
+            setShowRightOverlay(false);
+            setShowCommunitiesOverlay((prev) => !prev);
+          }}
+        >
           <button className='nav-2-button'>
             <span className='community-nav'>Placeholder community</span>
             <DownArrowCommunities />
@@ -131,7 +145,10 @@ const Nav = () => {
 
             <div
               className='userprofile-nav'
-              onClick={() => setShowRightOverlay((prev) => !prev)}
+              onClick={() => {
+                setShowCommunitiesOverlay(false);
+                setShowRightOverlay((prev) => !prev);
+              }}
             >
               <div className='pfp-container'>
                 <img
@@ -164,7 +181,10 @@ const Nav = () => {
           <div
             className='userprofile-nav'
             style={{ marginLeft: "8px" }}
-            onClick={() => setShowRightOverlay((prev) => !prev)}
+            onClick={() => {
+              setShowCommunitiesOverlay(false);
+              setShowRightOverlay((prev) => !prev);
+            }}
           >
             <div className='pfp-container'>
               <NotLoggedInPfp />
@@ -205,6 +225,13 @@ const Nav = () => {
             <span className='nav-logouttext'>Log In / Sign Up</span>
           </a>
         </div>
+      </div>
+
+      <div
+        className='nav-communitiesoverlay'
+        style={{ display: showCommunitiesOverlay ? "block" : "none" }}
+      >
+        <div className='communitiesoverlay-section'>Feeds</div>
       </div>
     </div>
   );

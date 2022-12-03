@@ -4,9 +4,11 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import auth from "./auth";
+import posts from "./posts";
 
 const reducer = combineReducers({
   auth,
+  posts,
 }); //reducers here
 
 const middleware = composeWithDevTools(

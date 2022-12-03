@@ -39,7 +39,7 @@ const Submit = () => {
           title: title,
           body: text,
           userId: authState.id,
-          communityId: "184a67e6-280c-4b1c-a39b-623b228334df",
+          communityId: "be7bf947-c25c-4696-9cf9-58147e7d81e4",
         });
         break;
       case "image/video":
@@ -47,7 +47,7 @@ const Submit = () => {
           title: title,
           body: text,
           userId: authState.id,
-          communityId: "184a67e6-280c-4b1c-a39b-623b228334df",
+          communityId: "be7bf947-c25c-4696-9cf9-58147e7d81e4",
           image: images,
         });
     }

@@ -19,3 +19,12 @@ export async function makePostRequest(url, body) {
     console.log(error);
   }
 }
+
+export async function makePutRequest(url, body) {
+  try {
+    const { data } = await axios.put(`/api/${url}`, body);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}

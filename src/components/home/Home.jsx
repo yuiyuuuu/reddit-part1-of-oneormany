@@ -16,9 +16,14 @@ import ThreeDotOverlay from "./overlays/ThreeDotOverlay";
 import TOS from "./TOS";
 import { useNavigate } from "react-router-dom";
 import { makeGetRequest } from "../../requests/helperFunction";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPosts } from "../../store/posts";
 
 const Home = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.posts);
+  const authState = useSelector((state) => state.auth);
 
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
   const [scrollPos, setScrollpos] = useState(0);
@@ -35,7 +40,7 @@ const Home = () => {
   const [overlayTop2, setOverlayTop2] = useState(0);
   const [overlayLeft2, setOverlayLeft2] = useState(0);
 
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   function randomIntFromInterval(min, max) {
@@ -44,9 +49,8 @@ const Home = () => {
   }
 
   useEffect(async () => {
-    const v = await makeGetRequest("posts");
+    const v = dispatch(fetchPosts());
 
-    setPosts(v);
     setLoading(false);
   }, []);
 
@@ -198,6 +202,7 @@ const Home = () => {
                   overlayId2={overlayId2}
                   showOverlay2={showOverlay2}
                   setScrollpos={setScrollpos}
+                  authState={authState}
                 />
               ))}
             </div>

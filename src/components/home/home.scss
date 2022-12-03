@@ -352,8 +352,8 @@
   color: white;
   background-color: #0079d3;
   padding: 4px 16px;
-  position: sticky;
-  bottom: 0;
+  position: fixed;
+  bottom: 15px;
   border-radius: 9999px;
   cursor: pointer;
   top: calc(100vh - 40px);

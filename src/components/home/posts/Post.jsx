@@ -12,8 +12,15 @@ import ThreeDotSvg from "./postssvgs/ThreeDotSvg";
 import UpVoteSvg from "./postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
-//all posts
+import { useDispatch } from "react-redux";
+import {
+  downvote,
+  removeDownvote,
+  removeUpvote,
+  upvote,
+} from "../../../store/posts";
 
+//all posts
 const Post = ({
   post,
   setOverlayTop,
@@ -29,22 +36,58 @@ const Post = ({
   overlayId2,
   showOverlay2,
   setScrollpos,
+  authState,
 }) => {
+  const dispatch = useDispatch();
+
   const [upvoteActive, setUpvoteActive] = useState(false); //change to userid later when sql
   const [downvoteActive, setDownvoteActive] = useState(false);
 
-  function fillRed() {
-    if (downvoteActive) {
-      setDownvoteActive(false);
-    }
-    setUpvoteActive((prev) => !prev);
+  // function fillRed() {
+  //   setDownvoteActive(false);
+
+  //   setUpvoteActive((prev) => !prev);
+  // }
+
+  // function fillRed2() {
+  //   setUpvoteActive(false);
+
+  //   setDownvoteActive((prev) => !prev);
+  // }
+
+  function handleUpvote() {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+    dispatch(upvote(info));
   }
 
-  function fillRed2() {
-    if (upvoteActive) {
-      setUpvoteActive(false);
-    }
-    setDownvoteActive((prev) => !prev);
+  function handleDownvote() {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+
+    dispatch(downvote(info));
+  }
+
+  function handleRemoveUpvote() {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+
+    dispatch(removeUpvote(info));
+  }
+
+  function handleRemoveDownvote() {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+
+    dispatch(removeDownvote(info));
   }
 
   function set() {
@@ -113,14 +156,44 @@ const Post = ({
   return (
     <div className='single-postcontainer' id={post.id}>
       <div className='posts-vote post-voteleft'>
-        <div className='posts-upvote post-votebut' onClick={() => fillRed()}>
-          <UpVoteSvg id={post.id} upvoteActive={upvoteActive} />
+        <div
+          className='posts-upvote post-votebut'
+          onClick={() => {
+            if (post.upvotes.includes(authState?.id)) {
+              handleRemoveUpvote();
+              return;
+            }
+            // fillRed();
+            handleUpvote();
+          }}
+        >
+          <UpVoteSvg
+            id={post.id}
+            upvoteActive={upvoteActive}
+            post={post}
+            authState={authState}
+          />
         </div>
         <div className='posts-votecount'>
           {post.upvotes.length - post.downvotes.length}
         </div>
-        <div className='posts-downvote post-votebut' onClick={() => fillRed2()}>
-          <DownVoteSvg id={post.id} downvoteActive={downvoteActive} />
+        <div
+          className='posts-downvote post-votebut'
+          onClick={() => {
+            if (post.downvotes.includes(authState.id)) {
+              handleRemoveDownvote();
+              return;
+            }
+            handleDownvote();
+            // fillRed2();
+          }}
+        >
+          <DownVoteSvg
+            id={post.id}
+            downvoteActive={downvoteActive}
+            post={post}
+            authState={authState}
+          />
         </div>
       </div>
 
