@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import "./nav.scss";
-import DownArrowCommunities from "./navsvgs/DownArrowCommunities";
-import RedditIcon from "./navsvgs/RedditIcon";
-import RedditName from "./navsvgs/RedditName";
-import SearchIconSvg from "./navsvgs/SearchIconSvg";
 
 import $ from "jquery";
 
@@ -14,13 +12,15 @@ import BellIconSvg from "./navsvgs/BellIconSvg";
 import PlusSvgIcon from "./navsvgs/PlusSvgIcon";
 import AdvertiseIconSvg from "./navsvgs/AdvertiseIconSvg";
 import DownArrowPfp from "./navsvgs/DownArrowPfp";
-import { useLocation } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
 import NotLoggedInPfp from "./navsvgs/NotLoggedInPfp";
 import LogoutIcon from "./navsvgs/rightoverlay/LogoutIcon";
+import DownArrowCommunities from "./navsvgs/DownArrowCommunities";
+import RedditIcon from "./navsvgs/RedditIcon";
+import RedditName from "./navsvgs/RedditName";
+import SearchIconSvg from "./navsvgs/SearchIconSvg";
+import LogoutIcon2 from "./navsvgs/rightoverlay/LogoutIcon2";
 
 import { logout } from "../../store/auth";
-import LogoutIcon2 from "./navsvgs/rightoverlay/LogoutIcon2";
 
 const Nav = () => {
   const location = useLocation();
@@ -75,7 +75,9 @@ const Nav = () => {
       className='nav-parent'
       style={{
         display:
-          (location.pathname === "/login" || location.pathname === "/signup") &&
+          (location.pathname === "/login" ||
+            location.pathname === "/signup" ||
+            location.pathname === "/test") &&
           "none",
       }}
     >

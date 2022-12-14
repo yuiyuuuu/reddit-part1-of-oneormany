@@ -3,15 +3,169 @@ const prisma = require("../prismaClient.js");
 
 module.exports = router;
 
+router.get("/single/:id", async (req, res, next) => {
+  try {
+    // const posts = await prisma.post.findMany({
+    //   where: {
+    //     tag: req.body.tag,
+    //   },
+    //   include: {
+    //     user: true,
+    //     community: true,
+    //     comments: true,
+    //   },
+    // });
+
+    // console.log("postss", posts);
+    // res.send(posts);
+
+    const community = await prisma.community.findFirst({
+      where: {
+        tag: `r/${req.params.id}`,
+      },
+      include: {
+        posts: {
+          include: {
+            comments: true,
+            user: true,
+            community: true,
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
+      },
+    });
+    if (!community) {
+      res.send("not found");
+    } else {
+      res.send(community);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/", async (req, res, next) => {
   try {
     const communities = await prisma.community.findMany({
       include: {
-        users: true,
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
         posts: true,
       },
     });
     res.send(communities);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/join", async (req, res, next) => {
+  try {
+    // const user = await prisma.user.findUnique({
+    //   where: {
+    //     id: req.body.userid,
+    //   },
+    //   include: {
+    //     communities: true,
+    //   },
+    // });
+
+    await prisma.user.update({
+      where: {
+        id: req.body.userid,
+      },
+      data: {
+        communities: {
+          connect: [{ id: req.body.communityid }],
+        },
+      },
+
+      include: {
+        communities: true,
+        posts: true,
+      },
+    });
+
+    const community = await prisma.community.findUnique({
+      where: {
+        id: req.body.communityid,
+      },
+      include: {
+        posts: {
+          include: {
+            comments: true,
+            user: true,
+            community: true,
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
+      },
+    });
+
+    res.send(community);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/leave", async (req, res, next) => {
+  try {
+    await prisma.user.update({
+      where: {
+        id: req.body.userid,
+      },
+
+      data: {
+        communities: {
+          disconnect: [{ id: req.body.communityid }],
+        },
+      },
+    });
+
+    const community = await prisma.community.findUnique({
+      where: {
+        id: req.body.communityid,
+      },
+      include: {
+        posts: {
+          include: {
+            comments: true,
+            user: true,
+            community: true,
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
+      },
+    });
+
+    res.send(community);
   } catch (error) {
     next(error);
   }

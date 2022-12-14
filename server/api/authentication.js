@@ -59,6 +59,11 @@ router.get("/getlocaldata", async (req, res, next) => {
       where: {
         id: id,
       },
+
+      include: {
+        communities: true,
+        posts: true,
+      },
     });
 
     res.send(user);

@@ -1,23 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import $ from "jquery";
+
 import "./home.scss";
+
+import { fetchPosts } from "../../store/posts";
+import { addCommunity } from "../../store/auth";
+import { toggleCreateCommunity } from "../../store/nav-createcommunity";
+
 import ClipSvg from "./homesvgs/ClipSvg";
 import DefaultPfp from "./homesvgs/DefaultPfp";
 import ImageIcon from "./homesvgs/ImageIcon";
-
 import { newcommunities } from "./newcommunities/newcommunitiesobj";
-
-import $ from "jquery";
 import GreenArrow from "./homesvgs/GreenArrow";
 import Post from "./posts/Post";
-
-import { postsobj } from "./posts/postsobj";
 import ShareOverlay from "./overlays/ShareOverlay";
 import ThreeDotOverlay from "./overlays/ThreeDotOverlay";
 import TOS from "./TOS";
-import { useNavigate } from "react-router-dom";
-import { makeGetRequest } from "../../requests/helperFunction";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPosts } from "../../store/posts";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -43,6 +43,15 @@ const Home = () => {
   // const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  function joinNewCommunity(communityid) {
+    const info = {
+      communityid: communityid,
+      userid: authState.id,
+    };
+
+    dispatch(addCommunity(info));
+  }
+
   function randomIntFromInterval(min, max) {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -54,6 +63,8 @@ const Home = () => {
     setLoading(false);
   }, []);
 
+  //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
+  //we will close the overlay
   useEffect(() => {
     $(document).click(function (event) {
       let run = true;
@@ -161,6 +172,7 @@ const Home = () => {
     });
   }, []);
 
+  console.log(newcommunities);
   if (loading) return "loading";
 
   return (
@@ -235,7 +247,7 @@ const Home = () => {
                         : "",
                   }}
                 >
-                  <a className='anchor-newcommunities'>
+                  <a className='anchor-newcommunities' href={`/r/${item.id}`}>
                     <div className='container-li'>
                       <span className='number-list'>{item.index}</span>
                       <GreenArrow />
@@ -248,9 +260,12 @@ const Home = () => {
                     </div>
                   </a>
 
-                  <a href={`/r/${item.id}`} className='join-newcommunities'>
+                  <div
+                    className='join-newcommunities'
+                    onClick={() => joinNewCommunity(item.id)}
+                  >
                     Join
-                  </a>
+                  </div>
                 </div>
               ))}
               <div
@@ -294,10 +309,16 @@ const Home = () => {
                   <div className='right2-divider' />
 
                   <div className='right2-buttoncontainer'>
-                    <div className='right2-button right2-createpost'>
+                    <a
+                      className='right2-button right2-createpost'
+                      href='/submit'
+                    >
                       Create Post
-                    </div>
-                    <div className='right2-button right2-createcommunity'>
+                    </a>
+                    <div
+                      className='right2-button right2-createcommunity'
+                      onClick={() => dispatch(toggleCreateCommunity(true))}
+                    >
                       Create Community
                     </div>
                   </div>

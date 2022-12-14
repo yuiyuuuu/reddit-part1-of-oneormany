@@ -73,3 +73,44 @@ button {
 .nodisplay {
   display: none;
 }
+
+.flex-aligncenter {
+  display: flex;
+  align-items: center;
+}
+
+.blueborder-button {
+  padding: 4px 16px;
+  border: 1px solid #0079d3;
+  color: #0079d3;
+  border-radius: 9999px;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f7f6f6;
+  }
+}
+
+.bluebutton-button {
+  padding: 4px 16px;
+  background-color: #0079d3;
+  color: white;
+  border-radius: 9999px;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

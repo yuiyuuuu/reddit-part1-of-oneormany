@@ -23,12 +23,13 @@ async function seed() {
 
   const community1 = await prisma.community.create({
     data: {
-      name: "funny memes",
-      tag: "r/memes",
+      name: "Steam",
+      tag: "r/Steam",
       rules: "please follow these rules",
       users: {
         create: [{ name: "hi", email: "hi@gmail.com", password: "123" }],
       },
+      image: "hiiii",
     },
   });
 

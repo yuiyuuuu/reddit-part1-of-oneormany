@@ -1,10 +1,20 @@
-import { makeGetRequest, makePostRequest } from "../requests/helperFunction";
+import {
+  makeGetRequest,
+  makePostRequest,
+  makePutRequest,
+} from "../requests/helperFunction";
 
 const AUTH = "AUTH";
+const ADD_COMMUNITY = "ADD_COMMUNITY";
 
 const setAuth = (auth) => ({
   type: AUTH,
   auth,
+});
+
+const addACommunity = (user) => ({
+  type: ADD_COMMUNITY,
+  user,
 });
 
 export function getLocalData() {
@@ -66,10 +76,23 @@ export function logout() {
   };
 }
 
+export function addCommunity(info) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/join", info);
+      dispatch(addACommunity(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case AUTH:
       return action.auth;
+    case ADD_COMMUNITY:
+      return action.user;
     default:
       return state;
   }

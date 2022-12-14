@@ -200,7 +200,9 @@ const Post = ({
       <div className='posts-maincontainer'>
         <div className='posts-serveranduser'>
           <img src={communities[1].image} className='post-communityicon' />
-          <div className='posts-communityname'>{post.community.tag}</div>
+          <a href={`/${post.community.tag}`} className='posts-communityname'>
+            {post.community.tag}
+          </a>
           <div className='dot-posts'>•</div>
           <div className='post-topdesc' style={{ marginRight: "3px" }}>
             Post by

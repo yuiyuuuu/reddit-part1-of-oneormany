@@ -5,10 +5,14 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import auth from "./auth";
 import posts from "./posts";
+import postsindividualcommunity from "./posts-individualcommunity";
+import navToggleCreate from "./nav-createcommunity";
 
 const reducer = combineReducers({
   auth,
   posts,
+  postsindividualcommunity,
+  navToggleCreate,
 }); //reducers here
 
 const middleware = composeWithDevTools(

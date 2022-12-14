@@ -27,7 +27,7 @@ model Post {
 
 model Community{
   id String @id @default(uuid())
-  name String
+  name String @db.VarChar(100) @unique
   tag String
   rules String?
   users User[]
@@ -39,6 +39,15 @@ model Community{
   allowtalk Boolean @default(false)
   visibility visibility @default(public)
   NSFW Boolean @default(false)
+  themeBaseColor String @default("rgb(51, 168, 255)")
+  communityBannerSize BannerSize @default(small)
+}
+
+enum BannerSize{
+  small
+  medium
+  large
+
 }
 
 enum visibility{
