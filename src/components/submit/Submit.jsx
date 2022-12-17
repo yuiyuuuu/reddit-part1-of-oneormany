@@ -19,18 +19,39 @@ import PollText from "./submit-components/PollText";
 import { makePostRequest } from "../../requests/helperFunction";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import auth from "../../store/auth";
+import SearchIcon from "./submitsvgs/SearchIcon";
 
 const Submit = () => {
   const history = useNavigate();
   const authState = useSelector((state) => state.auth);
   const [selected, setSelected] = useState("post");
 
+  //current input for search
+  const [textInput, setTextInput] = useState("");
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
   const [title, setTitle] = useState("");
   const [text, setText] = useState(""); //used for post and poll only
   const [url, setUrl] = useState(""); //used for url only
   const [images, setImages] = useState([]); //image inputs
   const [imagePreviews, setImagePreviews] = useState([]);
+
+  //communities
+  const [communities, setCommunities] = useState([]);
+  //selected community
+  const [selectedCommunity, setSelectedCommunity] = useState({});
+
+  function findCommunity() {
+    // setSelected({});
+    const com = authState.communities?.find(
+      (g) =>
+        g.tag.toLowerCase() === textInput.toLowerCase() ||
+        g.name.toLowerCase() === textInput.toLowerCase()
+    );
+
+    console.log("commm", com);
+    setSelectedCommunity(com || {});
+  }
 
   async function handleSubmit() {
     switch (selected) {
@@ -65,6 +86,17 @@ const Submit = () => {
       });
     });
 
+    $(document).click((e) => {
+      const $target = $(event.target);
+      if (
+        !$target.closest(".submit-selectedcommunityinner").length &&
+        !$target.closest(".submit-choosecommunity").length &&
+        $(".submit-choosecommunity").is(":visible")
+      ) {
+        setIsInputFocused(false);
+      }
+    });
+
     //prevents new line on enter
     $(".submit-titletext").keydown(function (e) {
       if (e.keyCode == 13) {
@@ -74,6 +106,37 @@ const Submit = () => {
     });
   }, []);
 
+  $(document).ready(() => {
+    $("#submit-searchinput").focus(() => {
+      setIsInputFocused(true);
+    });
+
+    $("#submit-searchinput").focusout(() => {
+      // setIsInputFocused(false);
+      findCommunity();
+    });
+  });
+
+  console.log(textInput, "texttt");
+  console.log(authState.communities, "authstateee");
+  console.log("selecteddd", selectedCommunity);
+
+  useEffect(() => {
+    if (textInput === "") {
+      setCommunities(authState.communities);
+      return;
+    }
+
+    const c = authState.communities.filter(
+      (g) =>
+        g.tag.toLowerCase().includes(textInput.toLowerCase()) ||
+        g.name.toLowerCase().includes(textInput.toLowerCase())
+    );
+
+    setCommunities(c);
+  }, [textInput, authState.communities]);
+
+  // console.log(authState);
   if (!authState?.id) {
     //try and fix this later. if user is on this page without logged in, we do something
     return <div>Not logged in</div>;
@@ -95,17 +158,83 @@ const Submit = () => {
 
             <div className='submit-selectedcommunity'>
               <div className='submit-selectedcommunityinner'>
-                <img
-                  src='assets/newcommunities/gaming/dndnext.png'
-                  className='submit-imageicon'
+                {textInput === "" && !isInputFocused ? (
+                  <div className='submit-dottedcircle' />
+                ) : isInputFocused ? (
+                  <SearchIcon />
+                ) : (
+                  <img
+                    src='assets/newcommunities/gaming/dndnext.png'
+                    className='submit-imageicon'
+                  />
+                )}
+                <input
+                  className='submit-selectedcommunitiesname'
+                  id='submit-searchinput'
+                  placeholder='Choose a Community'
+                  value={textInput}
+                  onChange={(e) => {
+                    setIsInputFocused(true);
+                    setTextInput(e.target.value);
+                  }}
                 />
-                <div className='submit-selectedcommunitiesname'>
-                  r/communityname
-                </div>
 
-                <div className='center'>
+                <div
+                  className='center'
+                  onClick={() => {
+                    setIsInputFocused((prev) => !prev);
+                  }}
+                >
                   <DownArrow />
                 </div>
+              </div>
+
+              <div
+                className='submit-choosecommunity'
+                style={{ display: isInputFocused ? "" : "none" }}
+              >
+                <div className='submit-graytitle'>YOUR PROFILE</div>
+                <div className='submit-mapcommunitycontainer submit-profile'>
+                  <img
+                    src={authState?.image || "assets/defaultpfp.png"}
+                    className='submit-pfpimage'
+                  />
+
+                  <div className='submit-choosetitle'>u/{authState.name}</div>
+                </div>
+
+                <div className='submit-divider' />
+
+                <div className='submit-graytitle' style={{ marginTop: "8px" }}>
+                  YOUR COMMUNITIES
+                </div>
+                {communities?.map((item, index) => (
+                  <div
+                    className='submit-mapcommunitycontainer'
+                    style={{
+                      marginBottom:
+                        index === authState.communities.length - 1 && 0,
+                    }}
+                    onClick={(e) => {
+                      setTextInput(item.tag);
+                      $("#submit-searchinput").focus();
+                      setIsInputFocused(false);
+                    }}
+                  >
+                    <img
+                      src={"assets/defaultpfp.png"}
+                      className='submit-communityimage'
+                    />
+
+                    <div className='submit-choosecol'>
+                      <div className='submit-choosetitle'>{item.tag}</div>
+                      <div className='submit-membercount'>
+                        {item.users.length}{" "}
+                        {item.users.length === 1 ? "member" : "members"}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 

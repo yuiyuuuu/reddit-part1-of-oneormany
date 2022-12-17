@@ -28,7 +28,6 @@ function App() {
       <Nav />
       <CreateCommunityOverlay createOverlayState={createOverlayState} />
       <Routes>
-        <Route exact path='/' element={<Home />} />
         <Route exact path='/posts' element={<Posts />} />
         <Route exact path='/posts/:id' element={<SinglePost />} />
         <Route exact path='/submit' element={<Submit />} />
@@ -36,6 +35,7 @@ function App() {
         <Route exact path='/signup' element={<Signup />} />
         <Route exact path='/r/:id' element={<SingleCommunity />} />
         <Route exact path='/404' element={<Communities404 />} />
+        <Route exact path='/' element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

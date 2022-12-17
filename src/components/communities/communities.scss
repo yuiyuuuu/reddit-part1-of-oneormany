@@ -244,7 +244,6 @@
   margin-top: 5px;
   color: #7c7c7c;
   font-size: 12px;
-  margin-bottom: 30px;
 }
 
 .createoverlay-communitytype {
@@ -252,6 +251,7 @@
   font-weight: 500;
   color: #1c1c1c;
   margin-bottom: 4px;
+  margin-top: 30px;
 }
 
 .createoverlay-typecontainer {
@@ -300,6 +300,7 @@
   color: white;
   border-radius: 2px;
   line-height: 16px;
+  user-select: none;
 }
 
 .createoverlay-twobutcontainer {

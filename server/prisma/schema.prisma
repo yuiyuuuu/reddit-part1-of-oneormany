@@ -29,6 +29,7 @@ model Community{
   id String @id @default(uuid())
   name String @db.VarChar(100) @unique
   tag String
+  owner String?
   rules String?
   users User[]
   posts Post[] 

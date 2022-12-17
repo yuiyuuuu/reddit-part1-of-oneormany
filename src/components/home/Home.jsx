@@ -172,7 +172,6 @@ const Home = () => {
     });
   }, []);
 
-  console.log(newcommunities);
   if (loading) return "loading";
 
   return (

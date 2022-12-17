@@ -170,3 +170,29 @@ router.put("/leave", async (req, res, next) => {
     next(error);
   }
 });
+
+router.post("/create", async (req, res, next) => {
+  try {
+    const findCommunity = await prisma.community.findFirst({
+      where: {
+        name: {
+          mode: "insensitive",
+          equals: req.body.name,
+        },
+      },
+    });
+
+    if (findCommunity) {
+      res.send("exists");
+      return;
+    }
+
+    const community = await prisma.community.create({
+      data: req.body,
+    });
+
+    res.send(community);
+  } catch (error) {
+    next(error);
+  }
+});

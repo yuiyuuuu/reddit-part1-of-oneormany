@@ -1,8 +1,15 @@
-import { makeGetRequest, makePutRequest } from "../requests/helperFunction";
+import {
+  makeGetRequest,
+  makePostRequest,
+  makePutRequest,
+} from "../requests/helperFunction";
 
 const FETCH_COMMUNITY = "FETCH_COMMUNITY";
 const JOIN_COMMUNITY = "JOIN_COMMUNITY";
 const LEAVE_COMMUNITY = "LEAVE_COMMUNITY";
+
+const CLEAR = "CLEAR";
+const CREATE_COMMUNITY = "CREATE_COMMUNITY";
 
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
@@ -17,6 +24,10 @@ const dispatchJoin = (community) => ({
 const dispatchLeave = (community) => ({
   type: LEAVE_COMMUNITY,
   community,
+});
+
+const dispatchClear = () => ({
+  type: CLEAR,
 });
 
 export function fetchCommunity(id) {
@@ -61,6 +72,28 @@ export function leaveCommunity(id, communityid) {
   };
 }
 
+export function clearCommunity() {
+  return (dispatch) => {
+    dispatch(dispatchClear());
+  };
+}
+
+export function CreateCommunity(body) {
+  return async () => {
+    try {
+      const community = await makePostRequest("communities/create", body);
+      if (community === "exists") {
+        return "exists";
+      }
+
+      fetchCommunity(community.id);
+      return "success";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_COMMUNITY:
@@ -69,6 +102,8 @@ export default function (state = {}, action) {
       return action.community;
     case LEAVE_COMMUNITY:
       return action.community;
+    case CLEAR:
+      return {};
     default:
       return state;
   }

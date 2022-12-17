@@ -61,7 +61,11 @@ router.get("/getlocaldata", async (req, res, next) => {
       },
 
       include: {
-        communities: true,
+        communities: {
+          include: {
+            users: true,
+          },
+        },
         posts: true,
       },
     });

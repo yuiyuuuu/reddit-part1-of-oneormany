@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleCreateCommunity } from "../../store/nav-createcommunity";
+import { useNavigate, redirect } from "react-router-dom";
+import { CreateCommunity } from "../../store/posts-individualcommunity";
 
 import "./communities.scss";
+import $ from "jquery";
 
 import Iicon from "./communitiessvg/Iicon";
 import NotSelectedRadio from "./communitiessvg/NotSelectedRadio";
@@ -17,10 +20,42 @@ import NSFWSelected from "./communitiessvg/NSFWSelected";
 
 const CreateCommunityOverlay = ({ createOverlayState }) => {
   const dispatch = useDispatch();
+  const nav = useNavigate();
+  const authState = useSelector((state) => state.auth);
 
   const [communityName, setCommunityName] = useState("");
   const [type, setType] = useState("public");
   const [nsfw, setNsfw] = useState(false);
+
+  const handleCreateCommunity = () => {
+    $("#redtext-createcommunity").css("display", "none");
+
+    if (!communityName.length) {
+      $("#redtext-createcommunity").css("display", "block");
+      return;
+    }
+
+    const info = {
+      name: communityName,
+      tag: `r/${communityName}`,
+      NSFW: nsfw,
+      visibility: type,
+      owner: authState.id,
+      users: {
+        connect: [{ id: authState.id }],
+      },
+    };
+
+    dispatch(CreateCommunity(info)).then((res) => {
+      res === "exists"
+        ? handleTakenCommunity()
+        : (window.location.href = `/r/${communityName}`);
+    });
+  };
+
+  function handleTakenCommunity() {
+    $("#redtext2-createcommunity").css("display", "block");
+  }
 
   return (
     <div style={{ display: createOverlayState ? "" : "none" }}>
@@ -49,7 +84,11 @@ const CreateCommunityOverlay = ({ createOverlayState }) => {
                 className='createoverlay-input'
                 maxLength={21}
                 value={communityName}
-                onChange={(e) => setCommunityName(e.target.value)}
+                onChange={(e) => {
+                  $("#redtext2-createcommunity").css("display", "none");
+                  $("#redtext-createcommunity").css("display", "none");
+                  setCommunityName(e.target.value);
+                }}
               />
             </div>
 
@@ -58,6 +97,20 @@ const CreateCommunityOverlay = ({ createOverlayState }) => {
               style={{ color: 21 - communityName.length === 0 && "red" }}
             >
               {21 - communityName.length} Characters remaining
+            </div>
+
+            <div
+              style={{ color: "red", fontSize: "12px", display: "none" }}
+              id='redtext-createcommunity'
+            >
+              A community name is required
+            </div>
+
+            <div
+              style={{ color: "red", fontSize: "12px", display: "none" }}
+              id='redtext2-createcommunity'
+            >
+              Sorry, r/{communityName} is taken. Try Another
             </div>
             <div className='createoverlay-communitytype'>Community Type</div>
 
@@ -155,7 +208,12 @@ const CreateCommunityOverlay = ({ createOverlayState }) => {
                 >
                   Cancel
                 </div>
-                <div className='bluebutton-button'>Create Community</div>
+                <div
+                  className='bluebutton-button'
+                  onClick={() => handleCreateCommunity()}
+                >
+                  Create Community
+                </div>
               </div>
             </div>
           </div>

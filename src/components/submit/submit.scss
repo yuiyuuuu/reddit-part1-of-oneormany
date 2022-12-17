@@ -71,6 +71,74 @@
 
 .submit-selectedcommunity {
   margin-bottom: 8px;
+  position: relative;
+  border-radius: 3px;
+}
+
+.submit-choosecommunity {
+  width: 300px;
+  background: white;
+  max-height: 400px;
+  box-shadow: 0 -3px #edeff1 0 2px 1px;
+  position: absolute;
+  top: 38px;
+  border-radius: 0px 0px 3px 3px;
+  padding: 8px 7px;
+  border: 1px solid #edeff1;
+  z-index: 3;
+}
+
+.submit-graytitle {
+  padding: 8px 0px 4px 8px;
+  color: #878a8c;
+  font-size: 10px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.submit-mapcommunitycontainer {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.submit-pfpimage {
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+}
+
+.submit-communityimage {
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+  border-radius: 50%;
+}
+
+.submit-choosetitle {
+  font-size: 14px;
+  color: #1c1c1c;
+  font-weight: 500;
+}
+
+.submit-divider {
+  height: 1px;
+  width: 100%;
+  padding: 0px 8px;
+  background-color: #edeff1;
+  margin-left: -8px;
+}
+
+.submit-choosecol {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-membercount {
+  color: #878a8c;
+  font-size: 12px;
 }
 
 .submit-selectedcommunityinner {
@@ -80,6 +148,14 @@
   width: 300px;
   height: 40px;
   background-color: white;
+  border-radius: 3px;
+}
+
+.submit-dottedcircle {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  border: 1px dashed black;
 }
 
 .submit-imageicon {
