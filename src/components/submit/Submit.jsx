@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import "./submit.scss";
+import { makePostRequest } from "../../requests/helperFunction";
+
+import $ from "jquery";
 
 import DownArrow from "./submitsvgs/DownArrow";
 import Post from "./submitsvgs/post/Post";
@@ -10,15 +16,10 @@ import Link from "./submitsvgs/link/Link";
 import LinkSelected from "./submitsvgs/link/LinkSelected";
 import PollSelected from "./submitsvgs/poll/PollSelected";
 import Poll from "./submitsvgs/poll/Poll";
-
-import $ from "jquery";
 import PostText from "./submit-components/PostText";
 import ImageVideoText from "./submit-components/ImageVideoText";
 import LinkText from "./submit-components/LinkText";
 import PollText from "./submit-components/PollText";
-import { makePostRequest } from "../../requests/helperFunction";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import SearchIcon from "./submitsvgs/SearchIcon";
 
 const Submit = () => {
@@ -49,8 +50,13 @@ const Submit = () => {
         g.name.toLowerCase() === textInput.toLowerCase()
     );
 
-    console.log("commm", com);
-    setSelectedCommunity(com || {});
+    if (!com) {
+      setTextInput("");
+      setSelectedCommunity({});
+      return;
+    }
+
+    setSelectedCommunity(com);
   }
 
   async function handleSubmit() {
@@ -60,7 +66,7 @@ const Submit = () => {
           title: title,
           body: text,
           userId: authState.id,
-          communityId: "be7bf947-c25c-4696-9cf9-58147e7d81e4",
+          communityId: selectedCommunity.id,
         });
         break;
       case "image/video":
@@ -68,7 +74,7 @@ const Submit = () => {
           title: title,
           body: text,
           userId: authState.id,
-          communityId: "be7bf947-c25c-4696-9cf9-58147e7d81e4",
+          communityId: selectedCommunity.id,
           image: images,
         });
     }
@@ -86,16 +92,18 @@ const Submit = () => {
       });
     });
 
-    $(document).click((e) => {
-      const $target = $(event.target);
-      if (
-        !$target.closest(".submit-selectedcommunityinner").length &&
-        !$target.closest(".submit-choosecommunity").length &&
-        $(".submit-choosecommunity").is(":visible")
-      ) {
-        setIsInputFocused(false);
-      }
-    });
+    $(document)
+      .off()
+      .click((e) => {
+        const $target = $(event.target);
+        if (
+          !$target.closest(".submit-selectedcommunityinner").length &&
+          !$target.closest(".submit-choosecommunity").length &&
+          $(".submit-choosecommunity").is(":visible")
+        ) {
+          setIsInputFocused(false);
+        }
+      });
 
     //prevents new line on enter
     $(".submit-titletext").keydown(function (e) {
@@ -106,20 +114,20 @@ const Submit = () => {
     });
   }, []);
 
-  $(document).ready(() => {
-    $("#submit-searchinput").focus(() => {
-      setIsInputFocused(true);
-    });
+  useEffect(() => {
+    $(document).ready(() => {
+      $("#submit-searchinput")
+        .off()
+        .focus(() => {
+          setIsInputFocused(true);
+        });
 
-    $("#submit-searchinput").focusout(() => {
-      // setIsInputFocused(false);
-      findCommunity();
+      $("#submit-searchinput").focusout(() => {
+        // setIsInputFocused(false);
+        findCommunity();
+      });
     });
-  });
-
-  console.log(textInput, "texttt");
-  console.log(authState.communities, "authstateee");
-  console.log("selecteddd", selectedCommunity);
+  }, [$("#submit-searchinput")]);
 
   useEffect(() => {
     if (textInput === "") {
@@ -136,7 +144,8 @@ const Submit = () => {
     setCommunities(c);
   }, [textInput, authState.communities]);
 
-  // console.log(authState);
+  console.log(selectedCommunity);
+
   if (!authState?.id) {
     //try and fix this later. if user is on this page without logged in, we do something
     return <div>Not logged in</div>;
@@ -193,17 +202,29 @@ const Submit = () => {
                 className='submit-choosecommunity'
                 style={{ display: isInputFocused ? "" : "none" }}
               >
-                <div className='submit-graytitle'>YOUR PROFILE</div>
-                <div className='submit-mapcommunitycontainer submit-profile'>
-                  <img
-                    src={authState?.image || "assets/defaultpfp.png"}
-                    className='submit-pfpimage'
-                  />
+                <div
+                  style={{ width: "100%", display: textInput !== "" && "none" }}
+                >
+                  <div className='submit-graytitle'>YOUR PROFILE</div>
+                  <div className='submit-mapcommunitycontainer submit-profile'>
+                    <img
+                      src={authState?.image || "assets/defaultpfp.png"}
+                      className='submit-pfpimage'
+                    />
 
-                  <div className='submit-choosetitle'>u/{authState.name}</div>
+                    <div className='submit-choosetitle'>u/{authState.name}</div>
+                  </div>
                 </div>
 
-                <div className='submit-divider' />
+                {!communities?.length && textInput !== "" && (
+                  <div className='submit-nocommunities'>
+                    No Communities Found
+                  </div>
+                )}
+                <div
+                  className='submit-divider'
+                  style={{ display: communities?.length && "none" }}
+                />
 
                 <div className='submit-graytitle' style={{ marginTop: "8px" }}>
                   YOUR COMMUNITIES
@@ -375,6 +396,11 @@ const Submit = () => {
                       <button className='submit-draftbut'>Save Draft</button>
                       <button
                         className='submit-postbut'
+                        disabled={!selectedCommunity.id}
+                        style={{
+                          filter: !selectedCommunity.id && "grayscale(1)",
+                          cursor: !selectedCommunity.id && "not-allowed",
+                        }}
                         onClick={() => handleSubmit()}
                       >
                         Post
