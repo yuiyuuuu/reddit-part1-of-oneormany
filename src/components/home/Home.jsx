@@ -66,44 +66,46 @@ const Home = () => {
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
   //we will close the overlay
   useEffect(() => {
-    $(document).click(function (event) {
-      let run = true;
-      let run2 = true;
-      var $target = $(event.target);
+    $(document)
+      .off()
+      .click(function (event) {
+        let run = true;
+        let run2 = true;
+        var $target = $(event.target);
 
-      //prevents run if the element clicked is another share button
-      const l = document.getElementsByClassName("post-share");
-      const m = document.getElementsByClassName("threedot");
-      Array.prototype.forEach.call(l, function (r) {
-        if ($target.closest(r).length) {
-          run = false;
-          return false;
+        //prevents run if the element clicked is another share button
+        const l = document.getElementsByClassName("post-share");
+        const m = document.getElementsByClassName("threedot");
+        Array.prototype.forEach.call(l, function (r) {
+          if ($target.closest(r).length) {
+            run = false;
+            return false;
+          }
+        });
+
+        Array.prototype.forEach.call(m, function (r) {
+          if ($target.closest(r).length) {
+            run2 = false;
+            return false;
+          }
+        });
+
+        if (
+          !$target.closest("#tdot-overlay").length &&
+          $("#tdot-overlay").is(":visible") &&
+          run2
+        ) {
+          setShowOverlay2(false);
+        }
+
+        if (
+          !$target.closest("#share-overlay").length &&
+          $("#share-overlay").is(":visible") &&
+          run
+        ) {
+          setShowOverlay(false);
         }
       });
-
-      Array.prototype.forEach.call(m, function (r) {
-        if ($target.closest(r).length) {
-          run2 = false;
-          return false;
-        }
-      });
-
-      if (
-        !$target.closest("#tdot-overlay").length &&
-        $("#tdot-overlay").is(":visible") &&
-        run2
-      ) {
-        setShowOverlay2(false);
-      }
-
-      if (
-        !$target.closest("#share-overlay").length &&
-        $("#share-overlay").is(":visible") &&
-        run
-      ) {
-        setShowOverlay(false);
-      }
-    });
   }, []);
 
   //resize handling
@@ -163,13 +165,15 @@ const Home = () => {
 
   //create post input
   useEffect(() => {
-    $(".input-createpost").focus(() => {
-      $(".input-createpost").css("background-color", "#ffffff");
+    $(".input-createpost")
+      .off()
+      .focus(() => {
+        $(".input-createpost").css("background-color", "#ffffff");
 
-      $(".input-createpost").focusout(() => {
-        $(".input-createpost").css("background-color", "#f6f7f8");
+        $(".input-createpost").focusout(() => {
+          $(".input-createpost").css("background-color", "#f6f7f8");
+        });
       });
-    });
   }, []);
 
   if (loading) return "loading";

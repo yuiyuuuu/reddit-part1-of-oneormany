@@ -50,11 +50,28 @@ const removePost2 = (post) => ({
   post,
 });
 
+//fetch all posts
 export function fetchPosts() {
   return async (dispatch) => {
     try {
       const posts = await makeGetRequest(`posts`);
       dispatch(setPosts(posts));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+//fetch a community post
+export function fetchSpecificCommunityPosts(id) {
+  return async (dispatch) => {
+    try {
+      const data = await makeGetRequest(`posts/community/${id}`);
+      if (data === "no posts") {
+        return data;
+      }
+      dispatch(setPosts(data));
+      return data;
     } catch (error) {
       console.log(error);
     }

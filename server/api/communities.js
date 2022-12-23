@@ -5,20 +5,6 @@ module.exports = router;
 
 router.get("/single/:id", async (req, res, next) => {
   try {
-    // const posts = await prisma.post.findMany({
-    //   where: {
-    //     tag: req.body.tag,
-    //   },
-    //   include: {
-    //     user: true,
-    //     community: true,
-    //     comments: true,
-    //   },
-    // });
-
-    // console.log("postss", posts);
-    // res.send(posts);
-
     const community = await prisma.community.findFirst({
       where: {
         tag: `r/${req.params.id}`,

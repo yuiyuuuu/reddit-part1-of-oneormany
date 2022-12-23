@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   fetchCommunity,
   joinCommunity,
@@ -20,13 +21,15 @@ import ShareOverlay from "../home/overlays/ShareOverlay";
 import Post from "../home/posts/Post";
 import { sorting } from "../../requests/sortingfunction";
 import Communities404 from "./Communities404";
+import { fetchSpecificCommunityPosts } from "../../store/posts";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = useParams();
-  const postState = useSelector((state) => state.postsindividualcommunity);
+  const communityState = useSelector((state) => state.postsindividualcommunity);
   const authState = useSelector((state) => state.auth);
+  const postState = useSelector((state) => state.posts);
 
   //share overlay
   const [showOverlay, setShowOverlay] = useState(false);
@@ -43,7 +46,6 @@ const SingleCommunity = () => {
   //scroll position
   const [scrollPos, setScrollpos] = useState(0);
 
-  const [posts, setPosts] = useState([]);
   //user ids of community
   const [userIds, setUserIds] = useState([]);
 
@@ -72,20 +74,20 @@ const SingleCommunity = () => {
   }, []);
 
   function handleJoinCommunity() {
-    dispatch(joinCommunity(authState.id, postState.id));
+    dispatch(joinCommunity(authState.id, communityState.id));
   }
 
   function handleLeaveCommunity() {
-    dispatch(leaveCommunity(authState.id, postState.id));
+    dispatch(leaveCommunity(authState.id, communityState.id));
   }
 
   //set userids
   useEffect(() => {
-    const userids = postState.users?.map((user) => user.id);
+    const userids = communityState.users?.map((user) => user.id);
     if (userids) {
       setUserIds(userids);
     }
-  }, [postState]);
+  }, [communityState]);
 
   //change button text to leave when hovered
   //only runs if current user is joined
@@ -115,14 +117,6 @@ const SingleCommunity = () => {
       window.removeEventListener("scroll", scroll);
     };
   }, []);
-
-  //set posts in posts usestate
-  useEffect(() => {
-    if (postState.id) {
-      const posts = postState.posts.sort(sorting);
-      setPosts(posts);
-    }
-  }, [postState]);
 
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
   //we will close the overlay
@@ -170,14 +164,15 @@ const SingleCommunity = () => {
   useEffect(() => {
     const id = params.id;
     dispatch(fetchCommunity(id));
+    dispatch(fetchSpecificCommunityPosts(id));
     setLoading(false);
   }, []);
 
-  if (postState !== "not found" && loading) {
+  if (communityState !== "not found" && loading) {
     return "loading";
   }
 
-  if (postState === "not found") {
+  if (communityState === "not found") {
     return <Communities404 />;
   }
 
@@ -193,8 +188,10 @@ const SingleCommunity = () => {
               </div>
               <div className='name-flexrow'>
                 <div className='name-flexcol'>
-                  <div className='communityname-text'>{postState.name}</div>
-                  <div className='communitytag-text'>{postState.tag}</div>
+                  <div className='communityname-text'>
+                    {communityState.name}
+                  </div>
+                  <div className='communitytag-text'>{communityState.tag}</div>
                 </div>
                 <button
                   className='communities-joinbut'
@@ -223,9 +220,9 @@ const SingleCommunity = () => {
                   <DefaultPfp />
                 </a>
 
-                <a href='/submit' className='input-createpost'>
+                <Link to='/submit' className='input-createpost'>
                   <input className='input-con' placeHolder='Create Post' />
-                </a>
+                </Link>
                 <div className='home-iconcontainer'>
                   <ImageIcon history={navigate} />
                 </div>
@@ -239,7 +236,7 @@ const SingleCommunity = () => {
               </div>
 
               <div style={{ marginTop: "16px" }}>
-                {posts.map((item) => (
+                {postState.map((item) => (
                   <Post
                     post={item}
                     setOverlayLeft={setOverlayLeft}

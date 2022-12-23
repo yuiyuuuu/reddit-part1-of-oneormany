@@ -31,6 +31,7 @@ function App() {
         <Route exact path='/posts' element={<Posts />} />
         <Route exact path='/posts/:id' element={<SinglePost />} />
         <Route exact path='/submit' element={<Submit />} />
+        <Route exact path='/submit/:type' element={<Submit />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
         <Route exact path='/r/:id' element={<SingleCommunity />} />

@@ -40,21 +40,6 @@ const Post = ({
 }) => {
   const dispatch = useDispatch();
 
-  const [upvoteActive, setUpvoteActive] = useState(false); //change to userid later when sql
-  const [downvoteActive, setDownvoteActive] = useState(false);
-
-  // function fillRed() {
-  //   setDownvoteActive(false);
-
-  //   setUpvoteActive((prev) => !prev);
-  // }
-
-  // function fillRed2() {
-  //   setUpvoteActive(false);
-
-  //   setDownvoteActive((prev) => !prev);
-  // }
-
   function handleUpvote() {
     const info = {
       postid: post.id,
@@ -153,6 +138,8 @@ const Post = ({
     }
   }, []);
 
+  console.log(post);
+
   return (
     <div className='single-postcontainer' id={post.id}>
       <div className='posts-vote post-voteleft'>
@@ -167,12 +154,7 @@ const Post = ({
             handleUpvote();
           }}
         >
-          <UpVoteSvg
-            id={post.id}
-            upvoteActive={upvoteActive}
-            post={post}
-            authState={authState}
-          />
+          <UpVoteSvg id={post.id} post={post} authState={authState} />
         </div>
         <div className='posts-votecount'>
           {post.upvotes.length - post.downvotes.length}
@@ -188,12 +170,7 @@ const Post = ({
             // fillRed2();
           }}
         >
-          <DownVoteSvg
-            id={post.id}
-            downvoteActive={downvoteActive}
-            post={post}
-            authState={authState}
-          />
+          <DownVoteSvg id={post.id} post={post} authState={authState} />
         </div>
       </div>
 
@@ -241,14 +218,14 @@ const Post = ({
               className='post-votebut posts-upvote'
               onClick={() => fillRed()}
             >
-              <UpVoteSvg id={post.id} upvoteActive={upvoteActive} />
+              <UpVoteSvg id={post.id} />
             </div>
             <div>82.5k</div>
             <div
               className='post-votebut posts-downvote'
               onClick={() => fillRed2()}
             >
-              <DownVoteSvg id={post.id} downvoteActive={downvoteActive} />
+              <DownVoteSvg id={post.id} />
             </div>
           </div>
           <div className='posts-comment'>

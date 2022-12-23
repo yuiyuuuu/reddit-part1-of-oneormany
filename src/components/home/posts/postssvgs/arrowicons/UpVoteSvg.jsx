@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./arrow.scss";
 
-const UpVoteSvg = ({ id, upvoteActive, post, authState }) => {
+const UpVoteSvg = ({ id, post, authState }) => {
   return (
     <svg
       width='20'

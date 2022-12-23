@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import "./submit.scss";
@@ -21,11 +21,16 @@ import ImageVideoText from "./submit-components/ImageVideoText";
 import LinkText from "./submit-components/LinkText";
 import PollText from "./submit-components/PollText";
 import SearchIcon from "./submitsvgs/SearchIcon";
+import SubmitRight from "./SubmitRight";
 
 const Submit = () => {
   const history = useNavigate();
+  const params = useParams();
   const authState = useSelector((state) => state.auth);
   const [selected, setSelected] = useState("post");
+
+  //count for path image
+  const [counter, setCounter] = useState(0);
 
   //current input for search
   const [textInput, setTextInput] = useState("");
@@ -42,8 +47,8 @@ const Submit = () => {
   //selected community
   const [selectedCommunity, setSelectedCommunity] = useState({});
 
+  //find community based on textinput
   function findCommunity() {
-    // setSelected({});
     const com = authState.communities?.find(
       (g) =>
         g.tag.toLowerCase() === textInput.toLowerCase() ||
@@ -81,6 +86,23 @@ const Submit = () => {
 
     history("/");
   }
+
+  useEffect(() => {
+    switch (params.type) {
+      case "image":
+        setSelected("image/video");
+        setCounter(1);
+        break;
+
+      case "clip":
+        setSelected("link");
+        setCounter(1);
+        break;
+
+      default:
+        break;
+    }
+  }, []);
 
   useEffect(() => {
     //change color of border on focus of title textarea
@@ -144,8 +166,6 @@ const Submit = () => {
     setCommunities(c);
   }, [textInput, authState.communities]);
 
-  console.log(selectedCommunity);
-
   if (!authState?.id) {
     //try and fix this later. if user is on this page without logged in, we do something
     return <div>Not logged in</div>;
@@ -208,7 +228,12 @@ const Submit = () => {
                   <div className='submit-graytitle'>YOUR PROFILE</div>
                   <div className='submit-mapcommunitycontainer submit-profile'>
                     <img
-                      src={authState?.image || "assets/defaultpfp.png"}
+                      src={
+                        authState?.image ||
+                        (counter === 1
+                          ? "../assets/defaultpfp.png"
+                          : "assets/defaultpfp.png")
+                      }
                       className='submit-pfpimage'
                     />
 
@@ -243,7 +268,11 @@ const Submit = () => {
                     }}
                   >
                     <img
-                      src={"assets/defaultpfp.png"}
+                      src={
+                        counter === 1
+                          ? "../assets/defaultpfp.png"
+                          : "assets/defaultpfp.png"
+                      }
                       className='submit-communityimage'
                     />
 
@@ -411,9 +440,7 @@ const Submit = () => {
               </div>
             </div>
           </div>
-          <div style={{ width: "312px" }}>
-            <img id='test123' />
-          </div>
+          <SubmitRight />
         </div>
       </div>
     </div>

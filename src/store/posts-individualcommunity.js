@@ -34,7 +34,6 @@ export function fetchCommunity(id) {
   return async (dispatch) => {
     try {
       const community = await makeGetRequest(`communities/single/${id}`);
-      console.log(community);
       dispatch(dispatchFetch(community));
     } catch (error) {
       console.log(error);

@@ -20,6 +20,31 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/community/:id", async (req, res, next) => {
+  try {
+    const community = await prisma.community.findFirst({
+      where: {
+        tag: "r/" + req.params.id,
+      },
+      include: {
+        posts: {
+          include: {
+            user: true,
+            comments: true,
+            community: true,
+          },
+        },
+      },
+    });
+    if (!community.posts.length) {
+      res.send("no posts");
+    }
+    res.send(community.posts);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/", async (req, res, next) => {
   try {
     const data = await prisma.post.create({
