@@ -220,7 +220,11 @@ const SingleCommunity = () => {
                   <DefaultPfp />
                 </a>
 
-                <Link to='/submit' className='input-createpost'>
+                <Link
+                  to='/submit'
+                  className='input-createpost'
+                  state={{ from: communityState.tag }}
+                >
                   <input className='input-con' placeHolder='Create Post' />
                 </Link>
                 <div className='home-iconcontainer'>

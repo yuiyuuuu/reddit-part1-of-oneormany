@@ -30,6 +30,8 @@ async function seed() {
         create: [{ name: "hi", email: "hi@gmail.com", password: "123" }],
       },
       image: "hiiii",
+      description: "this is steam on reddit",
+      createAt: new Date(),
     },
   });
 

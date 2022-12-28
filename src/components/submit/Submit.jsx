@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./submit.scss";
 import { makePostRequest } from "../../requests/helperFunction";
@@ -22,10 +22,13 @@ import LinkText from "./submit-components/LinkText";
 import PollText from "./submit-components/PollText";
 import SearchIcon from "./submitsvgs/SearchIcon";
 import SubmitRight from "./SubmitRight";
+import { toggleCreateCommunity } from "../../store/nav-createcommunity";
 
 const Submit = () => {
   const history = useNavigate();
   const params = useParams();
+  const dispatch = useDispatch();
+  const location = useLocation();
   const authState = useSelector((state) => state.auth);
   const [selected, setSelected] = useState("post");
 
@@ -47,6 +50,8 @@ const Submit = () => {
   //selected community
   const [selectedCommunity, setSelectedCommunity] = useState({});
 
+  const [shouldFindCommunity, setShouldFindCommunity] = useState(true);
+
   //find community based on textinput
   function findCommunity() {
     const com = authState.communities?.find(
@@ -57,6 +62,22 @@ const Submit = () => {
 
     if (!com) {
       setTextInput("");
+      setSelectedCommunity({});
+      return;
+    }
+
+    setSelectedCommunity(com);
+  }
+
+  //this one doesnt erase textinput
+  function findCommunity2(f) {
+    const com = authState.communities?.find(
+      (g) =>
+        g.tag.toLowerCase() === f.toLowerCase() ||
+        g.name.toLowerCase() === f.toLowerCase()
+    );
+
+    if (!com) {
       setSelectedCommunity({});
       return;
     }
@@ -88,6 +109,10 @@ const Submit = () => {
   }
 
   useEffect(() => {
+    findCommunity2(textInput);
+  }, [textInput]);
+
+  useEffect(() => {
     switch (params.type) {
       case "image":
         setSelected("image/video");
@@ -101,6 +126,16 @@ const Submit = () => {
 
       default:
         break;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (location.state?.from) {
+      const com = authState.communities?.find(
+        (g) => g.tag.toLowerCase() === location.state.from.toLowerCase()
+      );
+
+      setSelectedCommunity(com);
     }
   }, []);
 
@@ -124,6 +159,7 @@ const Submit = () => {
           $(".submit-choosecommunity").is(":visible")
         ) {
           setIsInputFocused(false);
+          findCommunity();
         }
       });
 
@@ -145,8 +181,9 @@ const Submit = () => {
         });
 
       $("#submit-searchinput").focusout(() => {
-        // setIsInputFocused(false);
-        findCommunity();
+        if (shouldFindCommunity) {
+          findCommunity2(textInput);
+        }
       });
     });
   }, [$("#submit-searchinput")]);
@@ -192,10 +229,7 @@ const Submit = () => {
                 ) : isInputFocused ? (
                   <SearchIcon />
                 ) : (
-                  <img
-                    src='assets/newcommunities/gaming/dndnext.png'
-                    className='submit-imageicon'
-                  />
+                  <img src='' className='submit-imageicon' />
                 )}
                 <input
                   className='submit-selectedcommunitiesname'
@@ -232,7 +266,7 @@ const Submit = () => {
                         authState?.image ||
                         (counter === 1
                           ? "../assets/defaultpfp.png"
-                          : "assets/defaultpfp.png")
+                          : "/assets/defaultpfp.png")
                       }
                       className='submit-pfpimage'
                     />
@@ -251,8 +285,23 @@ const Submit = () => {
                   style={{ display: communities?.length && "none" }}
                 />
 
-                <div className='submit-graytitle' style={{ marginTop: "8px" }}>
-                  YOUR COMMUNITIES
+                <div className='submit-createcomrow'>
+                  <div
+                    className='submit-graytitle'
+                    style={{ marginTop: "8px" }}
+                  >
+                    YOUR COMMUNITIES
+                  </div>
+
+                  <button
+                    className='submit-createnew'
+                    onClick={() => {
+                      setIsInputFocused(false);
+                      dispatch(toggleCreateCommunity(true));
+                    }}
+                  >
+                    Create New
+                  </button>
                 </div>
                 {communities?.map((item, index) => (
                   <div
@@ -265,13 +314,15 @@ const Submit = () => {
                       setTextInput(item.tag);
                       $("#submit-searchinput").focus();
                       setIsInputFocused(false);
+
+                      setSelectedCommunity(item);
                     }}
                   >
                     <img
                       src={
                         counter === 1
                           ? "../assets/defaultpfp.png"
-                          : "assets/defaultpfp.png"
+                          : "/defaultpfp.png"
                       }
                       className='submit-communityimage'
                     />
@@ -425,10 +476,10 @@ const Submit = () => {
                       <button className='submit-draftbut'>Save Draft</button>
                       <button
                         className='submit-postbut'
-                        disabled={!selectedCommunity.id}
+                        disabled={!selectedCommunity?.id}
                         style={{
-                          filter: !selectedCommunity.id && "grayscale(1)",
-                          cursor: !selectedCommunity.id && "not-allowed",
+                          filter: !selectedCommunity?.id && "grayscale(1)",
+                          cursor: !selectedCommunity?.id && "not-allowed",
                         }}
                         onClick={() => handleSubmit()}
                       >
@@ -440,7 +491,7 @@ const Submit = () => {
               </div>
             </div>
           </div>
-          <SubmitRight />
+          <SubmitRight selectedCommunity={selectedCommunity} />
         </div>
       </div>
     </div>

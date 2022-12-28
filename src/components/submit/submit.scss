@@ -77,6 +77,27 @@
   border-radius: 3px;
 }
 
+.submit-createcomrow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.submit-createnew {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0079d3;
+  padding: 3px 6px;
+  border-radius: 9999px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #edeff1;
+  }
+}
+
 .submit-choosecommunity {
   width: 300px;
   background: white;

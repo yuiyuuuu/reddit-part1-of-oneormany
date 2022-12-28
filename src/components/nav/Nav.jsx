@@ -154,7 +154,7 @@ const Nav = () => {
             >
               <div className='pfp-container'>
                 <img
-                  src={authState?.image || "assets/defaultpfp.png"}
+                  src={authState?.image || "/assets/defaultpfp.png"}
                   className='pfp-nav'
                   style={{ padding: "4px 0px" }}
                 />

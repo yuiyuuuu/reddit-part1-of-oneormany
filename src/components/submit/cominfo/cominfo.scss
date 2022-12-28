@@ -1,0 +1,98 @@
+.cominfo-parent {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  width: 312px;
+  border-radius: 3px 3px 3px 3px;
+}
+
+.cominfo-banner {
+  height: 34px;
+  border-radius: 3px 3px 0 0;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.cominfo-inner {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.cominfo-iconrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cominfo-iconimage {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.cominfo-comname {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.cominfo-desc {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 21px;
+}
+
+.cominfo-createrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.cominfo-createdat {
+  font-size: 14px;
+  color: #7c7c7c;
+  font-weight: 300;
+  line-height: 18px;
+}
+
+.cominfo-divider {
+  height: 1px;
+  width: 100%;
+  background-color: rgba(26, 26, 27, 0.07);
+  margin: 16px 0;
+}
+
+.cominfo-infocontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cominfo-infocol {
+  display: flex;
+  flex-direction: column;
+}
+
+.cominfo-count {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.cominfo-p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 16px;
+}
+
+.cominfo-dot {
+  color: #46d160;
+  margin-right: 4px;
+  user-select: none;
+}

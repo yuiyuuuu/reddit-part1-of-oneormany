@@ -2,14 +2,16 @@ import React from "react";
 import RedditRules from "./RedditRules";
 import "./submit.scss";
 
-import CommunityInformation from "./CommunityInformation";
+import CommunityInformation from "./cominfo/CommunityInformation";
 
-const SubmitRight = () => {
+const SubmitRight = ({ selectedCommunity }) => {
   return (
     <div className='submitright-out'>
       <div className='submitright-innercontainer'>
         {/*add community banner and stuff here later */}
-        <CommunityInformation />
+        {selectedCommunity?.id && (
+          <CommunityInformation selectedCommunity={selectedCommunity} />
+        )}
         <RedditRules />
         <div className='submitright-tos'>
           Please be mindful of reddit's{" "}
