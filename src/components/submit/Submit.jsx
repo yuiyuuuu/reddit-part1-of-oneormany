@@ -50,8 +50,6 @@ const Submit = () => {
   //selected community
   const [selectedCommunity, setSelectedCommunity] = useState({});
 
-  const [shouldFindCommunity, setShouldFindCommunity] = useState(true);
-
   //find community based on textinput
   function findCommunity() {
     const com = authState.communities?.find(
@@ -61,12 +59,10 @@ const Submit = () => {
     );
 
     if (!com) {
-      setTextInput("");
+      // setTextInput("");
       setSelectedCommunity({});
       return;
     }
-
-    setSelectedCommunity(com);
   }
 
   //this one doesnt erase textinput
@@ -108,6 +104,7 @@ const Submit = () => {
     history("/");
   }
 
+  //find community as textinput is updated
   useEffect(() => {
     findCommunity2(textInput);
   }, [textInput]);
@@ -135,6 +132,7 @@ const Submit = () => {
         (g) => g.tag.toLowerCase() === location.state.from.toLowerCase()
       );
 
+      setTextInput(location.state.from);
       setSelectedCommunity(com);
     }
   }, []);
@@ -159,7 +157,9 @@ const Submit = () => {
           $(".submit-choosecommunity").is(":visible")
         ) {
           setIsInputFocused(false);
-          findCommunity();
+          if (!selectedCommunity?.id) {
+            setTextInput("");
+          }
         }
       });
 
@@ -170,7 +170,7 @@ const Submit = () => {
         return false;
       }
     });
-  }, []);
+  }, [selectedCommunity]);
 
   useEffect(() => {
     $(document).ready(() => {
@@ -181,9 +181,7 @@ const Submit = () => {
         });
 
       $("#submit-searchinput").focusout(() => {
-        if (shouldFindCommunity) {
-          findCommunity2(textInput);
-        }
+        findCommunity2(textInput);
       });
     });
   }, [$("#submit-searchinput")]);
@@ -194,7 +192,7 @@ const Submit = () => {
       return;
     }
 
-    const c = authState.communities.filter(
+    const c = authState.communities?.filter(
       (g) =>
         g.tag.toLowerCase().includes(textInput.toLowerCase()) ||
         g.name.toLowerCase().includes(textInput.toLowerCase())
@@ -229,7 +227,10 @@ const Submit = () => {
                 ) : isInputFocused ? (
                   <SearchIcon />
                 ) : (
-                  <img src='' className='submit-imageicon' />
+                  <img
+                    src={selectedCommunity.image || ""}
+                    className='submit-imageicon'
+                  />
                 )}
                 <input
                   className='submit-selectedcommunitiesname'

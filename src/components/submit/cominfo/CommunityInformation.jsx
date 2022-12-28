@@ -8,7 +8,6 @@ import { month } from "./monthobj";
 
 const CommunityInformation = ({ selectedCommunity }) => {
   // const year = selectedCommunity.createAt.getFullYear();
-  console.log(selectedCommunity.createAt);
 
   return (
     <div className='cominfo-parent'>

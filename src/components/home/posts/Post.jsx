@@ -138,8 +138,6 @@ const Post = ({
     }
   }, []);
 
-  console.log(post);
-
   return (
     <div className='single-postcontainer' id={post.id}>
       <div className='posts-vote post-voteleft'>
