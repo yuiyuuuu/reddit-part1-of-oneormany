@@ -89,6 +89,10 @@ const SingleCommunity = () => {
     }
   }, [communityState]);
 
+  $(window).on("load", () => {
+    $(".hide").css("display", "none");
+  });
+
   //change button text to leave when hovered
   //only runs if current user is joined
   useEffect(() => {
@@ -168,6 +172,8 @@ const SingleCommunity = () => {
     setLoading(false);
   }, []);
 
+  console.log(authState);
+
   if (communityState !== "not found" && loading) {
     return "loading";
   }
@@ -184,7 +190,7 @@ const SingleCommunity = () => {
           <div className='communities-namecontainer'>
             <div className='communities-nameicon'>
               <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
-                <DefaultCommunitiesIcon fillcolor={""} />
+                <DefaultCommunitiesIcon fillcolor={""} height={62} />
               </div>
               <div className='name-flexrow'>
                 <div className='name-flexcol'>
@@ -217,7 +223,11 @@ const SingleCommunity = () => {
             <div className='communities-leftcontainer'>
               <div className='home-createpost'>
                 <a className='anchor-createpost'>
-                  <DefaultPfp />
+                  {authState.photo ? (
+                    <img src={authState.photo} />
+                  ) : (
+                    <DefaultPfp />
+                  )}
                 </a>
 
                 <Link

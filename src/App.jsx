@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SingleCommunity from "./components/communities/SingleCommunity";
 import Communities404 from "./components/communities/Communities404";
 import CreateCommunityOverlay from "./components/communities/CreateCommunityOverlay";
+import MainTools from "./components/communities/ModeratorTools/MainTools";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
         <Route exact path='/r/:id' element={<SingleCommunity />} />
         <Route exact path='/404' element={<Communities404 />} />
         <Route exact path='/' element={<Home />} />
+        <Route exact path='/r/:id/about/:section' element={<MainTools />} />
       </Routes>
     </BrowserRouter>
   );

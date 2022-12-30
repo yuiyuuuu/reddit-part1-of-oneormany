@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import "./post.scss";
 
 import { communities } from "../newcommunities/newcommunitiesobj";
@@ -12,7 +13,7 @@ import ThreeDotSvg from "./postssvgs/ThreeDotSvg";
 import UpVoteSvg from "./postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
-import { useDispatch } from "react-redux";
+
 import {
   downvote,
   removeDownvote,
@@ -148,7 +149,6 @@ const Post = ({
               handleRemoveUpvote();
               return;
             }
-            // fillRed();
             handleUpvote();
           }}
         >

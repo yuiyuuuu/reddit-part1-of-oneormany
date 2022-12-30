@@ -1,14 +1,14 @@
 import React from "react";
 
-const DefaultCommunitiesIcon = ({ fillcolor }) => {
+const DefaultCommunitiesIcon = ({ fillcolor, height }) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 20 20'
       style={{
         fill: fillcolor,
-        height: "68px",
-        width: "68px",
+        height: `${height}px`,
+        width: `${height}px`,
         border: "4px solid white",
         borderRadius: "100%",
       }}
