@@ -1,8 +1,8 @@
 import React from "react";
 
-const ClipSvg = ({ history }) => {
+const ClipSvg = ({ navigateSubmit }) => {
   return (
-    <a href='/submit/clip'>
+    <div onClick={() => navigateSubmit("clip")}>
       <svg
         width='19'
         height='25'
@@ -33,7 +33,7 @@ const ClipSvg = ({ history }) => {
           />
         </defs>
       </svg>
-    </a>
+    </div>
   );
 };
 

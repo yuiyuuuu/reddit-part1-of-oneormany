@@ -31,10 +31,11 @@ model Community{
   tag String
   description String?
   owner String?
+  moderators String []
   rules String?
   users User[]
   posts Post[] 
-  image String? @db.VarChar(1048576)
+  image String?
   allowimagesandvideo Boolean @default(false)
   allowlink Boolean @default(false)
   allowpoll Boolean @default(false)

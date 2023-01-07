@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import UploadFileSvg from "../../modtoolssvgs/UploadFileSvg";
 import ColorPicker from "./ColorPicker";
 
+import { Buffer } from "buffer";
+
 import $ from "jquery";
 
 import { stylingChange } from "../../../../../store/posts-individualcommunity";
@@ -30,6 +32,8 @@ const ColorTheme = ({ community }) => {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageBlob, setSelectedImageBlob] = useState(null);
+
+  const [loading, setLoading] = useState(true);
 
   function checkValidHex(v) {
     if (!v) return;
@@ -59,15 +63,26 @@ const ColorTheme = ({ community }) => {
     }
   }
 
+  async function getBase64Image(img) {
+    const arrayBuffer = await (await fetch(img)).arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer).toString("base64");
+
+    setSelectedImage(buffer);
+  }
+
   function handleImageUpload(e) {
     const binary = onSelectFile(e);
-    setSelectedImage(binary.binary);
+
     setSelectedImageBlob(binary.blob);
+
+    getBase64Image(binary.blob);
 
     $(".communities-backgroundimage").css(
       "background-image",
       `url(${binary.blob})`
     );
+
+    $("#comstyling-input").css("background-image", `url(${binary.blob})`);
 
     $(".communities-mainbot").css("background-color", "");
   }
@@ -77,6 +92,7 @@ const ColorTheme = ({ community }) => {
     setSelectedImageBlob(null);
 
     $(".communities-backgroundimage").css("background-image", "");
+    $("#comstyling-input").css("background-image", "");
 
     $(".communities-mainbot").css(
       "background-color",
@@ -90,7 +106,7 @@ const ColorTheme = ({ community }) => {
       base: baseColor.slice(1) || null,
       highlight: highlightColor.slice(1) || null,
       body: colorColor.slice(1) || null,
-      image: selectedImage,
+      image: selectedImage || null,
     };
 
     dispatch(stylingChange(info)).then((res) => {
@@ -126,6 +142,7 @@ const ColorTheme = ({ community }) => {
   }, []);
 
   useEffect(() => {
+    if (loading) return;
     colorPickerSet();
     $(document)
       .off()
@@ -157,9 +174,20 @@ const ColorTheme = ({ community }) => {
           handleClose("highlight");
         }
       });
-  }, [colorColor2, highlightColor2, baseColor2]);
+  }, [colorColor2, highlightColor2, baseColor2, loading]);
 
-  console.log(selectedImage);
+  useEffect(() => {
+    if (community.image?.length) {
+      setSelectedImage(community.image);
+    }
+  }, []);
+
+  //set loading state to false.
+  $(document).ready(() => {
+    setLoading(false);
+  });
+
+  if (loading) return "loading";
 
   return (
     <div>
@@ -265,6 +293,7 @@ const ColorTheme = ({ community }) => {
 
           <div
             className='comstyling-input'
+            id='comstyling-input'
             onClick={() => {
               if (!selectedImage) {
                 document.getElementById("comstyling-imageupload").click();
@@ -274,7 +303,9 @@ const ColorTheme = ({ community }) => {
             }}
             style={{
               cursor: !selectedImage ? "pointer" : "auto",
-              backgroundImage: selectedImage && `url(${selectedImageBlob})`,
+              backgroundImage: !community?.image
+                ? selectedImage && `url(${selectedImageBlob})`
+                : `url(data:image/png;base64,${community?.image})`,
             }}
           >
             {!selectedImage && <UploadFileSvg />}

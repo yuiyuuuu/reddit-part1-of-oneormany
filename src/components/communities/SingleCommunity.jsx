@@ -19,7 +19,6 @@ import ClipSvg from "../home/homesvgs/ClipSvg";
 import ThreeDotOverlay from "../home/overlays/ThreeDotOverlay";
 import ShareOverlay from "../home/overlays/ShareOverlay";
 import Post from "../home/posts/Post";
-import { sorting } from "../../requests/sortingfunction";
 import Communities404 from "./Communities404";
 import { fetchSpecificCommunityPosts } from "../../store/posts";
 
@@ -81,8 +80,6 @@ const SingleCommunity = () => {
   function handleLeaveCommunity() {
     dispatch(leaveCommunity(authState.id, communityState.id));
   }
-
-  console.log(communityStylingState);
 
   //set userids
   useEffect(() => {
@@ -172,7 +169,6 @@ const SingleCommunity = () => {
     const id = params.id;
     dispatch(fetchCommunity(id));
     dispatch(fetchSpecificCommunityPosts(id));
-    setLoading(false);
   }, []);
 
   //set min height of mainbot
@@ -199,7 +195,8 @@ const SingleCommunity = () => {
   }, []);
 
   useEffect(() => {
-    // document.addEventListener("readystatechange", () => {
+    if (loading) return;
+
     const mainbot = document
       .querySelector(".communities-mainbot")
       ?.getBoundingClientRect();
@@ -226,7 +223,12 @@ const SingleCommunity = () => {
     communityState,
     document.querySelector(".communities-mainbot")?.getBoundingClientRect()
       .height,
+    loading,
   ]);
+
+  $(document).ready(() => {
+    setLoading(false);
+  });
 
   if (communityState !== "not found" && loading) {
     return "loading";
@@ -248,7 +250,14 @@ const SingleCommunity = () => {
           style={{ backgroundColor: "#" + communityState.themeBaseColor }}
         />
         <div style={{ width: "100%", backgroundColor: "white" }}>
-          <div className='communities-backgroundimage'></div>
+          <img
+            className='communities-backgroundimage'
+            style={{
+              backgroundImage:
+                communityState.image &&
+                `url(data:image/png;base64,${communityState.image})`,
+            }}
+          />
           <div className='communities-namecontainer'>
             <div className='communities-nameicon'>
               <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
@@ -283,7 +292,10 @@ const SingleCommunity = () => {
 
           <div
             className='communities-mainbot'
-            style={{ backgroundColor: "#" + communityState.themeBodyColor }}
+            style={{
+              backgroundColor:
+                !communityState.image && "#" + communityState.themeBodyColor,
+            }}
           >
             <div className='communities-leftcontainer'>
               <div className='home-createpost'>

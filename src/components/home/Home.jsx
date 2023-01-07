@@ -52,6 +52,18 @@ const Home = () => {
     dispatch(addCommunity(info));
   }
 
+  function navigateSubmit(y) {
+    if (authState.id) {
+      if (y) {
+        window.location.href = "/submit/" + y;
+      } else {
+        window.location.href = "/submit";
+      }
+    } else {
+      window.location.href = "/login";
+    }
+  }
+
   function randomIntFromInterval(min, max) {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -59,8 +71,6 @@ const Home = () => {
 
   useEffect(async () => {
     const v = dispatch(fetchPosts());
-
-    setLoading(false);
   }, []);
 
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
@@ -176,6 +186,10 @@ const Home = () => {
       });
   }, []);
 
+  $(document).ready(() => {
+    setLoading(false);
+  });
+
   if (loading) return "loading";
 
   return (
@@ -189,15 +203,18 @@ const Home = () => {
                 <DefaultPfp />
               </a>
 
-              <a href='/submit' className='input-createpost'>
+              <div
+                onClick={() => navigateSubmit()}
+                className='input-createpost'
+              >
                 <input className='input-con' placeHolder='Create Post' />
-              </a>
+              </div>
               <div className='home-iconcontainer'>
-                <ImageIcon history={navigate} />
+                <ImageIcon history={navigate} navigateSubmit={navigateSubmit} />
               </div>
 
               <div className='home-iconcontainer' style={{ marginLeft: "2px" }}>
-                <ClipSvg history={navigate} />
+                <ClipSvg history={navigate} navigateSubmit={navigateSubmit} />
               </div>
             </div>
             <div className='posts-container'>

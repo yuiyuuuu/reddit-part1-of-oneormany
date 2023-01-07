@@ -21,7 +21,7 @@ const ColorPicker = ({
   const communityState = useSelector((state) => state.postsindividualcommunity);
 
   function handleChange(c) {
-    if (selectedImage) return;
+    if (selectedImage) return; //dont change the color of background if image is active
     switch (which) {
       case "color":
         $(".communities-mainbot").css("background-color", c);

@@ -23,4 +23,4 @@ const onSelectFile = (e) => {
   };
 };
 
-export { onSelectFile };
+export { onSelectFile, getBase64Image };

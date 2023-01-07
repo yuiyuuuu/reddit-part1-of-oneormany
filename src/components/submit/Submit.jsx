@@ -228,7 +228,7 @@ const Submit = () => {
                   <SearchIcon />
                 ) : (
                   <img
-                    src={selectedCommunity?.image || ""}
+                    src='/assets/defaultcommunityimage/defaultcommunity.png'
                     className='submit-imageicon'
                   />
                 )}
@@ -304,6 +304,13 @@ const Submit = () => {
                     Create New
                   </button>
                 </div>
+
+                <div
+                  className='submit-newuser'
+                  style={{ display: communities?.length && "none" }}
+                >
+                  No communities found
+                </div>
                 {communities?.map((item, index) => (
                   <div
                     className='submit-mapcommunitycontainer'
@@ -322,8 +329,8 @@ const Submit = () => {
                     <img
                       src={
                         counter === 1
-                          ? "../assets/defaultpfp.png"
-                          : "/defaultpfp.png"
+                          ? "../assets/defaultcommunityimage/defaultcommunity.png"
+                          : "/assets/defaultcommunityimage/defaultcommunity.png"
                       }
                       className='submit-communityimage'
                     />

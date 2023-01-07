@@ -1,8 +1,8 @@
 import React from "react";
 
-const ImageIcon = ({ history }) => {
+const ImageIcon = ({ history, navigateSubmit }) => {
   return (
-    <a href='/submit/image'>
+    <div onClick={() => navigateSubmit("image")}>
       <svg
         width='21'
         height='20'
@@ -34,7 +34,7 @@ const ImageIcon = ({ history }) => {
           />
         </defs>
       </svg>
-    </a>
+    </div>
   );
 };
 

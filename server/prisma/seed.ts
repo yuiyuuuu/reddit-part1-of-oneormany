@@ -29,7 +29,7 @@ async function seed() {
       users: {
         create: [{ name: "hi", email: "hi@gmail.com", password: "123" }],
       },
-      image: "hiiii",
+      image: "",
       description: "this is steam on reddit",
       createAt: new Date(),
     },
