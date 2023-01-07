@@ -11,6 +11,9 @@ const sectionCheck = {
   muted: "Muted",
   approved: "Approved",
   moderators: "Moderators",
+  rules: "Rules",
+  settings: "Content Controls",
+  removal: "Removal Reasons",
   edit: "community settings",
 };
 

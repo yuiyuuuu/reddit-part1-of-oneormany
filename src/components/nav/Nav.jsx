@@ -28,6 +28,7 @@ const Nav = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
+  const communityStylingState = useSelector((state) => state.communityStyling);
 
   const [showRightOverlay, setShowRightOverlay] = useState(false);
   const [showCommunitiesOverlay, setShowCommunitiesOverlay] = useState(false);
@@ -74,8 +75,6 @@ const Nav = () => {
     textFocusChangeBGColor();
   }, []);
 
-  console.log(location.pathname);
-
   return (
     <div
       className='nav-parent'
@@ -86,6 +85,7 @@ const Nav = () => {
             location.pathname === "/test" ||
             !show) &&
           "none",
+        marginLeft: communityStylingState && "284px",
       }}
     >
       {/* the point of this hide element is so for the /about/:section. The navbar usually shows up before we can hide it so we use this to cover it and then remove it once the page loads*/}
@@ -94,7 +94,10 @@ const Nav = () => {
         style={{ display: location.pathname.slice(0, 2) !== "/r" && "none" }}
       />
 
-      <div className='nav-inner-1'>
+      <div
+        className='nav-inner-1'
+        style={{ flexGrow: communityStylingState && 0 }}
+      >
         <a className='nav-1' href='/'>
           <RedditIcon />
           <RedditName />
@@ -113,7 +116,10 @@ const Nav = () => {
           </button>
         </div>
 
-        <div className='nav-3-search'>
+        <div
+          className='nav-3-search'
+          style={{ display: communityStylingState && "none" }}
+        >
           <div className='nav-3-searchinner'>
             <div style={{ marginLeft: "15px", marginRight: "9px" }}>
               <SearchIconSvg />
@@ -185,10 +191,10 @@ const Nav = () => {
         </div>
       ) : (
         <div className='nav-inner2'>
-          <a className='nav-signupbutton' href='signup'>
+          <a className='nav-signupbutton' href='/signup'>
             Sign Up
           </a>
-          <a className='nav-loginbutton' href='login'>
+          <a className='nav-loginbutton' href='/login'>
             Log In
           </a>
 

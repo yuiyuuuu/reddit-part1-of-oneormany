@@ -1,17 +1,22 @@
 .communities-main {
   padding-top: 48px;
   width: 100%;
+  overflow: hidden;
 }
 
 .communities-bannertop {
   height: 64px;
-  background-color: rgb(51, 168, 255);
   width: 100%;
   padding: 8px 16px;
+  position: relative;
+  z-index: 2;
 }
 
 .communities-namecontainer {
   padding: 0px 16px 0px 24px;
+  position: relative;
+  z-index: 2;
+  background-color: white;
 }
 .communities-nameicon {
   display: flex;
@@ -70,13 +75,21 @@
   padding: 20px 24px;
   display: flex;
   flex-direction: row;
-  background-color: black;
+  position: relative;
+}
+
+.communities-backgroundimage {
+  position: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .communities-leftcontainer {
   width: 640px;
   display: flex;
   flex-direction: column;
+  z-index: 1000;
 }
 
 .communities-rightcontainer {

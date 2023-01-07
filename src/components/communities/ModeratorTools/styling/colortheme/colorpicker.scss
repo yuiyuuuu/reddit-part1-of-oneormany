@@ -1,0 +1,63 @@
+.colorpicker-parent {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 16px;
+  color: #878a8c;
+  width: 226px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px 0 #edeff1;
+  border: 1px solid #edeff1;
+  border-radius: 4px;
+}
+
+.colorpicker-text {
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+
+.colorpicker-colorwrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.colorpicker-color {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+
+.colorpicker-rowselected {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.colorpicker-selectedcolor {
+  width: 32px;
+  height: 32px;
+}
+
+.colorpicker-input {
+  height: 30px;
+  width: 96px;
+  margin-left: 16px;
+  border: 1px solid #edeff1;
+  padding: 0 8px;
+  color: #878a8c;
+  border-radius: 4px;
+}
+
+.colorpicker-i {
+  color: red;
+  font-size: 12px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 39px;
+  display: none;
+}

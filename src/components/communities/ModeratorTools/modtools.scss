@@ -32,6 +32,8 @@
   padding: 16px 0 32px 0;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .modtools-leftsection {

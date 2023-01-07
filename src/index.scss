@@ -95,6 +95,8 @@ img {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  min-height: 32px;
+  box-sizing: border-box;
 
   &:hover {
     background-color: #f7f6f6;
@@ -113,6 +115,8 @@ img {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  min-height: 32px;
+  box-sizing: border-box;
 
   &:hover {
     opacity: 0.9;

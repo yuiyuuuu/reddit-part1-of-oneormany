@@ -38,7 +38,7 @@ const MainTools = () => {
       setSelectedSection(sectionCheck[section].toUpperCase());
       setLoading(false);
     }
-  }, []);
+  }, [window.location.href]);
 
   $(window).on("load", () => {
     $(".hide").css("display", "none");

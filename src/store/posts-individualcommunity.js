@@ -8,6 +8,8 @@ const FETCH_COMMUNITY = "FETCH_COMMUNITY";
 const JOIN_COMMUNITY = "JOIN_COMMUNITY";
 const LEAVE_COMMUNITY = "LEAVE_COMMUNITY";
 
+const STYLING_CHANGE = "STYLING_CHANGE";
+
 const CLEAR = "CLEAR";
 const CREATE_COMMUNITY = "CREATE_COMMUNITY";
 
@@ -28,6 +30,11 @@ const dispatchLeave = (community) => ({
 
 const dispatchClear = () => ({
   type: CLEAR,
+});
+
+const dispatchStylingChange = (community) => ({
+  type: STYLING_CHANGE,
+  community,
 });
 
 export function fetchCommunity(id) {
@@ -77,6 +84,19 @@ export function clearCommunity() {
   };
 }
 
+export function stylingChange(v) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/stylingchange", v);
+      dispatch(dispatchStylingChange(data));
+      return "success";
+    } catch (error) {
+      console.log(error);
+      return "error";
+    }
+  };
+}
+
 export function CreateCommunity(body) {
   return async () => {
     try {
@@ -100,6 +120,8 @@ export default function (state = {}, action) {
     case JOIN_COMMUNITY:
       return action.community;
     case LEAVE_COMMUNITY:
+      return action.community;
+    case STYLING_CHANGE:
       return action.community;
     case CLEAR:
       return {};

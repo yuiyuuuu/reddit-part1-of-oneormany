@@ -174,7 +174,7 @@ const Post = ({
 
       <div className='posts-maincontainer'>
         <div className='posts-serveranduser'>
-          <img src={communities[1].image} className='post-communityicon' />
+          <img src={communities[1]?.image} className='post-communityicon' />
           <a href={`/${post.community.tag}`} className='posts-communityname'>
             {post.community.tag}
           </a>

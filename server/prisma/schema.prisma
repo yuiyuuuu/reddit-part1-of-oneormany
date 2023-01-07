@@ -34,14 +34,16 @@ model Community{
   rules String?
   users User[]
   posts Post[] 
-  image String?
+  image String? @db.VarChar(1048576)
   allowimagesandvideo Boolean @default(false)
   allowlink Boolean @default(false)
   allowpoll Boolean @default(false)
   allowtalk Boolean @default(false)
   visibility visibility @default(public)
   NSFW Boolean @default(false)
-  themeBaseColor String @default("rgb(51, 168, 255)")
+  themeBaseColor String @default("33A8FF")
+  themeHighlightColor String @default("0079D3")
+  themeBodyColor String @default("DAE0E6")
   communityBannerSize BannerSize @default(small)
   createAt DateTime?
 }

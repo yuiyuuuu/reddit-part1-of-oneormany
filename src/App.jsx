@@ -15,10 +15,20 @@ import SingleCommunity from "./components/communities/SingleCommunity";
 import Communities404 from "./components/communities/Communities404";
 import CreateCommunityOverlay from "./components/communities/CreateCommunityOverlay";
 import MainTools from "./components/communities/ModeratorTools/MainTools";
+import CommunityStyling from "./components/communities/ModeratorTools/styling/CommunityStyling";
+import { toggleCommunityStyling } from "./store/communitystyling";
 
 function App() {
   const dispatch = useDispatch();
   const createOverlayState = useSelector((state) => state.navToggleCreate);
+
+  useEffect(() => {
+    const styleParms = new URLSearchParams(
+      new URL(window.location.href).search
+    ).getAll("styling")[0];
+
+    dispatch(toggleCommunityStyling(styleParms === "true"));
+  }, []);
 
   useEffect(() => {
     dispatch(getLocalData());
@@ -27,6 +37,7 @@ function App() {
   return (
     <BrowserRouter>
       <Nav />
+      <CommunityStyling />
       <CreateCommunityOverlay createOverlayState={createOverlayState} />
       <Routes>
         <Route exact path='/posts' element={<Posts />} />

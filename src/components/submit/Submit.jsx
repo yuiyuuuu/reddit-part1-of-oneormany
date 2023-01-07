@@ -228,7 +228,7 @@ const Submit = () => {
                   <SearchIcon />
                 ) : (
                   <img
-                    src={selectedCommunity.image || ""}
+                    src={selectedCommunity?.image || ""}
                     className='submit-imageicon'
                   />
                 )}

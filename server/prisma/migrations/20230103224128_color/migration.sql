@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Community" ADD COLUMN     "themeBodyColor" TEXT NOT NULL DEFAULT 'DAE0E6',
+ADD COLUMN     "themeHighlightColor" TEXT NOT NULL DEFAULT '0079D3',
+ALTER COLUMN "themeBaseColor" SET DEFAULT '33A8FF';

@@ -157,6 +157,32 @@ router.put("/leave", async (req, res, next) => {
   }
 });
 
+router.put("/stylingchange", async (req, res, next) => {
+  try {
+    const community = await prisma.community.findUnique({
+      where: {
+        id: req.body.id,
+      },
+    });
+
+    const update = await prisma.community.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        themeBaseColor: req.body?.base || community.themeBaseColor,
+        themeHighlightColor:
+          req.body?.highlight || community.themeHighlightColor,
+        themeBodyColor: req.body?.body || community.themeBodyColor,
+      },
+    });
+
+    res.send(update);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/create", async (req, res, next) => {
   try {
     const findCommunity = await prisma.community.findFirst({

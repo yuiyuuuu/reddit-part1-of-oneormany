@@ -30,6 +30,7 @@ const SingleCommunity = () => {
   const communityState = useSelector((state) => state.postsindividualcommunity);
   const authState = useSelector((state) => state.auth);
   const postState = useSelector((state) => state.posts);
+  const communityStylingState = useSelector((state) => state.communityStyling);
 
   //share overlay
   const [showOverlay, setShowOverlay] = useState(false);
@@ -80,6 +81,8 @@ const SingleCommunity = () => {
   function handleLeaveCommunity() {
     dispatch(leaveCommunity(authState.id, communityState.id));
   }
+
+  console.log(communityStylingState);
 
   //set userids
   useEffect(() => {
@@ -172,7 +175,58 @@ const SingleCommunity = () => {
     setLoading(false);
   }, []);
 
-  console.log(authState);
+  //set min height of mainbot
+  useEffect(() => {
+    document.addEventListener("readystatechange", () => {
+      const windowheight = window.innerHeight;
+      const bannerheight = document
+        .querySelector(".communities-bannertop")
+        .getBoundingClientRect().height;
+      const nameContainerHeight = document
+        .querySelector(".communities-namecontainer")
+        .getBoundingClientRect().height;
+
+      $(".communities-mainbot").css(
+        "min-height",
+        windowheight - bannerheight - nameContainerHeight - 48 + "px"
+      );
+
+      $(".communities-backgroundimage").css(
+        "height",
+        windowheight - bannerheight - nameContainerHeight - 48 + "px"
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    // document.addEventListener("readystatechange", () => {
+    const mainbot = document
+      .querySelector(".communities-mainbot")
+      ?.getBoundingClientRect();
+
+    const bannerheight = document
+      .querySelector(".communities-bannertop")
+      ?.getBoundingClientRect()?.height;
+    const nameContainerHeight = document
+      .querySelector(".communities-namecontainer")
+      ?.getBoundingClientRect()?.height;
+
+    $(".communities-backgroundimage").css("width", mainbot?.width);
+
+    $(".communities-backgroundimage").css(
+      "height",
+      mainbot?.height + bannerheight + nameContainerHeight + "px"
+    );
+
+    $(".communities-backgroundimage").css("left", mainbot?.left);
+
+    $(".communities-backgroundimage").css("top", "48px");
+  }, [
+    postState,
+    communityState,
+    document.querySelector(".communities-mainbot")?.getBoundingClientRect()
+      .height,
+  ]);
 
   if (communityState !== "not found" && loading) {
     return "loading";
@@ -183,10 +237,18 @@ const SingleCommunity = () => {
   }
 
   return (
-    <div>
-      <div className='communities-main'>
-        <div className='communities-bannertop' />
+    <div style={{ overflow: "hidden" }}>
+      <div
+        className='communities-main'
+        style={{ marginLeft: communityStylingState && "284px" }}
+      >
+        <div
+          className='communities-bannertop'
+          id={`communities-banner${communityState.id}`}
+          style={{ backgroundColor: "#" + communityState.themeBaseColor }}
+        />
         <div style={{ width: "100%", backgroundColor: "white" }}>
+          <div className='communities-backgroundimage'></div>
           <div className='communities-namecontainer'>
             <div className='communities-nameicon'>
               <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
@@ -219,7 +281,10 @@ const SingleCommunity = () => {
             <div className='communities-postsoption'>Posts</div>
           </div>
 
-          <div className='communities-mainbot'>
+          <div
+            className='communities-mainbot'
+            style={{ backgroundColor: "#" + communityState.themeBodyColor }}
+          >
             <div className='communities-leftcontainer'>
               <div className='home-createpost'>
                 <a className='anchor-createpost'>

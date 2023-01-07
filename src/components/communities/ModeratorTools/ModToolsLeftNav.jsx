@@ -7,6 +7,7 @@ import UserModSvg from "./modtoolssvgs/UserModSvg";
 import QueuesSvg from "./modtoolssvgs/QueuesSvg";
 import RulesSvg from "./modtoolssvgs/RulesSVg";
 import OthersSvg from "./modtoolssvgs/OthersSvg";
+import RightArrow from "./modtoolssvgs/RightArrow";
 
 const ModToolsLeftNav = ({ community }) => {
   const params = useParams();
@@ -186,6 +187,17 @@ const ModToolsLeftNav = ({ community }) => {
         </div>
         <a className='modtools-leftli' href={`/r/${community.name}/about/edit`}>
           Community settings
+          <div className='grow' />
+          <RightArrow />
+        </a>
+
+        <a
+          className='modtools-leftli'
+          href={`/r/${community.name}/?styling=true`}
+        >
+          Community appearance
+          <div className='grow' />
+          <RightArrow />
         </a>
       </div>
     </div>

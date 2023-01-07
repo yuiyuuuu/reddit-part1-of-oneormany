@@ -7,12 +7,14 @@ import auth from "./auth";
 import posts from "./posts";
 import postsindividualcommunity from "./posts-individualcommunity";
 import navToggleCreate from "./nav-createcommunity";
+import communityStyling from "./communitystyling";
 
 const reducer = combineReducers({
   auth,
   posts,
   postsindividualcommunity,
   navToggleCreate,
+  communityStyling,
 }); //reducers here
 
 const middleware = composeWithDevTools(
