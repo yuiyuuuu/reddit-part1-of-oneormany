@@ -1,0 +1,30 @@
+.comright-parent {
+  width: 312px;
+  margin-left: 24px;
+}
+
+.comright-about {
+  width: 100%;
+}
+
+.comright-toprow {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  background-color: red;
+}
+
+.comright-abouttext {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+}
+
+.comright-modtools {
+  margin: auto;
+  font-size: 10px;
+  font-weight: 700;
+}

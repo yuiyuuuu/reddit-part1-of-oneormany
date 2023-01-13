@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "dev2": "concurrently \"vite build --watch\" \"nodemon server/server.js\"",
-    "seed": "node server/prisma/seed.ts"
+    "seed": "node server/prisma/seed.ts",
+    "proc": "node server/server.js"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",

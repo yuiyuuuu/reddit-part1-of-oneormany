@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   fetchCommunity,
   joinCommunity,
   leaveCommunity,
 } from "../../store/posts-individualcommunity";
+
+import { toggleCommunityStyling } from "../../store/communitystyling";
 
 import "./communities.scss";
 
@@ -21,6 +22,7 @@ import ShareOverlay from "../home/overlays/ShareOverlay";
 import Post from "../home/posts/Post";
 import Communities404 from "./Communities404";
 import { fetchSpecificCommunityPosts } from "../../store/posts";
+import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();
@@ -72,6 +74,18 @@ const SingleCommunity = () => {
 
     setScrollpos(window.scrollY);
   }, []);
+
+  function navigateSubmit(y) {
+    if (authState.id) {
+      if (y) {
+        window.location.href = `/submit/r/${communityState.name}/` + y;
+      } else {
+        window.location.href = `/submit/r/${communityState.name}`;
+      }
+    } else {
+      window.location.href = "/login";
+    }
+  }
 
   function handleJoinCommunity() {
     dispatch(joinCommunity(authState.id, communityState.id));
@@ -226,6 +240,33 @@ const SingleCommunity = () => {
     loading,
   ]);
 
+  useEffect(() => {
+    $(document).ready(() => {
+      // console.log(authState.id === communityState.owner);
+      // console.log(authState.id);
+      // if (authState.id === communityState.owner) {
+      //   dispatch(toggleCommunityStyling(true));
+      //   return;
+      // }
+
+      if (
+        authState.id !== communityState.owner &&
+        !communityState.moderators?.includes(authState.id)
+      ) {
+        dispatch(toggleCommunityStyling(false));
+        return;
+      }
+
+      if (loading) return;
+
+      const styleParms = new URLSearchParams(
+        new URL(window.location.href).search
+      ).getAll("styling")[0];
+
+      dispatch(toggleCommunityStyling(styleParms === "true"));
+    });
+  }, [communityState, loading, authState]);
+
   $(document).ready(() => {
     setLoading(false);
   });
@@ -307,22 +348,22 @@ const SingleCommunity = () => {
                   )}
                 </a>
 
-                <Link
-                  to='/submit'
+                <a
+                  href={`/submit/r/${communityState.name}`}
                   className='input-createpost'
                   state={{ from: communityState.tag }}
                 >
                   <input className='input-con' placeHolder='Create Post' />
-                </Link>
+                </a>
                 <div className='home-iconcontainer'>
-                  <ImageIcon history={navigate} />
+                  <ImageIcon navigateSubmit={navigateSubmit} />
                 </div>
 
                 <div
                   className='home-iconcontainer'
                   style={{ marginLeft: "2px" }}
                 >
-                  <ClipSvg history={navigate} />
+                  <ClipSvg navigateSubmit={navigateSubmit} />
                 </div>
               </div>
 
@@ -348,7 +389,7 @@ const SingleCommunity = () => {
                 ))}
               </div>
             </div>
-            <div className='communities-rightcontainer'>L</div>
+            <SingleCommunityRight communityState={communityState} />
             <ShareOverlay
               showOverlay={showOverlay}
               overlayLeft={overlayLeft}

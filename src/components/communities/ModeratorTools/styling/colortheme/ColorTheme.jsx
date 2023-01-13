@@ -13,7 +13,7 @@ import DownArrowColorThemeSquare from "../../modtoolssvgs/DownArrowColorThemeSqu
 import { onSelectFile } from "../../../../../requests/getBase64Image";
 import TrashCan from "../../modtoolssvgs/TrashCan";
 
-const ColorTheme = ({ community }) => {
+const ColorTheme = ({ community, setSelectedSection }) => {
   const dispatch = useDispatch();
 
   //color picker states
@@ -108,6 +108,8 @@ const ColorTheme = ({ community }) => {
       body: colorColor.slice(1) || null,
       image: selectedImage || null,
     };
+
+    console.log(info.image);
 
     dispatch(stylingChange(info)).then((res) => {
       if (res === "success") {
@@ -342,7 +344,11 @@ const ColorTheme = ({ community }) => {
       >
         Save
       </button>
-      <button className='blueborder-button' style={{ width: "100%" }}>
+      <button
+        className='blueborder-button'
+        style={{ width: "100%" }}
+        onClick={() => setSelectedSection("")}
+      >
         Cancel
       </button>
 

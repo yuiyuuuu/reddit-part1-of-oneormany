@@ -69,7 +69,10 @@ const CommunityStyling = () => {
               </div>
             </div>
           ) : selectedSection === "colortheme" ? (
-            <ColorTheme community={communityState} />
+            <ColorTheme
+              community={communityState}
+              setSelectedSection={setSelectedSection}
+            />
           ) : (
             ""
           )}

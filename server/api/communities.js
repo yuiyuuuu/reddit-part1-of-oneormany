@@ -174,7 +174,7 @@ router.put("/stylingchange", async (req, res, next) => {
         themeHighlightColor:
           req.body?.highlight || community.themeHighlightColor,
         themeBodyColor: req.body?.body || community.themeBodyColor,
-        image: req.body.image || community.image,
+        image: req.body.image,
       },
     });
 

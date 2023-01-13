@@ -1,6 +1,6 @@
 import React from "react";
 
-const CreateAtSvg = () => {
+const CreateAtSvg = ({ information }) => {
   return (
     <svg
       width='20'

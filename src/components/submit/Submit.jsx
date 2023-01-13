@@ -127,6 +127,18 @@ const Submit = () => {
   }, []);
 
   useEffect(() => {
+    if (params.id) {
+      const h = communities?.find(
+        (item) => item?.name.toLowerCase() === params.id.toLowerCase()
+      );
+      if (h?.id) {
+        setSelectedCommunity(h);
+        setTextInput(h.tag);
+      }
+    }
+  }, [communities]);
+
+  useEffect(() => {
     if (location.state?.from) {
       const com = authState.communities?.find(
         (g) => g.tag.toLowerCase() === location.state.from.toLowerCase()

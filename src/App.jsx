@@ -23,14 +23,6 @@ function App() {
   const createOverlayState = useSelector((state) => state.navToggleCreate);
 
   useEffect(() => {
-    const styleParms = new URLSearchParams(
-      new URL(window.location.href).search
-    ).getAll("styling")[0];
-
-    dispatch(toggleCommunityStyling(styleParms === "true"));
-  }, []);
-
-  useEffect(() => {
     dispatch(getLocalData());
   }, []);
 
@@ -44,6 +36,8 @@ function App() {
         <Route exact path='/posts/:id' element={<SinglePost />} />
         <Route exact path='/submit' element={<Submit />} />
         <Route exact path='/submit/:type' element={<Submit />} />
+        <Route exact path='/submit/r/:id' element={<Submit />} />
+        <Route exact path='/submit/r/:id/:type' element={<Submit />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
         <Route exact path='/r/:id' element={<SingleCommunity />} />
