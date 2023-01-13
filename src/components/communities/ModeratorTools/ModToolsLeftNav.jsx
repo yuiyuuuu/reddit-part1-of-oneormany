@@ -5,7 +5,7 @@ import "./modtools.scss";
 
 import UserModSvg from "./modtoolssvgs/UserModSvg";
 import QueuesSvg from "./modtoolssvgs/QueuesSvg";
-import RulesSvg from "./modtoolssvgs/RulesSVg";
+import RulesSvg from "./modtoolssvgs/RulesSvg";
 import OthersSvg from "./modtoolssvgs/OthersSvg";
 import RightArrow from "./modtoolssvgs/RightArrow";
 
