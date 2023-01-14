@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "dev2": "concurrently \"vite build --watch\" \"nodemon server/server.js\"",
     "seed": "node server/prisma/seed.ts",
-    "proc": "node server/server.js",
+    "proc": "npx prisma generate --schema=./server/prisma/schema.prisma && node server/server.js",
     "migrate": "npx prisma generate --schema=./server/prisma/schema.prisma && prisma migrate deploy --schema=./server/prisma/schema.prisma"
   },
   "dependencies": {
