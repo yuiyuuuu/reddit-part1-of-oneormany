@@ -1,2 +1,2 @@
-release: prisma migrate deploy --schema=./server/prisma/schema.prisma
+release: npm run migrate
 web: npm run proc
