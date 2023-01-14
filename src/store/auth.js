@@ -21,7 +21,7 @@ export function getLocalData() {
   const token = window.localStorage.getItem("token");
 
   console.log(token, "tokennnnn");
-  console.log(!!token);
+  console.log(typeof token);
   return async (dispatch) => {
     try {
       if (token) {
