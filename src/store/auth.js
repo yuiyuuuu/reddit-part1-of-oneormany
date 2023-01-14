@@ -30,6 +30,7 @@ export function getLocalData() {
           },
         });
 
+        console.log("tokenrannnn");
         dispatch(setAuth(user));
       }
     } catch (error) {
