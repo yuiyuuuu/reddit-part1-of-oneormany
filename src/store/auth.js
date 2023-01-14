@@ -20,12 +20,7 @@ const addACommunity = (user) => ({
 export function getLocalData() {
   const token = window.localStorage.getItem("token");
 
-  if (!token) {
-    return (dispatch) => {
-      dispatch(setAuth({}));
-    };
-  }
-
+  console.log(token, "tokennnnn");
   return async (dispatch) => {
     try {
       if (token) {
