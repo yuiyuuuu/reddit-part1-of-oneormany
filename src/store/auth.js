@@ -20,18 +20,15 @@ const addACommunity = (user) => ({
 export function getLocalData() {
   const token = window.localStorage.getItem("token");
 
-  console.log(token, "tokennnnn");
-  console.log(typeof token);
   return async (dispatch) => {
     try {
-      if (token) {
+      if (token && token !== "undefined") {
         const user = await makeGetRequest("authentication/getlocaldata", {
           headers: {
             authorization: token,
           },
         });
 
-        console.log("tokenrannnn");
         dispatch(setAuth(user));
       }
     } catch (error) {
@@ -65,6 +62,7 @@ export function signup(object) {
       const data = await makePostRequest("authentication/signup", object);
 
       window.localStorage.setItem("token", data.jwt);
+      console.log("dataaa", data);
       return dispatch(setAuth(data.user));
     } catch (error) {
       console.log(error);
