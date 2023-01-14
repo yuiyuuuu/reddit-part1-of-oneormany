@@ -6,7 +6,7 @@ Still under construction</br>
 
 ## Deployed Project
 
-http://mychachicago.herokuapp.com/ </br>
+https://redditclone1.herokuapp.com/ </br>
 
 ## Tech Stack :books:
 
