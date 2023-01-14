@@ -72,6 +72,7 @@ router.get("/getlocaldata", async (req, res, next) => {
 
     res.send(user);
   } catch (error) {
+    res.send({});
     next(error);
   }
 });
