@@ -5,14 +5,19 @@ import "./right.scss";
 import $ from "jquery";
 
 import ModToolsIconSvg from "../communitiessvg/ModToolsIconSvg";
+import ModToolsIconWhite from "../communitiessvg/ModToolsIconWhite";
 import ThreeDotComRightSvg from "../communitiessvg/ThreeDotComRightSvg";
+import ThreeDotRightWhite from "../communitiessvg/ThreeDotRightWhite";
 import CreatedAtInformation from "../../submit/cominfo/CreatedAtInformation";
 import { changeDescription } from "../../../store/posts-individualcommunity";
 import PenEditSvg from "../communitiessvg/PenEditSvg";
+import { lightOrDark } from "../../../requests/lightOrDark";
+import { setBodyBrightness } from "../../../store/bodyBrightness";
 
 const SingleCommunityRight = ({ communityState }) => {
   const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const bodyBrightness = useSelector((state) => state.bodyBrightness);
 
   const [descState, setDescState] = useState(false);
   const [desc, setDesc] = useState("");
@@ -26,6 +31,12 @@ const SingleCommunityRight = ({ communityState }) => {
   }
 
   useEffect(() => {
+    const b = lightOrDark(communityState.themeBodyColor);
+    if (!b) return;
+    dispatch(setBodyBrightness(b));
+  }, [communityState.themeBodyColor]);
+
+  useEffect(() => {
     $(".comright-descinput").focus();
 
     $("#comright-descparent").on("keydown", "textarea", function (e) {
@@ -37,7 +48,6 @@ const SingleCommunityRight = ({ communityState }) => {
     $(document)
       .off()
       .click(function (event) {
-        console.log("rann");
         var $target = $(event.target);
 
         if (
@@ -64,7 +74,10 @@ const SingleCommunityRight = ({ communityState }) => {
     });
 
     $(".comright-description").hover(() => {
-      $(".comright-description").css("border", "1px solid #0079d3");
+      $(".comright-description").css(
+        "border",
+        "1px solid" + "#" + communityState.themeBaseColor
+      );
     });
 
     $(".comright-description").mouseleave(() => {
@@ -80,20 +93,40 @@ const SingleCommunityRight = ({ communityState }) => {
     setDesc(communityState?.description);
   }, [communityState]);
 
-  console.log(communityState);
+  console.log(bodyBrightness);
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       <div className='comright-parent'>
         <div className='comright-about'>
-          <div className='comright-toprow'>
-            <div className='comright-abouttext'>About Community</div>
+          <div
+            className='comright-toprow'
+            id={`comright-toprow${communityState.id}`}
+            style={{ backgroundColor: "#" + communityState.themeBaseColor }}
+          >
+            <div
+              className='comright-abouttext'
+              style={{
+                color:
+                  bodyBrightness === "dark" ? "rgb(252,252,252)" : "#7c7c7c",
+              }}
+            >
+              About Community
+            </div>
             {(communityState?.owner === authState.id ||
               communityState.moderators?.includes(authState.id)) && (
               <a
                 className='comright-modtools'
                 href={`/r/${communityState.name}/about/modqueue`}
+                style={{
+                  color:
+                    bodyBrightness === "dark" ? "rgb(252,252,252)" : "#7c7c7c",
+                }}
               >
-                <ModToolsIconSvg />
+                {bodyBrightness === "dark" ? (
+                  <ModToolsIconWhite />
+                ) : (
+                  <ModToolsIconSvg />
+                )}
                 MOD TOOLS
               </a>
             )}
@@ -108,14 +141,23 @@ const SingleCommunityRight = ({ communityState }) => {
                     : "auto 0 auto auto",
               }}
             >
-              <ThreeDotComRightSvg />
+              {bodyBrightness === "dark" ? (
+                <ThreeDotRightWhite />
+              ) : (
+                <ThreeDotComRightSvg />
+              )}
             </div>
           </div>
         </div>
 
         <div className='comright-descparent' id='comright-descparent'>
           {descState ? (
-            <div className='comright-descedit'>
+            <div
+              className='comright-descedit'
+              style={{
+                border: "1px solid" + "#" + communityState.themeBaseColor,
+              }}
+            >
               <textarea
                 placeholder='Tell us about your community'
                 className='comright-descinput'

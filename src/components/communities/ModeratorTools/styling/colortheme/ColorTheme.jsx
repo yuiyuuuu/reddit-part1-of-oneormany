@@ -109,8 +109,6 @@ const ColorTheme = ({ community, setSelectedSection }) => {
       image: selectedImage || null,
     };
 
-    console.log(info.image);
-
     dispatch(stylingChange(info)).then((res) => {
       if (res === "success") {
         window.location.href = "/" + community.tag;

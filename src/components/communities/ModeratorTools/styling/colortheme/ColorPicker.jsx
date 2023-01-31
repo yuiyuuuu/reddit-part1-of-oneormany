@@ -1,11 +1,13 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./colorpicker.scss";
 
 import { colors } from "./colors";
 
 import $ from "jquery";
 import { useEffect } from "react";
+import { setBodyBrightness } from "../../../../../store/bodyBrightness";
+import { lightOrDark } from "../../../../../requests/lightOrDark";
 
 const ColorPicker = ({
   active,
@@ -19,6 +21,7 @@ const ColorPicker = ({
   selectedImage,
 }) => {
   const communityState = useSelector((state) => state.postsindividualcommunity);
+  const dispatch = useDispatch();
 
   function handleChange(c) {
     if (selectedImage) return; //dont change the color of background if image is active
@@ -28,8 +31,24 @@ const ColorPicker = ({
         break;
 
       case "base":
+        dispatch(setBodyBrightness(lightOrDark(c.slice(1))));
         $(`#communities-banner${communityState.id}`).css("background-color", c);
+        $(`#comright-toprow${communityState.id}`).css("background-color", c);
 
+      case "highlight":
+        console.log("rannn");
+        const q = $(".communities-joinbut").html();
+        if (q.toLowerCase() === "join") {
+          $(".communities-joinbut").css("background-color", c);
+        } else {
+          if (c === "#FFFFFF") {
+            $(".communities-joinbut").css("color", "#EDEFF1");
+            $(".communities-joinbut").css("border", "1px solid" + "#EDEFF1");
+          } else {
+            $(".communities-joinbut").css("color", c);
+            $(".communities-joinbut").css("border", "1px solid" + c);
+          }
+        }
       default:
         return;
     }

@@ -318,6 +318,17 @@ const SingleCommunity = () => {
                       ? handleLeaveCommunity()
                       : handleJoinCommunity()
                   }
+                  style={{
+                    backgroundColor: userIds.includes(authState.id)
+                      ? "transparent"
+                      : "#" + communityState.themeHighlightColor,
+                    color: !userIds.includes(authState.id)
+                      ? "#FFFFFF"
+                      : "#" + communityState.themeHighlightColor,
+                    border: !userIds.includes(authState.id)
+                      ? "none"
+                      : "1px solid" + "#" + communityState.themeHighlightColor,
+                  }}
                 >
                   {userIds.includes(authState.id) ? (
                     <span id='joined-hover'>Joined</span>

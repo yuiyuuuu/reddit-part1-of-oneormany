@@ -1,6 +1,5 @@
 .communities-main {
   padding-top: 48px;
-  width: 100%;
   overflow: hidden;
 }
 
@@ -51,7 +50,6 @@
   padding: 4px 16px;
   border-radius: 9999px;
   color: white;
-  background-color: #0079d3;
   width: 94px;
   height: 32px;
   font-size: 14px;
@@ -77,6 +75,7 @@
   flex-direction: row;
   position: relative;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .communities-backgroundimage {
@@ -87,10 +86,11 @@
 }
 
 .communities-leftcontainer {
-  width: 640px;
+  max-width: 640px;
   display: flex;
   flex-direction: column;
   z-index: 1000;
+  flex-grow: 1;
 }
 
 //404

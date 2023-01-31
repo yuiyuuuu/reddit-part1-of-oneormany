@@ -8,6 +8,7 @@ import posts from "./posts";
 import postsindividualcommunity from "./posts-individualcommunity";
 import navToggleCreate from "./nav-createcommunity";
 import communityStyling from "./communitystyling";
+import bodyBrightness from "./bodyBrightness";
 
 const reducer = combineReducers({
   auth,
@@ -15,6 +16,7 @@ const reducer = combineReducers({
   postsindividualcommunity,
   navToggleCreate,
   communityStyling,
+  bodyBrightness,
 }); //reducers here
 
 const middleware = composeWithDevTools(
