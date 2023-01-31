@@ -34,10 +34,20 @@ const SingleCommunityRight = ({ communityState }) => {
     });
     $("#comright-descparent").find("textarea").keydown();
 
-    $(".comright-descinput").focusout(() => {
-      setDescState(false);
-      setDesc(communityState?.description || "");
-    });
+    $(document)
+      .off()
+      .click(function (event) {
+        console.log("rann");
+        var $target = $(event.target);
+
+        if (
+          !$target.closest(".comright-descedit").length &&
+          $(".comright-descedit").is(":visible") &&
+          !$target.closest("#penedit").length
+        ) {
+          setDescState(false);
+        }
+      });
 
     $(".comright-description").hover(() => {
       $(".comright-description").css("padding", "4px");
@@ -53,8 +63,16 @@ const SingleCommunityRight = ({ communityState }) => {
       $(".comright-description").css("padding", "4px");
     });
 
+    $(".comright-description").hover(() => {
+      $(".comright-description").css("border", "1px solid #0079d3");
+    });
+
     $(".comright-description").mouseleave(() => {
       $(".comright-description").css("padding", 0);
+    });
+
+    $(".comright-description").mouseleave(() => {
+      $(".comright-description").css("border", "none");
     });
   });
 

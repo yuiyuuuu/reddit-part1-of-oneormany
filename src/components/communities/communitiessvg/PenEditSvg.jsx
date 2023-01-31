@@ -10,6 +10,7 @@ const PenEditSvg = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
       style={{ marginTop: "3px", marginLeft: "4px" }}
+      id='penedit'
     >
       <rect width='37' height='37' fill='url(#patternpen0)' />
       <defs>

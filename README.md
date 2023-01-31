@@ -3,6 +3,11 @@
 ## Notes
 
 Still under construction</br>
+Planned:</br>
+-Nested comment system</br>
+-Most of reddit community and post features</br>
+-View user profiles and have a karma system</br>
+-More once done</br>
 
 ## Deployed Project
 

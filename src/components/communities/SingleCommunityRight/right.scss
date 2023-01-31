@@ -121,6 +121,8 @@
   width: 100%;
   cursor: pointer;
   transition: all 0.1s linear;
+  border-radius: 3px;
+  box-sizing: border-box;
 }
 
 .comright-description-noadmin {
