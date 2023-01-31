@@ -12,6 +12,7 @@ const STYLING_CHANGE = "STYLING_CHANGE";
 
 const CLEAR = "CLEAR";
 const CREATE_COMMUNITY = "CREATE_COMMUNITY";
+const CHANGE_DESC = "CHANGE_DESC";
 
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
@@ -34,6 +35,11 @@ const dispatchClear = () => ({
 
 const dispatchStylingChange = (community) => ({
   type: STYLING_CHANGE,
+  community,
+});
+
+const dispatchChangeDesc = (community) => ({
+  type: CHANGE_DESC,
   community,
 });
 
@@ -97,6 +103,17 @@ export function stylingChange(v) {
   };
 }
 
+export function changeDescription(v) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/description", v);
+      dispatch(dispatchChangeDesc(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function CreateCommunity(body) {
   return async () => {
     try {
@@ -125,6 +142,8 @@ export default function (state = {}, action) {
       return action.community;
     case CLEAR:
       return {};
+    case CHANGE_DESC:
+      return action.community;
     default:
       return state;
   }

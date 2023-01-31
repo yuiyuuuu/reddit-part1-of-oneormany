@@ -209,3 +209,20 @@ router.post("/create", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/description", async (req, res, next) => {
+  try {
+    const update = await prisma.community.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        description: req.body.description,
+      },
+    });
+
+    res.send(update);
+  } catch (error) {
+    next(error);
+  }
+});

@@ -2,9 +2,7 @@ import React from "react";
 
 import "./cominfo.scss";
 
-import CreateAtSvg from "../submitsvgs/CreateAtSvg";
-
-import { month } from "./monthobj";
+import CreatedAtInformation from "./CreatedAtInformation";
 
 const CommunityInformation = ({ selectedCommunity }) => {
   // const year = selectedCommunity.createAt.getFullYear();
@@ -33,14 +31,7 @@ const CommunityInformation = ({ selectedCommunity }) => {
 
         <div className='cominfo-desc'>{selectedCommunity?.description}</div>
 
-        <div className='cominfo-createrow'>
-          <CreateAtSvg />
-          <div className='cominfo-createdat'>
-            Created {month[selectedCommunity.createAt.slice(5, 7).toString()]}{" "}
-            {selectedCommunity.createAt.slice(8, 10)},{" "}
-            {selectedCommunity.createAt.slice(0, 4)}
-          </div>
-        </div>
+        <CreatedAtInformation selectedCommunity={selectedCommunity} />
 
         <div className='cominfo-divider' />
 

@@ -24,7 +24,110 @@
 }
 
 .comright-modtools {
-  margin: auto;
+  margin: auto 0 auto auto;
   font-size: 10px;
   font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 4px;
+  border-radius: 2px;
+
+  &:hover {
+    background-color: rgba(26, 26, 27, 0.1);
+  }
+}
+
+.comright-threecontainer {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin: auto 0 auto auto;
+
+  &:hover {
+    background-color: rgba(26, 26, 27, 0.1);
+  }
+}
+
+.comright-descparent {
+  background-color: white;
+  padding: 12px;
+}
+
+.comright-adddesc {
+  margin: 8px 0 12px 0;
+  padding: 8px;
+  background-color: #f6f7f8;
+  border: 1px solid #dae0e6;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0079d3;
+  transition: 0.1s linear all;
+
+  &:hover {
+    border: 1px solid #0079d3;
+  }
+}
+
+.comright-descedit {
+  display: flex;
+  flex-direction: column;
+  background-color: #f6f7f8;
+  padding: 8px;
+  border: 1px solid #0079d3;
+  border-radius: 4px;
+  margin: 8px 0 12px 0;
+}
+
+.comright-descinput {
+  background-color: transparent;
+  resize: none;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.comright-inputsave {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.comright-charactersleft {
+  font-size: 12px;
+  color: #7c7c7c;
+  flex-grow: 1;
+}
+
+.comright-descchoice {
+  margin: 0px 4px;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.comright-description {
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.1s linear;
+}
+
+.comright-description-noadmin {
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
 }
