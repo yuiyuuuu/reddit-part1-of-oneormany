@@ -242,6 +242,11 @@ const SingleCommunity = () => {
 
   useEffect(() => {
     $(document).ready(() => {
+      if (!window.localStorage.getItem("token")) {
+        dispatch(toggleCommunityStyling(false));
+        return;
+      }
+
       if (
         authState.id !== communityState?.owner?.id &&
         !communityState.moderators?.includes(authState.id)

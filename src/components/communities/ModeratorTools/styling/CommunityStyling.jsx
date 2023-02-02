@@ -5,6 +5,7 @@ import RightArrow from "../modtoolssvgs/RightArrow";
 import XSvgStyling from "../modtoolssvgs/XSvgStyling";
 import ColorTheme from "./colortheme/ColorTheme";
 import "./communitystyling.scss";
+import NameIcon from "./nameicon/NameIcon";
 
 const CommunityStyling = () => {
   const communityStylingState = useSelector((state) => state.communityStyling);
@@ -25,7 +26,7 @@ const CommunityStyling = () => {
               href={`/${communityState.tag}/about/modqueue`}
             >
               <LeftArrowStyling />
-              <div>Back to mod tools</div>
+              <div style={{ fontWeight: "400" }}>Back to mod tools</div>
             </a>
             <div className='grow' />
             <XSvgStyling communityState={communityState} />
@@ -44,7 +45,10 @@ const CommunityStyling = () => {
                 <RightArrow />
               </div>
 
-              <div className='comstyling-appearanceli'>
+              <div
+                className='comstyling-appearanceli'
+                onClick={() => setSelectedSection("nameicon")}
+              >
                 Name & icon
                 <div className='grow' />
                 <RightArrow />
@@ -73,6 +77,8 @@ const CommunityStyling = () => {
               community={communityState}
               setSelectedSection={setSelectedSection}
             />
+          ) : selectedSection === "nameicon" ? (
+            <NameIcon />
           ) : (
             ""
           )}

@@ -1,0 +1,37 @@
+.name-header {
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #edeff1;
+  display: flex;
+  flex-direction: column;
+}
+
+.name-title {
+  font-size: 17.5px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.name-i {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 4px;
+  color: #0079dc;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.name-nameformat {
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1c1c1c;
+  line-height: 18px;
+}
+
+.name-selection {
+  padding: 8px 0;
+}
