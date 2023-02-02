@@ -25,6 +25,7 @@ router.get("/single/:id", async (req, res, next) => {
             password: false,
           },
         },
+        owner: true,
       },
     });
     if (!community) {
@@ -202,6 +203,9 @@ router.post("/create", async (req, res, next) => {
 
     const community = await prisma.community.create({
       data: req.body,
+      include: {
+        owner: true,
+      },
     });
 
     res.send(community);

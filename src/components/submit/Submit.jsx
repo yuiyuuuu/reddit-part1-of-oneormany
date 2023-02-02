@@ -124,6 +124,11 @@ const Submit = () => {
       default:
         break;
     }
+
+    const token = window.localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/login";
+    }
   }, []);
 
   useEffect(() => {

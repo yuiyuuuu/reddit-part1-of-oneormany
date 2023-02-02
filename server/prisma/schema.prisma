@@ -30,10 +30,8 @@ model Community{
   name String @db.VarChar(100) @unique
   tag String
   description String?
-  owner String?
   moderators String []
   rules String?
-  users User[]
   posts Post[] 
   image String?
   allowimagesandvideo Boolean @default(false)
@@ -47,6 +45,9 @@ model Community{
   themeBodyColor String @default("DAE0E6")
   communityBannerSize BannerSize @default(small)
   createAt DateTime?
+  users User[]
+  owner User? @relation("owner", fields:[ownerId], references: [id])
+  ownerId String?
 }
 
 enum BannerSize{
@@ -73,6 +74,7 @@ model User {
   likes    Like[]
   communities Community[]
   posts Post[] 
+  communityOwner Community[] @relation("owner")
 }
 
 model Comment {

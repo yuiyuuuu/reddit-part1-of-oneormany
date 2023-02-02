@@ -13,6 +13,7 @@ import { changeDescription } from "../../../store/posts-individualcommunity";
 import PenEditSvg from "../communitiessvg/PenEditSvg";
 import { lightOrDark } from "../../../requests/lightOrDark";
 import { setBodyBrightness } from "../../../store/bodyBrightness";
+import Moderators from "./Moderators";
 
 const SingleCommunityRight = ({ communityState }) => {
   const authState = useSelector((state) => state.auth);
@@ -31,10 +32,11 @@ const SingleCommunityRight = ({ communityState }) => {
   }
 
   useEffect(() => {
-    const b = lightOrDark(communityState.themeBodyColor);
+    const b = lightOrDark(communityState.themeBaseColor);
+    console.log(communityState);
     if (!b) return;
     dispatch(setBodyBrightness(b));
-  }, [communityState.themeBodyColor]);
+  }, [communityState.themeBaseColor]);
 
   useEffect(() => {
     $(".comright-descinput").focus();
@@ -90,12 +92,11 @@ const SingleCommunityRight = ({ communityState }) => {
   });
 
   useEffect(() => {
-    setDesc(communityState?.description);
+    setDesc(communityState?.description || "");
   }, [communityState]);
 
-  console.log(bodyBrightness);
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <div className='comright-parent'>
         <div className='comright-about'>
           <div
@@ -112,7 +113,7 @@ const SingleCommunityRight = ({ communityState }) => {
             >
               About Community
             </div>
-            {(communityState?.owner === authState.id ||
+            {(communityState?.owner?.id === authState.id ||
               communityState.moderators?.includes(authState.id)) && (
               <a
                 className='comright-modtools'
@@ -135,7 +136,7 @@ const SingleCommunityRight = ({ communityState }) => {
               className='comright-threecontainer'
               style={{
                 margin:
-                  communityState?.owner === authState.id ||
+                  communityState?.owner?.id === authState.id ||
                   communityState.moderators?.includes(authState.id)
                     ? "0 0 0 4px"
                     : "auto 0 auto auto",
@@ -190,7 +191,7 @@ const SingleCommunityRight = ({ communityState }) => {
                 </div>
               </div>
             </div>
-          ) : (communityState.owner === authState.id ||
+          ) : (communityState?.owner?.id === authState.id ||
               communityState.moderators?.includes(authState.id)) &&
             (!communityState.description ||
               communityState.description === "") ? (
@@ -204,7 +205,7 @@ const SingleCommunityRight = ({ communityState }) => {
             </div>
           ) : (communityState.owner === authState.id ||
               communityState.moderators?.includes(authState.id)) &&
-            communityState.description.length ? (
+            communityState.description?.length ? (
             <div
               className='comright-description'
               onClick={() => setDescState(true)}
@@ -217,8 +218,55 @@ const SingleCommunityRight = ({ communityState }) => {
             </div>
           )}
           <CreatedAtInformation selectedCommunity={communityState} />
+
+          <div className='divider' style={{ margin: "16px 0px" }} />
+
+          <div className='cominfo-infocontainer'>
+            <div className='cominfo-infocol'>
+              <div className='cominfo-count'>
+                {communityState.users?.length}
+              </div>
+              <div className='cominfo-p'>Members</div>
+            </div>
+
+            <div className='cominfo-infocol'>
+              <div
+                className='cominfo-count'
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <div className='cominfo-dot'>●</div>
+                <span>{communityState.users?.length}</span>
+              </div>
+              <div className='cominfo-p'>
+                <span>Online</span>
+              </div>
+            </div>
+
+            <div className='cominfo-infocol'></div>
+
+            <div className='cominfo-infocol'></div>
+          </div>
+
+          <div className='divider' style={{ margin: "16px 0" }} />
+
+          <a
+            className='bluebutton-button'
+            id={`communitypost-create-${communityState.id}`}
+            href={`/submit/${communityState.tag}`}
+            style={{
+              backgroundColor: "#" + communityState?.themeHighlightColor,
+            }}
+          >
+            Create Post
+          </a>
         </div>
       </div>
+
+      <Moderators community={communityState} />
     </div>
   );
 };

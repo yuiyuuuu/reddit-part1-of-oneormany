@@ -1,7 +1,6 @@
 .comright-parent {
   width: 312px;
   margin-left: 24px;
-  flex-grow: 1;
 }
 
 .comright-about {
@@ -56,6 +55,7 @@
 .comright-descparent {
   background-color: white;
   padding: 12px;
+  border-radius: 0 0 3px 3px;
 }
 
 .comright-adddesc {
@@ -132,4 +132,57 @@
   flex-direction: row;
   align-items: center;
   width: 100%;
+}
+
+//------Moderators section------\\
+
+.rightmod-parent {
+  width: 312px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  margin-left: 24px;
+}
+
+.rightmod-banner {
+  padding: 0px 12px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  border-radius: 3px 3px 0 0;
+}
+
+.rightmod-second {
+  background-color: white;
+  border-radius: 0 0 3px 3px;
+  padding: 12px;
+}
+
+.rightmod-message {
+  margin-bottom: 20px;
+}
+
+.rightmod-modmap {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  margin-bottom: 16px;
+  max-width: 100%;
+}
+
+.rightmod-allmod {
+  display: flex;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.rightmod-p {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0079d3;
+  cursor: pointer;
 }

@@ -242,15 +242,8 @@ const SingleCommunity = () => {
 
   useEffect(() => {
     $(document).ready(() => {
-      // console.log(authState.id === communityState.owner);
-      // console.log(authState.id);
-      // if (authState.id === communityState.owner) {
-      //   dispatch(toggleCommunityStyling(true));
-      //   return;
-      // }
-
       if (
-        authState.id !== communityState.owner &&
+        authState.id !== communityState?.owner?.id &&
         !communityState.moderators?.includes(authState.id)
       ) {
         dispatch(toggleCommunityStyling(false));
@@ -302,7 +295,11 @@ const SingleCommunity = () => {
           <div className='communities-namecontainer'>
             <div className='communities-nameicon'>
               <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
-                <DefaultCommunitiesIcon fillcolor={""} height={62} />
+                <DefaultCommunitiesIcon
+                  fillcolor={"#" + communityState.themeBaseColor}
+                  height={62}
+                  community={communityState}
+                />
               </div>
               <div className='name-flexrow'>
                 <div className='name-flexcol'>

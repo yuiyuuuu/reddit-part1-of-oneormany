@@ -34,9 +34,11 @@ const ColorPicker = ({
         dispatch(setBodyBrightness(lightOrDark(c.slice(1))));
         $(`#communities-banner${communityState.id}`).css("background-color", c);
         $(`#comright-toprow${communityState.id}`).css("background-color", c);
+        $(`#rightmod-banner-${communityState?.id}`).css("background-color", c);
+        $(`#comdefaulticon-${communityState?.id}`).css("fill", c);
+        break;
 
       case "highlight":
-        console.log("rannn");
         const q = $(".communities-joinbut").html();
         if (q.toLowerCase() === "join") {
           $(".communities-joinbut").css("background-color", c);
@@ -49,6 +51,22 @@ const ColorPicker = ({
             $(".communities-joinbut").css("border", "1px solid" + c);
           }
         }
+
+        $(`#communitypost-create-${communityState.id}`).css(
+          "background-color",
+          c
+        );
+
+        $(`#rightmod-message-${communityState.id}`).css(
+          "border",
+          "1px solid" + c
+        );
+        $(`#rightmod-message-${communityState.id}`).css("color", c);
+
+        $(`#rightmod-modmap-${communityState?.id}`).css("color", c);
+        $(`#rightmod-p-${communityState?.id}`).css("color", c);
+        $(`#right-owner-${communityState?.id}`).css("color", c);
+        break;
       default:
         return;
     }

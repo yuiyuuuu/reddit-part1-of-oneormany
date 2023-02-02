@@ -40,7 +40,7 @@ const CreateCommunityOverlay = ({ createOverlayState }) => {
       tag: `r/${communityName}`,
       NSFW: nsfw,
       visibility: type,
-      owner: authState.id,
+      ownerId: authState.id,
       users: {
         connect: [{ id: authState.id }],
       },

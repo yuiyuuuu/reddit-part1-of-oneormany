@@ -329,15 +329,30 @@ const Home = () => {
                   <div className='right2-divider' />
 
                   <div className='right2-buttoncontainer'>
-                    <a
-                      className='right2-button right2-createpost'
-                      href='/submit'
-                    >
-                      Create Post
-                    </a>
+                    {authState.id ? (
+                      <a
+                        className='right2-button right2-createpost'
+                        href='/submit'
+                      >
+                        Create Post
+                      </a>
+                    ) : (
+                      <a
+                        className='right2-button right2-createpost'
+                        href='/login'
+                      >
+                        Create Post
+                      </a>
+                    )}
                     <div
                       className='right2-button right2-createcommunity'
-                      onClick={() => dispatch(toggleCreateCommunity(true))}
+                      onClick={() => {
+                        if (authState?.id) {
+                          dispatch(toggleCreateCommunity(true));
+                        } else {
+                          window.location.href = "/login";
+                        }
+                      }}
                     >
                       Create Community
                     </div>

@@ -5,7 +5,6 @@ import CreateAtSvg from "../submitsvgs/CreateAtSvg";
 import { month } from "./monthobj";
 
 const CreatedAtInformation = ({ selectedCommunity }) => {
-  console.log(selectedCommunity);
   return (
     <div className='cominfo-createrow'>
       <CreateAtSvg />

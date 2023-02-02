@@ -16,7 +16,6 @@ import Communities404 from "./components/communities/Communities404";
 import CreateCommunityOverlay from "./components/communities/CreateCommunityOverlay";
 import MainTools from "./components/communities/ModeratorTools/MainTools";
 import CommunityStyling from "./components/communities/ModeratorTools/styling/CommunityStyling";
-import { toggleCommunityStyling } from "./store/communitystyling";
 
 function App() {
   const dispatch = useDispatch();
