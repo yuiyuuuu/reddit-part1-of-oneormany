@@ -112,7 +112,7 @@ const ColorTheme = ({ community, setSelectedSection }) => {
 
     dispatch(stylingChange(info)).then((res) => {
       if (res === "success") {
-        window.location.href = "/" + community.tag;
+        setSelectedSection("");
       }
     });
   }

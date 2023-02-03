@@ -44,6 +44,7 @@ const CreateCommunityOverlay = ({ createOverlayState }) => {
       users: {
         connect: [{ id: authState.id }],
       },
+      communityNameFormat: `r/${communityName}`,
       createAt: new Date(),
     };
 

@@ -11,6 +11,8 @@ import UploadFileSvg from "../../modtoolssvgs/UploadFileSvg";
 import { onSelectFile } from "../../../../../requests/getBase64Image";
 import { useDispatch, useSelector } from "react-redux";
 import { setIconImage } from "../../../../../store/selectedCommunityIconImage";
+import { ChangeIconImage } from "../../../../../store/posts-individualcommunity";
+import { useEffect } from "react";
 
 const NameIcon = ({ community, setSelectedSection }) => {
   const selectedImageState = useSelector((state) => state.iconImage);
@@ -38,17 +40,27 @@ const NameIcon = ({ community, setSelectedSection }) => {
   }
 
   function handleDeleteImage() {
-    if (community?.iconImage) {
-      //api request to delete image from db here
-    } else {
-      setSelectedImageBlob(null);
-      dispatch(setIconImage(null));
-    }
+    setSelectedImageBlob(null);
+    dispatch(setIconImage(null));
   }
 
   function handleIconChange() {
     //change function here
+    const obj = {
+      id: community.id,
+      image: selectedImageState,
+      communityNameFormat: selectedName,
+    };
+    dispatch(ChangeIconImage(obj)).then(() => setSelectedSection(""));
   }
+
+  useEffect(() => {
+    if (community?.iconImage) {
+      dispatch(setIconImage(community.iconImage));
+    }
+  }, [community?.iconImage]);
+
+  console.log(community.name, "imagee");
 
   return (
     <div>
@@ -114,20 +126,21 @@ const NameIcon = ({ community, setSelectedSection }) => {
             }}
             style={{
               cursor: !selectedImageState ? "pointer" : "auto",
-              backgroundImage: !community?.iconImage
-                ? selectedImageState && `url(${selectedImageBlob})`
-                : `url(data:image/png;base64,${community?.iconImage})`,
+              backgroundImage:
+                selectedImageState?.slice(4) === "blob"
+                  ? `url(${selectedImageBlob})`
+                  : `url(data:image/png;base64,${selectedImageState})`,
             }}
           >
             {!selectedImageState && <UploadFileSvg />}
 
-            {!selectedImageState && !community?.iconImage && (
+            {!selectedImageState && (
               <div style={{ fontSize: "11px" }}>
                 Drag and Drop or Upload Image
               </div>
             )}
 
-            {(selectedImageState || community?.iconImage) && (
+            {selectedImageState && (
               <div className='comstyling-imageremove'>
                 <TrashCan deleteFunction={handleDeleteImage} />
               </div>

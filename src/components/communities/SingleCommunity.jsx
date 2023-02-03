@@ -264,7 +264,7 @@ const SingleCommunity = () => {
 
       dispatch(toggleCommunityStyling(styleParms === "true"));
     });
-  }, [communityState, loading, authState]);
+  }, [loading, authState]);
 
   $(document).ready(() => {
     setLoading(false);

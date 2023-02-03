@@ -28,7 +28,7 @@ model Post {
 model Community{
   id String @id @default(uuid())
   name String @db.VarChar(100) @unique
-  communityNameFormat String @db.VarChar(102) @unique
+  communityNameFormat String? @db.VarChar(102) @unique
   tag String
   description String?
   moderators String []

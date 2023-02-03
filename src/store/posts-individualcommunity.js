@@ -13,6 +13,7 @@ const STYLING_CHANGE = "STYLING_CHANGE";
 const CLEAR = "CLEAR";
 const CREATE_COMMUNITY = "CREATE_COMMUNITY";
 const CHANGE_DESC = "CHANGE_DESC";
+const CHANGE_ICONIMAGE = "CHANGE_ICONIMAGE";
 
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
@@ -40,6 +41,11 @@ const dispatchStylingChange = (community) => ({
 
 const dispatchChangeDesc = (community) => ({
   type: CHANGE_DESC,
+  community,
+});
+
+const dispatchChangeIcon = (community) => ({
+  type: CHANGE_ICONIMAGE,
   community,
 });
 
@@ -130,6 +136,17 @@ export function CreateCommunity(body) {
   };
 }
 
+export function ChangeIconImage(body) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/iconimage", body);
+      dispatch(dispatchChangeIcon(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_COMMUNITY:
@@ -143,6 +160,8 @@ export default function (state = {}, action) {
     case CLEAR:
       return {};
     case CHANGE_DESC:
+      return action.community;
+    case CHANGE_ICONIMAGE:
       return action.community;
     default:
       return state;
