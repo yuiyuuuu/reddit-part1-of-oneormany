@@ -35,6 +35,7 @@ model Community{
   rules String?
   posts Post[] 
   image String?
+  iconImage String?
   allowimagesandvideo Boolean @default(false)
   allowlink Boolean @default(false)
   allowpoll Boolean @default(false)

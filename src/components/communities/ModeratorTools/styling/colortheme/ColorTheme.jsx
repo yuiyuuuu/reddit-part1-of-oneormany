@@ -85,6 +85,7 @@ const ColorTheme = ({ community, setSelectedSection }) => {
     $("#comstyling-input").css("background-image", `url(${binary.blob})`);
 
     $(".communities-mainbot").css("background-color", "");
+    e.target.value = ""; //allows same file upload twice if user deletes
   }
 
   function handleDeleteImage() {

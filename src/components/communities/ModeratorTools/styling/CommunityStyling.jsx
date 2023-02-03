@@ -78,7 +78,10 @@ const CommunityStyling = () => {
               setSelectedSection={setSelectedSection}
             />
           ) : selectedSection === "nameicon" ? (
-            <NameIcon />
+            <NameIcon
+              community={communityState}
+              setSelectedSection={setSelectedSection}
+            />
           ) : (
             ""
           )}

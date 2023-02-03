@@ -6,7 +6,6 @@ const dispatchBody = (v) => ({
 });
 
 export function setBodyBrightness(value) {
-  console.log(value);
   return (dispatch) => {
     dispatch(dispatchBody(value));
   };

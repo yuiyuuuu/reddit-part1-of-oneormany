@@ -32,6 +32,7 @@ const SingleCommunity = () => {
   const authState = useSelector((state) => state.auth);
   const postState = useSelector((state) => state.posts);
   const communityStylingState = useSelector((state) => state.communityStyling);
+  const iconImageState = useSelector((state) => state.iconImage);
 
   //share overlay
   const [showOverlay, setShowOverlay] = useState(false);
@@ -300,11 +301,20 @@ const SingleCommunity = () => {
           <div className='communities-namecontainer'>
             <div className='communities-nameicon'>
               <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
-                <DefaultCommunitiesIcon
-                  fillcolor={"#" + communityState.themeBaseColor}
-                  height={62}
-                  community={communityState}
-                />
+                {!communityState?.iconImage && !iconImageState ? (
+                  <DefaultCommunitiesIcon
+                    fillcolor={"#" + communityState.themeBaseColor}
+                    height={70}
+                    community={communityState}
+                  />
+                ) : (
+                  <img
+                    src={`data:image/png;base64,${
+                      iconImageState || communityState?.iconImage
+                    }`}
+                    className='communities-iconimg'
+                  />
+                )}
               </div>
               <div className='name-flexrow'>
                 <div className='name-flexcol'>
