@@ -45,6 +45,7 @@ model Community{
   themeBaseColor String @default("33A8FF")
   themeHighlightColor String @default("0079D3")
   themeBodyColor String @default("DAE0E6")
+  bannerColor String?
   communityBannerSize BannerSize @default(small)
   createAt DateTime?
   users User[]

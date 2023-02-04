@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import LeftArrowStyling from "../modtoolssvgs/LeftArrowStyling";
 import RightArrow from "../modtoolssvgs/RightArrow";
 import XSvgStyling from "../modtoolssvgs/XSvgStyling";
+import Banner from "./banner/Banner";
 import ColorTheme from "./colortheme/ColorTheme";
 import "./communitystyling.scss";
 import NameIcon from "./nameicon/NameIcon";
@@ -54,7 +55,10 @@ const CommunityStyling = () => {
                 <RightArrow />
               </div>
 
-              <div className='comstyling-appearanceli'>
+              <div
+                className='comstyling-appearanceli'
+                onClick={() => setSelectedSection("banner")}
+              >
                 Banner
                 <div className='grow' />
                 <RightArrow />
@@ -79,6 +83,11 @@ const CommunityStyling = () => {
             />
           ) : selectedSection === "nameicon" ? (
             <NameIcon
+              community={communityState}
+              setSelectedSection={setSelectedSection}
+            />
+          ) : selectedSection === "banner" ? (
+            <Banner
               community={communityState}
               setSelectedSection={setSelectedSection}
             />

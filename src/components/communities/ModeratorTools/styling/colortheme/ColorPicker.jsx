@@ -32,7 +32,12 @@ const ColorPicker = ({
 
       case "base":
         dispatch(setBodyBrightness(lightOrDark(c.slice(1))));
-        $(`#communities-banner${communityState.id}`).css("background-color", c);
+        if (!communityState?.bannerColor) {
+          $(`#communities-banner${communityState.id}`).css(
+            "background-color",
+            c
+          );
+        }
         $(`#comright-toprow${communityState.id}`).css("background-color", c);
         $(`#rightmod-banner-${communityState?.id}`).css("background-color", c);
         $(`#comdefaulticon-${communityState?.id}`).css("fill", c);

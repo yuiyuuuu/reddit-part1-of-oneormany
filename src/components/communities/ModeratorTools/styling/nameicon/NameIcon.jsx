@@ -60,8 +60,6 @@ const NameIcon = ({ community, setSelectedSection }) => {
     }
   }, [community?.iconImage]);
 
-  console.log(community.name, "imagee");
-
   return (
     <div>
       <div className='name-header'>

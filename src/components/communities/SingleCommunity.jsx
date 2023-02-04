@@ -287,7 +287,12 @@ const SingleCommunity = () => {
         <div
           className='communities-bannertop'
           id={`communities-banner${communityState.id}`}
-          style={{ backgroundColor: "#" + communityState.themeBaseColor }}
+          style={{
+            backgroundColor:
+              "#" + communityState?.bannerColor
+                ? communityState?.bannerColor
+                : communityState.themeBaseColor,
+          }}
         />
         <div style={{ width: "100%", backgroundColor: "white" }}>
           <img
