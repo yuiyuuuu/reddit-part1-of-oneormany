@@ -242,6 +242,7 @@ const SingleCommunity = () => {
   ]);
 
   useEffect(() => {
+    if (loading) return;
     $(document).ready(() => {
       if (!window.localStorage.getItem("token")) {
         dispatch(toggleCommunityStyling(false));
@@ -255,8 +256,6 @@ const SingleCommunity = () => {
         dispatch(toggleCommunityStyling(false));
         return;
       }
-
-      if (loading) return;
 
       const styleParms = new URLSearchParams(
         new URL(window.location.href).search
@@ -289,9 +288,16 @@ const SingleCommunity = () => {
           id={`communities-banner${communityState.id}`}
           style={{
             backgroundColor:
-              "#" + communityState?.bannerColor
+              "#" +
+              (communityState?.bannerColor
                 ? communityState?.bannerColor
-                : communityState.themeBaseColor,
+                : communityState.themeBaseColor),
+            height:
+              communityState?.communityBannerSize === "small"
+                ? "64px"
+                : communityState?.communityBannerSize === "medium"
+                ? "128px"
+                : "192px",
           }}
         />
         <div style={{ width: "100%", backgroundColor: "white" }}>

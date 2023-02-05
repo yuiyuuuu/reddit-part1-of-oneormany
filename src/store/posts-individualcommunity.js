@@ -14,6 +14,7 @@ const CLEAR = "CLEAR";
 const CREATE_COMMUNITY = "CREATE_COMMUNITY";
 const CHANGE_DESC = "CHANGE_DESC";
 const CHANGE_ICONIMAGE = "CHANGE_ICONIMAGE";
+const CHANGE_BANNER = "CHANGE_BANNER";
 
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
@@ -46,6 +47,11 @@ const dispatchChangeDesc = (community) => ({
 
 const dispatchChangeIcon = (community) => ({
   type: CHANGE_ICONIMAGE,
+  community,
+});
+
+const dispatchBanner = (community) => ({
+  type: CHANGE_BANNER,
   community,
 });
 
@@ -147,6 +153,18 @@ export function ChangeIconImage(body) {
   };
 }
 
+export function changeBanner(body) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/banner", body);
+      dispatch(dispatchBanner(data));
+      return "success";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_COMMUNITY:
@@ -162,6 +180,8 @@ export default function (state = {}, action) {
     case CHANGE_DESC:
       return action.community;
     case CHANGE_ICONIMAGE:
+      return action.community;
+    case CHANGE_BANNER:
       return action.community;
     default:
       return state;

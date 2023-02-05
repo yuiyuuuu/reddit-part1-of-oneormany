@@ -51,7 +51,7 @@
   font-weight: 500;
   padding: 4px 0;
   cursor: pointer;
-  padding: 8px 0;
+  padding: 4px 0;
 }
 
 .banner-rowtext {
@@ -83,4 +83,37 @@
   &:hover > svg {
     display: block;
   }
+}
+.banner-imagecontainer {
+  padding: 8px 0;
+  color: #878a8c;
+  line-height: 16px;
+  font-weight: 300;
+}
+
+.banner-third {
+  border-bottom: 1px solid #edeff1;
+}
+
+.banner-tile {
+  display: flex;
+  flex-direction: row;
+  margin: 24px 0 8px 0;
+}
+
+.banner-imageopt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  margin: 0 2px;
+  padding: 8px;
+  flex-grow: 1;
+  flex-direction: column;
+  border: 1px solid #edeff1;
+  color: #878a8c;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
 }

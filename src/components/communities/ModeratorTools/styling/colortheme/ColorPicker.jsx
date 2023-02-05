@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./colorpicker.scss";
 
 import { colors } from "./colors";
 
 import $ from "jquery";
-import { useEffect } from "react";
 import { setBodyBrightness } from "../../../../../store/bodyBrightness";
 import { lightOrDark } from "../../../../../requests/lightOrDark";
 
@@ -24,9 +23,9 @@ const ColorPicker = ({
   const dispatch = useDispatch();
 
   function handleChange(c) {
-    if (selectedImage) return; //dont change the color of background if image is active
     switch (which) {
       case "color":
+        if (selectedImage) return; //dont change the color of background if image is active
         $(".communities-mainbot").css("background-color", c);
         break;
 
@@ -72,6 +71,8 @@ const ColorPicker = ({
         $(`#rightmod-p-${communityState?.id}`).css("color", c);
         $(`#right-owner-${communityState?.id}`).css("color", c);
         break;
+      case "banner":
+        $(".communities-bannertop").css("background-color", c);
       default:
         return;
     }
@@ -144,7 +145,8 @@ const ColorPicker = ({
               (which === "color" && "#" + communityState.themeBodyColor) ||
               (which === "base" && "#" + communityState.themeBaseColor) ||
               (which === "highlight" &&
-                "#" + communityState.themeHighlightColor),
+                "#" + communityState.themeHighlightColor) ||
+              (which === "banner" && "#" + selectedcolor),
           }}
         ></div>
         <input

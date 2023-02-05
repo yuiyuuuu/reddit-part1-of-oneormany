@@ -7,7 +7,20 @@ import "./banner.scss";
 
 import $ from "jquery";
 
+import UploadFileSvg from "../../modtoolssvgs/UploadFileSvg";
+import { onSelectFile } from "../../../../../requests/getBase64Image";
+import { useDispatch } from "react-redux";
+import { changeBanner } from "../../../../../store/posts-individualcommunity";
+import { Buffer } from "buffer";
+import TrashCan from "../../modtoolssvgs/TrashCan";
+import DownArrowColorThemeSquare from "../../modtoolssvgs/DownArrowColorThemeSquare";
+import FillSvg from "../../../communitiessvg/FillSvg";
+import TileSvg from "../../../communitiessvg/TileSvg";
+import { lightOrDark } from "../../../../../requests/lightOrDark";
+
 const Banner = ({ community, setSelectedSection }) => {
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(true);
 
   const [selectedHeight, setSelectedHeight] = useState("");
@@ -15,6 +28,17 @@ const Banner = ({ community, setSelectedSection }) => {
   const [colorActive, setColorActive] = useState(false);
   const [bannerColor, setBannerColor] = useState(null);
   const [bannerColor2, setBannerColor2] = useState(null);
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageBlob, setSelectedImageBlob] = useState(null);
+  const [bannerImageType, setBannerImageType] = useState(null);
+
+  async function getBase64Image(img) {
+    const arrayBuffer = await (await fetch(img)).arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer).toString("base64");
+
+    setSelectedImage(buffer);
+  }
 
   function checkValidHex(v) {
     if (!v) return;
@@ -31,10 +55,67 @@ const Banner = ({ community, setSelectedSection }) => {
     );
   }, []);
 
+  function handleDeleteImage() {
+    setSelectedImage(null);
+    setSelectedImageBlob(null);
+  }
+
+  function handleImageUpload(e) {
+    const binary = onSelectFile(e);
+
+    setSelectedImageBlob(binary.blob);
+    getBase64Image(binary.blob);
+
+    $(`#communities-banner${community?.id}`).css(
+      "background-image",
+      `url(${binary.blob})`
+    );
+    e.target.value = "";
+  }
+
+  function handleBannerChange() {
+    const obj = {
+      id: community.id,
+      bannerImage: selectedImage,
+      bannerColor: bannerColor.slice(1),
+      communityBannerSize: selectedHeight,
+      bannerImageType: bannerImageType,
+    };
+
+    dispatch(changeBanner(obj)).then((res) => {
+      if (res === "success") {
+        setSelectedSection("");
+      }
+    });
+  }
+
+  useEffect(() => {
+    setBannerColor(community?.bannerColor || community?.themeBaseColor);
+    setBannerColor2("#" + community?.bannerColor || community?.themeBaseColor);
+    setSelectedHeight(community?.communityBannerSize || "small");
+    setBannerImageType(community?.bannerImageType || "fill");
+  }, [community]);
+
   useEffect(() => {
     if (loading) return;
     colorPickerSet();
-  }, [loading]);
+
+    $(document)
+      .off()
+      .click(() => {
+        var $target = $(event.target);
+
+        if (
+          !$target.closest("#colorpicker-banner").length &&
+          $("#colorpicker-banner").is(":visible") &&
+          !$target.closest(".banner-row2").length
+        ) {
+          setColorActive(false);
+          const valid = checkValidHex(bannerColor2);
+          if (!valid) setBannerColor2(bannerColor);
+        }
+      });
+  }, [loading, bannerColor, bannerColor2]);
 
   $(document).ready(() => {
     setLoading(false);
@@ -55,9 +136,12 @@ const Banner = ({ community, setSelectedSection }) => {
         <div className='banner-selectioncontainer'>
           <div
             className='banner-selection'
-            onClick={() => setSelectedHeight("64")}
+            onClick={() => {
+              $(`#communities-banner${community.id}`).css("height", "64px");
+              setSelectedHeight("small");
+            }}
           >
-            {selectedHeight === "64" ? (
+            {selectedHeight === "small" ? (
               <SelectedRadio2 />
             ) : (
               <NotSelectedRadio2 />
@@ -67,9 +151,12 @@ const Banner = ({ community, setSelectedSection }) => {
 
           <div
             className='banner-selection'
-            onClick={() => setSelectedHeight("128")}
+            onClick={() => {
+              $(`#communities-banner${community.id}`).css("height", "128px");
+              setSelectedHeight("medium");
+            }}
           >
-            {selectedHeight === "128" ? (
+            {selectedHeight === "medium" ? (
               <SelectedRadio2 />
             ) : (
               <NotSelectedRadio2 />
@@ -79,9 +166,12 @@ const Banner = ({ community, setSelectedSection }) => {
 
           <div
             className='banner-selection'
-            onClick={() => setSelectedHeight("192")}
+            onClick={() => {
+              $(`#communities-banner${community.id}`).css("height", "192px");
+              setSelectedHeight("large");
+            }}
           >
-            {selectedHeight === "192" ? (
+            {selectedHeight === "large" ? (
               <SelectedRadio2 />
             ) : (
               <NotSelectedRadio2 />
@@ -98,8 +188,130 @@ const Banner = ({ community, setSelectedSection }) => {
           onClick={() => setColorActive((prev) => !prev)}
         >
           <div className='banner-rowtext'>Color</div>
-          <div className='banner-sq' id='banner-sq' />
+          <div
+            className='banner-sq'
+            id='banner-sq'
+            style={{ backgroundColor: bannerColor }}
+          >
+            <DownArrowColorThemeSquare display={colorActive} />
+          </div>
         </div>
+
+        <div className='banner-imagecontainer'>
+          <div className='name-t'>Image</div>
+          <div
+            className='name-inputimage'
+            id='name-inputimage'
+            onClick={() => {
+              if (!selectedImage) {
+                document.getElementById("banner-imageinput").click();
+              } else {
+                return;
+              }
+            }}
+            style={{
+              cursor: !selectedImage ? "pointer" : "auto",
+              backgroundImage:
+                selectedImage?.slice(4) === "blob"
+                  ? `url(${selectedImageBlob})`
+                  : `url(data:image/png;base64,${selectedImage})`,
+            }}
+          >
+            {!selectedImage && <UploadFileSvg />}
+
+            {!selectedImage && (
+              <div style={{ fontSize: "11px" }}>
+                Drag and Drop or Upload Image
+              </div>
+            )}
+
+            {selectedImage && (
+              <div className='comstyling-imageremove'>
+                <TrashCan deleteFunction={handleDeleteImage} />
+              </div>
+            )}
+
+            <input
+              id='banner-imageinput'
+              type='file'
+              hidden
+              accept='image/png, image/jpeg'
+              onChange={handleImageUpload}
+            />
+          </div>
+
+          {selectedImage && (
+            <div className='banner-tile'>
+              <div
+                className='banner-imageopt'
+                onClick={() => {
+                  setBannerImageType("fill");
+                }}
+                style={{
+                  backgroundColor:
+                    bannerImageType === "fill" &&
+                    "#" + community.themeHighlightColor,
+                  color:
+                    bannerImageType === "fill"
+                      ? lightOrDark(community.themeHighlightColor) === "dark"
+                        ? "white"
+                        : "#edeff1"
+                      : "#878A8C",
+                }}
+              >
+                <FillSvg
+                  fill={
+                    bannerImageType === "fill"
+                      ? lightOrDark(community.themeHighlightColor) === "dark"
+                        ? "white"
+                        : "#edeff1"
+                      : "#878A8C"
+                  }
+                />
+                Fill
+              </div>
+              <div
+                className='banner-imageopt'
+                onClick={() => {
+                  setBannerImageType("tile");
+                }}
+                style={{
+                  backgroundColor:
+                    bannerImageType === "tile" &&
+                    "#" + community.themeHighlightColor,
+                  color:
+                    bannerImageType === "tile"
+                      ? lightOrDark(community.themeHighlightColor) === "dark"
+                        ? "white"
+                        : "#edeff1"
+                      : "#878A8C",
+                }}
+              >
+                <TileSvg
+                  fill={
+                    bannerImageType === "tile"
+                      ? lightOrDark(community.themeHighlightColor) === "dark"
+                        ? "white"
+                        : "#edeff1"
+                      : "#878A8C"
+                  }
+                />
+                Tile
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div
+        className='bluebutton-button'
+        style={{ margin: "8px 0" }}
+        onClick={() => handleBannerChange()}
+      >
+        Save
+      </div>
+      <div className='blueborder-button' onClick={() => setSelectedSection("")}>
+        Cancel
       </div>
 
       <ColorPicker

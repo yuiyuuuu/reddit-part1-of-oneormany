@@ -10,6 +10,7 @@ import navToggleCreate from "./nav-createcommunity";
 import communityStyling from "./communitystyling";
 import bodyBrightness from "./bodyBrightness";
 import iconImage from "./selectedCommunityIconImage";
+import madeChange from "./comstyling/madeChange";
 
 const reducer = combineReducers({
   auth,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   communityStyling,
   bodyBrightness,
   iconImage,
+  madeChange,
 }); //reducers here
 
 const middleware = composeWithDevTools(

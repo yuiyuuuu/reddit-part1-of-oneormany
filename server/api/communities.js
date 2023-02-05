@@ -248,3 +248,21 @@ router.put("/iconimage", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/banner", async (req, res, next) => {
+  try {
+    const update = await prisma.community.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        bannerImage: req.body.bannerImage,
+        bannerColor: req.body.bannerColor,
+        communityBannerSize: req.body.communityBannerSize,
+      },
+    });
+    res.send(update);
+  } catch (error) {
+    next(error);
+  }
+});
