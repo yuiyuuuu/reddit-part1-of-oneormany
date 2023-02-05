@@ -163,7 +163,13 @@ const NameIcon = ({ community, setSelectedSection }) => {
         Save
       </div>
 
-      <div className='blueborder-button' onClick={() => setSelectedSection("")}>
+      <div
+        className='blueborder-button'
+        onClick={() => {
+          setSelectedSection("");
+          dispatch(setIconImage(null));
+        }}
+      >
         Cancel
       </div>
     </div>

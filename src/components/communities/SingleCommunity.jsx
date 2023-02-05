@@ -309,60 +309,66 @@ const SingleCommunity = () => {
                 `url(data:image/png;base64,${communityState.image})`,
             }}
           />
-          <div className='communities-namecontainer'>
-            <div className='communities-nameicon'>
-              <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
-                {!communityState?.iconImage && !iconImageState ? (
-                  <DefaultCommunitiesIcon
-                    fillcolor={"#" + communityState.themeBaseColor}
-                    height={70}
-                    community={communityState}
-                  />
-                ) : (
-                  <img
-                    src={`data:image/png;base64,${
-                      iconImageState || communityState?.iconImage
-                    }`}
-                    className='communities-iconimg'
-                  />
-                )}
-              </div>
-              <div className='name-flexrow'>
-                <div className='name-flexcol'>
-                  <div className='communityname-text'>
-                    {communityState.name}
-                  </div>
-                  <div className='communitytag-text'>{communityState.tag}</div>
-                </div>
-                <button
-                  className='communities-joinbut'
-                  onClick={() =>
-                    userIds.includes(authState.id)
-                      ? handleLeaveCommunity()
-                      : handleJoinCommunity()
-                  }
-                  style={{
-                    backgroundColor: userIds.includes(authState.id)
-                      ? "transparent"
-                      : "#" + communityState.themeHighlightColor,
-                    color: !userIds.includes(authState.id)
-                      ? "#FFFFFF"
-                      : "#" + communityState.themeHighlightColor,
-                    border: !userIds.includes(authState.id)
-                      ? "none"
-                      : "1px solid" + "#" + communityState.themeHighlightColor,
-                  }}
-                >
-                  {userIds.includes(authState.id) ? (
-                    <span id='joined-hover'>Joined</span>
+          <div style={{ width: "100%" }}>
+            <div className='communities-namecontainer'>
+              <div className='communities-nameicon'>
+                <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
+                  {!communityState?.iconImage && !iconImageState ? (
+                    <DefaultCommunitiesIcon
+                      fillcolor={"#" + communityState.themeBaseColor}
+                      height={70}
+                      community={communityState}
+                    />
                   ) : (
-                    "Join"
+                    <img
+                      src={`data:image/png;base64,${
+                        iconImageState || communityState?.iconImage
+                      }`}
+                      className='communities-iconimg'
+                    />
                   )}
-                </button>
+                </div>
+                <div className='name-flexrow'>
+                  <div className='name-flexcol'>
+                    <div className='communityname-text'>
+                      {communityState.name}
+                    </div>
+                    <div className='communitytag-text'>
+                      {communityState.tag}
+                    </div>
+                  </div>
+                  <button
+                    className='communities-joinbut'
+                    onClick={() =>
+                      userIds.includes(authState.id)
+                        ? handleLeaveCommunity()
+                        : handleJoinCommunity()
+                    }
+                    style={{
+                      backgroundColor: userIds.includes(authState.id)
+                        ? "transparent"
+                        : "#" + communityState.themeHighlightColor,
+                      color: !userIds.includes(authState.id)
+                        ? "#FFFFFF"
+                        : "#" + communityState.themeHighlightColor,
+                      border: !userIds.includes(authState.id)
+                        ? "none"
+                        : "1px solid" +
+                          "#" +
+                          communityState.themeHighlightColor,
+                    }}
+                  >
+                    {userIds.includes(authState.id) ? (
+                      <span id='joined-hover'>Joined</span>
+                    ) : (
+                      "Join"
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className='communities-postsoption'>Posts</div>
+              <div className='communities-postsoption'>Posts</div>
+            </div>
           </div>
 
           <div

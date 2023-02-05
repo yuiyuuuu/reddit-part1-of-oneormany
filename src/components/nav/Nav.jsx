@@ -86,6 +86,7 @@ const Nav = () => {
             !show) &&
           "none",
         marginLeft: communityStylingState && "284px",
+        width: communityStylingState && "calc(100% - 284px)",
       }}
     >
       {/* the point of this hide element is so for the /about/:section. The navbar usually shows up before we can hide it so we use this to cover it and then remove it once the page loads*/}
@@ -94,10 +95,7 @@ const Nav = () => {
         style={{ display: location.pathname.slice(0, 2) !== "/r" && "none" }}
       />
 
-      <div
-        className='nav-inner-1'
-        style={{ flexGrow: communityStylingState && 0 }}
-      >
+      <div className='nav-inner-1'>
         <a className='nav-1' href='/'>
           <RedditIcon />
           <RedditName />
@@ -116,10 +114,7 @@ const Nav = () => {
           </button>
         </div>
 
-        <div
-          className='nav-3-search'
-          style={{ display: communityStylingState && "none" }}
-        >
+        <div className='nav-3-search'>
           <div className='nav-3-searchinner'>
             <div style={{ marginLeft: "15px", marginRight: "9px" }}>
               <SearchIconSvg />

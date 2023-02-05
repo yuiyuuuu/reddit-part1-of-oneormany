@@ -12,6 +12,8 @@ import DownArrowColorThemeSquare from "../../modtoolssvgs/DownArrowColorThemeSqu
 
 import { onSelectFile } from "../../../../../requests/getBase64Image";
 import TrashCan from "../../modtoolssvgs/TrashCan";
+import { setBodyBrightness } from "../../../../../store/bodyBrightness";
+import { lightOrDark } from "../../../../../requests/lightOrDark";
 
 const ColorTheme = ({ community, setSelectedSection }) => {
   const dispatch = useDispatch();
@@ -115,6 +117,51 @@ const ColorTheme = ({ community, setSelectedSection }) => {
         setSelectedSection("");
       }
     });
+  }
+
+  function handleCancel() {
+    //body color
+    $(".communities-mainbot").css(
+      "background-color",
+      "#" + community.themeBodyColor
+    );
+
+    //base color
+    const basec = "#" + community.themeBaseColor;
+    dispatch(setBodyBrightness(lightOrDark(community.themeBaseColor)));
+    if (!community?.bannerColor) {
+      $(`#communities-banner${community.id}`).css("background-color", basec);
+    }
+
+    $(`#comright-toprow${community.id}`).css("background-color", basec);
+    $(`#rightmod-banner-${community?.id}`).css("background-color", basec);
+    $(`#comdefaulticon-${community?.id}`).css("fill", basec);
+
+    //highlight colors
+
+    const c = "#" + community.themeHighlightColor;
+    const q = $(".communities-joinbut").html();
+
+    if (q.toLowerCase() === "join") {
+      $(".communities-joinbut").css("background-color", c);
+    } else {
+      if (c === "#FFFFFF") {
+        $(".communities-joinbut").css("color", "#EDEFF1");
+        $(".communities-joinbut").css("border", "1px solid" + "#EDEFF1");
+      } else {
+        $(".communities-joinbut").css("color", c);
+        $(".communities-joinbut").css("border", "1px solid" + c);
+      }
+    }
+
+    $(`#communitypost-create-${community.id}`).css("background-color", c);
+
+    $(`#rightmod-message-${community.id}`).css("border", "1px solid" + c);
+    $(`#rightmod-message-${community.id}`).css("color", c);
+
+    $(`#rightmod-modmap-${community?.id}`).css("color", c);
+    $(`#rightmod-p-${community?.id}`).css("color", c);
+    $(`#right-owner-${community?.id}`).css("color", c);
   }
 
   const colorPickerSet = useCallback(() => {
@@ -346,7 +393,10 @@ const ColorTheme = ({ community, setSelectedSection }) => {
       <button
         className='blueborder-button'
         style={{ width: "100%" }}
-        onClick={() => setSelectedSection("")}
+        onClick={() => {
+          setSelectedSection("");
+          handleCancel();
+        }}
       >
         Cancel
       </button>

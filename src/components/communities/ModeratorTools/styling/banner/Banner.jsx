@@ -58,6 +58,8 @@ const Banner = ({ community, setSelectedSection }) => {
   function handleDeleteImage() {
     setSelectedImage(null);
     setSelectedImageBlob(null);
+    $(`#communities-banner${community.id}`).css("background-image", "");
+    setBannerImageType("fill");
   }
 
   function handleImageUpload(e) {
@@ -87,6 +89,29 @@ const Banner = ({ community, setSelectedSection }) => {
         setSelectedSection("");
       }
     });
+  }
+
+  function handleCancel() {
+    $(`#communities-banner${community.id}`).css(
+      "height",
+      community.communityBannerSize === "small"
+        ? "64px"
+        : community.communityBannerSize === "medium"
+        ? "128px"
+        : "192px"
+    );
+
+    $(`#communities-banner${community.id}`).css(
+      "background-image",
+      community?.bannerImage
+        ? `url(data:image/png;base64,${community.bannerImage})`
+        : ""
+    );
+
+    $(`#communities-banner${community.id}`).css(
+      "background-color",
+      "#" + community.bannerColor
+    );
   }
 
   useEffect(() => {
@@ -245,6 +270,10 @@ const Banner = ({ community, setSelectedSection }) => {
               <div
                 className='banner-imageopt'
                 onClick={() => {
+                  $(`#communities-banner${community.id}`).css(
+                    "background-size",
+                    "cover"
+                  );
                   setBannerImageType("fill");
                 }}
                 style={{
@@ -273,6 +302,10 @@ const Banner = ({ community, setSelectedSection }) => {
               <div
                 className='banner-imageopt'
                 onClick={() => {
+                  $(`#communities-banner${community.id}`).css(
+                    "background-size",
+                    "contain"
+                  );
                   setBannerImageType("tile");
                 }}
                 style={{
@@ -310,7 +343,13 @@ const Banner = ({ community, setSelectedSection }) => {
       >
         Save
       </div>
-      <div className='blueborder-button' onClick={() => setSelectedSection("")}>
+      <div
+        className='blueborder-button'
+        onClick={() => {
+          setSelectedSection("");
+          handleCancel();
+        }}
+      >
         Cancel
       </div>
 

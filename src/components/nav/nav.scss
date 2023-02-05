@@ -8,7 +8,9 @@
   top: 0;
   align-items: center;
   padding-left: 20px;
+  padding-right: 20px;
   z-index: 9999;
+  box-sizing: border-box;
 }
 
 .nav-inner-1 {
@@ -115,7 +117,6 @@
   flex-direction: row;
   align-items: center;
   height: 100%;
-  padding-right: 40px;
 }
 
 .nav-twoicons {
