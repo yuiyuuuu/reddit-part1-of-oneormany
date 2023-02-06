@@ -62,7 +62,6 @@ export function signup(object) {
       const data = await makePostRequest("authentication/signup", object);
 
       window.localStorage.setItem("token", data.jwt);
-      console.log("dataaa", data);
       return dispatch(setAuth(data.user));
     } catch (error) {
       console.log(error);

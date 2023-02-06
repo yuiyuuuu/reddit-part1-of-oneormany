@@ -17,7 +17,6 @@ router.post("/signup", async (req, res, next) => {
       },
     });
 
-    console.log(user, "userrr");
     res.send({
       user,
       jwt: jwt.sign({ id: user.id }, process.env.JWT),

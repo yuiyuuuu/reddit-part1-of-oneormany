@@ -8,6 +8,8 @@ import $ from "jquery";
 import { setBodyBrightness } from "../../../../../store/bodyBrightness";
 import { lightOrDark } from "../../../../../requests/lightOrDark";
 
+import { setMadeChange } from "../../../../../store/comstyling/madeChange";
+
 const ColorPicker = ({
   active,
   func,
@@ -27,6 +29,7 @@ const ColorPicker = ({
       case "color":
         if (selectedImage) return; //dont change the color of background if image is active
         $(".communities-mainbot").css("background-color", c);
+        dispatch(setMadeChange(true));
         break;
 
       case "base":
@@ -40,6 +43,7 @@ const ColorPicker = ({
         $(`#comright-toprow${communityState.id}`).css("background-color", c);
         $(`#rightmod-banner-${communityState?.id}`).css("background-color", c);
         $(`#comdefaulticon-${communityState?.id}`).css("fill", c);
+        dispatch(setMadeChange(true));
         break;
 
       case "highlight":
@@ -70,9 +74,72 @@ const ColorPicker = ({
         $(`#rightmod-modmap-${communityState?.id}`).css("color", c);
         $(`#rightmod-p-${communityState?.id}`).css("color", c);
         $(`#right-owner-${communityState?.id}`).css("color", c);
+        dispatch(setMadeChange(true));
         break;
       case "banner":
         $(".communities-bannertop").css("background-color", c);
+        dispatch(setMadeChange(true));
+      default:
+        return;
+    }
+  }
+
+  function handleChange2(c) {
+    //this function doesnt have setmadechange
+    switch (which) {
+      case "color":
+        if (selectedImage) return; //dont change the color of background if image is active
+        $(".communities-mainbot").css("background-color", c);
+
+        break;
+
+      case "base":
+        dispatch(setBodyBrightness(lightOrDark(c.slice(1))));
+        if (!communityState?.bannerColor) {
+          $(`#communities-banner${communityState.id}`).css(
+            "background-color",
+            c
+          );
+        }
+        $(`#comright-toprow${communityState.id}`).css("background-color", c);
+        $(`#rightmod-banner-${communityState?.id}`).css("background-color", c);
+        $(`#comdefaulticon-${communityState?.id}`).css("fill", c);
+
+        break;
+
+      case "highlight":
+        const q = $(".communities-joinbut").html();
+        if (q.toLowerCase() === "join") {
+          $(".communities-joinbut").css("background-color", c);
+        } else {
+          if (c === "#FFFFFF") {
+            $(".communities-joinbut").css("color", "#EDEFF1");
+            $(".communities-joinbut").css("border", "1px solid" + "#EDEFF1");
+          } else {
+            $(".communities-joinbut").css("color", c);
+            $(".communities-joinbut").css("border", "1px solid" + c);
+          }
+        }
+
+        $(`#communitypost-create-${communityState.id}`).css(
+          "background-color",
+          c
+        );
+
+        $(`#rightmod-message-${communityState.id}`).css(
+          "border",
+          "1px solid" + c
+        );
+        $(`#rightmod-message-${communityState.id}`).css("color", c);
+
+        $(`#rightmod-modmap-${communityState?.id}`).css("color", c);
+        $(`#rightmod-p-${communityState?.id}`).css("color", c);
+        $(`#right-owner-${communityState?.id}`).css("color", c);
+
+        break;
+      case "banner":
+        $(".communities-bannertop").css("background-color", c);
+
       default:
         return;
     }
@@ -103,7 +170,7 @@ const ColorPicker = ({
       $(`#input-${which}`).css("border", "1px solid red");
       $(`#colorpicker-i${which}`).css("display", "block");
     } else {
-      handleChange(secondV);
+      handleChange2(secondV);
       set(secondV);
       $(`#input-${which}`).css("border", "1px solid #edeff1");
       $(`#colorpicker-i${which}`).css("display", "none");

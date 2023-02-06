@@ -16,10 +16,12 @@ import Communities404 from "./components/communities/Communities404";
 import CreateCommunityOverlay from "./components/communities/CreateCommunityOverlay";
 import MainTools from "./components/communities/ModeratorTools/MainTools";
 import CommunityStyling from "./components/communities/ModeratorTools/styling/CommunityStyling";
+import DiscardChanges from "./discardChanges/DiscardChanges";
 
 function App() {
   const dispatch = useDispatch();
   const createOverlayState = useSelector((state) => state.navToggleCreate);
+  const discardState = useSelector((state) => state.discardChanges);
 
   useEffect(() => {
     dispatch(getLocalData());
@@ -30,6 +32,7 @@ function App() {
       <Nav />
       <CommunityStyling />
       <CreateCommunityOverlay createOverlayState={createOverlayState} />
+      <DiscardChanges display={discardState} />
       <Routes>
         <Route exact path='/posts' element={<Posts />} />
         <Route exact path='/posts/:id' element={<SinglePost />} />

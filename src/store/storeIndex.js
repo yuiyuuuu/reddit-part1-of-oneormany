@@ -11,6 +11,7 @@ import communityStyling from "./communitystyling";
 import bodyBrightness from "./bodyBrightness";
 import iconImage from "./selectedCommunityIconImage";
 import madeChange from "./comstyling/madeChange";
+import discardChanges from "./discard/discardChanges";
 
 const reducer = combineReducers({
   auth,
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   bodyBrightness,
   iconImage,
   madeChange,
+  discardChanges,
 }); //reducers here
 
 const middleware = composeWithDevTools(

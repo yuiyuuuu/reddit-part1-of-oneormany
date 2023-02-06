@@ -11,7 +11,7 @@ import NameIcon from "./nameicon/NameIcon";
 const CommunityStyling = () => {
   const communityStylingState = useSelector((state) => state.communityStyling);
   const communityState = useSelector((state) => state.postsindividualcommunity);
-
+  const s = useSelector((state) => state.madeChange);
   const [selectedSection, setSelectedSection] = useState("");
 
   return (

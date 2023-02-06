@@ -17,6 +17,7 @@ import DownArrowColorThemeSquare from "../../modtoolssvgs/DownArrowColorThemeSqu
 import FillSvg from "../../../communitiessvg/FillSvg";
 import TileSvg from "../../../communitiessvg/TileSvg";
 import { lightOrDark } from "../../../../../requests/lightOrDark";
+import { setMadeChange } from "../../../../../store/comstyling/madeChange";
 
 const Banner = ({ community, setSelectedSection }) => {
   const dispatch = useDispatch();
@@ -60,6 +61,10 @@ const Banner = ({ community, setSelectedSection }) => {
     setSelectedImageBlob(null);
     $(`#communities-banner${community.id}`).css("background-image", "");
     setBannerImageType("fill");
+
+    if (community?.bannerImage) {
+      dispatch(setMadeChange(true)); //if there is already a preexisting image, we set madechange to true
+    }
   }
 
   function handleImageUpload(e) {
@@ -73,6 +78,7 @@ const Banner = ({ community, setSelectedSection }) => {
       `url(${binary.blob})`
     );
     e.target.value = "";
+    dispatch(setMadeChange(true));
   }
 
   function handleBannerChange() {
@@ -112,6 +118,7 @@ const Banner = ({ community, setSelectedSection }) => {
       "background-color",
       "#" + community.bannerColor
     );
+    dispatch(setMadeChange(false));
   }
 
   useEffect(() => {
@@ -164,6 +171,7 @@ const Banner = ({ community, setSelectedSection }) => {
             onClick={() => {
               $(`#communities-banner${community.id}`).css("height", "64px");
               setSelectedHeight("small");
+              dispatch(setMadeChange(true));
             }}
           >
             {selectedHeight === "small" ? (
@@ -179,6 +187,7 @@ const Banner = ({ community, setSelectedSection }) => {
             onClick={() => {
               $(`#communities-banner${community.id}`).css("height", "128px");
               setSelectedHeight("medium");
+              dispatch(setMadeChange(true));
             }}
           >
             {selectedHeight === "medium" ? (
@@ -194,6 +203,7 @@ const Banner = ({ community, setSelectedSection }) => {
             onClick={() => {
               $(`#communities-banner${community.id}`).css("height", "192px");
               setSelectedHeight("large");
+              dispatch(setMadeChange(true));
             }}
           >
             {selectedHeight === "large" ? (
@@ -274,6 +284,16 @@ const Banner = ({ community, setSelectedSection }) => {
                     "background-size",
                     "cover"
                   );
+
+                  $(`#communities-banner${community.id}`).css(
+                    "background-repeat",
+                    "no-repeat"
+                  );
+
+                  $(`#communities-banner${community.id}`).css(
+                    "background-position",
+                    "center"
+                  );
                   setBannerImageType("fill");
                 }}
                 style={{
@@ -304,7 +324,17 @@ const Banner = ({ community, setSelectedSection }) => {
                 onClick={() => {
                   $(`#communities-banner${community.id}`).css(
                     "background-size",
-                    "contain"
+                    "auto"
+                  );
+
+                  $(`#communities-banner${community.id}`).css(
+                    "background-repeat",
+                    "repeat"
+                  );
+
+                  $(`#communities-banner${community.id}`).css(
+                    "background-position",
+                    "top"
                   );
                   setBannerImageType("tile");
                 }}

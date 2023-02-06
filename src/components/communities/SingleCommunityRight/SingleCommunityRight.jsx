@@ -33,7 +33,6 @@ const SingleCommunityRight = ({ communityState }) => {
 
   useEffect(() => {
     const b = lightOrDark(communityState.themeBaseColor);
-    console.log(communityState);
     if (!b) return;
     dispatch(setBodyBrightness(b));
   }, [communityState.themeBaseColor]);

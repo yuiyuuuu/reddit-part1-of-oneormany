@@ -15,6 +15,8 @@ import TrashCan from "../../modtoolssvgs/TrashCan";
 import { setBodyBrightness } from "../../../../../store/bodyBrightness";
 import { lightOrDark } from "../../../../../requests/lightOrDark";
 
+import { setMadeChange } from "../../../../../store/comstyling/madeChange";
+
 const ColorTheme = ({ community, setSelectedSection }) => {
   const dispatch = useDispatch();
 
@@ -88,6 +90,7 @@ const ColorTheme = ({ community, setSelectedSection }) => {
 
     $(".communities-mainbot").css("background-color", "");
     e.target.value = ""; //allows same file upload twice if user deletes
+    dispatch(setMadeChange(true));
   }
 
   function handleDeleteImage() {
@@ -101,6 +104,10 @@ const ColorTheme = ({ community, setSelectedSection }) => {
       "background-color",
       colorColor || community.themeBodyColor
     );
+
+    if (community?.image) {
+      dispatch(setMadeChange(true));
+    }
   }
 
   function handleChange() {
@@ -115,6 +122,7 @@ const ColorTheme = ({ community, setSelectedSection }) => {
     dispatch(stylingChange(info)).then((res) => {
       if (res === "success") {
         setSelectedSection("");
+        dispatch(setMadeChange(false));
       }
     });
   }
@@ -162,6 +170,11 @@ const ColorTheme = ({ community, setSelectedSection }) => {
     $(`#rightmod-modmap-${community?.id}`).css("color", c);
     $(`#rightmod-p-${community?.id}`).css("color", c);
     $(`#right-owner-${community?.id}`).css("color", c);
+
+    //background image
+    $(`.communities-backgroundimage`).css("background-image", "");
+
+    dispatch(setMadeChange(false));
   }
 
   const colorPickerSet = useCallback(() => {

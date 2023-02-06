@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InfoIconName from "../../../communitiessvg/InfoIconName";
 import "./nameicon.scss";
 import { Buffer } from "buffer";
@@ -12,7 +12,7 @@ import { onSelectFile } from "../../../../../requests/getBase64Image";
 import { useDispatch, useSelector } from "react-redux";
 import { setIconImage } from "../../../../../store/selectedCommunityIconImage";
 import { ChangeIconImage } from "../../../../../store/posts-individualcommunity";
-import { useEffect } from "react";
+import { setMadeChange } from "../../../../../store/comstyling/madeChange";
 
 const NameIcon = ({ community, setSelectedSection }) => {
   const selectedImageState = useSelector((state) => state.iconImage);
@@ -37,11 +37,16 @@ const NameIcon = ({ community, setSelectedSection }) => {
 
     getBase64Image(binary.blob);
     e.target.value = "";
+    dispatch(setMadeChange(true));
   }
 
   function handleDeleteImage() {
     setSelectedImageBlob(null);
     dispatch(setIconImage(null));
+
+    if (community?.iconImage) {
+      dispatch(setMadeChange(true));
+    }
   }
 
   function handleIconChange() {
@@ -75,7 +80,10 @@ const NameIcon = ({ community, setSelectedSection }) => {
         <div className='name-selection'>
           <div
             className='name-option'
-            onClick={() => setSelectedName(`r/${community.name}`)}
+            onClick={() => {
+              setSelectedName(`r/${community.name}`);
+              dispatch(setMadeChange(true));
+            }}
           >
             {selectedName === `r/${community.name}` ? (
               <SelectedRadio2 />
@@ -87,7 +95,10 @@ const NameIcon = ({ community, setSelectedSection }) => {
 
           <div
             className='name-option'
-            onClick={() => setSelectedName(`${community.name}`)}
+            onClick={() => {
+              setSelectedName(`${community.name}`);
+              dispatch(setMadeChange(true));
+            }}
           >
             {selectedName === `${community.name}` ? (
               <SelectedRadio2 />
@@ -97,7 +108,13 @@ const NameIcon = ({ community, setSelectedSection }) => {
             {community.name}
           </div>
 
-          <div className='name-option' onClick={() => setSelectedName("hide")}>
+          <div
+            className='name-option'
+            onClick={() => {
+              setSelectedName("hide");
+              dispatch(setMadeChange(true));
+            }}
+          >
             {selectedName === "hide" ? (
               <SelectedRadio2 />
             ) : (
@@ -168,6 +185,7 @@ const NameIcon = ({ community, setSelectedSection }) => {
         onClick={() => {
           setSelectedSection("");
           dispatch(setIconImage(null));
+          dispatch(setMadeChange(false));
         }}
       >
         Cancel
