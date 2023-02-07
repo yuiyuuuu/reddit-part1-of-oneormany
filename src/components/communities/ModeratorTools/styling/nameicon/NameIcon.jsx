@@ -172,24 +172,25 @@ const NameIcon = ({ community, setSelectedSection }) => {
         </div>
       </div>
 
-      <div
+      <button
         className='bluebutton-button'
-        style={{ margin: "8px 0" }}
+        style={{ margin: "8px 0", width: "100%" }}
         onClick={() => handleIconChange()}
       >
         Save
-      </div>
+      </button>
 
-      <div
+      <button
         className='blueborder-button'
         onClick={() => {
           setSelectedSection("");
           dispatch(setIconImage(null));
           dispatch(setMadeChange(false));
         }}
+        style={{ width: "100%" }}
       >
         Cancel
-      </div>
+      </button>
     </div>
   );
 };

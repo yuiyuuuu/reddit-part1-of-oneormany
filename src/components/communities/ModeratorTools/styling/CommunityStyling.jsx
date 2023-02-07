@@ -19,7 +19,6 @@ const CommunityStyling = () => {
   const communityState = useSelector((state) => state.postsindividualcommunity);
   const madeChanges = useSelector((state) => state.madeChange);
   const hrefpath = useSelector((state) => state.hrefpath);
-  console.log(hrefpath);
   const [selectedSection, setSelectedSection] = useState("");
 
   const pdefault = useCallback((e, v) => {
@@ -30,44 +29,59 @@ const CommunityStyling = () => {
   const clickHandle = useCallback(
     (event) => {
       var $target = $(event.target);
+      console.log($(".comstyling-parent").has($target));
 
-      if (!madeChanges) return;
+      // if (!madeChanges) return;
       if (
         !$target.closest(".comstyling-parent").length &&
         $(".comstyling-parent").is(":visible") &&
-        !$target.closest(".discard-parent").length
+        !$target.closest(".discard-parent").length &&
+        !$target.parents(".comstyling-parent").length
       ) {
-        dispatch(toggleDiscard(true));
+        if (madeChanges) {
+          dispatch(toggleDiscard(true));
+        } else {
+          if (!$target.is("a") && !$target.is("button")) {
+            window.location.href = `/r/${communityState.name}`;
+          }
+        }
       }
     },
-    [madeChanges]
+    [madeChanges, communityState?.name]
   );
 
-  useEffect(() => {
-    $(document).click(clickHandle);
+  const unload = useCallback(() => {
+    return "";
+  });
 
+  useEffect(() => {
     const a = document.querySelectorAll("a");
+    // $(window).on("load", () => {
+    $(document).on("click", clickHandle);
 
     if (madeChanges) {
       Array.prototype.forEach.call(a, function (r) {
-        $(r)
-          .off()
-          .click((e) => pdefault(e, r));
+        $(r).on("click", (e) => pdefault(e, r)); //disables anchor from navigating
       });
 
-      $(window).bind("beforeunload", (e) => {
-        return "";
-      });
+      $(window).on("beforeunload", unload);
     } else {
       Array.prototype.forEach.call(a, function (r) {
-        $(r).unbind("click", pdefault);
+        $(r).off("click", pdefault);
       });
+
+      $(window).off("beforeunload", unload);
     }
+    // });
 
     return () => {
-      $(document).unbind("click", clickHandle); //remove the event handler once we call this again. without this we will get discard popup when we click cancel
+      $(document).off("click", clickHandle); //remove the event listener once we call this again. without this we will get discard popup when we click cancel
+      $(window).off("beforeunload", unload);
+      // Array.prototype.forEach.call(a, function (r) {
+      //   $(r).off("click", pdefault);
+      // });
     };
-  }, [madeChanges]);
+  }, [madeChanges, communityState.name]);
 
   console.log(madeChanges);
 
@@ -94,44 +108,44 @@ const CommunityStyling = () => {
             <div>
               <div className='comstyling-appearance'>Appearance</div>
 
-              <div
+              <a
                 className='comstyling-appearanceli'
                 onClick={() => setSelectedSection("colortheme")}
               >
                 Color theme
                 <div className='grow' />
                 <RightArrow />
-              </div>
+              </a>
 
-              <div
+              <a
                 className='comstyling-appearanceli'
                 onClick={() => setSelectedSection("nameicon")}
               >
                 Name & icon
                 <div className='grow' />
                 <RightArrow />
-              </div>
+              </a>
 
-              <div
+              <a
                 className='comstyling-appearanceli'
                 onClick={() => setSelectedSection("banner")}
               >
                 Banner
                 <div className='grow' />
                 <RightArrow />
-              </div>
+              </a>
 
-              <div className='comstyling-appearanceli'>
+              <a className='comstyling-appearanceli'>
                 Menu
                 <div className='grow' />
                 <RightArrow />
-              </div>
+              </a>
 
-              <div className='comstyling-appearanceli'>
+              <a className='comstyling-appearanceli'>
                 Posts
                 <div className='grow' />
                 <RightArrow />
-              </div>
+              </a>
             </div>
           ) : selectedSection === "colortheme" ? (
             <ColorTheme

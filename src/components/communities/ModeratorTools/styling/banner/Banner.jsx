@@ -366,22 +366,23 @@ const Banner = ({ community, setSelectedSection }) => {
         </div>
       </div>
 
-      <div
+      <button
         className='bluebutton-button'
-        style={{ margin: "8px 0" }}
+        style={{ margin: "8px 0", width: "100%" }}
         onClick={() => handleBannerChange()}
       >
         Save
-      </div>
-      <div
+      </button>
+      <button
         className='blueborder-button'
         onClick={() => {
           setSelectedSection("");
           handleCancel();
         }}
+        style={{ width: "100%" }}
       >
         Cancel
-      </div>
+      </button>
 
       <ColorPicker
         which={"banner"}
