@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import LeftArrowStyling from "../modtoolssvgs/LeftArrowStyling";
 import RightArrow from "../modtoolssvgs/RightArrow";
 import XSvgStyling from "../modtoolssvgs/XSvgStyling";
@@ -8,11 +8,68 @@ import ColorTheme from "./colortheme/ColorTheme";
 import "./communitystyling.scss";
 import NameIcon from "./nameicon/NameIcon";
 
+import $ from "jquery";
+import { toggleDiscard } from "../../../../store/discard/discardChanges";
+import { setHrefPath } from "../../../../store/comstyling/hrefpath";
+
 const CommunityStyling = () => {
+  const dispatch = useDispatch();
+
   const communityStylingState = useSelector((state) => state.communityStyling);
   const communityState = useSelector((state) => state.postsindividualcommunity);
-  const s = useSelector((state) => state.madeChange);
+  const madeChanges = useSelector((state) => state.madeChange);
+  const hrefpath = useSelector((state) => state.hrefpath);
+  console.log(hrefpath);
   const [selectedSection, setSelectedSection] = useState("");
+
+  const pdefault = useCallback((e, v) => {
+    e.preventDefault();
+    dispatch(setHrefPath({ href: $(v).attr("href") }));
+  }, []);
+
+  const clickHandle = useCallback(
+    (event) => {
+      var $target = $(event.target);
+
+      if (!madeChanges) return;
+      if (
+        !$target.closest(".comstyling-parent").length &&
+        $(".comstyling-parent").is(":visible") &&
+        !$target.closest(".discard-parent").length
+      ) {
+        dispatch(toggleDiscard(true));
+      }
+    },
+    [madeChanges]
+  );
+
+  useEffect(() => {
+    $(document).click(clickHandle);
+
+    const a = document.querySelectorAll("a");
+
+    if (madeChanges) {
+      Array.prototype.forEach.call(a, function (r) {
+        $(r)
+          .off()
+          .click((e) => pdefault(e, r));
+      });
+
+      $(window).bind("beforeunload", (e) => {
+        return "";
+      });
+    } else {
+      Array.prototype.forEach.call(a, function (r) {
+        $(r).unbind("click", pdefault);
+      });
+    }
+
+    return () => {
+      $(document).unbind("click", clickHandle); //remove the event handler once we call this again. without this we will get discard popup when we click cancel
+    };
+  }, [madeChanges]);
+
+  console.log(madeChanges);
 
   return (
     <div>

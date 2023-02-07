@@ -1,8 +1,21 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setHrefPath } from "../../../store/comstyling/hrefpath";
 
 const ClipSvg = ({ navigateSubmit }) => {
+  const dispatch = useDispatch();
+  const madeChange = useSelector((state) => state.madeChange);
   return (
-    <div onClick={() => navigateSubmit("clip")}>
+    <div
+      onClick={() => {
+        if (madeChange) {
+          dispatch(setHrefPath({ func: navigateSubmit, parameter: "clip" }));
+          return;
+        } else {
+          navigateSubmit("clip");
+        }
+      }}
+    >
       <svg
         width='19'
         height='25'

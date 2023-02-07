@@ -12,6 +12,7 @@ import bodyBrightness from "./bodyBrightness";
 import iconImage from "./selectedCommunityIconImage";
 import madeChange from "./comstyling/madeChange";
 import discardChanges from "./discard/discardChanges";
+import hrefpath from "./comstyling/hrefpath";
 
 const reducer = combineReducers({
   auth,
@@ -23,6 +24,7 @@ const reducer = combineReducers({
   iconImage,
   madeChange,
   discardChanges,
+  hrefpath,
 }); //reducers here
 
 const middleware = composeWithDevTools(

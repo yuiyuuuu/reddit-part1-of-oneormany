@@ -1,6 +1,8 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 
-const XIcon = ({ f }) => {
+const XIcon = ({ f, value }) => {
+  const dispatch = useDispatch();
   return (
     <svg
       viewBox='0 0 20 20'
@@ -11,7 +13,7 @@ const XIcon = ({ f }) => {
         fill: "#7c7c7c",
         cursor: "pointer",
       }}
-      onClick={() => f()}
+      onClick={() => dispatch(f(value))}
     >
       <polygon
         fill='inherit'

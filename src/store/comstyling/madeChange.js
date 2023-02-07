@@ -15,7 +15,6 @@ export default function (state = false, action) {
   switch (action.type) {
     case SET_MADECHANGE:
       return action.bool;
-
     default:
       return state;
   }

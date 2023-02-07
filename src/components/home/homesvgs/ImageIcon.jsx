@@ -1,8 +1,22 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setHrefPath } from "../../../store/comstyling/hrefpath";
 
-const ImageIcon = ({ history, navigateSubmit }) => {
+const ImageIcon = ({ navigateSubmit }) => {
+  const dispatch = useDispatch();
+
+  const madeChange = useSelector((state) => state.madeChange);
   return (
-    <div onClick={() => navigateSubmit("image")}>
+    <div
+      onClick={() => {
+        if (madeChange) {
+          dispatch(setHrefPath({ func: navigateSubmit, parameter: "image" }));
+          return;
+        } else {
+          navigateSubmit("image");
+        }
+      }}
+    >
       <svg
         width='21'
         height='20'

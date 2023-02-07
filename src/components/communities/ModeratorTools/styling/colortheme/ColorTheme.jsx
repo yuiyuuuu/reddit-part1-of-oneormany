@@ -205,36 +205,34 @@ const ColorTheme = ({ community, setSelectedSection }) => {
   useEffect(() => {
     if (loading) return;
     colorPickerSet();
-    $(document)
-      .off()
-      .click(function (event) {
-        var $target = $(event.target);
+    $(document).click(function (event) {
+      var $target = $(event.target);
 
-        if (
-          !$target.closest("#colorpicker-base").length &&
-          $("#colorpicker-base").is(":visible") &&
-          !$target.closest("#base-comstyling").length
-        ) {
-          handleClose("base");
-        }
+      if (
+        !$target.closest("#colorpicker-base").length &&
+        $("#colorpicker-base").is(":visible") &&
+        !$target.closest("#base-comstyling").length
+      ) {
+        handleClose("base");
+      }
 
-        if (
-          !$target.closest("#colorpicker-color").length &&
-          $("#colorpicker-color").is(":visible") &&
-          !$target.closest("#color-comstyling").length
-        ) {
-          handleClose("color");
-        }
+      if (
+        !$target.closest("#colorpicker-color").length &&
+        $("#colorpicker-color").is(":visible") &&
+        !$target.closest("#color-comstyling").length
+      ) {
+        handleClose("color");
+      }
 
-        //third
-        if (
-          !$target.closest("#colorpicker-highlight").length &&
-          $("#colorpicker-highlight").is(":visible") &&
-          !$target.closest("#highlight-comstyling").length
-        ) {
-          handleClose("highlight");
-        }
-      });
+      //third
+      if (
+        !$target.closest("#colorpicker-highlight").length &&
+        $("#colorpicker-highlight").is(":visible") &&
+        !$target.closest("#highlight-comstyling").length
+      ) {
+        handleClose("highlight");
+      }
+    });
   }, [colorColor2, highlightColor2, baseColor2, loading]);
 
   useEffect(() => {
