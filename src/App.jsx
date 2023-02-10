@@ -43,6 +43,11 @@ function App() {
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
         <Route exact path='/r/:id' element={<SingleCommunity />} />
+        <Route
+          exact
+          path='/r/:id/comment/:postid'
+          element={<SingleCommunity />}
+        />
         <Route exact path='/404' element={<Communities404 />} />
         <Route exact path='/' element={<Home />} />
         <Route exact path='/r/:id/about/:section' element={<MainTools />} />

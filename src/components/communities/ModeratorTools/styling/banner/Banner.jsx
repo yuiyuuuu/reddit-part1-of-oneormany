@@ -64,6 +64,8 @@ const Banner = ({ community, setSelectedSection }) => {
 
     if (community?.bannerImage) {
       dispatch(setMadeChange(true)); //if there is already a preexisting image, we set madechange to true
+    } else {
+      dispatch(setMadeChange(false));
     }
   }
 

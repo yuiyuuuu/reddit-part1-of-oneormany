@@ -1,0 +1,78 @@
+.scp-parent {
+  width: 100%;
+  background-color: rgba(28, 28, 28, 0.9);
+  position: absolute;
+  top: 48px;
+  left: 0;
+  z-index: 1000;
+  height: 100%;
+  color: rgb(215, 218, 220); //change if needed
+}
+
+.scp-inner {
+  width: calc(100% - 160px);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.scp-banner {
+  height: 48px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  width: calc(100% - 160px);
+  max-width: 1280px;
+  margin: 0 auto;
+  background-color: #030303;
+}
+
+.scp-bannerrow {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 36px;
+  margin: 0 auto;
+  align-items: center;
+  box-sizing: border-box;
+  max-width: 1128px;
+}
+
+.scp-irow {
+  width: 100%;
+  max-width: calc(100% - 324px);
+}
+
+.scp-irow2 {
+  width: 312px;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 12px;
+}
+
+.scp-votes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  &::after {
+    content: "";
+    border-left: 1px solid #343536;
+    height: 16px;
+    margin-left: 8px;
+  }
+
+  &::before {
+    content: "";
+    border-left: 1px solid #343536;
+    height: 16px;
+    margin-right: 8px;
+  }
+}
+
+.scp-num {
+  color: rgb(215, 218, 220);
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 1.5px;
+}

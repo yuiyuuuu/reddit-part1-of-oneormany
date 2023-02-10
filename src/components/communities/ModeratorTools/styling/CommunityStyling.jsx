@@ -18,7 +18,6 @@ const CommunityStyling = () => {
   const communityStylingState = useSelector((state) => state.communityStyling);
   const communityState = useSelector((state) => state.postsindividualcommunity);
   const madeChanges = useSelector((state) => state.madeChange);
-  const hrefpath = useSelector((state) => state.hrefpath);
   const [selectedSection, setSelectedSection] = useState("");
 
   const pdefault = useCallback((e, v) => {
@@ -29,7 +28,6 @@ const CommunityStyling = () => {
   const clickHandle = useCallback(
     (event) => {
       var $target = $(event.target);
-      console.log($(".comstyling-parent").has($target));
 
       // if (!madeChanges) return;
       if (
@@ -55,23 +53,24 @@ const CommunityStyling = () => {
   });
 
   useEffect(() => {
-    const a = document.querySelectorAll("a");
-    // $(window).on("load", () => {
-    $(document).on("click", clickHandle);
+    $(document).ready(() => {
+      const a = document.querySelectorAll("a");
+      $(document).on("click", clickHandle);
 
-    if (madeChanges) {
-      Array.prototype.forEach.call(a, function (r) {
-        $(r).on("click", (e) => pdefault(e, r)); //disables anchor from navigating
-      });
+      if (madeChanges) {
+        Array.prototype.forEach.call(a, function (r) {
+          $(r).on("click", (e) => pdefault(e, r)); //disables anchor from navigating
+        });
 
-      $(window).on("beforeunload", unload);
-    } else {
-      Array.prototype.forEach.call(a, function (r) {
-        $(r).off("click", pdefault);
-      });
+        $(window).on("beforeunload", unload);
+      } else {
+        Array.prototype.forEach.call(a, function (r) {
+          $(r).off("click", pdefault);
+        });
 
-      $(window).off("beforeunload", unload);
-    }
+        $(window).off("beforeunload", unload);
+      }
+    });
     // });
 
     return () => {
@@ -81,9 +80,7 @@ const CommunityStyling = () => {
       //   $(r).off("click", pdefault);
       // });
     };
-  }, [madeChanges, communityState.name]);
-
-  console.log(madeChanges);
+  }, [madeChanges, communityState.name, selectedSection]);
 
   return (
     <div>

@@ -95,6 +95,8 @@ model Comment {
   children  Comment[] @relation("ParentChild")
   parentId  String?
   likes     Like[]
+
+  image String? @db.VarChar(1048576)
 }
 
 model Like {

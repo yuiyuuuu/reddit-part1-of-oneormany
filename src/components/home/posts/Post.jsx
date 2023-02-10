@@ -20,6 +20,7 @@ import {
   removeUpvote,
   upvote,
 } from "../../../store/posts";
+import { useNavigate } from "react-router";
 
 //all posts
 const Post = ({
@@ -40,6 +41,7 @@ const Post = ({
   authState,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleUpvote() {
     const info = {
@@ -139,8 +141,14 @@ const Post = ({
     }
   }, []);
 
+  console.log(post);
+
   return (
-    <div className='single-postcontainer' id={post.id}>
+    <div
+      className='single-postcontainer'
+      id={post.id}
+      onClick={() => navigate(`/r/${post.community.name}/comment/${post.id}`)}
+    >
       <div className='posts-vote post-voteleft'>
         <div
           className='posts-upvote post-votebut'

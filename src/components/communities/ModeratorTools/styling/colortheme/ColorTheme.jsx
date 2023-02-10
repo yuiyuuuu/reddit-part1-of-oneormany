@@ -107,6 +107,8 @@ const ColorTheme = ({ community, setSelectedSection }) => {
 
     if (community?.image) {
       dispatch(setMadeChange(true));
+    } else {
+      dispatch(setMadeChange(false)); // if there was no image from the start and we delete it
     }
   }
 

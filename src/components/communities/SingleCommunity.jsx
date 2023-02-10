@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCommunity,
@@ -23,6 +23,7 @@ import Post from "../home/posts/Post";
 import Communities404 from "./Communities404";
 import { fetchSpecificCommunityPosts } from "../../store/posts";
 import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
+import SingleCommunityPost from "./SingleCommunityPost/SingleCommunityPost";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();
@@ -54,6 +55,9 @@ const SingleCommunity = () => {
 
   //loading state
   const [loading, setLoading] = useState(true);
+
+  //single community post
+  const [selectedPost, setSelectedPost] = useState(null);
 
   //resize handling
   const resizeShare = useCallback(() => {
@@ -185,6 +189,16 @@ const SingleCommunity = () => {
     dispatch(fetchCommunity(id));
     dispatch(fetchSpecificCommunityPosts(id));
   }, []);
+
+  useEffect(() => {
+    const postid = params?.postid;
+
+    if (postid) {
+      setSelectedPost(communityState.posts?.find((p) => p.id === postid));
+    } else {
+      setSelectedPost(null);
+    }
+  }, [communityState, window.location.href]);
 
   //set min height of mainbot
   useEffect(() => {
@@ -446,6 +460,7 @@ const SingleCommunity = () => {
           </div>
         </div>
       </div>
+      <SingleCommunityPost selectedPost={selectedPost} />
     </div>
   );
 };
