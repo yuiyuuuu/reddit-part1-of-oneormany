@@ -21,7 +21,7 @@ import ThreeDotOverlay from "../home/overlays/ThreeDotOverlay";
 import ShareOverlay from "../home/overlays/ShareOverlay";
 import Post from "../home/posts/Post";
 import Communities404 from "./Communities404";
-import { fetchSpecificCommunityPosts } from "../../store/posts";
+import { clearPostState, fetchSpecificCommunityPosts } from "../../store/posts";
 import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
 import SingleCommunityPost from "./SingleCommunityPost/SingleCommunityPost";
 
@@ -108,7 +108,11 @@ const SingleCommunity = () => {
     }
   }, [communityState]);
 
-  $(window).on("load", () => {
+  // $(window).on("load", () => {
+  //   $(".hide").css("display", "none");
+  // });
+
+  $(document).ready(() => {
     $(".hide").css("display", "none");
   });
 
@@ -188,6 +192,10 @@ const SingleCommunity = () => {
     const id = params.id;
     dispatch(fetchCommunity(id));
     dispatch(fetchSpecificCommunityPosts(id));
+
+    return () => {
+      dispatch(clearPostState()); //clear post state
+    };
   }, []);
 
   useEffect(() => {
@@ -460,7 +468,11 @@ const SingleCommunity = () => {
           </div>
         </div>
       </div>
-      <SingleCommunityPost selectedPost={selectedPost} />
+      <SingleCommunityPost
+        selectedPost={selectedPost}
+        nav={navigate}
+        selectedCommunity={communityState}
+      />
     </div>
   );
 };

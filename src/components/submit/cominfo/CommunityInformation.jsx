@@ -20,12 +20,12 @@ const CommunityInformation = ({ selectedCommunity }) => {
           <img
             className='cominfo-iconimage'
             src={
-              selectedCommunity.image ||
+              selectedCommunity?.image ||
               "/assets/defaultcommunityimage/defaultcommunity.png"
             }
           />
           <a className='cominfo-comname' href={`/r/${selectedCommunity.name}`}>
-            {selectedCommunity.tag}
+            {selectedCommunity?.tag}
           </a>
         </div>
 
@@ -38,7 +38,7 @@ const CommunityInformation = ({ selectedCommunity }) => {
         <div className='cominfo-infocontainer'>
           <div className='cominfo-infocol'>
             <div className='cominfo-count'>
-              {selectedCommunity.users.length}
+              {selectedCommunity.users?.length}
             </div>
             <div className='cominfo-p'>Members</div>
           </div>
@@ -53,7 +53,7 @@ const CommunityInformation = ({ selectedCommunity }) => {
               }}
             >
               <div className='cominfo-dot'>●</div>
-              <span>{selectedCommunity.users.length}</span>
+              <span>{selectedCommunity.users?.length}</span>
             </div>
             <div className='cominfo-p'>
               <span>Online</span>

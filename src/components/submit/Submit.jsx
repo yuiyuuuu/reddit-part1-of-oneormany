@@ -81,6 +81,17 @@ const Submit = () => {
     setSelectedCommunity(com);
   }
 
+  function isValid() {
+    switch (selected) {
+      case "post":
+        return;
+      case "image/video":
+        return;
+      default:
+        return;
+    }
+  }
+
   async function handleSubmit() {
     switch (selected) {
       case "post":
@@ -92,6 +103,10 @@ const Submit = () => {
         });
         break;
       case "image/video":
+        if (!title.length) {
+          //error function here
+          return;
+        }
         const a = await makePostRequest("posts", {
           title: title,
           body: text,

@@ -13,6 +13,8 @@ const REMOVE_POST2 = "REMOVE_POST2";
 const REMOVE_UPVOTE = "REMOVE_UPVOTE";
 const REMOVE_DOWNVOTE = "REMOVE_DOWNVOTE";
 
+const CLEAR_POSTSTATE = "CLEAR_POSTSTATE";
+
 const setPosts = (posts) => ({
   type: FETCH_POSTS,
   posts,
@@ -48,6 +50,10 @@ const removePost = (post) => ({
 const removePost2 = (post) => ({
   type: REMOVE_POST2,
   post,
+});
+
+const dispatchClearPosts = () => ({
+  type: CLEAR_POSTSTATE,
 });
 
 //fetch all posts
@@ -127,6 +133,12 @@ export function removeDownvote(info) {
   };
 }
 
+export function clearPostState() {
+  return (dispatch) => {
+    dispatch(dispatchClearPosts);
+  };
+}
+
 function parseDate(date) {
   const d = Date.parse(date);
   return d;
@@ -167,6 +179,8 @@ export default function (state = [], action) {
 
     case REMOVE_POST2:
       return state.filter((post) => post.id !== action.post.id);
+    case CLEAR_POSTSTATE:
+      return [];
     default:
       return state;
   }

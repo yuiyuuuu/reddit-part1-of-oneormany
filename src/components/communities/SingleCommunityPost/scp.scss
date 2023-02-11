@@ -13,6 +13,11 @@
   width: calc(100% - 160px);
   max-width: 1280px;
   margin: 0 auto;
+  height: auto;
+  background-color: red;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .scp-banner {
@@ -42,6 +47,8 @@
 .scp-irow {
   width: 100%;
   max-width: calc(100% - 324px);
+  display: flex;
+  flex-direction: row;
 }
 
 .scp-irow2 {
@@ -49,6 +56,12 @@
   display: flex;
   justify-content: flex-end;
   margin-left: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  align-items: center;
+  padding: 4px 8px;
+  color: rgb(215, 218, 220);
 }
 
 .scp-votes {
@@ -59,7 +72,7 @@
     content: "";
     border-left: 1px solid #343536;
     height: 16px;
-    margin-left: 8px;
+    margin: 0 8px;
   }
 
   &::before {
@@ -75,4 +88,38 @@
   font-size: 12px;
   font-weight: 700;
   margin: 0 1.5px;
+  width: 32px;
+  text-align: center;
+}
+
+.scp-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.scp-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.scp-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.scp-postcontainer {
+  max-width: 740px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: white;
+  margin: 32px 12px 32px 32px;
+}
+
+.scp-cominfocontainer {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 32px 32px;
 }

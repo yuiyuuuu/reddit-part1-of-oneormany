@@ -20,7 +20,7 @@ import {
   removeUpvote,
   upvote,
 } from "../../../store/posts";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 //all posts
 const Post = ({
@@ -141,13 +141,14 @@ const Post = ({
     }
   }, []);
 
-  console.log(post);
-
   return (
     <div
       className='single-postcontainer'
       id={post.id}
-      onClick={() => navigate(`/r/${post.community.name}/comment/${post.id}`)}
+      onClick={() => {
+        // navigate(`/r/${post.community.name}/comment/${post.id}`);
+        navigate("/test");
+      }}
     >
       <div className='posts-vote post-voteleft'>
         <div

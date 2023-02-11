@@ -5,7 +5,7 @@ import $ from "jquery";
 
 import "./home.scss";
 
-import { fetchPosts } from "../../store/posts";
+import { clearPostState, fetchPosts } from "../../store/posts";
 import { addCommunity } from "../../store/auth";
 import { toggleCreateCommunity } from "../../store/nav-createcommunity";
 
@@ -69,8 +69,13 @@ const Home = () => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  useEffect(async () => {
+  useEffect(() => {
+    console.log("postsssss");
     const v = dispatch(fetchPosts());
+
+    return () => {
+      dispatch(clearPostState()); //set posts to empty array
+    };
   }, []);
 
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
@@ -195,7 +200,12 @@ const Home = () => {
   return (
     <div>
       <div className='heightholder' />
-      <div className='parent-home'>
+      <div
+        className='parent-home'
+        onClick={() =>
+          navigate("/r/hallo/comment/5c83664b-0768-426a-961c-9877bb00616e")
+        }
+      >
         <div className='inner-home'>
           <div className='home-feed'>
             <div className='home-createpost'>

@@ -4,10 +4,13 @@ import "./scp.scss";
 
 import UpVoteSvg from "../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../home/posts/postssvgs/arrowicons/DownVoteSvg";
+import ImageIcon from "./scpsvgs/ImageIcon";
+import TextIcon from "./scpsvgs/TextIcon";
+import CloseIcon from "./scpsvgs/CloseIcon";
+import CommunityInformation from "../../submit/cominfo/CommunityInformation";
 
-const SingleCommunityPost = ({ selectedPost }) => {
-  const authState = useSelector((state) => state.authState);
-  console.log(authState);
+const SingleCommunityPost = ({ selectedPost, nav, selectedCommunity }) => {
+  const authState = useSelector((state) => state.auth);
 
   return (
     <div style={{ display: !selectedPost && "none" }}>
@@ -54,13 +57,30 @@ const SingleCommunityPost = ({ selectedPost }) => {
                   />
                 </div>
               </div>
+
+              <div className='scp-info'>
+                {selectedPost?.image ? <ImageIcon /> : <TextIcon />}
+                <div className='scp-title'>{selectedPost?.title}</div>
+              </div>
             </div>
 
-            <div className='scp-irow2'>Close</div>
+            <div
+              className='scp-irow2'
+              onClick={() => nav(`/r/${selectedPost?.community?.name}`)}
+            >
+              <CloseIcon />
+              Close
+            </div>
           </div>
         </div>
         <div className='scp-inner'>
-          <div className='scp-main'></div>
+          <div className='scp-main'>
+            <div className='scp-postcontainer'></div>
+
+            <div className='scp-cominfocontainer'>
+              <CommunityInformation selectedCommunity={selectedCommunity} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
