@@ -3,6 +3,8 @@ import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCommunity,
+  handleCommunityDownvote,
+  handleCommunityRemoveUpvote,
   joinCommunity,
   leaveCommunity,
 } from "../../store/posts-individualcommunity";
@@ -24,6 +26,7 @@ import Communities404 from "./Communities404";
 import { clearPostState, fetchSpecificCommunityPosts } from "../../store/posts";
 import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
 import SingleCommunityPost from "./SingleCommunityPost/SingleCommunityPost";
+import { handleCommunityUpvote } from "../../store/posts-individualcommunity";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();
@@ -55,6 +58,7 @@ const SingleCommunity = () => {
 
   //loading state
   const [loading, setLoading] = useState(true);
+  const [postLoad, setPostLoad] = useState(true);
 
   //single community post
   const [selectedPost, setSelectedPost] = useState(null);
@@ -98,6 +102,46 @@ const SingleCommunity = () => {
 
   function handleLeaveCommunity() {
     dispatch(leaveCommunity(authState.id, communityState.id));
+  }
+
+  function handleUpvote() {
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+      communityid: selectedPost.community.id,
+    };
+    dispatch(handleCommunityUpvote(info)).then(() => {
+      const postid = params?.postid;
+      setSelectedPost(communityState.posts?.find((p) => p.id === postid));
+    });
+  }
+
+  function handleDownvote() {
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+      communityid: selectedPost.community.id,
+    };
+    dispatch(handleCommunityDownvote(info)).then(() => {
+      const postid = params?.postid;
+      setSelectedPost(communityState.posts?.find((p) => p.id === postid));
+    });
+  }
+
+  function handleRemoveUpvote() {
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+    };
+
+    dispatch(handleCommunityRemoveUpvote(info)).then(() => {
+      const postid = params?.postid;
+      setSelectedPost(communityState.posts?.find((p) => p.id === postid));
+    });
+  }
+
+  function handleRemoveDownvote() {
+    return;
   }
 
   //set userids
@@ -206,6 +250,8 @@ const SingleCommunity = () => {
     } else {
       setSelectedPost(null);
     }
+
+    setPostLoad(false);
   }, [communityState, window.location.href]);
 
   //set min height of mainbot
@@ -291,7 +337,7 @@ const SingleCommunity = () => {
     setLoading(false);
   });
 
-  if (communityState !== "not found" && loading) {
+  if (communityState !== "not found" && (loading || postLoad)) {
     return "loading";
   }
 
@@ -472,6 +518,10 @@ const SingleCommunity = () => {
         selectedPost={selectedPost}
         nav={navigate}
         selectedCommunity={communityState}
+        handleUpvote={handleUpvote}
+        handleDownvote={handleDownvote}
+        handleRemoveUpvote={handleRemoveUpvote}
+        handleRemoveDownvote={handleRemoveDownvote}
       />
     </div>
   );

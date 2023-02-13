@@ -16,6 +16,11 @@ const CHANGE_DESC = "CHANGE_DESC";
 const CHANGE_ICONIMAGE = "CHANGE_ICONIMAGE";
 const CHANGE_BANNER = "CHANGE_BANNER";
 
+const HANDLE_UPVOTE = "HANDLE_UPVOTE_COMMUNITY";
+const HANDLE_DOWNVOTE = "HANDLE_DOWNVOTE_COMMUNITY";
+const REMOVE_UPVOTE = "HANDLE_REMOVEUPVOTE_COMMUNITY";
+const REMOVE_DOWNVOTE = "HANDLE_REMOVEDOWNVOTE_COMMUNITY";
+
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
   community,
@@ -53,6 +58,21 @@ const dispatchChangeIcon = (community) => ({
 const dispatchBanner = (community) => ({
   type: CHANGE_BANNER,
   community,
+});
+
+const dispatchUpvoteCommunity = (post) => ({
+  type: HANDLE_UPVOTE,
+  post,
+});
+
+const dispatchDownvoteCommunity = (post) => ({
+  type: HANDLE_DOWNVOTE,
+  post,
+});
+
+const dispatchRemoveUpvoteCommunity = (post) => ({
+  type: REMOVE_UPVOTE,
+  post,
 });
 
 export function fetchCommunity(id) {
@@ -165,6 +185,39 @@ export function changeBanner(body) {
   };
 }
 
+export function handleCommunityUpvote(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/upvote", obj);
+      dispatch(dispatchUpvoteCommunity(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleCommunityDownvote(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/downvote", obj);
+      dispatch(dispatchDownvoteCommunity(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleCommunityRemoveUpvote(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/upvote/remove", obj);
+      dispatch(dispatchRemoveUpvoteCommunity(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_COMMUNITY:
@@ -183,6 +236,20 @@ export default function (state = {}, action) {
       return action.community;
     case CHANGE_BANNER:
       return action.community;
+    case HANDLE_UPVOTE:
+      state.posts = state.posts.map((post) =>
+        post.id === action.post.id ? action.post : post
+      );
+      return state;
+    case HANDLE_DOWNVOTE:
+      state.posts = state.posts.map((post) =>
+        post.id === action.post.id ? action.post : post
+      );
+      return state;
+    case REMOVE_UPVOTE:
+      state.posts = state.posts.map((post) =>
+        post.id === action.post.id ? action.post : post
+      );
     default:
       return state;
   }

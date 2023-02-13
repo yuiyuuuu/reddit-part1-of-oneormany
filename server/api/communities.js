@@ -266,3 +266,105 @@ router.put("/banner", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/upvote", async (req, res, next) => {
+  try {
+    //find post
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+    });
+
+    //add the user to the upvotes and make sure there are no duplicates
+    const final = await prisma.post.update({
+      where: {
+        id: req.body.postid,
+      },
+      data: {
+        upvotes: [...new Set([...post.upvotes, req.body.userid])],
+        downvotes: post.downvotes.filter((i) => i !== req.body.userid),
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: true,
+      },
+    });
+
+    // const com = await prisma.community.findUnique({
+    //   where: {
+    //     id: req.body.communityid,
+    //   },
+    // });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/downvote", async (req, res, next) => {
+  try {
+    //find post
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+    });
+
+    //add the user to the upvotes and make sure there are no duplicates
+    const final = await prisma.post.update({
+      where: {
+        id: req.body.postid,
+      },
+      data: {
+        upvotes: post.upvotes.filter((i) => i !== req.body.userid),
+        downvotes: [...new Set([...post.upvotes, req.body.userid])],
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: true,
+      },
+    });
+
+    // const com = await prisma.community.findUnique({
+    //   where: {
+    //     id: req.body.communityid,
+    //   },
+    // });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/upvote/remove", async (req, res, next) => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+    });
+
+    const final = await prisma.post.update({
+      where: {
+        id: req.body.postid,
+      },
+      data: {
+        upvotes: post.upvotes.filter((i) => i !== req.body.userid),
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: true,
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});

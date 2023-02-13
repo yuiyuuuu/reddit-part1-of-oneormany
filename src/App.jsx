@@ -17,8 +17,6 @@ import CreateCommunityOverlay from "./components/communities/CreateCommunityOver
 import MainTools from "./components/communities/ModeratorTools/MainTools";
 import CommunityStyling from "./components/communities/ModeratorTools/styling/CommunityStyling";
 import DiscardChanges from "./discardChanges/DiscardChanges";
-import Test from "./components/Test";
-import Test2 from "./components/Test2";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,8 +51,6 @@ function App() {
         <Route exact path='/404' element={<Communities404 />} />
         <Route exact path='/' element={<Home />} />
         <Route exact path='/r/:id/about/:section' element={<MainTools />} />
-        <Route exact path='/test1' element={<Test />} />
-        <Route exact path='/test' element={<Test2 />} />
       </Routes>
     </BrowserRouter>
   );

@@ -70,7 +70,6 @@ const Home = () => {
   }
 
   useEffect(() => {
-    console.log("postsssss");
     const v = dispatch(fetchPosts());
 
     return () => {
@@ -200,12 +199,7 @@ const Home = () => {
   return (
     <div>
       <div className='heightholder' />
-      <div
-        className='parent-home'
-        onClick={() =>
-          navigate("/r/hallo/comment/5c83664b-0768-426a-961c-9877bb00616e")
-        }
-      >
+      <div className='parent-home'>
         <div className='inner-home'>
           <div className='home-feed'>
             <div className='home-createpost'>

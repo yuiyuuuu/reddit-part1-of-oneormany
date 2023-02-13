@@ -1,5 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import "./scp.scss";
 
 import UpVoteSvg from "../../home/posts/postssvgs/arrowicons/UpVoteSvg";
@@ -9,7 +10,16 @@ import TextIcon from "./scpsvgs/TextIcon";
 import CloseIcon from "./scpsvgs/CloseIcon";
 import CommunityInformation from "../../submit/cominfo/CommunityInformation";
 
-const SingleCommunityPost = ({ selectedPost, nav, selectedCommunity }) => {
+const SingleCommunityPost = ({
+  selectedPost,
+  nav,
+  selectedCommunity,
+  handleUpvote,
+  handleDownvote,
+  handleRemoveUpvote,
+  handleRemoveDownvote,
+}) => {
+  const navigate = useNavigate();
   const authState = useSelector((state) => state.auth);
 
   return (
@@ -42,11 +52,11 @@ const SingleCommunityPost = ({ selectedPost, nav, selectedCommunity }) => {
                 <div
                   className='posts-upvote post-votebut'
                   onClick={() => {
-                    if (selectedPost.upvotes.includes(authState?.id)) {
-                      handleRemoveUpvote();
+                    if (selectedPost.downvotes?.includes(authState?.id)) {
+                      handleRemoveDownvote();
                       return;
                     }
-                    handleUpvote();
+                    handleDownvote();
                   }}
                   style={{ marginTop: "-2px" }}
                 >
@@ -82,6 +92,11 @@ const SingleCommunityPost = ({ selectedPost, nav, selectedCommunity }) => {
             </div>
           </div>
         </div>
+
+        <div
+          className='scp-clickback'
+          onClick={() => navigate(`/r/${selectedPost.community.name}`)}
+        />
       </div>
     </div>
   );

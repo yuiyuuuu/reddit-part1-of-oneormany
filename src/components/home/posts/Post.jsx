@@ -126,6 +126,18 @@ const Post = ({
   }
 
   useEffect(() => {
+    //function to prevent event bubbling
+    $(document).ready((e) => {
+      $(`#single-container${post.id}`).click(function () {
+        $(this).children(".children").toggle();
+      });
+      $(`#single-container${post.id}` + ".bubbleprevent").click(function (e) {
+        e.stopPropagation(); //if clicked on an element that has bubbleprevent class, dont run parent navigate function
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     const height = $(`#${post.id}-title`).height();
 
     if (height > 30) {
@@ -144,16 +156,16 @@ const Post = ({
   return (
     <div
       className='single-postcontainer'
-      id={post.id}
-      onClick={() => {
-        // navigate(`/r/${post.community.name}/comment/${post.id}`);
-        navigate("/test");
+      id={`single-container${post.id}`}
+      onClick={(e) => {
+        navigate(`/r/${post.community.name}/comment/${post.id}`);
       }}
     >
       <div className='posts-vote post-voteleft'>
         <div
           className='posts-upvote post-votebut'
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             if (post.upvotes.includes(authState?.id)) {
               handleRemoveUpvote();
               return;
@@ -168,13 +180,13 @@ const Post = ({
         </div>
         <div
           className='posts-downvote post-votebut'
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             if (post.downvotes.includes(authState.id)) {
               handleRemoveDownvote();
               return;
             }
             handleDownvote();
-            // fillRed2();
           }}
         >
           <DownVoteSvg id={post.id} post={post} authState={authState} />
@@ -184,7 +196,11 @@ const Post = ({
       <div className='posts-maincontainer'>
         <div className='posts-serveranduser'>
           <img src={communities[1]?.image} className='post-communityicon' />
-          <a href={`/${post.community.tag}`} className='posts-communityname'>
+          <a
+            href={`/${post.community.tag}`}
+            className='posts-communityname'
+            onClick={(e) => e.stopPropagation()}
+          >
             {post.community.tag}
           </a>
           <div className='dot-posts'>•</div>
@@ -195,6 +211,7 @@ const Post = ({
             href=''
             className='post-topdesc user-anchor'
             style={{ marginRight: "3px" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {post.user.name}
           </a>
@@ -223,26 +240,35 @@ const Post = ({
           <div className='vote-smallscreen'>
             <div
               className='post-votebut posts-upvote'
-              onClick={() => fillRed()}
+              onClick={(e) => {
+                e.stopPropagation();
+                fillRed();
+              }}
             >
               <UpVoteSvg id={post.id} />
             </div>
             <div>82.5k</div>
             <div
               className='post-votebut posts-downvote'
-              onClick={() => fillRed2()}
+              onClick={(e) => {
+                e.stopPropagation();
+                fillRed2();
+              }}
             >
               <DownVoteSvg id={post.id} />
             </div>
           </div>
-          <div className='posts-comment'>
+          <div className='posts-comment' onClick={(e) => e.stopPropagation()}>
             <CommentSvg />
             <span className='span-comment'>
               {post.comments.length} Comments
             </span>
           </div>
 
-          <div className='posts-comment post-award'>
+          <div
+            className='posts-comment post-award '
+            onClick={(e) => e.stopPropagation()}
+          >
             <AwardSvg />
             <span className='span-comment'>Award</span>
           </div>
@@ -251,13 +277,19 @@ const Post = ({
             className='posts-comment post-share'
             id={`share-${post.id}`}
             style={{ padding: "5.5px 8px 5.5px 8px" }}
-            onClick={() => set()}
+            onClick={(e) => {
+              e.stopPropagation();
+              set();
+            }}
           >
             <ShareSvg />
             <span className='span-comment'>Share</span>
           </div>
 
-          <div className='posts-comment post-save'>
+          <div
+            className='posts-comment post-save'
+            onClick={(e) => e.stopPropagation()}
+          >
             <SaveSvg />
             <span className='span-comment'>Save</span>
           </div>
@@ -265,7 +297,10 @@ const Post = ({
           <div
             className='threedot'
             id={`threedot-${post.id}`}
-            onClick={() => set2()}
+            onClick={(e) => {
+              e.stopPropagation();
+              set2();
+            }}
           >
             <ThreeDotSvg />
           </div>
