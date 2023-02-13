@@ -39,44 +39,13 @@ const Post = ({
   showOverlay2,
   setScrollpos,
   authState,
+  handleUpvote,
+  handleDownvote,
+  handleRemoveDownvote,
+  handleRemoveUpvote,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  function handleUpvote() {
-    const info = {
-      postid: post.id,
-      userid: authState.id,
-    };
-    dispatch(upvote(info));
-  }
-
-  function handleDownvote() {
-    const info = {
-      postid: post.id,
-      userid: authState.id,
-    };
-
-    dispatch(downvote(info));
-  }
-
-  function handleRemoveUpvote() {
-    const info = {
-      postid: post.id,
-      userid: authState.id,
-    };
-
-    dispatch(removeUpvote(info));
-  }
-
-  function handleRemoveDownvote() {
-    const info = {
-      postid: post.id,
-      userid: authState.id,
-    };
-
-    dispatch(removeDownvote(info));
-  }
 
   function set() {
     if (overlayId === post.id && showOverlay) {
@@ -167,10 +136,10 @@ const Post = ({
           onClick={(e) => {
             e.stopPropagation();
             if (post.upvotes.includes(authState?.id)) {
-              handleRemoveUpvote();
+              handleRemoveUpvote(post);
               return;
             }
-            handleUpvote();
+            handleUpvote(post);
           }}
         >
           <UpVoteSvg id={post.id} post={post} authState={authState} />
@@ -183,10 +152,10 @@ const Post = ({
           onClick={(e) => {
             e.stopPropagation();
             if (post.downvotes.includes(authState.id)) {
-              handleRemoveDownvote();
+              handleRemoveDownvote(post);
               return;
             }
-            handleDownvote();
+            handleDownvote(post);
           }}
         >
           <DownVoteSvg id={post.id} post={post} authState={authState} />

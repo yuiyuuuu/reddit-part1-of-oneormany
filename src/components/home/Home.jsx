@@ -18,6 +18,12 @@ import Post from "./posts/Post";
 import ShareOverlay from "./overlays/ShareOverlay";
 import ThreeDotOverlay from "./overlays/ThreeDotOverlay";
 import TOS from "./TOS";
+import {
+  upvote,
+  downvote,
+  removeDownvote,
+  removeUpvote,
+} from "../../store/posts";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -62,6 +68,41 @@ const Home = () => {
     } else {
       window.location.href = "/login";
     }
+  }
+
+  function handleUpvote(post) {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+    dispatch(upvote(info));
+  }
+
+  function handleDownvote(post) {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+
+    dispatch(downvote(info));
+  }
+
+  function handleRemoveUpvote(post) {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+
+    dispatch(removeUpvote(info));
+  }
+
+  function handleRemoveDownvote(post) {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+
+    dispatch(removeDownvote(info));
   }
 
   function randomIntFromInterval(min, max) {
@@ -239,6 +280,10 @@ const Home = () => {
                   showOverlay2={showOverlay2}
                   setScrollpos={setScrollpos}
                   authState={authState}
+                  handleUpvote={handleUpvote}
+                  handleDownvote={handleDownvote}
+                  handleRemoveDownvote={handleRemoveDownvote}
+                  handleRemoveUpvote={handleRemoveUpvote}
                 />
               ))}
             </div>

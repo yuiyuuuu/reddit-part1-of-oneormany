@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCommunity,
   handleCommunityDownvote,
+  handleCommunityRemoveDownvote,
   handleCommunityRemoveUpvote,
   joinCommunity,
   leaveCommunity,
@@ -110,9 +111,8 @@ const SingleCommunity = () => {
       userid: authState.id,
       communityid: selectedPost.community.id,
     };
-    dispatch(handleCommunityUpvote(info)).then(() => {
-      const postid = params?.postid;
-      setSelectedPost(communityState.posts?.find((p) => p.id === postid));
+    dispatch(handleCommunityUpvote(info)).then((res) => {
+      setSelectedPost(res);
     });
   }
 
@@ -122,9 +122,8 @@ const SingleCommunity = () => {
       userid: authState.id,
       communityid: selectedPost.community.id,
     };
-    dispatch(handleCommunityDownvote(info)).then(() => {
-      const postid = params?.postid;
-      setSelectedPost(communityState.posts?.find((p) => p.id === postid));
+    dispatch(handleCommunityDownvote(info)).then((res) => {
+      setSelectedPost(res);
     });
   }
 
@@ -134,14 +133,56 @@ const SingleCommunity = () => {
       userid: authState.id,
     };
 
-    dispatch(handleCommunityRemoveUpvote(info)).then(() => {
-      const postid = params?.postid;
-      setSelectedPost(communityState.posts?.find((p) => p.id === postid));
+    dispatch(handleCommunityRemoveUpvote(info)).then((res) => {
+      setSelectedPost(res);
     });
   }
 
   function handleRemoveDownvote() {
-    return;
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+    };
+
+    dispatch(handleCommunityRemoveUpvote(info)).then((res) => {
+      setSelectedPost(res);
+    });
+  }
+
+  function handleUpvote2(post) {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+      communityid: post.community.id,
+    };
+    dispatch(handleCommunityUpvote(info));
+  }
+
+  function handleDownvote2(post) {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+      communityid: post.community.id,
+    };
+    dispatch(handleCommunityDownvote(info));
+  }
+
+  function handleRemoveUpvote2(post) {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+
+    dispatch(handleCommunityRemoveUpvote(info));
+  }
+
+  function handleRemoveDownvote2(post) {
+    const info = {
+      postid: post.id,
+      userid: authState.id,
+    };
+
+    dispatch(handleCommunityRemoveDownvote(info));
   }
 
   //set userids
@@ -476,7 +517,7 @@ const SingleCommunity = () => {
               </div>
 
               <div style={{ marginTop: "16px" }}>
-                {postState.map((item) => (
+                {communityState.posts?.map((item) => (
                   <Post
                     post={item}
                     setOverlayLeft={setOverlayLeft}
@@ -493,6 +534,10 @@ const SingleCommunity = () => {
                     showOverlay2={showOverlay2}
                     setScrollpos={setScrollpos}
                     authState={authState}
+                    handleUpvote={handleUpvote2}
+                    handleRemoveUpvote={handleRemoveUpvote2}
+                    handleDownvote={handleDownvote2}
+                    handleRemoveDownvote={handleRemoveDownvote2}
                   />
                 ))}
               </div>

@@ -75,6 +75,11 @@ const dispatchRemoveUpvoteCommunity = (post) => ({
   post,
 });
 
+const dispatchRemoveDownvoteCommunity = (post) => ({
+  type: REMOVE_DOWNVOTE,
+  post,
+});
+
 export function fetchCommunity(id) {
   return async (dispatch) => {
     try {
@@ -190,6 +195,7 @@ export function handleCommunityUpvote(obj) {
     try {
       const data = await makePutRequest("communities/upvote", obj);
       dispatch(dispatchUpvoteCommunity(data));
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -201,6 +207,7 @@ export function handleCommunityDownvote(obj) {
     try {
       const data = await makePutRequest("communities/downvote", obj);
       dispatch(dispatchDownvoteCommunity(data));
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -212,6 +219,19 @@ export function handleCommunityRemoveUpvote(obj) {
     try {
       const data = await makePutRequest("communities/upvote/remove", obj);
       dispatch(dispatchRemoveUpvoteCommunity(data));
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleCommunityRemoveDownvote(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/downvote/remove", obj);
+      dispatch(dispatchRemoveDownvoteCommunity(data));
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -237,19 +257,25 @@ export default function (state = {}, action) {
     case CHANGE_BANNER:
       return action.community;
     case HANDLE_UPVOTE:
-      state.posts = state.posts.map((post) =>
+      const v = state.posts.map((post) =>
         post.id === action.post.id ? action.post : post
       );
-      return state;
+      return { ...state, posts: v };
     case HANDLE_DOWNVOTE:
-      state.posts = state.posts.map((post) =>
+      const l = state.posts.map((post) =>
         post.id === action.post.id ? action.post : post
       );
-      return state;
+      return { ...state, posts: l };
     case REMOVE_UPVOTE:
-      state.posts = state.posts.map((post) =>
+      const k = state.posts.map((post) =>
         post.id === action.post.id ? action.post : post
       );
+      return { ...state, posts: k };
+    case REMOVE_DOWNVOTE:
+      const q = state.posts.map((post) =>
+        post.id === action.post.id ? action.post : post
+      );
+      return { ...state, posts: q };
     default:
       return state;
   }

@@ -368,3 +368,31 @@ router.put("/upvote/remove", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/downvote/remove", async (req, res, next) => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+    });
+
+    const final = await prisma.post.update({
+      where: {
+        id: req.body.postid,
+      },
+      data: {
+        downvotes: post.upvotes.filter((i) => i !== req.body.userid),
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: true,
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
