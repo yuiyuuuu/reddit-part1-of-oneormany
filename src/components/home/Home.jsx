@@ -111,12 +111,12 @@ const Home = () => {
   }
 
   useEffect(() => {
-    const v = dispatch(fetchPosts());
+    dispatch(fetchPosts());
 
     return () => {
       dispatch(clearPostState()); //set posts to empty array
     };
-  }, []);
+  }, [window.location.href]);
 
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
   //we will close the overlay

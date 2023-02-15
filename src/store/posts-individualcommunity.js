@@ -3,6 +3,7 @@ import {
   makePostRequest,
   makePutRequest,
 } from "../requests/helperFunction";
+import { sorting } from "../requests/sortingfunction";
 
 const FETCH_COMMUNITY = "FETCH_COMMUNITY";
 const JOIN_COMMUNITY = "JOIN_COMMUNITY";
@@ -257,24 +258,24 @@ export default function (state = {}, action) {
     case CHANGE_BANNER:
       return action.community;
     case HANDLE_UPVOTE:
-      const v = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
-      );
+      const v = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
       return { ...state, posts: v };
     case HANDLE_DOWNVOTE:
-      const l = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
-      );
+      const l = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
       return { ...state, posts: l };
     case REMOVE_UPVOTE:
-      const k = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
-      );
+      const k = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
       return { ...state, posts: k };
     case REMOVE_DOWNVOTE:
-      const q = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
-      );
+      const q = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
       return { ...state, posts: q };
     default:
       return state;

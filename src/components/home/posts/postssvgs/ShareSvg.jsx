@@ -3,23 +3,26 @@ import React from "react";
 const ShareSvg = () => {
   return (
     <svg
-      width='25'
-      height='25'
-      viewBox='0 0 83 80'
+      width='20'
+      height='20'
+      viewBox='0 0 56 57'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
       style={{ marginRight: "8px" }}
     >
-      <rect width='83' height='80' fill='url(#pattern33089)' />
+      <rect width='56' height='57' fill='url(#patternsharesvg0)' />
       <defs>
         <pattern
-          id='pattern33089'
+          id='patternsharesvg0'
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'
         >
-          <use xlinkHref='#image0_114_9' transform='scale(0.0120482 0.0125)' />
+          <use
+            xlinkHref='#image0_114_9'
+            transform='matrix(0.0178571 0 0 0.0175439 -0.25 -0.192982)'
+          />
         </pattern>
         <image
           id='image0_114_9'

@@ -17,7 +17,7 @@ import "./communities.scss";
 import $ from "jquery";
 
 import DefaultPfp from "../home/homesvgs/DefaultPfp";
-import DefaultCommunitiesIcon from "./communitiessvg/DefaultCommunitiesIcon";
+import DefaultCommunityIconBig from "./communitiessvg/DefaultCommunityIconBig";
 import ImageIcon from "../home/homesvgs/ImageIcon";
 import ClipSvg from "../home/homesvgs/ClipSvg";
 import ThreeDotOverlay from "../home/overlays/ThreeDotOverlay";
@@ -28,6 +28,7 @@ import { clearPostState, fetchSpecificCommunityPosts } from "../../store/posts";
 import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
 import SingleCommunityPost from "./SingleCommunityPost/SingleCommunityPost";
 import { handleCommunityUpvote } from "../../store/posts-individualcommunity";
+import { sorting } from "../../requests/sortingfunction";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();
@@ -378,6 +379,9 @@ const SingleCommunity = () => {
     setLoading(false);
   });
 
+  console.log(!communityState?.iconImage);
+  console.log(iconImageState);
+
   if (communityState !== "not found" && (loading || postLoad)) {
     return "loading";
   }
@@ -423,7 +427,7 @@ const SingleCommunity = () => {
               <div className='communities-nameicon'>
                 <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
                   {!communityState?.iconImage && !iconImageState ? (
-                    <DefaultCommunitiesIcon
+                    <DefaultCommunityIconBig
                       fillcolor={"#" + communityState.themeBaseColor}
                       height={70}
                       community={communityState}
@@ -517,7 +521,7 @@ const SingleCommunity = () => {
               </div>
 
               <div style={{ marginTop: "16px" }}>
-                {communityState.posts?.map((item) => (
+                {communityState.posts?.sort(sorting).map((item) => (
                   <Post
                     post={item}
                     setOverlayLeft={setOverlayLeft}

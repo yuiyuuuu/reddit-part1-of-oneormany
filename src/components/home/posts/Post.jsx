@@ -21,6 +21,7 @@ import {
   upvote,
 } from "../../../store/posts";
 import { useNavigate } from "react-router-dom";
+import DefaultCommunitiesIcon from "../../communities/communitiessvg/DefaultCommunitiesIcon";
 
 //all posts
 const Post = ({
@@ -164,7 +165,18 @@ const Post = ({
 
       <div className='posts-maincontainer'>
         <div className='posts-serveranduser'>
-          <img src={communities[1]?.image} className='post-communityicon' />
+          {post.community?.iconImage ? (
+            <img
+              src={`data:image/png;base64,${post.community?.iconImage}`}
+              className='post-communityicon'
+            />
+          ) : (
+            <DefaultCommunitiesIcon
+              fillcolor={"#" + post.community.themeBaseColor}
+              height={20}
+              community={post.community}
+            />
+          )}
           <a
             href={`/${post.community.tag}`}
             className='posts-communityname'

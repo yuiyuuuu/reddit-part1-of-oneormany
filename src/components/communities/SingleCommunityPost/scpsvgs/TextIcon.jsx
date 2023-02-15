@@ -9,6 +9,7 @@ const TextIcon = () => {
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
+      style={{ marginRight: "8px" }}
     >
       <rect width='27' height='26' fill='url(#patterntext120)' />
       <defs>
