@@ -320,6 +320,14 @@ const SingleCommunity = () => {
   }, []);
 
   useEffect(() => {
+    if (selectedPost) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [selectedPost]);
+
+  useEffect(() => {
     if (loading) return;
 
     const mainbot = document
@@ -571,6 +579,7 @@ const SingleCommunity = () => {
         handleDownvote={handleDownvote}
         handleRemoveUpvote={handleRemoveUpvote}
         handleRemoveDownvote={handleRemoveDownvote}
+        scrollPos={scrollPos}
       />
     </div>
   );

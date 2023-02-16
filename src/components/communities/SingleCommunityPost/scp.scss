@@ -7,6 +7,7 @@
   z-index: 1000;
   height: 100%;
   color: rgb(215, 218, 220); //change if needed
+  overflow-y: scroll;
 }
 
 .scp-inner {
@@ -29,6 +30,7 @@
   max-width: 1280px;
   margin: 0 auto;
   background-color: #030303;
+  z-index: 2;
 }
 
 .scp-bannerrow {
@@ -196,7 +198,7 @@
   }
 }
 
-.scp-title {
+.scp-title2 {
   margin: 0 8px 8px;
   font-size: 18px;
   color: #222222;
@@ -204,11 +206,12 @@
 }
 
 .scp-desc {
-  margin: 0 0 12px 8px;
+  margin: 0 0 0px 8px;
   padding: 5px 16px 5px 0;
   box-sizing: border-box;
   color: #1c1c1c;
   font-size: 14px;
+  line-height: 21px;
 }
 
 .scp-selectionrow {
@@ -250,6 +253,7 @@
   flex-direction: row;
   font-size: 12px;
   font-weight: 700;
+  align-items: center;
 }
 
 .scp-m {
@@ -263,6 +267,7 @@
   align-items: center;
   cursor: pointer;
   margin-right: 8px;
+  align-items: center;
 
   &:hover {
     background-color: rgba(26, 26, 27, 0.1);

@@ -30,6 +30,12 @@ input {
   border: none;
 }
 
+pre {
+  font-family: inherit;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
 a {
   text-decoration: none;
   cursor: pointer;

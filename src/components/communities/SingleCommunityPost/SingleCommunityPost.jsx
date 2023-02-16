@@ -15,6 +15,8 @@ import ShareSvg from "../../home/posts/postssvgs/ShareSvg";
 import ApproveSvg from "./scpsvgs/ApproveSvg";
 import RemoveSvg from "./scpsvgs/RemoveSvg";
 import SpamSvg from "./scpsvgs/SpamSvg";
+import ShieldSvg from "./scpsvgs/ShieldSvg";
+import ThreeDot from "./scpsvgs/ThreeDot";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -23,6 +25,7 @@ const SingleCommunityPost = ({
   handleDownvote,
   handleRemoveUpvote,
   handleRemoveDownvote,
+  scrollPos,
 }) => {
   const navigate = useNavigate();
   const authState = useSelector((state) => state.auth);
@@ -31,7 +34,7 @@ const SingleCommunityPost = ({
 
   return (
     <div style={{ display: !selectedPost && "none" }}>
-      <div className='scp-parent'>
+      <div className='scp-parent' style={{ top: scrollPos + 48 + "px" }}>
         <div className='scp-banner'>
           <div className='scp-bannerrow'>
             <div className='scp-irow'>
@@ -176,9 +179,11 @@ const SingleCommunityPost = ({
                   </div>
                 </div>
 
-                <div className='scp-title'>{selectedPost?.title}</div>
+                <div className='scp-title2'>{selectedPost?.title}</div>
 
-                <div className='scp-desc'>{selectedPost?.body}</div>
+                <div className='scp-desc'>
+                  <pre>{selectedPost?.body}</pre>
+                </div>
 
                 <div
                   className='scp-selectionrow'
@@ -208,6 +213,17 @@ const SingleCommunityPost = ({
                     <div className='scp-modrow'>
                       <SpamSvg />
                       <span className='scp-m'>Spam</span>
+                    </div>
+
+                    <div className='scp-modrow'>
+                      <ShieldSvg />
+                    </div>
+
+                    <div
+                      className='scp-modrow'
+                      style={{ padding: "2px 4px", height: "20px" }}
+                    >
+                      <ThreeDot />
                     </div>
                   </div>
                 </div>
