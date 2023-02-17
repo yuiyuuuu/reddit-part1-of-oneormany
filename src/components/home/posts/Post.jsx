@@ -203,7 +203,7 @@ const Post = ({
           <div className='posttitle-container'>{post.title}</div>
           {post.body !== "" && (
             <div className='postdesc-container' id={`${post.id}-title`}>
-              {post.body}
+              <pre>{post.body}</pre>
             </div>
           )}
 

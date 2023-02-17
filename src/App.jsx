@@ -22,6 +22,7 @@ function App() {
   const dispatch = useDispatch();
   const createOverlayState = useSelector((state) => state.navToggleCreate);
   const discardState = useSelector((state) => state.discardChanges);
+  const comstylingState = useSelector((state) => state.CommunityStyling);
 
   useEffect(() => {
     dispatch(getLocalData());
@@ -30,8 +31,10 @@ function App() {
   return (
     <BrowserRouter>
       <Nav />
-      <CommunityStyling />
+
       <CreateCommunityOverlay createOverlayState={createOverlayState} />
+      <CommunityStyling />
+      {comstylingState && ""}
       <DiscardChanges display={discardState} />
       <Routes>
         <Route exact path='/posts' element={<Posts />} />

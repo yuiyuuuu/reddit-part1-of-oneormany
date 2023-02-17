@@ -273,3 +273,43 @@
     background-color: rgba(26, 26, 27, 0.1);
   }
 }
+
+.scp-commentparent {
+  margin: 24px 40px 0 0;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 18px;
+  color: #1c1c1c;
+}
+
+.scp-blue {
+  color: #0079d3;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.scp-inputparent {
+  width: 100%;
+  border: 1px solid #edeff1;
+  margin-bottom: 50px; // remove later
+}
+
+.scp-input {
+  resize: vertical;
+  width: 100%;
+  min-height: 122px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+
+  &::placeholder {
+    font-size: 14px;
+  }
+}
+
+.scp-inputstylebox {
+  background-color: #f6f7f8;
+  height: 34px; // change?
+  width: 100%;
+}

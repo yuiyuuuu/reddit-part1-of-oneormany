@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./scp.scss";
@@ -30,7 +30,7 @@ const SingleCommunityPost = ({
   const navigate = useNavigate();
   const authState = useSelector((state) => state.auth);
 
-  console.log(selectedPost);
+  const [comment, setComment] = useState("");
 
   return (
     <div style={{ display: !selectedPost && "none" }}>
@@ -225,6 +225,24 @@ const SingleCommunityPost = ({
                     >
                       <ThreeDot />
                     </div>
+                  </div>
+                </div>
+
+                <div className='scp-commentparent'>
+                  <div style={{ marginBottom: "4px" }}>
+                    Comment as{" "}
+                    <span className='scp-blue'>u/{authState?.name}</span>
+                  </div>
+
+                  <div className='scp-inputparent'>
+                    <textarea
+                      className='scp-input'
+                      placeholder='What are your thoughts?'
+                      onChange={(e) => setComment(e.target.value)}
+                      value={comment}
+                    />
+
+                    <div className='scp-inputstylebox'></div>
                   </div>
                 </div>
               </div>

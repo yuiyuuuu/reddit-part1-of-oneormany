@@ -363,9 +363,12 @@ const SingleCommunity = () => {
     if (loading) return;
     $(document).ready(() => {
       if (!window.localStorage.getItem("token")) {
+        console.log(1);
         dispatch(toggleCommunityStyling(false));
         return;
       }
+
+      if (!communityState.id) return;
 
       if (
         authState.id !== communityState?.owner?.id &&
@@ -373,22 +376,20 @@ const SingleCommunity = () => {
       ) {
         dispatch(toggleCommunityStyling(false));
         return;
+      } else {
+        console.log(3);
+        const styleParms = new URLSearchParams(
+          new URL(window.location.href).search
+        ).getAll("styling")[0];
+
+        dispatch(toggleCommunityStyling(styleParms === "true"));
       }
-
-      const styleParms = new URLSearchParams(
-        new URL(window.location.href).search
-      ).getAll("styling")[0];
-
-      dispatch(toggleCommunityStyling(styleParms === "true"));
     });
-  }, [loading, authState]);
+  }, [loading, authState, communityState]);
 
   $(document).ready(() => {
     setLoading(false);
   });
-
-  console.log(!communityState?.iconImage);
-  console.log(iconImageState);
 
   if (communityState !== "not found" && (loading || postLoad)) {
     return "loading";
