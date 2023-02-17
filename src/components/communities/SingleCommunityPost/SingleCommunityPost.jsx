@@ -17,6 +17,7 @@ import RemoveSvg from "./scpsvgs/RemoveSvg";
 import SpamSvg from "./scpsvgs/SpamSvg";
 import ShieldSvg from "./scpsvgs/ShieldSvg";
 import ThreeDot from "./scpsvgs/ThreeDot";
+import NoCommentsyet from "./nocomment/NoCommentsyet";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -245,6 +246,8 @@ const SingleCommunityPost = ({
                     <div className='scp-inputstylebox'></div>
                   </div>
                 </div>
+
+                <NoCommentsyet />
               </div>
             </div>
 
