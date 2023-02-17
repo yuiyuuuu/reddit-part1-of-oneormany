@@ -9,6 +9,7 @@ import {
   joinCommunity,
   leaveCommunity,
 } from "../../store/posts-individualcommunity";
+import CommunityStyling from "./ModeratorTools/styling/CommunityStyling";
 
 import { toggleCommunityStyling } from "../../store/communitystyling";
 
@@ -363,7 +364,6 @@ const SingleCommunity = () => {
     if (loading) return;
     $(document).ready(() => {
       if (!window.localStorage.getItem("token")) {
-        console.log(1);
         dispatch(toggleCommunityStyling(false));
         return;
       }
@@ -377,7 +377,6 @@ const SingleCommunity = () => {
         dispatch(toggleCommunityStyling(false));
         return;
       } else {
-        console.log(3);
         const styleParms = new URLSearchParams(
           new URL(window.location.href).search
         ).getAll("styling")[0];
@@ -401,6 +400,7 @@ const SingleCommunity = () => {
 
   return (
     <div style={{ overflow: "hidden" }}>
+      {communityStylingState && <CommunityStyling />}
       <div
         className='communities-main'
         style={{ marginLeft: communityStylingState && "284px" }}

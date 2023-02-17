@@ -33,8 +33,6 @@ function App() {
       <Nav />
 
       <CreateCommunityOverlay createOverlayState={createOverlayState} />
-      <CommunityStyling />
-      {comstylingState && ""}
       <DiscardChanges display={discardState} />
       <Routes>
         <Route exact path='/posts' element={<Posts />} />
