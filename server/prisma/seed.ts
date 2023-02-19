@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const dotenv = require("dotenv").config();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 async function hash(v) {
   const a = await bcrypt.hash(v, 10);
@@ -15,11 +16,23 @@ async function seed() {
   await prisma.community.deleteMany();
 
   const jack = await prisma.user.create({
-    data: { name: "Jack", email: "jack@gmail.com", password: "123" },
+    data: {
+      name: "Jack",
+      email: "jack@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
   });
+
   const rachel = await prisma.user.create({
-    data: { name: "rachel", email: "rachel@gmail.com", password: "123" },
+    data: {
+      name: "rachel",
+      email: "rachel@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
   });
+
+  await jwt.sign({ id: jack.id }, process.env.JWT);
+  await jwt.sign({ id: rachel.id }, process.env.JWT);
 
   const community1 = await prisma.community.create({
     data: {
@@ -32,6 +45,7 @@ async function seed() {
       image: "",
       description: "this is steam on reddit",
       createAt: new Date(),
+      ownerId: jack.id,
     },
   });
 

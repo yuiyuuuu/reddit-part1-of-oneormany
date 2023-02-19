@@ -42,7 +42,12 @@ router.post("/login", async (req, res, next) => {
 
   try {
     if (await bcrypt.compare(password, user.password)) {
-      res.send(user).status(200);
+      res
+        .send({
+          user: user,
+          jwt: jwt.sign({ id: user.id }, process.env.JWT),
+        })
+        .status(200);
     } else {
       res.send("wrongpassword").status(401);
       return;

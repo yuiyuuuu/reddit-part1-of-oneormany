@@ -48,7 +48,8 @@ export function authenticate(username, password) {
       if (data === "wrongpassword") {
         return data;
       }
-      dispatch(setAuth(data));
+      window.localStorage.setItem("token", data.jwt);
+      dispatch(setAuth(data.user));
       return "successful";
     } catch (error) {
       console.log(error);

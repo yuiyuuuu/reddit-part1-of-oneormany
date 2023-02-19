@@ -124,7 +124,7 @@ const Nav = () => {
           </div>
         </div>
       </div>
-      {authState?.id ? (
+      {authState?.id || window.localStorage.getItem("token") ? (
         <div className='nav-inner2'>
           <div className='nav-twoicons'>
             <div className='icon-container'>

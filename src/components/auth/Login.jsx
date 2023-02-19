@@ -20,6 +20,7 @@ const Login = () => {
   }
 
   async function handleSubmit(e) {
+    e.preventDefault();
     $("#login-errortext").css("display", "none");
     $("#password-input").css("border", "1px solid rgba(0,0,0,.1);");
     if (username === "" || password.length < 8) {
@@ -27,10 +28,9 @@ const Login = () => {
       return;
     }
 
-    e.preventDefault();
-
     //if wrong password, set input to red and show the error message, else redirect to home
     const data = dispatch(authenticate(username, password)).then((res) => {
+      console.log(res);
       res === "wrongpassword" ? wrongPasswordResponse() : history("/");
     });
   }
