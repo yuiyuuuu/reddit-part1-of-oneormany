@@ -120,6 +120,24 @@ async function seed() {
       message: "I am a nested comment",
     },
   });
+
+  await prisma.comment.create({
+    data: {
+      userId: rachel.id,
+      postId: post1.id,
+      parentId: comment3.id,
+      message: "I am a nested comment22",
+    },
+  });
+
+  await prisma.comment.create({
+    data: {
+      userId: rachel.id,
+      postId: post1.id,
+      parentId: comment1.id,
+      message: "I am a nested comment11",
+    },
+  });
 }
 
 try {

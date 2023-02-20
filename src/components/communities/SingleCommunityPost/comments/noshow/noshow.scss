@@ -1,0 +1,21 @@
+.ns-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 0 0 0;
+}
+
+.ns-q {
+  margin-left: 8px;
+}
+
+.ns-tog {
+  margin: 0 8px;
+  cursor: pointer;
+}
+
+.ns-c {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

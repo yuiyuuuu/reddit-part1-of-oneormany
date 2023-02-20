@@ -1,8 +1,11 @@
 .commentlist-parent {
+  position: relative;
+  transition: all 0.3s linear;
 }
 
 .comment-mla {
   margin: 16px 16px 0 10px;
+  padding: 0 16px 16px 0;
 }
 
 .comment-parent {
@@ -14,10 +17,33 @@
   max-width: 800px;
 }
 
+.threadline {
+  display: flex;
+  justify-content: center;
+  height: calc(100% - 45.5px);
+  position: absolute;
+  left: 6px;
+  bottom: 0;
+  cursor: pointer;
+  width: 16px;
+}
+
+.line {
+  height: 100%;
+  width: 2px;
+  background-color: #edeff1;
+  border-radius: 9999px;
+}
+
+.comment-toggleicon {
+  align-self: flex-start;
+}
+
 .comment-icon {
   height: 28px;
   width: 28px;
   align-self: flex-start;
+  margin-top: 2.5px;
 }
 
 .comment-pfp {
