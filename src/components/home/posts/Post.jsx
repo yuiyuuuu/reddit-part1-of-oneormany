@@ -145,7 +145,16 @@ const Post = ({
         >
           <UpVoteSvg id={post.id} post={post} authState={authState} />
         </div>
-        <div className='posts-votecount'>
+        <div
+          className='posts-votecount'
+          style={{
+            color: post?.upvotes.includes(authState?.id)
+              ? "red"
+              : post?.downvotes.includes(authState?.id)
+              ? "#7193ff"
+              : "",
+          }}
+        >
           {post.upvotes.length - post.downvotes.length}
         </div>
         <div

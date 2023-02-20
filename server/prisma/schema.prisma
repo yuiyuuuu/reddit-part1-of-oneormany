@@ -76,7 +76,6 @@ model User {
   karma Int @default(0)
   photo String?
   comments Comment[]
-  likes    Like[]
   communities Community[]
   posts Post[] 
   communityOwner Community[] @relation("owner")
@@ -94,18 +93,18 @@ model Comment {
   parent    Comment?  @relation("ParentChild", fields: [parentId], references: [id], onDelete: Cascade)
   children  Comment[] @relation("ParentChild")
   parentId  String?
-  likes     Like[]
-
+  upvotes String []
+  downvotes String []
   image String? @db.VarChar(1048576)
 }
 
-model Like {
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  userId    String
-  commentId String
+// model Like {
+//   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+//   userId    String
+//   commentId String
 
-  @@id([userId, commentId])
-}
+//   @@id([userId, commentId])
+// }
 
 //user User @relation(fields:[userId], references :[id])

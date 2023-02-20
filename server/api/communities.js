@@ -12,7 +12,11 @@ router.get("/single/:id", async (req, res, next) => {
       include: {
         posts: {
           include: {
-            comments: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
             user: true,
             community: true,
           },

@@ -77,7 +77,19 @@ const SingleCommunityPost = ({
                   />
                 </div>
 
-                <div className='scp-num'>100</div>
+                <div
+                  className='scp-num'
+                  style={{
+                    color: selectedPost?.upvotes.includes(authState?.id)
+                      ? "red"
+                      : selectedPost?.downvotes.includes(authState?.id)
+                      ? "#7193ff"
+                      : "",
+                  }}
+                >
+                  {selectedPost?.upvotes.length -
+                    selectedPost?.downvotes.length}
+                </div>
 
                 <div
                   className='posts-upvote post-votebut'
@@ -138,9 +150,17 @@ const SingleCommunityPost = ({
 
                   <div
                     className='scp-num'
-                    style={{ color: "#1c1c1c", margin: "4px 0" }}
+                    style={{
+                      color: selectedPost?.upvotes.includes(authState?.id)
+                        ? "red"
+                        : selectedPost?.downvotes.includes(authState?.id)
+                        ? "#7193ff"
+                        : "#1c1c1c",
+                      margin: "4px 0",
+                    }}
                   >
-                    100
+                    {selectedPost?.upvotes.length -
+                      selectedPost?.downvotes.length}
                   </div>
 
                   <div
@@ -211,7 +231,7 @@ const SingleCommunityPost = ({
                 >
                   <div className='scp-comment scp-selectionaligncenter'>
                     <CommentSvg />
-                    <span>10</span>
+                    <span>{selectedPost?.comments.length}</span>
                   </div>
 
                   <div className='scp-share scp-selectionaligncenter scp-but'>
@@ -266,14 +286,15 @@ const SingleCommunityPost = ({
                   </div>
                 </div>
 
-                {!selectedPost?.comments?.length ? (
-                  <NoCommentsyet />
-                ) : (
-                  <CommentsList
-                    comments={selectedPost?.comments}
-                    which={null}
-                  />
-                )}
+                {!selectedPost?.comments?.length && <NoCommentsyet />}
+              </div>
+              <div className='comment-mla'>
+                <CommentsList
+                  comments={selectedPost?.comments}
+                  which={null}
+                  post={selectedPost}
+                  top={true}
+                />
               </div>
             </div>
 
