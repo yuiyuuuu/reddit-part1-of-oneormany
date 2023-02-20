@@ -93,6 +93,24 @@ async function seed() {
       message: "I am a root comment",
     },
   });
+
+  const comment2Child = await prisma.comment.create({
+    data: {
+      userId: rachel.id,
+      postId: post1.id,
+      parentId: comment2.id,
+      message: "I am a nested comment",
+    },
+  });
+
+  const comment2Child2 = await prisma.comment.create({
+    data: {
+      userId: rachel.id,
+      postId: post1.id,
+      parentId: comment2Child.id,
+      message: "I am a nested comment",
+    },
+  });
 }
 
 try {

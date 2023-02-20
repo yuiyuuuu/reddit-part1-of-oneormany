@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./scp.scss";
+
+import $ from "jquery";
 
 import UpVoteSvg from "../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -18,6 +20,10 @@ import SpamSvg from "./scpsvgs/SpamSvg";
 import ShieldSvg from "./scpsvgs/ShieldSvg";
 import ThreeDot from "./scpsvgs/ThreeDot";
 import NoCommentsyet from "./nocomment/NoCommentsyet";
+import CommentsProvider, { usePost } from "./comments/CommentsProvider";
+import CommentsList from "./comments/CommentsList";
+
+import { setComments } from "../../../store/comments/comments";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -29,9 +35,22 @@ const SingleCommunityPost = ({
   scrollPos,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
 
-  const [comment, setComment] = useState("");
+  const [commentInput, setCommentInput] = useState("");
+
+  useEffect(() => {
+    //sets scp component to the top of the page, so when the user selects another post, it wont start at the old scroll position
+    return () => {
+      $(".scp-parent").scrollTop(0);
+    };
+  }, [window.location.href]);
+
+  useEffect(() => {
+    if (!selectedPost?.comments) return;
+    dispatch(setComments(selectedPost?.comments));
+  }, [selectedPost?.comments]);
 
   return (
     <div style={{ display: !selectedPost && "none" }}>
@@ -239,15 +258,22 @@ const SingleCommunityPost = ({
                     <textarea
                       className='scp-input'
                       placeholder='What are your thoughts?'
-                      onChange={(e) => setComment(e.target.value)}
-                      value={comment}
+                      onChange={(e) => setCommentInput(e.target.value)}
+                      value={commentInput}
                     />
 
                     <div className='scp-inputstylebox'></div>
                   </div>
                 </div>
 
-                <NoCommentsyet />
+                {!selectedPost?.comments?.length ? (
+                  <NoCommentsyet />
+                ) : (
+                  <CommentsList
+                    comments={selectedPost?.comments}
+                    which={null}
+                  />
+                )}
               </div>
             </div>
 

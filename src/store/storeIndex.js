@@ -13,6 +13,7 @@ import iconImage from "./selectedCommunityIconImage";
 import madeChange from "./comstyling/madeChange";
 import discardChanges from "./discard/discardChanges";
 import hrefpath from "./comstyling/hrefpath";
+import comments from "./comments/comments";
 
 const reducer = combineReducers({
   auth,
@@ -25,6 +26,7 @@ const reducer = combineReducers({
   madeChange,
   discardChanges,
   hrefpath,
+  comments,
 }); //reducers here
 
 const middleware = composeWithDevTools(

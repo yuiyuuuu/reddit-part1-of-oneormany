@@ -65,7 +65,6 @@ const SingleCommunity = () => {
 
   //single community post
   const [selectedPost, setSelectedPost] = useState(null);
-  console.log(communityState);
 
   //resize handling
   const resizeShare = useCallback(() => {

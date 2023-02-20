@@ -43,7 +43,9 @@ function App() {
         <Route exact path='/submit/r/:id/:type' element={<Submit />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
+
         <Route exact path='/r/:id' element={<SingleCommunity />} />
+
         <Route
           exact
           path='/r/:id/comment/:postid'

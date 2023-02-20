@@ -30,7 +30,6 @@ const Login = () => {
 
     //if wrong password, set input to red and show the error message, else redirect to home
     const data = dispatch(authenticate(username, password)).then((res) => {
-      console.log(res);
       res === "wrongpassword" ? wrongPasswordResponse() : history("/");
     });
   }

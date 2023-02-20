@@ -28,5 +28,5 @@ Below is a non-exhaustive list of technologies used throughout the project.
 
 ```
 npm install
-npm run dev
+npm run dev2
 ```
