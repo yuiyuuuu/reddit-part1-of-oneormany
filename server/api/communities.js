@@ -455,3 +455,118 @@ router.put("/comment/upvote", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/comment/downvote", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.body.commentid,
+      },
+    });
+
+    await prisma.comment.update({
+      where: {
+        id: req.body.commentid,
+      },
+      data: {
+        downvotes: [...new Set([...comment.downvotes, req.body.userid])],
+        upvotes: comment.upvotes.filter((i) => i !== req.body.userid),
+      },
+    });
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    res.send(post);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/comment/upvote/remove", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.body.commentid,
+      },
+    });
+
+    await prisma.comment.update({
+      where: {
+        id: req.body.commentid,
+      },
+      data: {
+        upvotes: comment.upvotes.filter((i) => i !== req.body.userid),
+      },
+    });
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    res.send(post);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/comment/downvote/remove", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.body.commentid,
+      },
+    });
+
+    await prisma.comment.update({
+      where: {
+        id: req.body.commentid,
+      },
+      data: {
+        downvotes: comment.downvotes.filter((i) => i !== req.body.userid),
+      },
+    });
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    res.send(post);
+  } catch (error) {
+    next(error);
+  }
+});

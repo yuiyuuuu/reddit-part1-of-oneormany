@@ -23,6 +23,8 @@ const REMOVE_UPVOTE = "HANDLE_REMOVEUPVOTE_COMMUNITY";
 const REMOVE_DOWNVOTE = "HANDLE_REMOVEDOWNVOTE_COMMUNITY";
 const HANDLE_UPVOTE_COMMENT = "HANDLE_UPVOTE_COMMENT";
 const HANDLE_DOWNVOTE_COMMENT = "HANDLE_DOWNVOTE_COMMENT";
+const HANDLE_REMOVEDOWNVOTE_COMMENT = "HANDLE_REMOVEDOWNVOTE_COMMENT";
+const HANDLE_REMOVEUPVOTE_COMMENT = "HANDLE_REMOVEUPVOTE_COMMENT";
 
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
@@ -85,6 +87,21 @@ const dispatchRemoveDownvoteCommunity = (post) => ({
 
 const dispatchUpvoteComment = (post) => ({
   type: HANDLE_UPVOTE_COMMENT,
+  post,
+});
+
+const dispatchDownvoteComment = (post) => ({
+  type: HANDLE_DOWNVOTE_COMMENT,
+  post,
+});
+
+const dispatchRemoveUpvoteComment = (post) => ({
+  type: HANDLE_REMOVEUPVOTE_COMMENT,
+  post,
+});
+
+const dispatchRemoveDownvoteComment = (post) => ({
+  type: HANDLE_REMOVEDOWNVOTE_COMMENT,
   post,
 });
 
@@ -257,6 +274,45 @@ export function handleCommentUpvote(obj) {
   };
 }
 
+export function handleCommentDownvote(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("/communities/comment/downvote", obj);
+      dispatch(dispatchDownvoteComment(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleRemoveCommentUpvote(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest(
+        "/communities/comment/upvote/remove",
+        obj
+      );
+      dispatch(dispatchDownvoteComment(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleRemoveCommentDownvote(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest(
+        "/communities/comment/downvote/remove",
+        obj
+      );
+      dispatch(dispatchDownvoteComment(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_COMMUNITY:
@@ -300,6 +356,21 @@ export default function (state = {}, action) {
         .map((post) => (post.id === action.post.id ? action.post : post))
         .sort(sorting);
       return { ...state, posts: w };
+    case HANDLE_DOWNVOTE_COMMENT:
+      const p = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
+      return { ...state, posts: p };
+    case HANDLE_REMOVEUPVOTE_COMMENT:
+      const m = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
+      return { ...state, posts: m };
+    case HANDLE_REMOVEDOWNVOTE_COMMENT:
+      const g = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
+      return { ...state, posts: g };
     default:
       return state;
   }

@@ -187,7 +187,6 @@ const SingleCommunity = () => {
     dispatch(handleCommunityRemoveDownvote(info));
   }
 
-  console.log(communityState);
   //set userids
   useEffect(() => {
     const userids = communityState.users?.map((user) => user.id);

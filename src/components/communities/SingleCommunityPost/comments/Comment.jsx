@@ -11,7 +11,12 @@ import $ from "jquery";
 import NoShow from "./noshow/NoShow";
 
 import gsap from "gsap";
-import { handleCommentUpvote } from "../../../../store/posts-individualcommunity";
+import {
+  handleCommentDownvote,
+  handleCommentUpvote,
+  handleRemoveCommentDownvote,
+  handleRemoveCommentUpvote,
+} from "../../../../store/posts-individualcommunity";
 
 const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
   const dispatch = useDispatch();
@@ -41,7 +46,26 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
       userid: authState?.id,
       commentid: comment?.id,
     };
-    dispatch(handleCommentUpvote(obj));
+
+    if (comment.upvotes.includes(authState.id)) {
+      dispatch(handleRemoveCommentUpvote(obj));
+    } else {
+      dispatch(handleCommentUpvote(obj));
+    }
+  }
+
+  function handleDownvote() {
+    const obj = {
+      postid: post?.id,
+      userid: authState?.id,
+      commentid: comment?.id,
+    };
+
+    if (comment.downvotes.includes(authState.id)) {
+      dispatch(handleRemoveCommentDownvote(obj));
+    } else {
+      dispatch(handleCommentDownvote(obj));
+    }
   }
 
   useEffect(() => {
@@ -54,8 +78,6 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
       }
     );
   }, []);
-
-  //   console.log(comment);
 
   return (
     <div>
@@ -141,8 +163,15 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
                 >
                   {comment.upvotes.length - comment.downvotes.length}
                 </div>
-                <div className='comment-voteicon comment-hover'>
-                  <DownVoteSvg />
+                <div
+                  className='comment-voteicon comment-hover'
+                  onClick={() => handleDownvote()}
+                >
+                  <DownVoteSvg
+                    id={comment.id}
+                    post={comment}
+                    authState={authState}
+                  />
                 </div>
               </div>
             </div>

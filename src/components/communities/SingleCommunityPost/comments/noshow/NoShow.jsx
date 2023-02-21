@@ -10,7 +10,7 @@ const NoShow = ({ comment, post, func, display, idv, top }) => {
   useEffect(() => {
     if (!display) {
       gsap.fromTo(
-        ".ns-c",
+        `#ns-c-${comment?.id}`,
         {
           x: -12,
         },
@@ -18,7 +18,7 @@ const NoShow = ({ comment, post, func, display, idv, top }) => {
       );
 
       gsap.fromTo(
-        ".ns-tog",
+        `#ns-tog-${comment?.id}`,
         {
           x: -12,
           opacity: 0,
@@ -34,11 +34,15 @@ const NoShow = ({ comment, post, func, display, idv, top }) => {
         className='ns-parent'
         style={{ display: display && "none", marginTop: top && "16px" }}
       >
-        <div className='ns-tog' onClick={() => func()}>
+        <div
+          className='ns-tog'
+          onClick={() => func()}
+          id={`ns-tog-${comment?.id}`}
+        >
           <ToggleIcon idv={idv} />
         </div>
 
-        <div className='ns-c'>
+        <div className='ns-c' id={`ns-c-${comment?.id}`}>
           <a
             className='comment-icon'
             href={`/user/${comment.user.name}`}

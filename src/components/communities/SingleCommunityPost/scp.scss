@@ -16,9 +16,7 @@
   margin: 0 auto;
   height: auto;
   background-color: red;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  min-height: 100vh;
 }
 
 .scp-banner {
@@ -115,7 +113,6 @@
 .scp-postcontainer {
   max-width: 740px;
   width: 100%;
-  min-height: 100vh;
   background-color: white;
   margin: 32px 12px 65px 32px;
   border-radius: 4px;
