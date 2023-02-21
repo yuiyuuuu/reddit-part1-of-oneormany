@@ -12,17 +12,35 @@ import NoShow from "./noshow/NoShow";
 
 import gsap from "gsap";
 import {
+  handleAddComment,
   handleCommentDownvote,
   handleCommentUpvote,
   handleRemoveCommentDownvote,
   handleRemoveCommentUpvote,
 } from "../../../../store/posts-individualcommunity";
+import ReplyIcon from "./svgs/ReplyIcon";
 
-const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
+const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
 
   const [show, setShow] = useState(true);
+  const [showReply, setShowReply] = useState(false);
+  const [reply, setReply] = useState("");
+
+  function handleReply() {
+    const obj = {
+      message: reply,
+      userId: authState.id,
+      postId: post.id,
+      parentId: comment.id,
+    };
+
+    dispatch(handleAddComment(obj)).then(() => {
+      setShowReply(false);
+      setReply("");
+    });
+  }
 
   function toggleShow() {
     if (show) {
@@ -178,19 +196,46 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
                   />
                 </div>
               </div>
+
+              <button
+                className='comment-rowreply comment-hover'
+                onClick={() => setShowReply((prev) => !prev)}
+              >
+                <ReplyIcon />
+                <span style={{ marginLeft: "6px" }}>Reply</span>
+              </button>
+            </div>
+
+            <div
+              className='comment-input'
+              style={{ display: !showReply && "none" }}
+            >
+              <div className='comment-i-border'>
+                <textarea
+                  className='comment-m'
+                  placeholder='What are your thoughts?'
+                  value={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                />
+
+                <div className='comment-inputbot' onClick={() => handleReply()}>
+                  <div className='bluebutton-button'>Reply</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <NoShow
-          comment={comment}
-          post={post}
-          func={toggleShow}
-          display={show}
-          idv={comment.id}
-          top={top}
-        />
       </div>
+
+      <NoShow
+        comment={comment}
+        post={post}
+        func={toggleShow}
+        display={show}
+        idv={comment.id}
+        top={top}
+      />
+
       {commentsMap[comment.id] && (
         <CommentsList
           comments={commentsMap[comment.id]}
@@ -200,6 +245,7 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
           idarr={[...idarr, comment.id]}
           toggle={toggleShow}
           post={post}
+          margin={margin}
         />
       )}
     </div>

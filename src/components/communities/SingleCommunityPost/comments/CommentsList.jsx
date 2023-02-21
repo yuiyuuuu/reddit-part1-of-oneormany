@@ -13,7 +13,7 @@ import Comment from "./Comment";
 import $ from "jquery";
 import { sorting } from "../../../../requests/sortingfunction";
 
-const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
+const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
   const dispatch = useDispatch();
   const commentsState = useSelector((state) => state.comments);
 
@@ -41,7 +41,7 @@ const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
   return (
     <div
       className='commentlist-parent'
-      style={{ paddingLeft: !top && "28px" }}
+      style={{ paddingLeft: !top ? (level === 1 ? "16px" : "23px") : "" }}
       id={level && `prev-${idarr[level - 1]}`}
     >
       {/* sorting sorts by time created*/}
@@ -53,6 +53,7 @@ const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
           post={post}
           level={level || 0}
           idarr={idarr || []}
+          margin={margin ? margin + 7 : 16}
         />
       ))}
 

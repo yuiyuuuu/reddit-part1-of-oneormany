@@ -70,7 +70,7 @@ const SingleCommunityPost = ({
     if (!selectedPost?.comments) return;
 
     dispatch(setComments(selectedPost?.comments));
-  }, [selectedPost]);
+  }, [selectedPost?.comments]);
 
   return (
     <div style={{ display: !selectedPost && "none" }}>
