@@ -10,7 +10,8 @@
     "dev2": "concurrently \"vite build --watch\" \"nodemon server/server.js\"",
     "seed": "node server/prisma/seed.ts",
     "proc": "npx prisma generate --schema=./server/prisma/schema.prisma && node server/server.js",
-    "migrate": "npx prisma generate --schema=./server/prisma/schema.prisma && prisma migrate deploy --schema=./server/prisma/schema.prisma"
+    "migrate": "npx prisma generate --schema=./server/prisma/schema.prisma && prisma migrate deploy --schema=./server/prisma/schema.prisma",
+    "heroseed": "npx prisma generate --schema=./server/prisma/schema.prisma && node server/prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.8.1",
