@@ -187,6 +187,7 @@ const SingleCommunity = () => {
     dispatch(handleCommunityRemoveDownvote(info));
   }
 
+  console.log(communityState);
   //set userids
   useEffect(() => {
     const userids = communityState.users?.map((user) => user.id);
@@ -437,7 +438,7 @@ const SingleCommunity = () => {
                 <div style={{ marginTop: "-14px", marginBottom: "12px" }}>
                   {!communityState?.iconImage && !iconImageState ? (
                     <DefaultCommunityIconBig
-                      fillcolor={"#" + communityState.themeBaseColor}
+                      fillcolor={"#" + communityState?.themeBaseColor}
                       height={70}
                       community={communityState}
                     />

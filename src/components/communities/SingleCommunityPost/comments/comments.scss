@@ -113,8 +113,12 @@
 
 .comment-votecount {
   margin: 0px 4px;
-  color: #ff4500;
   user-select: none;
   font-size: 12px;
   font-weight: 500;
+  color: rgb(26, 26, 27);
+}
+
+.comment-hover:hover {
+  background-color: rgba(26, 26, 27, 0.1);
 }

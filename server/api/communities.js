@@ -292,7 +292,11 @@ router.put("/upvote", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -329,7 +333,11 @@ router.put("/downvote", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -363,7 +371,11 @@ router.put("/upvote/remove", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -391,11 +403,54 @@ router.put("/downvote/remove", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
     res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/comment/upvote", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.body.commentid,
+      },
+    });
+
+    await prisma.comment.update({
+      where: {
+        id: req.body.commentid,
+      },
+      data: {
+        upvotes: [...new Set([...comment.upvotes, req.body.userid])],
+        downvotes: comment.downvotes.filter((i) => i !== req.body.userid),
+      },
+    });
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    res.send(post);
   } catch (error) {
     next(error);
   }

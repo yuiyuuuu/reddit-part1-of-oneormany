@@ -181,17 +181,17 @@ const Post = ({
             />
           ) : (
             <DefaultCommunitiesIcon
-              fillcolor={"#" + post.community.themeBaseColor}
+              fillcolor={"#" + post.community?.themeBaseColor}
               height={20}
               community={post.community}
             />
           )}
           <a
-            href={`/${post.community.tag}`}
+            href={`/${post.community?.tag}`}
             className='posts-communityname'
             onClick={(e) => e.stopPropagation()}
           >
-            {post.community.tag}
+            {post.community?.tag}
           </a>
           <div className='dot-posts'>•</div>
           <div className='post-topdesc' style={{ marginRight: "3px" }}>

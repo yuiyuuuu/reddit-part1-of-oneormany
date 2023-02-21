@@ -6,6 +6,10 @@ import Comment from "./Comment";
 //note
 //equation to center the threadline is (width of icon container / 2) - (width of line container /2)  + any padding on the left
 
+//idarr is the array of ids for the current level
+//level is how many times we have looped so far
+//toggle is the function to toggle show
+
 import $ from "jquery";
 
 const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
@@ -45,10 +49,6 @@ const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
           idarr={idarr || []}
         />
       ))}
-      {/* {level &&
-        [...Array(level)].map((element, index) => (
-
-        ))} */}
 
       {level && (
         <div

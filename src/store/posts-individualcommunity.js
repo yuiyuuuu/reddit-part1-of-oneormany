@@ -21,6 +21,8 @@ const HANDLE_UPVOTE = "HANDLE_UPVOTE_COMMUNITY";
 const HANDLE_DOWNVOTE = "HANDLE_DOWNVOTE_COMMUNITY";
 const REMOVE_UPVOTE = "HANDLE_REMOVEUPVOTE_COMMUNITY";
 const REMOVE_DOWNVOTE = "HANDLE_REMOVEDOWNVOTE_COMMUNITY";
+const HANDLE_UPVOTE_COMMENT = "HANDLE_UPVOTE_COMMENT";
+const HANDLE_DOWNVOTE_COMMENT = "HANDLE_DOWNVOTE_COMMENT";
 
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
@@ -78,6 +80,11 @@ const dispatchRemoveUpvoteCommunity = (post) => ({
 
 const dispatchRemoveDownvoteCommunity = (post) => ({
   type: REMOVE_DOWNVOTE,
+  post,
+});
+
+const dispatchUpvoteComment = (post) => ({
+  type: HANDLE_UPVOTE_COMMENT,
   post,
 });
 
@@ -239,6 +246,17 @@ export function handleCommunityRemoveDownvote(obj) {
   };
 }
 
+export function handleCommentUpvote(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("/communities/comment/upvote", obj);
+      dispatch(dispatchUpvoteComment(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_COMMUNITY:
@@ -277,6 +295,11 @@ export default function (state = {}, action) {
         .map((post) => (post.id === action.post.id ? action.post : post))
         .sort(sorting);
       return { ...state, posts: q };
+    case HANDLE_UPVOTE_COMMENT:
+      const w = state.posts.map((post) =>
+        post.id === action.post.id ? action.post : post
+      );
+      return { ...state, posts: w };
     default:
       return state;
   }

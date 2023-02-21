@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import "./comments.scss";
@@ -11,8 +11,10 @@ import $ from "jquery";
 import NoShow from "./noshow/NoShow";
 
 import gsap from "gsap";
+import { handleCommentUpvote } from "../../../../store/posts-individualcommunity";
 
 const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
+  const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
 
   const [show, setShow] = useState(true);
@@ -31,6 +33,15 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
       );
       setShow(true);
     }
+  }
+
+  function handleUpvote() {
+    const obj = {
+      postid: post?.id,
+      userid: authState?.id,
+      commentid: comment?.id,
+    };
+    dispatch(handleCommentUpvote(obj));
   }
 
   useEffect(() => {
@@ -108,17 +119,29 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
               style={{ display: !show && "none" }}
             >
               <div className='comment-votesrow'>
-                <div className='comment-voteicon'>
+                <div
+                  className='comment-voteicon comment-hover'
+                  onClick={() => handleUpvote()}
+                >
                   <UpVoteSvg
                     id={comment.id}
                     post={comment}
                     authState={authState}
                   />
                 </div>
-                <div className='comment-votecount'>
+                <div
+                  className='comment-votecount'
+                  style={{
+                    color: comment?.upvotes.includes(authState?.id)
+                      ? "red"
+                      : comment?.downvotes.includes(authState?.id)
+                      ? "#7193ff"
+                      : "",
+                  }}
+                >
                   {comment.upvotes.length - comment.downvotes.length}
                 </div>
-                <div className='comment-voteicon'>
+                <div className='comment-voteicon comment-hover'>
                   <DownVoteSvg />
                 </div>
               </div>
@@ -143,6 +166,7 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
           level={level + 1}
           idarr={[...idarr, comment.id]}
           toggle={toggleShow}
+          post={post}
         />
       )}
     </div>
