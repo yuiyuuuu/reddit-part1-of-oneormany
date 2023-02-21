@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import "./post.scss";
 
-import { communities } from "../newcommunities/newcommunitiesobj";
-
 import $ from "jquery";
 
 import CommentSvg from "./postssvgs/CommentSvg";
@@ -14,12 +12,6 @@ import UpVoteSvg from "./postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
 
-import {
-  downvote,
-  removeDownvote,
-  removeUpvote,
-  upvote,
-} from "../../../store/posts";
 import { useNavigate } from "react-router-dom";
 import DefaultCommunitiesIcon from "../../communities/communitiessvg/DefaultCommunitiesIcon";
 

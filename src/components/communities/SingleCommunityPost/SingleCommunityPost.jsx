@@ -20,7 +20,6 @@ import SpamSvg from "./scpsvgs/SpamSvg";
 import ShieldSvg from "./scpsvgs/ShieldSvg";
 import ThreeDot from "./scpsvgs/ThreeDot";
 import NoCommentsyet from "./nocomment/NoCommentsyet";
-import CommentsProvider, { usePost } from "./comments/CommentsProvider";
 import CommentsList from "./comments/CommentsList";
 
 import { setComments } from "../../../store/comments/comments";

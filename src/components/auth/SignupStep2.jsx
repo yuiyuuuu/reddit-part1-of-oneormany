@@ -34,7 +34,8 @@ const SignupStep2 = ({
       email: email,
     };
     const res = dispatch(signup(object)).then((resp) => {
-      if (resp.auth.id) {
+      console.log(resp);
+      if (resp?.auth?.id) {
         history("/");
       }
     });
