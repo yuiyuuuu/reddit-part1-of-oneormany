@@ -86,13 +86,33 @@ async function seed() {
     },
   });
 
-  const comment3 = await prisma.comment.create({
-    data: {
-      userId: rachel.id,
-      postId: post1.id,
-      message: "I am a root comment",
-    },
-  });
+  setTimeout(async () => {
+    const comment3 = await prisma.comment.create({
+      data: {
+        userId: rachel.id,
+        postId: post1.id,
+        message: "I am a root comment",
+      },
+    });
+
+    await prisma.comment.create({
+      data: {
+        userId: rachel.id,
+        postId: post1.id,
+        parentId: comment3.id,
+        message: "I am a nested comment",
+      },
+    });
+
+    await prisma.comment.create({
+      data: {
+        userId: rachel.id,
+        postId: post1.id,
+        parentId: comment3.id,
+        message: "I am a nested comment22",
+      },
+    });
+  }, 2000);
 
   const comment2Child = await prisma.comment.create({
     data: {
@@ -109,24 +129,6 @@ async function seed() {
       postId: post1.id,
       parentId: comment2Child.id,
       message: "I am a nested comment",
-    },
-  });
-
-  await prisma.comment.create({
-    data: {
-      userId: rachel.id,
-      postId: post1.id,
-      parentId: comment3.id,
-      message: "I am a nested comment",
-    },
-  });
-
-  await prisma.comment.create({
-    data: {
-      userId: rachel.id,
-      postId: post1.id,
-      parentId: comment3.id,
-      message: "I am a nested comment22",
     },
   });
 

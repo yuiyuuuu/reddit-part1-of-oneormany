@@ -4,6 +4,8 @@ function parseDate(date) {
 }
 
 function sorting(a, b) {
+  console.log(a.createdAt);
+  console.log(b.createdAt);
   const aDate = parseDate(a.createdAt);
   const bDate = parseDate(b.createdAt);
 

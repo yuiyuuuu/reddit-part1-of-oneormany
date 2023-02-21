@@ -11,6 +11,7 @@ import Comment from "./Comment";
 //toggle is the function to toggle show
 
 import $ from "jquery";
+import { sorting } from "../../../../requests/sortingfunction";
 
 const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
   const dispatch = useDispatch();
@@ -39,7 +40,8 @@ const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
       style={{ paddingLeft: !top && "28px" }}
       id={level && `prev-${idarr[level - 1]}`}
     >
-      {commentsState[which]?.map((v) => (
+      {/* sorting sorts by time created*/}
+      {commentsState[which]?.sort(sorting)?.map((v) => (
         <Comment
           comment={v}
           commentsMap={commentsState}

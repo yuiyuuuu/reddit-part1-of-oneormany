@@ -296,9 +296,9 @@ export default function (state = {}, action) {
         .sort(sorting);
       return { ...state, posts: q };
     case HANDLE_UPVOTE_COMMENT:
-      const w = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
-      );
+      const w = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
       return { ...state, posts: w };
     default:
       return state;
