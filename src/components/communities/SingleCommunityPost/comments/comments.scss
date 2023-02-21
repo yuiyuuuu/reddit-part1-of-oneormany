@@ -122,3 +122,7 @@
 .comment-hover:hover {
   background-color: rgba(26, 26, 27, 0.1);
 }
+
+.comment-hoverc:hover > div {
+  background-color: #0079d3;
+}

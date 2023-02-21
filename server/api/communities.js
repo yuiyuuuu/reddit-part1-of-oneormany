@@ -570,3 +570,35 @@ router.put("/comment/downvote/remove", async (req, res, next) => {
     next(error);
   }
 });
+
+router.post("/comment/add", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.create({
+      data: {
+        userId: req.body.userId,
+        postId: req.body.postId,
+        parentId: req.body.parentId,
+        message: req.body.message,
+      },
+    });
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: req.body.postId,
+      },
+      include: {
+        user: true,
+        community: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    res.send(post);
+  } catch (error) {
+    next(error);
+  }
+});

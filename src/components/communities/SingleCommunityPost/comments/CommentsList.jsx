@@ -18,21 +18,25 @@ const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
   const commentsState = useSelector((state) => state.comments);
 
   useEffect(() => {
-    if (level) {
-      $(`.${idarr[level - 1]}`).hover(
-        () => {
-          $(`.${idarr[level - 1]}`)
-            .children("div")
-            .css("background-color", "#0079D3");
-        },
-        () => {
-          $(`.${idarr[level - 1]}`)
-            .children("div")
-            .css("background-color", "");
-        }
-      );
+    if (level > 0) {
+      $(`.${idarr[level - 1]}`)
+        .off()
+        .hover(
+          () => {
+            $(`.${idarr[level - 1]}`)
+              .children("div")
+              .css("background-color", "#0079D3");
+          },
+          () => {
+            $(`.${idarr[level - 1]}`)
+              .children("div")
+              .css("background-color", "");
+          }
+        );
     }
-  }, []);
+  }, [commentsState]);
+
+  //   console.log(idarr, level);
 
   return (
     <div
@@ -52,7 +56,7 @@ const CommentsList = ({ which, post, top, level, idarr, toggle }) => {
         />
       ))}
 
-      {level && (
+      {level > 0 && (
         <div
           className={`threadline ${idarr[level - 1]}`}
           style={{

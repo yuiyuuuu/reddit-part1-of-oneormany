@@ -69,15 +69,19 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
   }
 
   useEffect(() => {
-    $(`.${comment.id}`).hover(
-      () => {
-        $(`.${comment.id}`).children("div").css("background-color", "#0079D3");
-      },
-      () => {
-        $(`.${comment.id}`).children("div").css("background-color", "");
-      }
-    );
-  }, []);
+    $(`.${comment.id}`)
+      .off()
+      .hover(
+        () => {
+          $(`.${comment.id}`)
+            .children("div")
+            .css("background-color", "#0079D3");
+        },
+        () => {
+          $(`.${comment.id}`).children("div").css("background-color", "");
+        }
+      );
+  }, [commentsMap]);
 
   return (
     <div>
@@ -91,7 +95,7 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr }) => {
           }}
         >
           <div
-            className={`threadline ${comment.id}`}
+            className={`threadline ${comment.id} comment-hoverc`}
             style={{ left: !top && 8 + 6 + "px" }}
             onClick={() => toggleShow()}
           >

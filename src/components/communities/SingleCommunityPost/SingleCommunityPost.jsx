@@ -23,6 +23,7 @@ import NoCommentsyet from "./nocomment/NoCommentsyet";
 import CommentsList from "./comments/CommentsList";
 
 import { setComments } from "../../../store/comments/comments";
+import { handleAddComment } from "../../../store/posts-individualcommunity";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -38,18 +39,38 @@ const SingleCommunityPost = ({
   const authState = useSelector((state) => state.auth);
 
   const [commentInput, setCommentInput] = useState("");
+  const [commentImage, setCommentImage] = useState(null);
+
+  function handleCommentSubmit() {
+    if (!commentInput.length) return;
+    //this one has no parent id since its root comment
+    const obj = {
+      communityid: selectedCommunity.id,
+      message: commentInput,
+      userId: authState.id,
+      postId: selectedPost.id,
+      parentId: null,
+    };
+
+    dispatch(handleAddComment(obj)).then((res) => {
+      dispatch(setComments(res.comments));
+      setCommentInput("");
+    });
+  }
 
   useEffect(() => {
     //sets scp component to the top of the page, so when the user selects another post, it wont start at the old scroll position
     return () => {
       $(".scp-parent").scrollTop(0);
+      setCommentImage("");
     };
   }, [window.location.href]);
 
   useEffect(() => {
     if (!selectedPost?.comments) return;
+
     dispatch(setComments(selectedPost?.comments));
-  }, [selectedPost?.comments]);
+  }, [selectedPost]);
 
   return (
     <div style={{ display: !selectedPost && "none" }}>
@@ -124,7 +145,10 @@ const SingleCommunityPost = ({
             </div>
           </div>
         </div>
-        <div className='scp-inner'>
+        <div
+          className='scp-inner'
+          style={{ backgroundColor: "#" + selectedCommunity?.themeBodyColor }}
+        >
           <div className='scp-main'>
             <div className='scp-postcontainer'>
               <div className='scp-posttop'>
@@ -281,20 +305,33 @@ const SingleCommunityPost = ({
                       value={commentInput}
                     />
 
-                    <div className='scp-inputstylebox'></div>
+                    <div className='scp-inputstylebox'>
+                      <button
+                        className='bluebutton-button'
+                        style={{
+                          cursor: !commentInput.length && "not-allowed",
+                          filter: !commentInput.length && "grayscale(1)",
+                        }}
+                        onClick={() => handleCommentSubmit()}
+                      >
+                        Comment
+                      </button>
+                    </div>
                   </div>
                 </div>
 
                 {!selectedPost?.comments?.length && <NoCommentsyet />}
               </div>
-              <div className='comment-mla'>
-                <CommentsList
-                  comments={selectedPost?.comments}
-                  which={null}
-                  post={selectedPost}
-                  top={true}
-                />
-              </div>
+              {selectedPost?.comments.length && (
+                <div className='comment-mla'>
+                  <CommentsList
+                    comments={selectedPost?.comments}
+                    which={null}
+                    post={selectedPost}
+                    top={true}
+                  />
+                </div>
+              )}
             </div>
 
             <div className='scp-cominfocontainer'>

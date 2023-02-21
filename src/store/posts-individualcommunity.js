@@ -21,10 +21,13 @@ const HANDLE_UPVOTE = "HANDLE_UPVOTE_COMMUNITY";
 const HANDLE_DOWNVOTE = "HANDLE_DOWNVOTE_COMMUNITY";
 const REMOVE_UPVOTE = "HANDLE_REMOVEUPVOTE_COMMUNITY";
 const REMOVE_DOWNVOTE = "HANDLE_REMOVEDOWNVOTE_COMMUNITY";
+
 const HANDLE_UPVOTE_COMMENT = "HANDLE_UPVOTE_COMMENT";
 const HANDLE_DOWNVOTE_COMMENT = "HANDLE_DOWNVOTE_COMMENT";
 const HANDLE_REMOVEDOWNVOTE_COMMENT = "HANDLE_REMOVEDOWNVOTE_COMMENT";
 const HANDLE_REMOVEUPVOTE_COMMENT = "HANDLE_REMOVEUPVOTE_COMMENT";
+
+const HANDLE_ADDCOMMENT = "HANDLE_ADDCOMMENT";
 
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
@@ -102,6 +105,11 @@ const dispatchRemoveUpvoteComment = (post) => ({
 
 const dispatchRemoveDownvoteComment = (post) => ({
   type: HANDLE_REMOVEDOWNVOTE_COMMENT,
+  post,
+});
+
+const dispatchAddComment = (post) => ({
+  type: HANDLE_ADDCOMMENT,
   post,
 });
 
@@ -292,7 +300,7 @@ export function handleRemoveCommentUpvote(obj) {
         "/communities/comment/upvote/remove",
         obj
       );
-      dispatch(dispatchDownvoteComment(data));
+      dispatch(dispatchRemoveUpvoteComment(data));
     } catch (error) {
       console.log(error);
     }
@@ -306,7 +314,19 @@ export function handleRemoveCommentDownvote(obj) {
         "/communities/comment/downvote/remove",
         obj
       );
-      dispatch(dispatchDownvoteComment(data));
+      dispatch(dispatchRemoveDownvoteComment(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleAddComment(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePostRequest("communities/comment/add", obj);
+      dispatch(dispatchAddComment(data));
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -371,6 +391,11 @@ export default function (state = {}, action) {
         .map((post) => (post.id === action.post.id ? action.post : post))
         .sort(sorting);
       return { ...state, posts: g };
+    case HANDLE_ADDCOMMENT:
+      const y = state.posts
+        .map((post) => (post.id === action.post.id ? action.post : post))
+        .sort(sorting);
+      return { ...state, posts: y };
     default:
       return state;
   }
