@@ -1,4 +1,9 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getLocalData } from "./store/auth";
+import { handleSet } from "./store/global/screenProperties";
+
 import Home from "./components/home/Home";
 import Submit from "./components/submit/Submit";
 import Nav from "./components/nav/Nav";
@@ -7,10 +12,6 @@ import SinglePost from "./components/SinglePost";
 import "./index.scss";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
-
-import { getLocalData } from "./store/auth";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import SingleCommunity from "./components/communities/SingleCommunity";
 import Communities404 from "./components/communities/Communities404";
 import CreateCommunityOverlay from "./components/communities/CreateCommunityOverlay";
@@ -23,6 +24,19 @@ function App() {
   const createOverlayState = useSelector((state) => state.navToggleCreate);
   const discardState = useSelector((state) => state.discardChanges);
   const comstylingState = useSelector((state) => state.CommunityStyling);
+
+  const resize = useCallback(() => {
+    dispatch(handleSet(window.innerWidth));
+  });
+
+  useEffect(() => {
+    resize();
+    window.addEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(getLocalData());

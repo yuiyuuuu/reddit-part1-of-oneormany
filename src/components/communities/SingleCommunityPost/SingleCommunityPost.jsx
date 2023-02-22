@@ -24,6 +24,7 @@ import CommentsList from "./comments/CommentsList";
 
 import { setComments } from "../../../store/comments/comments";
 import { handleAddComment } from "../../../store/posts-individualcommunity";
+import TextStylesComment from "./comments/textstylescomponent/TextStylesComment";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -306,8 +307,13 @@ const SingleCommunityPost = ({
                     />
 
                     <div className='scp-inputstylebox'>
+                      <TextStylesComment />
+
+                      <div className='grow' />
+
+                      <button className='scp-markdown'>Markdown Mode</button>
                       <button
-                        className='bluebutton-button'
+                        className='scp-commentbutton'
                         style={{
                           cursor: !commentInput.length && "not-allowed",
                           filter: !commentInput.length && "grayscale(1)",

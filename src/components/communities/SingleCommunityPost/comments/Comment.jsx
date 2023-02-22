@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
-import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import "./comments.scss";
 import CommentsList from "./CommentsList";
-
-import ToggleIcon from "./svgs/ToggleIcon";
 
 import $ from "jquery";
 import NoShow from "./noshow/NoShow";
 
 import gsap from "gsap";
+
+import ReplyIcon from "./svgs/ReplyIcon";
+import ThreeDot from "./svgs/ThreeDot";
+import ModSvg from "./svgs/ModSvg";
+import DistinguishSvg from "./svgs/DistinguishSvg";
+import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
+import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
+
 import {
   handleAddComment,
   handleCommentDownvote,
@@ -18,7 +22,6 @@ import {
   handleRemoveCommentDownvote,
   handleRemoveCommentUpvote,
 } from "../../../../store/posts-individualcommunity";
-import ReplyIcon from "./svgs/ReplyIcon";
 
 const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   const dispatch = useDispatch();
@@ -200,9 +203,28 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
               <button
                 className='comment-rowreply comment-hover'
                 onClick={() => setShowReply((prev) => !prev)}
+                style={{ marginRight: "4px" }}
               >
                 <ReplyIcon />
                 <span style={{ marginLeft: "6px" }}>Reply</span>
+              </button>
+
+              <button className='comment-hover comment-but'>Share</button>
+              <button className='comment-hover comment-but comment-al'>
+                <ThreeDot />
+              </button>
+              <button
+                className='comment-hover comment-but'
+                style={{ padding: "4px 4px" }}
+              >
+                <ModSvg />
+              </button>
+
+              <button
+                className='comment-hover comment-but'
+                style={{ padding: "4px 4px" }}
+              >
+                <DistinguishSvg />
               </button>
             </div>
 

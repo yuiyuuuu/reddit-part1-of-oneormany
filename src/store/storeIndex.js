@@ -14,6 +14,7 @@ import madeChange from "./comstyling/madeChange";
 import discardChanges from "./discard/discardChanges";
 import hrefpath from "./comstyling/hrefpath";
 import comments from "./comments/comments";
+import screenProperties from "./global/screenProperties";
 
 const reducer = combineReducers({
   auth,
@@ -27,6 +28,7 @@ const reducer = combineReducers({
   discardChanges,
   hrefpath,
   comments,
+  screenProperties,
 }); //reducers here
 
 const middleware = composeWithDevTools(
