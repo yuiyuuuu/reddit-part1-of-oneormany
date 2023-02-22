@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import GifSvg from "./svg/GifSvg";
 import ThreeDotTSC from "./svg/ThreeDotTSC";
 import "./tsc.scss";
 
-const TextStylesComment = () => {
+const TextStylesComment = ({}) => {
   const width = useSelector((state) => state.screenProperties);
-  console.log(width);
 
   return (
     <div>
@@ -49,7 +48,9 @@ const TextStylesComment = () => {
 
         <div
           className='tsc-divider'
-          style={{ display: width < 1200 && "none" }}
+          style={{
+            display: width < 1200 && "none",
+          }}
         />
 
         <div className='tsc-row'>

@@ -117,7 +117,7 @@
   border-radius: 4px;
 
   @media only screen and (max-width: 1120px) {
-    margin: 32px 4px 65px 4px;
+    margin: 32px 32px 65px 32px;
   }
 }
 
@@ -126,7 +126,7 @@
   flex-direction: column;
   padding: 32px 32px 32px 0;
 
-  @media only screen and (max-width: 1120px) {
+  @media only screen and (max-width: 1220px) {
     display: none;
   }
 }
@@ -316,7 +316,7 @@
 
 .scp-inputstylebox {
   background-color: #f6f7f8;
-  height: 50px; // change?
+  height: 34px; // change?
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -328,7 +328,7 @@
   background-color: #0079d3;
   color: white;
   border-radius: 9999px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 17px;
   font-weight: 700;
   display: flex;
@@ -346,7 +346,7 @@
 .scp-markdown {
   font-size: 12px;
   font-weight: 700;
-  color: #0079d3;
+  color: #2e2e2e;
   display: flex;
   justify-content: center;
   align-items: center;

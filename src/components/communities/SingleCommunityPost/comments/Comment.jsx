@@ -14,6 +14,7 @@ import ModSvg from "./svgs/ModSvg";
 import DistinguishSvg from "./svgs/DistinguishSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
+import TextStylesComment from "./textstylescomponent/TextStylesComment";
 
 import {
   handleAddComment,
@@ -22,6 +23,7 @@ import {
   handleRemoveCommentDownvote,
   handleRemoveCommentUpvote,
 } from "../../../../store/posts-individualcommunity";
+import TextStylesReply from "./textstylescomponent/TextStylesReply";
 
 const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   const [reply, setReply] = useState("");
 
   function handleReply() {
+    if (!reply.length) return;
     const obj = {
       message: reply,
       userId: authState.id,
@@ -240,8 +243,33 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
                   onChange={(e) => setReply(e.target.value)}
                 />
 
-                <div className='comment-inputbot' onClick={() => handleReply()}>
-                  <div className='bluebutton-button'>Reply</div>
+                <div style={{ width: "100%" }}>
+                  <div
+                    className='comment-inputbot'
+                    onClick={() => handleReply()}
+                    id={`tsc-${comment?.id}-co`}
+                  >
+                    <TextStylesReply idv={comment.id} show={showReply} />
+                    <div className='grow' />
+                    <button className='scp-markdown'>Markdown Mode</button>
+                    <button
+                      className='comment-replybutton2 comment-f'
+                      onClick={() => {
+                        setShowReply(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className='comment-replybutton comment-f'
+                      style={{
+                        cursor: !reply.length && "not-allowed",
+                        filter: !reply.length && "grayscale(1)",
+                      }}
+                    >
+                      Reply
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
