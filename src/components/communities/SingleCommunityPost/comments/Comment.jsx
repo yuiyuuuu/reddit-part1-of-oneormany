@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./comments.scss";
 import CommentsList from "./CommentsList";
@@ -14,7 +14,6 @@ import ModSvg from "./svgs/ModSvg";
 import DistinguishSvg from "./svgs/DistinguishSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
-import TextStylesComment from "./textstylescomponent/TextStylesComment";
 
 import {
   handleAddComment,
@@ -27,6 +26,7 @@ import TextStylesReply from "./textstylescomponent/TextStylesReply";
 
 const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   const dispatch = useDispatch();
+  const styleRef = useRef();
   const authState = useSelector((state) => state.auth);
 
   const [show, setShow] = useState(true);
@@ -91,6 +91,22 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
       dispatch(handleCommentDownvote(obj));
     }
   }
+
+  useEffect(() => {
+    $(document).ready(() => {
+      $(".comment-m").focus(() => {
+        $(".comment-m")
+          .parents(".comment-i-border")
+          .css("border", "1px solid #1a1a1b");
+      });
+
+      $(".comment-m").focusout(() => {
+        $(".comment-m")
+          .parents(".comment-i-border")
+          .css("border", "1px solid #edeff1");
+      });
+    });
+  }, []);
 
   useEffect(() => {
     $(`.${comment.id}`)
@@ -234,6 +250,7 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
             <div
               className='comment-input'
               style={{ display: !showReply && "none" }}
+              ref={styleRef}
             >
               <div className='comment-i-border'>
                 <textarea
@@ -249,7 +266,11 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
                     onClick={() => handleReply()}
                     id={`tsc-${comment?.id}-co`}
                   >
-                    <TextStylesReply idv={comment.id} show={showReply} />
+                    <TextStylesReply
+                      idv={comment.id}
+                      show={showReply}
+                      reference={styleRef}
+                    />
                     <div className='grow' />
                     <button className='scp-markdown'>Markdown Mode</button>
                     <button

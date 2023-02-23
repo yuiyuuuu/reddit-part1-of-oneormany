@@ -7,26 +7,30 @@ import "./tsc.scss";
 import $ from "jquery";
 import { useCallback } from "react";
 
-const TextStylesReply = ({ idv, show }) => {
+const TextStylesReply = ({ idv, show, reference }) => {
   const [width, setWidth] = useState(0);
 
   const resize = useCallback(() => {
-    const g = $(`#tsc-${idv}`).width();
-    console.log(g, "gggg");
-  }, [show]);
+    const g = document.getElementById(`tsc-${idv}-co`).offsetWidth;
+
+    setWidth(g);
+  }, [show, width]);
 
   useEffect(() => {
-    $(document).ready(() => {
-      resize();
-      window.addEventListener("resize", resize);
-    });
+    if (idv === "main") {
+      document.addEventListener("readystatechange", () => {
+        //need this since the post comment input box is shown at the start of load, but the reply ones are not
+        resize();
+      });
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
 
     return () => {
       window.removeEventListener("resize", resize);
     };
   }, [show]);
-
-  console.log(width);
 
   return (
     <div>
@@ -76,13 +80,10 @@ const TextStylesReply = ({ idv, show }) => {
         />
 
         <div className='tsc-row'>
-          <div className='tsc-icon' style={{ display: "none" }}>
+          <div className='tsc-icon' style={{ display: width < 626 && "none" }}>
             <GifSvg />
           </div>
-          <div className='tsc-icon' style={{ display: "none" }}>
-            <GifSvg />
-          </div>
-          <div className='tsc-icon' style={{ display: "none" }}>
+          <div className='tsc-icon' style={{ display: width < 656 && "none" }}>
             <GifSvg />
           </div>
           <div className='tsc-icon'>

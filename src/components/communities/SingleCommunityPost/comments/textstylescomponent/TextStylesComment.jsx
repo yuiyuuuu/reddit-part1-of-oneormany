@@ -35,7 +35,7 @@ const TextStylesComment = ({}) => {
           <div className='tsc-icon'>
             <GifSvg />
           </div>
-          <div className='tsc-icon'>
+          <div className='tsc-icon' style={{ display: width < 1153 && "none" }}>
             <GifSvg />
           </div>
           <div className='tsc-icon' style={{ display: width < 1153 && "none" }}>

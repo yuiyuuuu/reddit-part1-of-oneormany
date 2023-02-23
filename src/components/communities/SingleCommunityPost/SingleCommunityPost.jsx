@@ -24,7 +24,7 @@ import CommentsList from "./comments/CommentsList";
 
 import { setComments } from "../../../store/comments/comments";
 import { handleAddComment } from "../../../store/posts-individualcommunity";
-import TextStylesComment from "./comments/textstylescomponent/TextStylesComment";
+import TextStylesReply from "./comments/textstylescomponent/TextStylesReply";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -207,7 +207,12 @@ const SingleCommunityPost = ({
                 </div>
 
                 <div className='scp-cominforow'>
-                  <div className='scp-q'>
+                  <div
+                    className='scp-q'
+                    onClick={() =>
+                      navigate(`/r/${selectedPost.community.name}`)
+                    }
+                  >
                     <div className='scp-compfp'>
                       {!selectedPost?.community?.iconImage ? (
                         <DefaultCommunitiesIcon
@@ -306,8 +311,8 @@ const SingleCommunityPost = ({
                       value={commentInput}
                     />
 
-                    <div className='scp-inputstylebox'>
-                      <TextStylesComment />
+                    <div className='scp-inputstylebox' id={`tsc-main-co`}>
+                      <TextStylesReply idv='main' show={true} />
 
                       <div className='grow' />
 
