@@ -93,30 +93,40 @@ const Submit = () => {
   }
 
   async function handleSubmit() {
-    switch (selected) {
-      case "post":
-        const v = await makePostRequest("posts", {
-          title: title,
-          body: text,
-          userId: authState.id,
-          communityId: selectedCommunity.id,
-        });
-        break;
-      case "image/video":
-        if (!title.length) {
-          //error function here
-          return;
-        }
-        const a = await makePostRequest("posts", {
-          title: title,
-          body: text,
-          userId: authState.id,
-          communityId: selectedCommunity.id,
-          image: images,
-        });
-    }
+    try {
+      switch (selected) {
+        case "post":
+          if (!title.length) {
+            //error function here
+            return;
+          }
 
-    history("/");
+          const v = await makePostRequest("posts", {
+            title: title,
+            body: text,
+            userId: authState.id,
+            communityId: selectedCommunity.id,
+          });
+
+          history(`/r/${selectedCommunity.name}/comment/${v?.id}`);
+          break;
+        case "image/video":
+          if (!title.length) {
+            //error function here
+            return;
+          }
+          const a = await makePostRequest("posts", {
+            title: title,
+            body: text,
+            userId: authState.id,
+            communityId: selectedCommunity.id,
+            image: images,
+          });
+          history(`/r/${selectedCommunity.name}/comment/${a?.id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   //find community as textinput is updated
@@ -147,6 +157,10 @@ const Submit = () => {
   }, []);
 
   useEffect(() => {
+    console.log(selectedCommunity);
+    if (selectedCommunity?.id) return;
+    if (!communities?.length) return;
+
     if (params.id) {
       const h = communities?.find(
         (item) => item?.name.toLowerCase() === params.id.toLowerCase()
@@ -156,7 +170,7 @@ const Submit = () => {
         setTextInput(h.tag);
       }
     }
-  }, [communities]);
+  }, [communities?.length, window.location.href]);
 
   useEffect(() => {
     if (location.state?.from) {

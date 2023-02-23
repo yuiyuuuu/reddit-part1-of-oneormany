@@ -220,6 +220,10 @@ const CreateCommunityOverlay = ({ createOverlayState }) => {
             </div>
           </div>
         </div>
+        <div
+          className='createoverlay-clickback'
+          onClick={() => dispatch(toggleCreateCommunity(false))}
+        />
       </div>
     </div>
   );
