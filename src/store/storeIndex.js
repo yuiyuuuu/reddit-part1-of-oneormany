@@ -31,9 +31,15 @@ const reducer = combineReducers({
   screenProperties,
 }); //reducers here
 
-const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
-);
+let middleware = "";
+
+if (process.env.NODE_ENV === "development") {
+  middleware = composeWithDevTools(
+    applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
+  );
+} else {
+  middleware = composeWithDevTools(applyMiddleware(thunkMiddleware));
+}
 
 const store = createStore(reducer, middleware);
 

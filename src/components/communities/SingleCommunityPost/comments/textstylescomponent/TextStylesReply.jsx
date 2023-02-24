@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 
 import "./tsc.scss";
 
+import $ from "jquery";
+
 import ImageIconSvgTSC from "./svg/ImageIconSvgTSC";
 import BoldIconTSC from "./svg/BoldIconTSC";
 import ItalicIconTSC from "./svg/ItalicIconTSC";
@@ -26,7 +28,7 @@ const TextStylesReply = ({ idv, show, reference, post }) => {
     const g = document.getElementById(`tsc-${idv}-co`).offsetWidth;
 
     setWidth(g);
-  }, [show, width, post]);
+  }, [show, width, post, $(`tsc-${idv}-co`)]);
 
   useEffect(() => {
     if (idv === "main") {
@@ -42,7 +44,7 @@ const TextStylesReply = ({ idv, show, reference, post }) => {
     return () => {
       window.removeEventListener("resize", resize);
     };
-  }, [show, window.location.href]);
+  }, [show, window.location.href, post, $(`tsc-${idv}-co`)]);
 
   return (
     <div>

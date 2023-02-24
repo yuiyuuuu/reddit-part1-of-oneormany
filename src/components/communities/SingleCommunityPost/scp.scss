@@ -206,7 +206,7 @@
   margin: 0 8px 8px;
   font-size: 18px;
   color: #222222;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .scp-desc {
@@ -322,6 +322,8 @@
   flex-direction: row;
   align-items: center;
   overflow: hidden;
+  border-radius: 0 0 4px 4px;
+  transition: 0.05s linear all;
 }
 
 .scp-commentbutton {

@@ -4,9 +4,9 @@
 
 Still under construction</br>
 Planned:</br>
--Nested comment system</br>
--Most of reddit community and post features</br>
--View user profiles and have a karma system</br>
+-Nested comment system -- done</br>
+-Most of reddit community and post features -- posts features mostly done, community moderators and settings still needs work</br>
+-View user profiles and have a karma system -- not started</br>
 -More once done</br>
 
 ## Deployed Project

@@ -60,6 +60,18 @@ const SingleCommunityPost = ({
   }
 
   useEffect(() => {
+    $(document).ready(() => {
+      $(".scp-input").focus(() => {
+        $(".scp-inputparent").css("border", "1px solid #1a1a1b");
+
+        $(".scp-input").focusout(() => {
+          $(".scp-inputparent").css("border", "1px solid #EDEFF1");
+        });
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     //sets scp component to the top of the page, so when the user selects another post, it wont start at the old scroll position
     return () => {
       $(".scp-parent").scrollTop(0);
