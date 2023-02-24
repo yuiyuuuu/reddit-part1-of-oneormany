@@ -36,8 +36,6 @@ const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
     }
   }, [commentsState]);
 
-  //   console.log(idarr, level);
-
   return (
     <div
       className='commentlist-parent'

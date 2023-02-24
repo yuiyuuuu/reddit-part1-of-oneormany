@@ -157,7 +157,6 @@ const Submit = () => {
   }, []);
 
   useEffect(() => {
-    console.log(selectedCommunity);
     if (selectedCommunity?.id) return;
     if (!communities?.length) return;
 

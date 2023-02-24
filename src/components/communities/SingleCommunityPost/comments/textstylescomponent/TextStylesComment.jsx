@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import GifSvg from "./svg/GifSvg";
+import ImageIconSvgTSC from "./svg/ImageIconSvgTSC";
 import ThreeDotTSC from "./svg/ThreeDotTSC";
 import "./tsc.scss";
 
@@ -16,7 +17,7 @@ const TextStylesComment = ({}) => {
           </div>
 
           <div className='tsc-icon'>
-            <GifSvg />
+            <ImageIconSvgTSC />
           </div>
         </div>
 

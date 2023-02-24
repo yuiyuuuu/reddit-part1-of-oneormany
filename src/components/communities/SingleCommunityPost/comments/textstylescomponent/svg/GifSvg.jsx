@@ -1,6 +1,6 @@
 import React from "react";
 
-const GifSvg = () => {
+const GifSvg = ({ idv }) => {
   return (
     <svg
       width='20'
@@ -10,10 +10,10 @@ const GifSvg = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='30' height='26' fill='url(#patterngiftsc0)' />
+      <rect width='30' height='26' fill={`url(#patterngiftsc0-${idv})`} />
       <defs>
         <pattern
-          id='patterngiftsc0'
+          id={`patterngiftsc0-${idv}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

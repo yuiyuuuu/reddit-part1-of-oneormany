@@ -270,6 +270,7 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
                       idv={comment.id}
                       show={showReply}
                       reference={styleRef}
+                      post={post}
                     />
                     <div className='grow' />
                     <button className='scp-markdown'>Markdown Mode</button>

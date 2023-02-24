@@ -1,20 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import GifSvg from "./svg/GifSvg";
-import ThreeDotTSC from "./svg/ThreeDotTSC";
+import React, { useEffect, useState, useCallback } from "react";
+
 import "./tsc.scss";
 
-import $ from "jquery";
-import { useCallback } from "react";
+import ImageIconSvgTSC from "./svg/ImageIconSvgTSC";
+import BoldIconTSC from "./svg/BoldIconTSC";
+import ItalicIconTSC from "./svg/ItalicIconTSC";
+import ClipIconTSC from "./svg/ClipIconTSC";
+import StrikethroughSvgTSC from "./svg/StrikethroughSvgTSC";
+import InlineSvgTSC from "./svg/InlineSvgTSC";
+import SuperScriptSvgTSC from "./svg/SuperScriptSvgTSC";
+import SpoilerSvgTSC from "./svg/SpoilerSvgTSC";
+import HeadingSvgTSC from "./svg/HeadingSvgTSC";
+import BulletListSvgTSC from "./svg/BulletListSvgTSC";
+import NumberedListSvgTSC from "./svg/NumberedListSvgTSC";
+import QuoteblockSvgTSC from "./svg/QuoteblockSvgTSC";
+import CodeBlockSvgTSC from "./svg/CodeBlockSvgTSC";
+import GifSvg from "./svg/GifSvg";
+import ThreeDotTSC from "./svg/ThreeDotTSC";
+import TableSvgTSC from "./svg/TableSvgTSC";
 
-const TextStylesReply = ({ idv, show, reference }) => {
+const TextStylesReply = ({ idv, show, reference, post }) => {
   const [width, setWidth] = useState(0);
 
   const resize = useCallback(() => {
     const g = document.getElementById(`tsc-${idv}-co`).offsetWidth;
 
     setWidth(g);
-  }, [show, width]);
+  }, [show, width, post]);
 
   useEffect(() => {
     if (idv === "main") {
@@ -30,18 +42,18 @@ const TextStylesReply = ({ idv, show, reference }) => {
     return () => {
       window.removeEventListener("resize", resize);
     };
-  }, [show]);
+  }, [show, window.location.href]);
 
   return (
     <div>
       <div className='tsc-parent'>
         <div className='tsc-row'>
           <div className='tsc-icon' style={{ display: width < 296 && "none" }}>
-            <GifSvg />
+            <GifSvg idv={idv} />
           </div>
 
           <div className='tsc-icon' style={{ display: width < 326 && "none" }}>
-            <GifSvg />
+            <ImageIconSvgTSC idv={idv} />
           </div>
         </div>
 
@@ -52,25 +64,25 @@ const TextStylesReply = ({ idv, show, reference }) => {
 
         <div className='tsc-row'>
           <div className='tsc-icon' style={{ display: width < 386 && "none" }}>
-            <GifSvg />
+            <BoldIconTSC idv={idv} />
           </div>
           <div className='tsc-icon' style={{ display: width < 416 && "none" }}>
-            <GifSvg />
+            <ItalicIconTSC idv={idv} />
           </div>
           <div className='tsc-icon' style={{ display: width < 546 && "none" }}>
-            <GifSvg />
+            <ClipIconTSC idv={idv} />
           </div>
           <div className='tsc-icon' style={{ display: width < 476 && "none" }}>
-            <GifSvg />
+            <StrikethroughSvgTSC idv={idv} />
           </div>
           <div className='tsc-icon' style={{ display: width < 506 && "none" }}>
-            <GifSvg />
+            <InlineSvgTSC idv={idv} />
           </div>
           <div className='tsc-icon' style={{ display: width < 536 && "none" }}>
-            <GifSvg />
+            <SuperScriptSvgTSC idv={idv} />
           </div>
           <div className='tsc-icon' style={{ display: width < 566 && "none" }}>
-            <GifSvg />
+            <SpoilerSvgTSC idv={idv} />
           </div>
         </div>
 
@@ -81,13 +93,35 @@ const TextStylesReply = ({ idv, show, reference }) => {
 
         <div className='tsc-row'>
           <div className='tsc-icon' style={{ display: width < 626 && "none" }}>
-            <GifSvg />
+            <HeadingSvgTSC idv={idv} />
           </div>
           <div className='tsc-icon' style={{ display: width < 656 && "none" }}>
-            <GifSvg />
+            <BulletListSvgTSC idv={idv} />
           </div>
-          <div className='tsc-icon'>
+
+          <div className='tsc-icon' style={{ display: width < 686 && "none" }}>
+            <NumberedListSvgTSC idv={idv} />
+          </div>
+          <div className='tsc-icon' style={{ display: width < 716 && "none" }}>
+            <QuoteblockSvgTSC idv={idv} />
+          </div>
+
+          <div className='tsc-icon' style={{ display: width < 736 && "none" }}>
+            <CodeBlockSvgTSC idv={idv} />
+          </div>
+          <div className='tsc-icon' style={{ display: width > 766 && "none" }}>
             <ThreeDotTSC />
+          </div>
+        </div>
+
+        <div
+          className='tsc-divider'
+          style={{ display: width < 766 && "none" }}
+        />
+
+        <div className='tsc-row'>
+          <div className='tsc-icon' style={{ display: width < 766 && "none" }}>
+            <TableSvgTSC idv={idv} />
           </div>
         </div>
       </div>

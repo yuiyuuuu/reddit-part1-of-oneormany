@@ -146,7 +146,7 @@ const SingleCommunity = () => {
       userid: authState.id,
     };
 
-    dispatch(handleCommunityRemoveUpvote(info)).then((res) => {
+    dispatch(handleCommunityRemoveDownvote(info)).then((res) => {
       setSelectedPost(res);
     });
   }
