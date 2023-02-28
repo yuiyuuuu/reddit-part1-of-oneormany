@@ -42,8 +42,7 @@ const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
       style={{ paddingLeft: !top ? (level === 1 ? "16px" : "23px") : "" }}
       id={level && `prev-${idarr[level - 1]}`}
     >
-      {/* sorting sorts by time created*/}
-      {commentsState[which]?.sort(sorting)?.map((v) => (
+      {commentsState[which]?.map((v) => (
         <Comment
           comment={v}
           commentsMap={commentsState}

@@ -31,8 +31,44 @@ async function seed() {
     },
   });
 
+  const user3 = await prisma.user.create({
+    data: {
+      name: "user3",
+      email: "user3@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
+  });
+
+  const user4 = await prisma.user.create({
+    data: {
+      name: "user4",
+      email: "user4@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
+  });
+
+  const user5 = await prisma.user.create({
+    data: {
+      name: "user5",
+      email: "user5@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
+  });
+
+  const user6 = await prisma.user.create({
+    data: {
+      name: "user6",
+      email: "user6@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
+  });
+
   await jwt.sign({ id: jack.id }, process.env.JWT);
   await jwt.sign({ id: rachel.id }, process.env.JWT);
+  await jwt.sign({ id: user3.id }, process.env.JWT);
+  await jwt.sign({ id: user4.id }, process.env.JWT);
+  await jwt.sign({ id: user5.id }, process.env.JWT);
+  await jwt.sign({ id: user6.id }, process.env.JWT);
 
   const community1 = await prisma.community.create({
     data: {
@@ -87,11 +123,23 @@ async function seed() {
   });
 
   setTimeout(async () => {
+    //upvoted comment
     const comment3 = await prisma.comment.create({
       data: {
         userId: rachel.id,
         postId: post1.id,
-        message: "I am a root comment",
+        message: "I am a root comment - upvoted",
+        upvotes: [user4.id, user5.id, user6.id, user3.id],
+      },
+    });
+
+    //downvoted comment
+    const comment32 = await prisma.comment.create({
+      data: {
+        userId: rachel.id,
+        postId: post1.id,
+        message: "I am a root comment -  downvoted",
+        downvotes: [user4.id, user5.id, user6.id, user3.id],
       },
     });
 
@@ -143,7 +191,6 @@ async function seed() {
 }
 
 try {
-  console.log(hash("123"));
   seed();
 } catch (err) {
   console.error(err);

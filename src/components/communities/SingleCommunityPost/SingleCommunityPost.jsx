@@ -25,6 +25,8 @@ import CommentsList from "./comments/CommentsList";
 import { setComments } from "../../../store/comments/comments";
 import { handleAddComment } from "../../../store/posts-individualcommunity";
 import TextStylesReply from "./comments/textstylescomponent/TextStylesReply";
+import SortCommentsMain from "./sortcomments/SortCommentsMain";
+import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -42,6 +44,9 @@ const SingleCommunityPost = ({
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
 
+  const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("");
+
   function handleCommentSubmit() {
     if (!commentInput.length) return;
     //this one has no parent id since its root comment
@@ -58,6 +63,22 @@ const SingleCommunityPost = ({
       setCommentInput("");
     });
   }
+
+  function sortByWhichComments(which) {
+    setSelectedSort(which);
+    window.localStorage.removeItem("commentsort");
+
+    window.localStorage.setItem("commentsort", which);
+  }
+
+  useEffect(() => {
+    const v = window.localStorage.getItem("commentsort");
+    if (v) {
+      setSelectedSort(v);
+    } else {
+      setSelectedSort("Best");
+    }
+  }, []);
 
   useEffect(() => {
     $(document).ready(() => {
@@ -84,6 +105,13 @@ const SingleCommunityPost = ({
 
     dispatch(setComments(selectedPost?.comments));
   }, [selectedPost?.comments]);
+
+  //cleanup
+  useEffect(() => {
+    return () => {
+      setShowCommentSortOverlay(false);
+    };
+  }, []);
 
   return (
     <div style={{ display: !selectedPost && "none" }}>
@@ -341,6 +369,13 @@ const SingleCommunityPost = ({
                       </button>
                     </div>
                   </div>
+
+                  <div className='scp-sortmain'>
+                    <SortCommentsMain
+                      selectedSort={selectedSort}
+                      setShowCommentSortOverlay={setShowCommentSortOverlay}
+                    />
+                  </div>
                 </div>
 
                 {!selectedPost?.comments?.length && <NoCommentsyet />}
@@ -366,6 +401,13 @@ const SingleCommunityPost = ({
         <div
           className='scp-clickback'
           onClick={() => navigate(`/r/${selectedPost.community.name}`)}
+        />
+
+        <SortCommentsListPopup
+          selectedSort={selectedSort}
+          setSelectedSort={sortByWhichComments}
+          showCommentSortOverlay={showCommentSortOverlay}
+          setShowCommentSortOverlay={setShowCommentSortOverlay}
         />
       </div>
     </div>
