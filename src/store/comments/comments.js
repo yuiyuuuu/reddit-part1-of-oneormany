@@ -4,8 +4,8 @@ const SORT_TOP = "SORT_TOP";
 const SORT_BEST = "SORT_BEST";
 const SORT_OLD = "SORT_OLD";
 const SORT_NEW = "SORT_NEW";
+const SORT_CONTROVERSIAL = "SORT_CONTROVERSIAL";
 
-import { SlowBuffer } from "buffer";
 //these sort by functions may not be 100% what reddit uses, especially sortByBest .
 //i wrote these functions based off of my testing and research. I tried to make it as close as possible
 
@@ -43,7 +43,11 @@ export const dispatchSortNew = () => ({
   type: SORT_NEW,
 });
 
-export function setComments(comments) {
+export const dispatchSortControversial = () => ({
+  type: SORT_CONTROVERSIAL,
+});
+
+export function setComments(comments, sorttype) {
   return (dispatch) => {
     const group = {};
     comments.slice().forEach((v) => {
@@ -52,6 +56,12 @@ export function setComments(comments) {
     });
 
     dispatch(dispatchComments(group));
+    sorttype.toLowerCase() == "best" && dispatch(dispatchSortBest());
+    sorttype.toLowerCase() == "top" && dispatch(dispatchSortTop());
+    sorttype.toLowerCase() == "new" && dispatch(dispatchSortNew());
+    sorttype.toLowerCase() == "controversial" &&
+      dispatch(dispatchSortControversial());
+    sorttype.toLowerCase() == "old" && dispatch(dispatchSortOld());
   };
 }
 
@@ -72,8 +82,6 @@ export default function (state = {}, action) {
         .slice(0, Math.ceil(sortBySampleSize.length / 2))
         .sort(sortByPercentage); //we sort by highest percentage of upvotes
 
-      console.log(top);
-
       const bottom = sortBySampleSize
         .slice(Math.ceil(sortBySampleSize.length / 2))
         .sort(sortByPercentage);
@@ -85,6 +93,9 @@ export default function (state = {}, action) {
 
     case SORT_NEW:
       return { ...state, null: state[null].sort(sorting) };
+
+    case SORT_CONTROVERSIAL:
+      return { ...state, null: state[null].sort(sortCommentsByControversial) };
     default:
       return state;
   }

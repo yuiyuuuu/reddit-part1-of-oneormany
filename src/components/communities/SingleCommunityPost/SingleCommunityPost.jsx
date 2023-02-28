@@ -102,8 +102,9 @@ const SingleCommunityPost = ({
 
   useEffect(() => {
     if (!selectedPost?.comments) return;
+    const v = window.localStorage.getItem("commentsort");
 
-    dispatch(setComments(selectedPost?.comments));
+    dispatch(setComments(selectedPost?.comments, v));
   }, [selectedPost?.comments]);
 
   //cleanup

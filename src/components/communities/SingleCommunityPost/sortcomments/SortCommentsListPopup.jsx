@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import {
   dispatchSortBest,
+  dispatchSortControversial,
   dispatchSortNew,
   dispatchSortOld,
   dispatchSortTop,
@@ -59,6 +60,7 @@ const SortCommentsListPopup = ({
           onClick={() => {
             setSelectedSort("Controversial");
             setShowCommentSortOverlay(false);
+            dispatch(dispatchSortControversial());
           }}
           style={{ color: selectedSort === "Controversial" && "#0079D3" }}
         >

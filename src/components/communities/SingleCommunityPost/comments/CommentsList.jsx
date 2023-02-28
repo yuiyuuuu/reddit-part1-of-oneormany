@@ -11,7 +11,6 @@ import Comment from "./Comment";
 //toggle is the function to toggle show
 
 import $ from "jquery";
-import { sorting } from "../../../../requests/sortingfunction";
 
 const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
   const dispatch = useDispatch();

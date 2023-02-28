@@ -61,15 +61,11 @@ function sortByPercentage(a, b) {
     b.upvotes.length / (b.upvotes.length + b.downvotes.length) || 0;
 
   if (percentageUpvotesA > percentageUpvotesB) {
-    console.log(a, b, 1);
     return -1;
   } else if (percentageUpvotesA < percentageUpvotesB) {
-    console.log(a, b, -1);
-
     return 1;
   } else {
     //if votes are the same return by time created
-    console.log(a, b, 0);
 
     const aDate = parseDate(a.createdAt);
     const bDate = parseDate(b.createdAt);

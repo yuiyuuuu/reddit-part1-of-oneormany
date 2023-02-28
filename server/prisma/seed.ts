@@ -63,12 +63,48 @@ async function seed() {
     },
   });
 
+  const user7 = await prisma.user.create({
+    data: {
+      name: "user7",
+      email: "user7@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
+  });
+
+  const user8 = await prisma.user.create({
+    data: {
+      name: "user8",
+      email: "user8@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
+  });
+
+  const user9 = await prisma.user.create({
+    data: {
+      name: "user9",
+      email: "user9@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
+  });
+
+  const user10 = await prisma.user.create({
+    data: {
+      name: "user10",
+      email: "user10@gmail.com",
+      password: await bcrypt.hash("1234567890", 10),
+    },
+  });
+
   await jwt.sign({ id: jack.id }, process.env.JWT);
   await jwt.sign({ id: rachel.id }, process.env.JWT);
   await jwt.sign({ id: user3.id }, process.env.JWT);
   await jwt.sign({ id: user4.id }, process.env.JWT);
   await jwt.sign({ id: user5.id }, process.env.JWT);
   await jwt.sign({ id: user6.id }, process.env.JWT);
+  await jwt.sign({ id: user7.id }, process.env.JWT);
+  await jwt.sign({ id: user8.id }, process.env.JWT);
+  await jwt.sign({ id: user9.id }, process.env.JWT);
+  await jwt.sign({ id: user10.id }, process.env.JWT);
 
   const community1 = await prisma.community.create({
     data: {
@@ -186,6 +222,17 @@ async function seed() {
       postId: post1.id,
       parentId: comment1.id,
       message: "I am a nested comment11",
+    },
+  });
+
+  await prisma.comment.create({
+    data: {
+      userId: rachel.id,
+      postId: post1.id,
+      parentId: null,
+      message: "controversial comment",
+      downvotes: [user4.id, user5.id, user6.id, user3.id],
+      upvotes: [user10.id, user9.id, user8.id, user7.id, jack.id, rachel.id],
     },
   });
 }
