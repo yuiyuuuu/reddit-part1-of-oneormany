@@ -56,6 +56,8 @@ export function setComments(comments, sorttype) {
     });
 
     dispatch(dispatchComments(group));
+
+    if (!comments.length) return;
     sorttype.toLowerCase() == "best" && dispatch(dispatchSortBest());
     sorttype.toLowerCase() == "top" && dispatch(dispatchSortTop());
     sorttype.toLowerCase() == "new" && dispatch(dispatchSortNew());

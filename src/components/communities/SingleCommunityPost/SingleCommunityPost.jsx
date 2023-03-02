@@ -27,6 +27,7 @@ import { handleAddComment } from "../../../store/posts-individualcommunity";
 import TextStylesReply from "./comments/textstylescomponent/TextStylesReply";
 import SortCommentsMain from "./sortcomments/SortCommentsMain";
 import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
+import { dispatchSetAOS } from "../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -48,6 +49,10 @@ const SingleCommunityPost = ({
   const [selectedSort, setSelectedSort] = useState("");
 
   function handleCommentSubmit() {
+    if (!authState.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "comment" }));
+      return;
+    }
     if (!commentInput.length) return;
     //this one has no parent id since its root comment
     const obj = {

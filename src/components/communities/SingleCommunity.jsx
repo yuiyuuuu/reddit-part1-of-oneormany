@@ -30,6 +30,7 @@ import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
 import SingleCommunityPost from "./SingleCommunityPost/SingleCommunityPost";
 import { handleCommunityUpvote } from "../../store/posts-individualcommunity";
 import { sorting } from "../../requests/sortingfunction";
+import { dispatchSetAOS } from "../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();
@@ -108,6 +109,11 @@ const SingleCommunity = () => {
   }
 
   function handleUpvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: selectedPost.id,
       userid: authState.id,
@@ -119,6 +125,11 @@ const SingleCommunity = () => {
   }
 
   function handleDownvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: selectedPost.id,
       userid: authState.id,
@@ -130,6 +141,11 @@ const SingleCommunity = () => {
   }
 
   function handleRemoveUpvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: selectedPost.id,
       userid: authState.id,
@@ -141,6 +157,11 @@ const SingleCommunity = () => {
   }
 
   function handleRemoveDownvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: selectedPost.id,
       userid: authState.id,
@@ -152,6 +173,11 @@ const SingleCommunity = () => {
   }
 
   function handleUpvote2(post) {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: post.id,
       userid: authState.id,
@@ -161,6 +187,11 @@ const SingleCommunity = () => {
   }
 
   function handleDownvote2(post) {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: post.id,
       userid: authState.id,
@@ -170,6 +201,11 @@ const SingleCommunity = () => {
   }
 
   function handleRemoveUpvote2(post) {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: post.id,
       userid: authState.id,
@@ -179,6 +215,11 @@ const SingleCommunity = () => {
   }
 
   function handleRemoveDownvote2(post) {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: post.id,
       userid: authState.id,

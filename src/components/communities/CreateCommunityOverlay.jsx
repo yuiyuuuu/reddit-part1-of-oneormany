@@ -7,16 +7,16 @@ import { CreateCommunity } from "../../store/posts-individualcommunity";
 import "./communities.scss";
 import $ from "jquery";
 
-import Iicon from "./communitiessvg/Iicon";
-import NotSelectedRadio from "./communitiessvg/NotSelectedRadio";
-import SelectedRadio from "./communitiessvg/SelectedRadio";
-import PublicIcon from "./communitiessvg/PublicIcon";
+import Iicon from "../../components/communities/communitiessvg/Iicon";
+import NotSelectedRadio from "../../components/communities/communitiessvg/NotSelectedRadio";
+import SelectedRadio from "../../components/communities/communitiessvg/SelectedRadio";
+import PublicIcon from "../../components/communities/communitiessvg/PublicIcon";
 
-import Xicon from "./communitiessvg/XIcon";
-import RestrictedIcon from "./communitiessvg/RestrictedIcon";
-import PrivateIcon from "./communitiessvg/PrivateIcon";
-import NSFWNotSelected from "./communitiessvg/NSFWNotSelected";
-import NSFWSelected from "./communitiessvg/NSFWSelected";
+import Xicon from "../../components/communities/communitiessvg/XIcon";
+import RestrictedIcon from "../../components/communities/communitiessvg/RestrictedIcon";
+import PrivateIcon from "../../components/communities/communitiessvg/PrivateIcon";
+import NSFWNotSelected from "../../components/communities/communitiessvg/NSFWNotSelected";
+import NSFWSelected from "../../components/communities/communitiessvg/NSFWSelected";
 
 const CreateCommunityOverlay = ({ createOverlayState }) => {
   const dispatch = useDispatch();

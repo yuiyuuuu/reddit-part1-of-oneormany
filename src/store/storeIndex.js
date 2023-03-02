@@ -15,6 +15,8 @@ import discardChanges from "./discard/discardChanges";
 import hrefpath from "./comstyling/hrefpath";
 import comments from "./comments/comments";
 import screenProperties from "./global/screenProperties";
+import authOverlaySignupState from "../globalcomponents/authoverlaysignup/authOverlaySignupStates";
+import authOverlayLoginStates from "../globalcomponents/authoverlaylogin/authOverlayLoginStates";
 
 const reducer = combineReducers({
   auth,
@@ -29,6 +31,8 @@ const reducer = combineReducers({
   hrefpath,
   comments,
   screenProperties,
+  authOverlaySignupState,
+  authOverlayLoginStates,
 }); //reducers here
 
 let middleware = "";

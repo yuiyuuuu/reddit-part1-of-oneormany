@@ -176,7 +176,7 @@
 }
 
 .movetopleft {
-  transform: translate3d(-5px, -18px, 0) scale(0.93);
+  transform: translate3d(-5px, -18px, 0) scale(0.93) !important;
 }
 
 .auth-submit {

@@ -4,26 +4,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { getLocalData } from "./store/auth";
 import { handleSet } from "./store/global/screenProperties";
 
+import "./index.scss";
+
 import Home from "./components/home/Home";
 import Submit from "./components/submit/Submit";
 import Nav from "./components/nav/Nav";
 import Posts from "./components/Posts";
 import SinglePost from "./components/SinglePost";
-import "./index.scss";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import SingleCommunity from "./components/communities/SingleCommunity";
 import Communities404 from "./components/communities/Communities404";
 import CreateCommunityOverlay from "./components/communities/CreateCommunityOverlay";
 import MainTools from "./components/communities/ModeratorTools/MainTools";
-import CommunityStyling from "./components/communities/ModeratorTools/styling/CommunityStyling";
 import DiscardChanges from "./discardChanges/DiscardChanges";
+import AuthOverlaySignup from "./globalcomponents/authoverlaysignup/AuthOverlaySignup";
+import AuthOverlayLogin from "./globalcomponents/authoverlaylogin/AuthOverlayLogin";
 
 function App() {
   const dispatch = useDispatch();
   const createOverlayState = useSelector((state) => state.navToggleCreate);
   const discardState = useSelector((state) => state.discardChanges);
-  const comstylingState = useSelector((state) => state.CommunityStyling);
+  const authOverlaySignupState = useSelector(
+    (state) => state.authOverlaySignupState
+  );
+  const authOverlayLoginState = useSelector(
+    (state) => state.authOverlayLoginStates
+  );
 
   const resize = useCallback(() => {
     dispatch(handleSet(window.innerWidth));
@@ -46,8 +53,18 @@ function App() {
     <BrowserRouter>
       <Nav />
 
-      <CreateCommunityOverlay createOverlayState={createOverlayState} />
-      <DiscardChanges display={discardState} />
+      {createOverlayState && (
+        <CreateCommunityOverlay createOverlayState={createOverlayState} />
+      )}
+      {discardState && <DiscardChanges display={discardState} />}
+
+      {authOverlaySignupState.display && (
+        <AuthOverlaySignup state={authOverlaySignupState} />
+      )}
+
+      {authOverlayLoginState.display && (
+        <AuthOverlayLogin state={authOverlayLoginState} />
+      )}
       <Routes>
         <Route exact path='/posts' element={<Posts />} />
         <Route exact path='/posts/:id' element={<SinglePost />} />

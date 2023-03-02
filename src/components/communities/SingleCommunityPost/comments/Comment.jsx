@@ -14,6 +14,7 @@ import ModSvg from "./svgs/ModSvg";
 import DistinguishSvg from "./svgs/DistinguishSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
+import TextStylesReply from "./textstylescomponent/TextStylesReply";
 
 import {
   handleAddComment,
@@ -22,7 +23,8 @@ import {
   handleRemoveCommentDownvote,
   handleRemoveCommentUpvote,
 } from "../../../../store/posts-individualcommunity";
-import TextStylesReply from "./textstylescomponent/TextStylesReply";
+
+import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 
 const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   const dispatch = useDispatch();
@@ -34,6 +36,11 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   const [reply, setReply] = useState("");
 
   function handleReply() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "comment" }));
+      return;
+    }
+
     if (!reply.length) return;
     const obj = {
       message: reply,
@@ -65,6 +72,11 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   }
 
   function handleUpvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "comment" }));
+      return;
+    }
+
     const obj = {
       postid: post?.id,
       userid: authState?.id,
@@ -79,6 +91,11 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
   }
 
   function handleDownvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "comment" }));
+      return;
+    }
+
     const obj = {
       postid: post?.id,
       userid: authState?.id,
