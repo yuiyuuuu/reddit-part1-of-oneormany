@@ -580,6 +580,9 @@ router.post("/comment/add", async (req, res, next) => {
         parentId: req.body.parentId,
         message: req.body.message,
       },
+      include: {
+        user: true,
+      },
     });
 
     const post = await prisma.post.findUnique({
@@ -597,7 +600,36 @@ router.post("/comment/add", async (req, res, next) => {
       },
     });
 
-    res.send(post);
+    res.send({ post: post, comment: comment });
+  } catch (error) {
+    next(error);
+  }
+});
+
+//NEW COMMENTS
+
+router.put("/comment/upvote/new", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.body.commentid,
+      },
+    });
+
+    const final = await prisma.comment.update({
+      where: {
+        id: req.body.commentid,
+      },
+      data: {
+        upvotes: [...new Set([...comment.upvotes, req.body.userid])],
+        downvotes: comment.downvotes.filter((i) => i !== req.body.userid),
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    res.send(final);
   } catch (error) {
     next(error);
   }

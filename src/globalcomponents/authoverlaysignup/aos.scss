@@ -36,7 +36,7 @@
 .aos-tos {
   color: #1a1a1b;
   font-size: 13px;
-  font-weight: 300;
+  font-weight: 400;
   margin-top: 8px;
   line-height: 18px;
 }
@@ -134,6 +134,18 @@
   pointer-events: none;
 }
 
+.aos-passwordlabel {
+  color: #737577;
+  font-size: 14px;
+  font-weight: 500;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.15s linear;
+  pointer-events: none;
+}
+
 .aos-error {
   color: red;
   font-size: 12px;
@@ -161,6 +173,10 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+
+  &:hover {
+    background-color: #dc4a14;
+  }
 }
 
 .aos-movelogin {

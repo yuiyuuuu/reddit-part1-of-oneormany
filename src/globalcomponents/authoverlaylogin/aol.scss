@@ -1,0 +1,20 @@
+.aol-submit {
+  background: #d93a00;
+  width: 100%;
+  padding: 0px 16px;
+  margin-top: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 9999px;
+  height: 40px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover {
+    background: #dc4a14;
+  }
+}

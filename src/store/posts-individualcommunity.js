@@ -325,7 +325,7 @@ export function handleAddComment(obj) {
   return async (dispatch) => {
     try {
       const data = await makePostRequest("communities/comment/add", obj);
-      dispatch(dispatchAddComment(data));
+      dispatch(dispatchAddComment(data.post));
       return data;
     } catch (error) {
       console.log(error);

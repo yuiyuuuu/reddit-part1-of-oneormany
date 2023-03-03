@@ -9,6 +9,7 @@ import XIconNoFunction from "../../globalsvg/XIconNoFunction";
 
 import $ from "jquery";
 import { dispatchSetAOL } from "../authoverlaylogin/authOverlayLoginStates";
+import AOLStep2 from "./AOLStep2";
 
 const obj = {
   comment: "You can comment on any post with a Reddit account.",
@@ -19,7 +20,12 @@ const obj = {
 const AuthOverlaySignup = ({ state }) => {
   const dispatch = useDispatch();
 
+  const [step, setStep] = useState(1);
+
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const [invalidEmailError, setInvalidEmailError] = useState(false);
   const [noLengthError, setNoLengthError] = useState(false);
 
@@ -29,7 +35,7 @@ const AuthOverlaySignup = ({ state }) => {
 
   function handleGoLogin() {
     handleClose();
-    dispatch(dispatchSetAOL({ display: true }));
+    dispatch(dispatchSetAOL({ display: true, which: state.which }));
   }
 
   const isValidEmail = (v) => {
@@ -86,101 +92,107 @@ const AuthOverlaySignup = ({ state }) => {
   }, []);
   return (
     <div style={{ display: !state.display && "none" }}>
-      <div className='aos-parent'>
-        <div className='aos-inner'>
-          <div className='aos-actualparent'>
-            <div className='aos-title'>{obj[state.which]}</div>
+      {step === 1 ? (
+        <div className='aos-parent'>
+          <div className='aos-inner'>
+            <div className='aos-actualparent'>
+              <div className='aos-title'>{obj[state.which]}</div>
 
-            <div className='aos-tos'>
-              By continuing, you are setting up a Reddit account and agree to
-              our <span className='aos-blue'>User Agreement</span> and{" "}
-              <span className='aos-blue'>Privacy Policy</span>.
-            </div>
+              <div className='aos-tos'>
+                By continuing, you are setting up a Reddit account and agree to
+                our <span className='aos-blue'>User Agreement</span> and{" "}
+                <span className='aos-blue'>Privacy Policy</span>.
+              </div>
 
-            <div style={{ marginTop: "32px" }}>
-              <div className='aos-gaouter'>
-                <div className='aos-ga'>
-                  <GoogleIcon />
-                  <div className='aos-t'>Continue with Google</div>
+              <div style={{ marginTop: "32px" }}>
+                <div className='aos-gaouter'>
+                  <div className='aos-ga'>
+                    <GoogleIcon />
+                    <div className='aos-t'>Continue with Google</div>
+                  </div>
+                </div>
+                <div className='aos-gaouter'>
+                  <div className='aos-ga'>
+                    <AppleIcon />
+                    <div className='aos-t'>Continue with Apple</div>
+                  </div>
                 </div>
               </div>
-              <div className='aos-gaouter'>
-                <div className='aos-ga'>
-                  <AppleIcon />
-                  <div className='aos-t'>Continue with Apple</div>
-                </div>
+
+              <div className='aos-divider'>
+                <div className='aos-line' />
+                <div className='aos-or'>OR</div>
+                <div className='aos-line' />
               </div>
-            </div>
 
-            <div className='aos-divider'>
-              <div className='aos-line' />
-              <div className='aos-or'>OR</div>
-              <div className='aos-line' />
-            </div>
+              <div className='aos-fieldset'>
+                <div style={{ position: "relative" }}>
+                  <input
+                    className='aos-input'
+                    id='aos-email'
+                    value={email}
+                    onChange={(e) => handleEmailChange(e)}
+                    style={{
+                      border:
+                        (invalidEmailError || noLengthError) && "1px solid red",
+                    }}
+                  />
 
-            <div className='aos-fieldset'>
-              <div style={{ position: "relative" }}>
-                <input
-                  className='aos-input'
-                  id='aos-email'
-                  value={email}
-                  onChange={(e) => handleEmailChange(e)}
-                  style={{
-                    border:
-                      (invalidEmailError || noLengthError) && "1px solid red",
-                  }}
-                />
+                  <label htmlFor='aos-email' className='aos-emaillabel'>
+                    Email
+                  </label>
+                </div>
 
-                <label htmlFor='aos-email' className='aos-emaillabel'>
-                  Email
-                </label>
+                <div
+                  className='aos-error'
+                  id='aos-emailerror'
+                  style={{ display: invalidEmailError && "block" }}
+                >
+                  Not a valid email address
+                </div>
+                <div
+                  className='aos-error'
+                  id='aos-nolength'
+                  style={{ display: noLengthError && "block" }}
+                >
+                  Please enter an email address to continue
+                </div>
               </div>
 
               <div
-                className='aos-error'
-                id='aos-emailerror'
-                style={{ display: invalidEmailError && "block" }}
+                className='aos-continue'
+                style={{
+                  opacity:
+                    (invalidEmailError || noLengthError || !email.length) &&
+                    ".2",
+                  cursor:
+                    invalidEmailError || noLengthError || !email.length
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+                onClick={() => setStep(2)}
               >
-                Not a valid email address
+                Continue
               </div>
-              <div
-                className='aos-error'
-                id='aos-nolength'
-                style={{ display: noLengthError && "block" }}
-              >
-                Please enter an email address to continue
+
+              <div className='aos-movelogin'>
+                Already a redditor?{" "}
+                <span>
+                  <a className='aos-p' onClick={() => handleGoLogin()}>
+                    Log In
+                  </a>
+                </span>
               </div>
             </div>
 
-            <div
-              className='aos-continue'
-              style={{
-                opacity:
-                  (invalidEmailError || noLengthError || !email.length) && ".2",
-                cursor:
-                  invalidEmailError || noLengthError || !email.length
-                    ? "not-allowed"
-                    : "pointer",
-              }}
-            >
-              Continue
+            <div className='aos-x' onClick={() => handleClose()}>
+              <XIconNoFunction />
             </div>
-
-            <div className='aos-movelogin'>
-              Already a redditor?{" "}
-              <span>
-                <a className='aos-p' onClick={() => handleGoLogin()}>
-                  Log In
-                </a>
-              </span>
-            </div>
-          </div>
-
-          <div className='aos-x' onClick={() => handleClose()}>
-            <XIconNoFunction />
           </div>
         </div>
-      </div>
+      ) : (
+        <AOLStep2 username={username} password={password} />
+      )}
     </div>
   );
 };

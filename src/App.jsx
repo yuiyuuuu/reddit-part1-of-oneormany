@@ -1,5 +1,5 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocalData } from "./store/auth";
 import { handleSet } from "./store/global/screenProperties";
@@ -9,8 +9,6 @@ import "./index.scss";
 import Home from "./components/home/Home";
 import Submit from "./components/submit/Submit";
 import Nav from "./components/nav/Nav";
-import Posts from "./components/Posts";
-import SinglePost from "./components/SinglePost";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import SingleCommunity from "./components/communities/SingleCommunity";
@@ -66,8 +64,6 @@ function App() {
         <AuthOverlayLogin state={authOverlayLoginState} />
       )}
       <Routes>
-        <Route exact path='/posts' element={<Posts />} />
-        <Route exact path='/posts/:id' element={<SinglePost />} />
         <Route exact path='/submit' element={<Submit />} />
         <Route exact path='/submit/:type' element={<Submit />} />
         <Route exact path='/submit/r/:id' element={<Submit />} />

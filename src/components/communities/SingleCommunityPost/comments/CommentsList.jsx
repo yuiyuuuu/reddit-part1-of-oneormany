@@ -15,6 +15,7 @@ import $ from "jquery";
 const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
   const dispatch = useDispatch();
   const commentsState = useSelector((state) => state.comments);
+  const newComments = useSelector((state) => state.newComments);
 
   useEffect(() => {
     if (level > 0) {
@@ -41,6 +42,19 @@ const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
       style={{ paddingLeft: !top ? (level === 1 ? "16px" : "23px") : "" }}
       id={level && `prev-${idarr[level - 1]}`}
     >
+      {newComments?.length !== 0 &&
+        newComments.map((v) => (
+          <Comment
+            comment={v}
+            commentsMap={commentsState}
+            top={which === null ? true : false}
+            post={post}
+            level={level || 0}
+            idarr={idarr || []}
+            margin={margin ? margin + 7 : 16}
+            newComment={true}
+          />
+        ))}
       {commentsState[which]?.map((v) => (
         <Comment
           comment={v}
@@ -50,6 +64,7 @@ const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
           level={level || 0}
           idarr={idarr || []}
           margin={margin ? margin + 7 : 16}
+          newComment={false}
         />
       ))}
 

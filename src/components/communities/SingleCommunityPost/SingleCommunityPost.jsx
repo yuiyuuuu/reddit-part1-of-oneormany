@@ -22,12 +22,16 @@ import ThreeDot from "./scpsvgs/ThreeDot";
 import NoCommentsyet from "./nocomment/NoCommentsyet";
 import CommentsList from "./comments/CommentsList";
 
-import { setComments } from "../../../store/comments/comments";
+import {
+  dispatchFilterAComment,
+  setComments,
+} from "../../../store/comments/comments";
 import { handleAddComment } from "../../../store/posts-individualcommunity";
 import TextStylesReply from "./comments/textstylescomponent/TextStylesReply";
 import SortCommentsMain from "./sortcomments/SortCommentsMain";
 import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
 import { dispatchSetAOS } from "../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
+import { dispatchAddCommentNew } from "../../../store/comments/newComments";
 const SingleCommunityPost = ({
   selectedPost,
   nav,
@@ -44,6 +48,8 @@ const SingleCommunityPost = ({
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
+
+  const [firstSet, setFirstSet] = useState(true);
 
   const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
@@ -63,9 +69,13 @@ const SingleCommunityPost = ({
       parentId: null,
     };
 
+    setFirstSet(false);
+
     dispatch(handleAddComment(obj)).then((res) => {
-      dispatch(setComments(res.comments));
+      const v = window.localStorage.getItem("commentsort");
       setCommentInput("");
+      dispatch(dispatchAddCommentNew(res.comment));
+      dispatch(dispatchFilterAComment(res.comment.id));
     });
   }
 
@@ -107,6 +117,11 @@ const SingleCommunityPost = ({
 
   useEffect(() => {
     if (!selectedPost?.comments) return;
+    if (!firstSet) {
+      setFirstSet(true);
+      return;
+    }
+
     const v = window.localStorage.getItem("commentsort");
 
     dispatch(setComments(selectedPost?.comments, v));

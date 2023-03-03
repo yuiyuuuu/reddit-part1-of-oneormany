@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../authoverlaysignup/aos.scss";
+import "./aol.scss";
 import { useDispatch } from "react-redux";
 
 import GoogleIcon from "../authoverlaysignup/svgs/GoogleIcon";
@@ -8,15 +9,26 @@ import XIconNoFunction from "../../globalsvg/XIconNoFunction";
 
 import $ from "jquery";
 
+import { dispatchSetAOL } from "./authOverlayLoginStates";
+import { dispatchSetAOS } from "../authoverlaysignup/authOverlaySignupStates";
+import { authenticate } from "../../store/auth";
+
 const AuthOverlayLogin = ({ state }) => {
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("");
-  const [invalidEmailError, setInvalidEmailError] = useState(false);
-  const [noLengthError, setNoLengthError] = useState(false);
+  const [emailOrUsername, setEmailorUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [invalidUsernameError, setInvalidUsernameError] = useState(false);
+  const [wrongPasswordOrUsername, setWrongPasswordOrUsername] = useState(false);
 
   function handleClose() {
-    dispatch(dispatchSetAOS({ display: false, which: "" }));
+    dispatch(dispatchSetAOL({ display: false, which: "" }));
+  }
+
+  function handleMoveSignup() {
+    dispatch(dispatchSetAOS({ display: true, which: state.which }));
+    dispatch(dispatchSetAOL({ display: false, which: "" }));
   }
 
   const isValidEmail = (v) => {
@@ -28,24 +40,30 @@ const AuthOverlayLogin = ({ state }) => {
 
   function handleEmailChange(e) {
     const target = e.target.value;
-    setEmail(target);
+    setEmailorUsername(target);
+  }
 
-    if (!target.length) {
-      setNoLengthError(true);
-      setInvalidEmailError(false);
-      return;
-    } else {
-      setNoLengthError(false);
-    }
+  function handleSubmit(e) {
+    e.preventDefault();
+    setWrongPasswordOrUsername(false);
+    $("#aos-password").css("border", "");
+    $("#aos-email").css("border", "");
 
-    if (!isValidEmail(target)) {
-      setInvalidEmailError(true);
-    } else {
-      setInvalidEmailError(false);
-    }
+    dispatch(authenticate(emailOrUsername, password)).then((res) => {
+      res === "wrongpassword" || res === "notfound"
+        ? wrongPasswordResponse()
+        : dispatch(dispatchSetAOL({ display: false, which: "" }));
+    });
+  }
+
+  function wrongPasswordResponse() {
+    setWrongPasswordOrUsername(true);
+    $("#aos-password").css("border", "1px solid red");
+    $("#aos-email").css("border", "1px solid red");
   }
 
   useEffect(() => {
+    //this one is for username/email
     $("#aos-email").hover(
       () => {
         $(".aos-emaillabel").addClass("movetopleft2");
@@ -65,10 +83,44 @@ const AuthOverlayLogin = ({ state }) => {
 
     $("#aos-email").focusout(() => {
       const a = $("#aos-email").val();
+
+      if (a.length < 3) {
+        setInvalidUsernameError(true);
+      } else {
+        setInvalidUsernameError(false);
+      }
+
       if (a.length) {
         return;
       }
       $(".aos-emaillabel").removeClass("movetopleft2");
+    });
+
+    //this one is for password input
+
+    $("#aos-password").hover(
+      () => {
+        $(".aos-passwordlabel").addClass("movetopleft2");
+      },
+      () => {
+        const a = $("#aos-password").val();
+        if ($("#aos-email").is(":focus") || a.length) {
+          return;
+        }
+        $(".aos-passwordlabel").removeClass("movetopleft2");
+      }
+    );
+
+    $("#aos-password").focus(() => {
+      $(".aos-passwordlabel").addClass("movetopleft2");
+    });
+
+    $("#aos-password").focusout(() => {
+      const a = $("#aos-password").val();
+      if (a.length) {
+        return;
+      }
+      $(".aos-passwordlabel").removeClass("movetopleft2");
     });
   }, []);
 
@@ -111,53 +163,67 @@ const AuthOverlayLogin = ({ state }) => {
                 <input
                   className='aos-input'
                   id='aos-email'
-                  value={email}
+                  value={emailOrUsername}
                   onChange={(e) => handleEmailChange(e)}
                   style={{
-                    border:
-                      (invalidEmailError || noLengthError) && "1px solid red",
+                    border: invalidUsernameError && "1px solid red",
                   }}
                 />
 
                 <label htmlFor='aos-email' className='aos-emaillabel'>
-                  Email
+                  Username
                 </label>
               </div>
 
               <div
                 className='aos-error'
                 id='aos-emailerror'
-                style={{ display: invalidEmailError && "block" }}
+                style={{
+                  display: invalidUsernameError && "block",
+                  marginTop: "4px",
+                }}
               >
-                Not a valid email address
+                Username must be between 3 and 20 characters
               </div>
+
               <div
                 className='aos-error'
-                id='aos-nolength'
-                style={{ display: noLengthError && "block" }}
+                id='aos-wrongpassword'
+                style={{
+                  display: wrongPasswordOrUsername && "block",
+                  marginTop: "4px",
+                }}
               >
-                Please enter an email address to continue
+                Incorrect username or password
               </div>
             </div>
 
-            <div
-              className='aos-continue'
-              style={{
-                opacity:
-                  (invalidEmailError || noLengthError || !email.length) && ".2",
-                cursor:
-                  invalidEmailError || noLengthError || !email.length
-                    ? "not-allowed"
-                    : "pointer",
-              }}
-            >
-              Continue
+            <div className='aos-fieldset' style={{ marginTop: "16px" }}>
+              <div style={{ position: "relative" }}>
+                <input
+                  className='aos-input'
+                  id='aos-password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  type='password'
+                />
+
+                <label htmlFor='aos-password' className='aos-passwordlabel'>
+                  Password
+                </label>
+              </div>
+            </div>
+
+            <div className='aol-submit' onClick={(e) => handleSubmit(e)}>
+              Log In
             </div>
 
             <div className='aos-movelogin'>
-              Already a redditor?{" "}
+              New to Reddit?{" "}
               <span>
-                <a className='aos-p'>Log In</a>
+                <a className='aos-p' onClick={() => handleMoveSignup()}>
+                  Sign Up
+                </a>
               </span>
             </div>
           </div>

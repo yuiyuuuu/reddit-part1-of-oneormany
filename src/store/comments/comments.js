@@ -1,4 +1,7 @@
 const SET_COMMENTS = "SET_COMMENTS";
+const ADD_COMMENT_TOP = "ADD_COMMENT_TOP";
+const ADD_REPLY_F = "ADD_REPLY_F";
+const FILTER_A_COMMENT = "FILTER_A_COMMENT"; //FILTER A COMMENT SO NEW COMMENTS ARE ON TOP
 
 const SORT_TOP = "SORT_TOP";
 const SORT_BEST = "SORT_BEST";
@@ -47,9 +50,24 @@ export const dispatchSortControversial = () => ({
   type: SORT_CONTROVERSIAL,
 });
 
+export const dispatchAddCommentOne = (comment) => ({
+  type: ADD_COMMENT_TOP,
+  comment,
+});
+
+export const dispatchAddReply = (comment) => ({
+  type: ADD_REPLY_F,
+  comment,
+});
+
+export const dispatchFilterAComment = (id) => ({
+  type: FILTER_A_COMMENT,
+  id,
+});
+
 export function setComments(comments, sorttype) {
   return (dispatch) => {
-    const group = {};
+    const group = { new: [] };
     comments.slice().forEach((v) => {
       group[v.parentId] ||= [];
       group[v.parentId].push(v);
@@ -67,7 +85,7 @@ export function setComments(comments, sorttype) {
   };
 }
 
-export default function (state = {}, action) {
+export default function (state = { new: [] }, action) {
   switch (action.type) {
     case SET_COMMENTS:
       return action.comments;
@@ -98,6 +116,17 @@ export default function (state = {}, action) {
 
     case SORT_CONTROVERSIAL:
       return { ...state, null: state[null].sort(sortCommentsByControversial) };
+
+    case ADD_COMMENT_TOP:
+      // state[null].unshift(action.comment);
+
+      return state;
+    case ADD_REPLY_F:
+      state[action.comment.parentId].unshift(action.comment);
+      return state;
+    case FILTER_A_COMMENT:
+      console.log(state[null].filter((v) => v.id !== action.id));
+      return { ...state, null: state[null].filter((v) => v.id !== action.id) };
     default:
       return state;
   }

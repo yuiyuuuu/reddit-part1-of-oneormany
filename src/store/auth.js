@@ -45,7 +45,7 @@ export function authenticate(username, password) {
         password: password,
       });
 
-      if (data === "wrongpassword") {
+      if (data === "wrongpassword" || data == "notfound") {
         return data;
       }
       window.localStorage.setItem("token", data.jwt);

@@ -8,6 +8,33 @@ module.exports = router;
 router.post("/signup", async (req, res, next) => {
   try {
     const { username, password, email } = req.body;
+
+    const findUser = await prisma.user.findFirst({
+      where: {
+        name: {
+          equals: username,
+          mode: "insensitive",
+        },
+      },
+    });
+
+    if (findUser) {
+      res.send("username-exists").status(401);
+    }
+
+    const findByEmail = await prisma.user.findFirst({
+      where: {
+        email: {
+          equals: email,
+          mode: "insensitive",
+        },
+      },
+    });
+
+    if (findByEmail) {
+      res.send("email-exists").status(401);
+    }
+
     const encrypt = await bcrypt.hash(password, 10); //encrypt pass here
     const user = await prisma.user.create({
       data: {
@@ -31,12 +58,15 @@ router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
   const user = await prisma.user.findFirst({
     where: {
-      name: username,
+      name: {
+        mode: "insensitive", //username not case sensitive
+        equals: username,
+      },
     },
   });
 
   if (!user) {
-    res.status(400).send("notfound");
+    res.send("notfound").status(401);
     return;
   }
 

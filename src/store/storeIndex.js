@@ -17,6 +17,7 @@ import comments from "./comments/comments";
 import screenProperties from "./global/screenProperties";
 import authOverlaySignupState from "../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 import authOverlayLoginStates from "../globalcomponents/authoverlaylogin/authOverlayLoginStates";
+import newComments from "./comments/newComments";
 
 const reducer = combineReducers({
   auth,
@@ -33,6 +34,7 @@ const reducer = combineReducers({
   screenProperties,
   authOverlaySignupState,
   authOverlayLoginStates,
+  newComments,
 }); //reducers here
 
 let middleware = "";

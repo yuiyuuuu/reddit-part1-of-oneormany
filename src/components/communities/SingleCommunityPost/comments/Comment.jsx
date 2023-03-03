@@ -25,8 +25,22 @@ import {
 } from "../../../../store/posts-individualcommunity";
 
 import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
+import { dispatchAddReply } from "../../../../store/comments/comments";
+import {
+  handleNewCommentUpvote,
+  handleRemoveNewCommentUpvote,
+} from "../../../../store/comments/newComments";
 
-const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
+const Comment = ({
+  comment,
+  commentsMap,
+  top,
+  post,
+  level,
+  idarr,
+  margin,
+  newComment,
+}) => {
   const dispatch = useDispatch();
   const styleRef = useRef();
   const authState = useSelector((state) => state.auth);
@@ -49,9 +63,10 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
       parentId: comment.id,
     };
 
-    dispatch(handleAddComment(obj)).then(() => {
+    dispatch(handleAddComment(obj)).then((res) => {
       setShowReply(false);
       setReply("");
+      dispatch(dispatchAddReply(res.comment));
     });
   }
 
@@ -73,7 +88,7 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
 
   function handleUpvote() {
     if (!authState?.id) {
-      dispatch(dispatchSetAOS({ display: true, which: "comment" }));
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
       return;
     }
 
@@ -83,16 +98,24 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
       commentid: comment?.id,
     };
 
-    if (comment.upvotes.includes(authState.id)) {
-      dispatch(handleRemoveCommentUpvote(obj));
+    if (newComment) {
+      if (comment.upvotes.includes(authState.id)) {
+        dispatch(handleRemoveNewCommentUpvote(obj));
+      } else {
+        dispatch(handleNewCommentUpvote(obj));
+      }
     } else {
-      dispatch(handleCommentUpvote(obj));
+      if (comment.upvotes.includes(authState.id)) {
+        dispatch(handleRemoveCommentUpvote(obj));
+      } else {
+        dispatch(handleCommentUpvote(obj));
+      }
     }
   }
 
   function handleDownvote() {
     if (!authState?.id) {
-      dispatch(dispatchSetAOS({ display: true, which: "comment" }));
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
       return;
     }
 
@@ -161,8 +184,8 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
 
           <a
             className='comment-icon'
-            href={`/user/${comment.user.name}`}
-            id={`icon-${comment.id}`}
+            href={`/user/${comment.user?.name}`}
+            id={`icon-${comment?.id}`}
           >
             <img
               src={
@@ -176,8 +199,8 @@ const Comment = ({ comment, commentsMap, top, post, level, idarr, margin }) => {
 
           <div className='comment-right'>
             <div className='comment-username' id={`username-${comment.id}`}>
-              <a href={`/user/${comment.user.name}`} className='comment-u'>
-                {comment.user.name}
+              <a href={`/user/${comment.user?.name}`} className='comment-u'>
+                {comment.user?.name}
               </a>
               <span
                 style={{
