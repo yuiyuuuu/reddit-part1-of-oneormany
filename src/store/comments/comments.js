@@ -9,6 +9,8 @@ const SORT_OLD = "SORT_OLD";
 const SORT_NEW = "SORT_NEW";
 const SORT_CONTROVERSIAL = "SORT_CONTROVERSIAL";
 
+const REMOVE_DUPLICATES_NEWCOMMENTS = "REMOVE_DUPLICATES_NEWCOMMENTS";
+
 const PUSH_NEWCOMMENTS = "PUSH_NEWCOMMENTS";
 
 //these sort by functions may not be 100% what reddit uses, especially sortByBest .
@@ -69,6 +71,11 @@ export const dispatchFilterAComment = (id) => ({
 
 export const dispatchPushNewComments = (array) => ({
   type: PUSH_NEWCOMMENTS,
+  array,
+});
+
+export const dispatchRemoveNewCommentDuplicates = (array) => ({
+  type: REMOVE_DUPLICATES_NEWCOMMENTS,
   array,
 });
 
@@ -136,6 +143,13 @@ export default function (state = { new: [] }, action) {
       return { ...state, null: state[null].filter((v) => v.id !== action.id) };
     case PUSH_NEWCOMMENTS:
       return { ...state, null: [...state.null, ...action.array] };
+    case REMOVE_DUPLICATES_NEWCOMMENTS:
+      //compare newcomments array and top level state array and filter out duplicates
+      state[null] = state[null]?.filter((v) => {
+        const find = action.array.find((f) => f.id === v.id)?.id;
+        return v.id !== find;
+      });
+      return state;
     default:
       return state;
   }

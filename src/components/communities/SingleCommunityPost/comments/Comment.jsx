@@ -127,10 +127,18 @@ const Comment = ({
       commentid: comment?.id,
     };
 
-    if (comment.downvotes.includes(authState.id)) {
-      dispatch(handleRemoveNewCommentDownvote(obj));
+    if (newComment) {
+      if (comment.downvotes.includes(authState.id)) {
+        dispatch(handleRemoveNewCommentDownvote(obj));
+      } else {
+        dispatch(handleNewCommentDownvote(obj));
+      }
     } else {
-      dispatch(handleNewCommentDownvote(obj));
+      if (comment.downvotes.includes(authState.id)) {
+        dispatch(handleRemoveCommentDownvote(obj));
+      } else {
+        dispatch(handleCommentDownvote(obj));
+      }
     }
   }
 
