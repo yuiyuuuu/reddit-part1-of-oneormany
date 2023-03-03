@@ -9,6 +9,8 @@ const SORT_OLD = "SORT_OLD";
 const SORT_NEW = "SORT_NEW";
 const SORT_CONTROVERSIAL = "SORT_CONTROVERSIAL";
 
+const PUSH_NEWCOMMENTS = "PUSH_NEWCOMMENTS";
+
 //these sort by functions may not be 100% what reddit uses, especially sortByBest .
 //i wrote these functions based off of my testing and research. I tried to make it as close as possible
 
@@ -63,6 +65,11 @@ export const dispatchAddReply = (comment) => ({
 export const dispatchFilterAComment = (id) => ({
   type: FILTER_A_COMMENT,
   id,
+});
+
+export const dispatchPushNewComments = (array) => ({
+  type: PUSH_NEWCOMMENTS,
+  array,
 });
 
 export function setComments(comments, sorttype) {
@@ -127,6 +134,8 @@ export default function (state = { new: [] }, action) {
     case FILTER_A_COMMENT:
       console.log(state[null].filter((v) => v.id !== action.id));
       return { ...state, null: state[null].filter((v) => v.id !== action.id) };
+    case PUSH_NEWCOMMENTS:
+      return { ...state, null: [...state.null, ...action.array] };
     default:
       return state;
   }

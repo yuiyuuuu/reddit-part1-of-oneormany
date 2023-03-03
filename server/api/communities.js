@@ -607,6 +607,7 @@ router.post("/comment/add", async (req, res, next) => {
 });
 
 //NEW COMMENTS
+//these functions return the comment rather than the post
 
 router.put("/comment/upvote/new", async (req, res, next) => {
   try {
@@ -622,6 +623,85 @@ router.put("/comment/upvote/new", async (req, res, next) => {
       },
       data: {
         upvotes: [...new Set([...comment.upvotes, req.body.userid])],
+        downvotes: comment.downvotes.filter((i) => i !== req.body.userid),
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/comment/downvote/new", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.body.commentid,
+      },
+    });
+
+    const final = await prisma.comment.update({
+      where: {
+        id: req.body.commentid,
+      },
+      data: {
+        downvotes: [...new Set([...comment.downvotes, req.body.userid])],
+        upvotes: comment.upvotes.filter((i) => i !== req.body.userid),
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/comment/upvote/remove/new", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.body.commentid,
+      },
+    });
+
+    const final = await prisma.comment.update({
+      where: {
+        id: req.body.commentid,
+      },
+      data: {
+        upvotes: comment.upvotes.filter((i) => i !== req.body.userid),
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/comment/downvote/remove/new", async (req, res, next) => {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.body.commentid,
+      },
+    });
+
+    const final = await prisma.comment.update({
+      where: {
+        id: req.body.commentid,
+      },
+      data: {
         downvotes: comment.downvotes.filter((i) => i !== req.body.userid),
       },
       include: {

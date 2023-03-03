@@ -5,6 +5,8 @@ const HANDLE_DOWNVOTE_COMMENT = "HANDLE_DOWNVOTE_COMMENT_NEW";
 const HANDLE_REMOVEDOWNVOTE_COMMENT = "HANDLE_REMOVEDOWNVOTE_COMMENT_NEW";
 const HANDLE_REMOVEUPVOTE_COMMENT = "HANDLE_REMOVEUPVOTE_COMMENT_NEW";
 
+const CLEAR_NEWCOMMENTS_STATE = "CLEAR_NEWCOMMENTS_STATE";
+
 import { makePutRequest } from "../../requests/helperFunction";
 
 export const dispatchAddCommentNew = (comment) => ({
@@ -32,6 +34,10 @@ const dispatchRemoveDownvoteComment = (comment) => ({
   comment,
 });
 
+export const dispatchClearNewCommentState = () => ({
+  type: CLEAR_NEWCOMMENTS_STATE,
+});
+
 export function handleNewCommentUpvote(obj) {
   return async (dispatch) => {
     try {
@@ -46,7 +52,10 @@ export function handleNewCommentUpvote(obj) {
 export function handleNewCommentDownvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("/communities/comment/downvote", obj);
+      const data = await makePutRequest(
+        "/communities/comment/downvote/new",
+        obj
+      );
       dispatch(dispatchDownvoteComment(data));
     } catch (error) {
       console.log(error);
@@ -58,7 +67,7 @@ export function handleRemoveNewCommentUpvote(obj) {
   return async (dispatch) => {
     try {
       const data = await makePutRequest(
-        "/communities/comment/upvote/remove",
+        "/communities/comment/upvote/remove/new",
         obj
       );
       dispatch(dispatchRemoveUpvoteComment(data));
@@ -68,11 +77,11 @@ export function handleRemoveNewCommentUpvote(obj) {
   };
 }
 
-export function handleRemoveNewCommentDownvoteN(obj) {
+export function handleRemoveNewCommentDownvote(obj) {
   return async (dispatch) => {
     try {
       const data = await makePutRequest(
-        "/communities/comment/downvote/remove",
+        "/communities/comment/downvote/remove/new",
         obj
       );
       dispatch(dispatchRemoveDownvoteComment(data));
@@ -93,20 +102,22 @@ export default function (state = [], action) {
       );
       return w;
     case HANDLE_DOWNVOTE_COMMENT:
-      const p = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
+      const p = state.map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
       );
-      return { ...state, posts: p };
+      return p;
     case HANDLE_REMOVEUPVOTE_COMMENT:
-      const m = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
+      const m = state.map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
       );
-      return { ...state, posts: m };
+      return m;
     case HANDLE_REMOVEDOWNVOTE_COMMENT:
-      const g = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
+      const g = state.map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
       );
-      return { ...state, posts: g };
+      return g;
+    case CLEAR_NEWCOMMENTS_STATE:
+      return [];
     default:
       return state;
   }

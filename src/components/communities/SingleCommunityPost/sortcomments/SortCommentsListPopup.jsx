@@ -1,12 +1,14 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  dispatchPushNewComments,
   dispatchSortBest,
   dispatchSortControversial,
   dispatchSortNew,
   dispatchSortOld,
   dispatchSortTop,
 } from "../../../../store/comments/comments";
+import { dispatchClearNewCommentState } from "../../../../store/comments/newComments";
 
 const SortCommentsListPopup = ({
   selectedSort,
@@ -15,6 +17,7 @@ const SortCommentsListPopup = ({
   setShowCommentSortOverlay,
 }) => {
   const dispatch = useDispatch();
+  const newCommentState = useSelector((state) => state.newComments);
 
   return (
     <div>
@@ -27,6 +30,10 @@ const SortCommentsListPopup = ({
           onClick={() => {
             setSelectedSort("Best");
             setShowCommentSortOverlay(false);
+            if (newCommentState.length !== 0) {
+              dispatch(dispatchPushNewComments(newCommentState));
+              dispatch(dispatchClearNewCommentState());
+            }
             dispatch(dispatchSortBest());
           }}
           style={{ color: selectedSort === "Best" && "#0079D3" }}
@@ -38,6 +45,10 @@ const SortCommentsListPopup = ({
           onClick={() => {
             setSelectedSort("Top");
             setShowCommentSortOverlay(false);
+            if (newCommentState.length !== 0) {
+              dispatch(dispatchPushNewComments(newCommentState));
+              dispatch(dispatchClearNewCommentState());
+            }
             dispatch(dispatchSortTop());
           }}
           style={{ color: selectedSort === "Top" && "#0079D3" }}
@@ -49,6 +60,10 @@ const SortCommentsListPopup = ({
           onClick={() => {
             setSelectedSort("New");
             setShowCommentSortOverlay(false);
+            if (newCommentState.length !== 0) {
+              dispatch(dispatchPushNewComments(newCommentState));
+              dispatch(dispatchClearNewCommentState());
+            }
             dispatch(dispatchSortNew());
           }}
           style={{ color: selectedSort === "New" && "#0079D3" }}
@@ -60,6 +75,10 @@ const SortCommentsListPopup = ({
           onClick={() => {
             setSelectedSort("Controversial");
             setShowCommentSortOverlay(false);
+            if (newCommentState.length !== 0) {
+              dispatch(dispatchPushNewComments(newCommentState));
+              dispatch(dispatchClearNewCommentState());
+            }
             dispatch(dispatchSortControversial());
           }}
           style={{ color: selectedSort === "Controversial" && "#0079D3" }}
@@ -71,6 +90,10 @@ const SortCommentsListPopup = ({
           onClick={() => {
             setSelectedSort("Old");
             setShowCommentSortOverlay(false);
+            if (newCommentState.length !== 0) {
+              dispatch(dispatchPushNewComments(newCommentState));
+              dispatch(dispatchClearNewCommentState());
+            }
             dispatch(dispatchSortOld());
           }}
           style={{ color: selectedSort === "Old" && "#0079D3" }}
@@ -82,6 +105,10 @@ const SortCommentsListPopup = ({
           onClick={() => {
             setSelectedSort("Q&A");
             setShowCommentSortOverlay(false);
+            if (newCommentState.length !== 0) {
+              dispatch(dispatchPushNewComments(newCommentState));
+              dispatch(dispatchClearNewCommentState());
+            }
           }}
           style={{ color: selectedSort === "Q&A" && "#0079D3" }}
         >

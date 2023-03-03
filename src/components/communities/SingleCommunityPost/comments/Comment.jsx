@@ -27,7 +27,9 @@ import {
 import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 import { dispatchAddReply } from "../../../../store/comments/comments";
 import {
+  handleNewCommentDownvote,
   handleNewCommentUpvote,
+  handleRemoveNewCommentDownvote,
   handleRemoveNewCommentUpvote,
 } from "../../../../store/comments/newComments";
 
@@ -126,9 +128,9 @@ const Comment = ({
     };
 
     if (comment.downvotes.includes(authState.id)) {
-      dispatch(handleRemoveCommentDownvote(obj));
+      dispatch(handleRemoveNewCommentDownvote(obj));
     } else {
-      dispatch(handleCommentDownvote(obj));
+      dispatch(handleNewCommentDownvote(obj));
     }
   }
 
