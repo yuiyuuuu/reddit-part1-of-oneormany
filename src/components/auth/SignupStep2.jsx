@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { signup } from "../../store/auth";
 import "./auth.scss";
 
 import ReloadIcon from "./ReloadIcon";
 
 import $ from "jquery";
-import { useNavigate } from "react-router-dom";
 
 const SignupStep2 = ({
   suggestionList,

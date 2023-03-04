@@ -25,6 +25,7 @@ import CommentsList from "./comments/CommentsList";
 import {
   dispatchFilterAComment,
   dispatchRemoveNewCommentDuplicates,
+  dispatchSortComments,
   setComments,
 } from "../../../store/comments/comments";
 import { handleAddComment } from "../../../store/posts-individualcommunity";
@@ -52,6 +53,7 @@ const SingleCommunityPost = ({
   const [commentImage, setCommentImage] = useState(null);
 
   const [firstSet, setFirstSet] = useState(true);
+  const [firstSort, setFirstSort] = useState(true);
 
   const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
@@ -126,7 +128,13 @@ const SingleCommunityPost = ({
 
     const v = window.localStorage.getItem("commentsort");
 
-    dispatch(setComments(selectedPost?.comments, v));
+    dispatch(setComments(selectedPost?.comments));
+    if (firstSort) {
+      dispatch(dispatchSortComments(selectedPost?.comments, v));
+    }
+
+    setFirstSort(false);
+
     if (newCommentState.length !== 0) {
       dispatch(dispatchRemoveNewCommentDuplicates(newCommentState));
     }

@@ -101,7 +101,11 @@ const SingleCommunity = () => {
   }
 
   function handleJoinCommunity() {
-    dispatch(joinCommunity(authState.id, communityState.id));
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "joincommunity" }));
+    } else {
+      dispatch(joinCommunity(authState.id, communityState.id));
+    }
   }
 
   function handleLeaveCommunity() {

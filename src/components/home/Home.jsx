@@ -243,7 +243,10 @@ const Home = () => {
       <div className='parent-home'>
         <div className='inner-home'>
           <div className='home-feed'>
-            <div className='home-createpost'>
+            <div
+              className='home-createpost'
+              style={{ display: !authState?.id && "none" }}
+            >
               <a className='anchor-createpost'>
                 <DefaultPfp />
               </a>

@@ -79,7 +79,19 @@ export const dispatchRemoveNewCommentDuplicates = (array) => ({
   array,
 });
 
-export function setComments(comments, sorttype) {
+export const dispatchSortComments = (comments, sorttype) => {
+  return (dispatch) => {
+    if (!comments.length) return;
+    sorttype.toLowerCase() == "best" && dispatch(dispatchSortBest());
+    sorttype.toLowerCase() == "top" && dispatch(dispatchSortTop());
+    sorttype.toLowerCase() == "new" && dispatch(dispatchSortNew());
+    sorttype.toLowerCase() == "controversial" &&
+      dispatch(dispatchSortControversial());
+    sorttype.toLowerCase() == "old" && dispatch(dispatchSortOld());
+  };
+};
+
+export function setComments(comments) {
   return (dispatch) => {
     const group = { new: [] };
     comments.slice().forEach((v) => {
@@ -88,14 +100,6 @@ export function setComments(comments, sorttype) {
     });
 
     dispatch(dispatchComments(group));
-
-    if (!comments.length) return;
-    sorttype.toLowerCase() == "best" && dispatch(dispatchSortBest());
-    sorttype.toLowerCase() == "top" && dispatch(dispatchSortTop());
-    sorttype.toLowerCase() == "new" && dispatch(dispatchSortNew());
-    sorttype.toLowerCase() == "controversial" &&
-      dispatch(dispatchSortControversial());
-    sorttype.toLowerCase() == "old" && dispatch(dispatchSortOld());
   };
 }
 
@@ -139,7 +143,6 @@ export default function (state = { new: [] }, action) {
       state[action.comment.parentId].unshift(action.comment);
       return state;
     case FILTER_A_COMMENT:
-      console.log(state[null].filter((v) => v.id !== action.id));
       return { ...state, null: state[null].filter((v) => v.id !== action.id) };
     case PUSH_NEWCOMMENTS:
       return { ...state, null: [...state.null, ...action.array] };

@@ -9,18 +9,19 @@ import XIconNoFunction from "../../globalsvg/XIconNoFunction";
 
 import $ from "jquery";
 import { dispatchSetAOL } from "../authoverlaylogin/authOverlayLoginStates";
-import AOLStep2 from "./AOLStep2";
+import AOSStep2 from "./AOSStep2";
 
 const obj = {
   comment: "You can comment on any post with a Reddit account.",
   vote: "You can vote on posts and comments to help everyone find the best content with a Reddit account.",
+  joincommunity: "Sign up to join this community",
   "": "",
 };
 
 const AuthOverlaySignup = ({ state }) => {
   const dispatch = useDispatch();
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -64,31 +65,35 @@ const AuthOverlaySignup = ({ state }) => {
     }
   }
 
-  useEffect(() => {
-    $("#aos-email").hover(
+  function inputAnimation(input, label) {
+    $(input).hover(
       () => {
-        $(".aos-emaillabel").addClass("movetopleft2");
+        $(label).addClass("movetopleft2");
       },
       () => {
-        const a = $("#aos-email").val();
-        if ($("#aos-email").is(":focus") || a.length) {
+        const a = $(input).val();
+        if ($(input).is(":focus") || a.length) {
           return;
         }
-        $(".aos-emaillabel").removeClass("movetopleft2");
+        $(label).removeClass("movetopleft2");
       }
     );
 
-    $("#aos-email").focus(() => {
-      $(".aos-emaillabel").addClass("movetopleft2");
+    $(input).focus(() => {
+      $(label).addClass("movetopleft2");
     });
 
-    $("#aos-email").focusout(() => {
-      const a = $("#aos-email").val();
+    $(input).focusout(() => {
+      const a = $(input).val();
       if (a.length) {
         return;
       }
-      $(".aos-emaillabel").removeClass("movetopleft2");
+      $(label).removeClass("movetopleft2");
     });
+  }
+
+  useEffect(() => {
+    inputAnimation("#aos-email", ".aos-emaillabel");
   }, []);
   return (
     <div style={{ display: !state.display && "none" }}>
@@ -191,7 +196,14 @@ const AuthOverlaySignup = ({ state }) => {
           </div>
         </div>
       ) : (
-        <AOLStep2 username={username} password={password} />
+        <AOSStep2
+          username={username}
+          password={password}
+          setStep={setStep}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          inputAnimation={inputAnimation}
+        />
       )}
     </div>
   );
