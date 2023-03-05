@@ -152,10 +152,11 @@ const AOSStep2 = ({
         `/users/find/${$("#aos-username").val()}`
       );
       if (user === "available") {
-        setUsernameNotAvailable(false);
         if (!prev) {
           availableAnimation();
         }
+
+        setUsernameNotAvailable(false);
         setUsernameAvailable(true);
         setValidUsername(true);
         prev = true;

@@ -48,12 +48,13 @@ const SingleCommunityPost = ({
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const newCommentState = useSelector((state) => state.newComments);
+  const commentsState = useSelector((state) => state.comments);
+  console.log(commentsState);
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
 
   const [firstSet, setFirstSet] = useState(true);
-  const [firstSort, setFirstSort] = useState(true);
 
   const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
@@ -129,16 +130,13 @@ const SingleCommunityPost = ({
     const v = window.localStorage.getItem("commentsort");
 
     dispatch(setComments(selectedPost?.comments));
-    if (firstSort) {
-      dispatch(dispatchSortComments(selectedPost?.comments, v));
-    }
 
-    setFirstSort(false);
+    dispatch(dispatchSortComments(selectedPost?.comments, v));
 
     if (newCommentState.length !== 0) {
       dispatch(dispatchRemoveNewCommentDuplicates(newCommentState));
     }
-  }, [selectedPost?.comments]);
+  }, [selectedPost]);
 
   //cleanup
   useEffect(() => {

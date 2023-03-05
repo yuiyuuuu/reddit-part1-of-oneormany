@@ -12,7 +12,7 @@ const Signup = () => {
   const auth = useSelector((state) => state.auth);
   const history = useNavigate();
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
 
   const [suggestionList, setSuggestionList] = useState([]);

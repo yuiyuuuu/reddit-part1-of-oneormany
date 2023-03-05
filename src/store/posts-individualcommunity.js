@@ -372,24 +372,25 @@ export default function (state = {}, action) {
         .sort(sorting);
       return { ...state, posts: q };
     case HANDLE_UPVOTE_COMMENT:
-      const w = state.posts
-        .map((post) => (post.id === action.post.id ? action.post : post))
-        .sort(sorting);
+      const w = state.posts.map((post) => {
+        return post.id === action.post.id ? action.post : post;
+      });
+
       return { ...state, posts: w };
     case HANDLE_DOWNVOTE_COMMENT:
-      const p = state.posts
-        .map((post) => (post.id === action.post.id ? action.post : post))
-        .sort(sorting);
+      const p = state.posts.map((post) =>
+        post.id === action.post.id ? action.post : post
+      );
       return { ...state, posts: p };
     case HANDLE_REMOVEUPVOTE_COMMENT:
-      const m = state.posts
-        .map((post) => (post.id === action.post.id ? action.post : post))
-        .sort(sorting);
+      const m = state.posts.map((post) =>
+        post.id === action.post.id ? action.post : post
+      );
       return { ...state, posts: m };
     case HANDLE_REMOVEDOWNVOTE_COMMENT:
-      const g = state.posts
-        .map((post) => (post.id === action.post.id ? action.post : post))
-        .sort(sorting);
+      const g = state.posts.map((post) =>
+        post.id === action.post.id ? action.post : post
+      );
       return { ...state, posts: g };
     case HANDLE_ADDCOMMENT:
       const y = state.posts

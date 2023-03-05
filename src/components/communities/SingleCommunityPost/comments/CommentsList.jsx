@@ -36,6 +36,10 @@ const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
     }
   }, [commentsState]);
 
+  if (which == "29165cde-1412-4af8-901f-4aea775e3c57") {
+    console.log();
+  }
+
   return (
     <div
       className='commentlist-parent'
@@ -43,6 +47,7 @@ const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
       id={level && `prev-${idarr[level - 1]}`}
     >
       {newComments?.length !== 0 &&
+        top &&
         newComments.map((v) => (
           <Comment
             comment={v}

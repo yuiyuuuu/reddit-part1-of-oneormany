@@ -153,20 +153,24 @@ const AuthOverlaySignup = ({ state }) => {
                   </label>
                 </div>
 
-                <div
-                  className='aos-error'
-                  id='aos-emailerror'
-                  style={{ display: invalidEmailError && "block" }}
-                >
-                  Not a valid email address
-                </div>
-                <div
-                  className='aos-error'
-                  id='aos-nolength'
-                  style={{ display: noLengthError && "block" }}
-                >
-                  Please enter an email address to continue
-                </div>
+                {invalidEmailError && (
+                  <div
+                    className='aos-error'
+                    id='aos-emailerror'
+                    style={{ display: invalidEmailError && "block" }}
+                  >
+                    Not a valid email address
+                  </div>
+                )}
+                {noLengthError && (
+                  <div
+                    className='aos-error'
+                    id='aos-nolength'
+                    style={{ display: noLengthError && "block" }}
+                  >
+                    Please enter an email address to continue
+                  </div>
+                )}
               </div>
 
               <div
