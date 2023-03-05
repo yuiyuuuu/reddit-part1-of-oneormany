@@ -1,0 +1,29 @@
+.pm-parent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+}
+
+.pm-meterbottom {
+  height: 6px;
+  width: 6px;
+  border-radius: 0 0 4px 4px;
+  background: #e8e8e8;
+  margin-top: 4px;
+}
+
+.pm-meter {
+  margin-top: 4px;
+  width: 6px;
+  height: 4px;
+  background: #e8e8e8;
+}
+
+.pm-metertop {
+  height: 6px;
+  width: 6px;
+  border-radius: 4px 4px 0 0;
+  background: #e8e8e8;
+  margin-top: 4px;
+}

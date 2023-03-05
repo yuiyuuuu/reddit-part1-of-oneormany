@@ -15,13 +15,13 @@ const obj = {
   comment: "You can comment on any post with a Reddit account.",
   vote: "You can vote on posts and comments to help everyone find the best content with a Reddit account.",
   joincommunity: "Sign up to join this community",
-  "": "",
+  "": "Sign Up",
 };
 
 const AuthOverlaySignup = ({ state }) => {
   const dispatch = useDispatch();
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -29,6 +29,7 @@ const AuthOverlaySignup = ({ state }) => {
 
   const [invalidEmailError, setInvalidEmailError] = useState(false);
   const [noLengthError, setNoLengthError] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
 
   function handleClose() {
     dispatch(dispatchSetAOS({ display: false, which: "" }));
@@ -62,6 +63,7 @@ const AuthOverlaySignup = ({ state }) => {
       setInvalidEmailError(true);
     } else {
       setInvalidEmailError(false);
+      setValidEmail(true);
     }
   }
 
@@ -93,8 +95,11 @@ const AuthOverlaySignup = ({ state }) => {
   }
 
   useEffect(() => {
+    if ($("#aos-email").val()?.length > 0) {
+      $(".aos-emaillabel").addClass("movetopleft2");
+    }
     inputAnimation("#aos-email", ".aos-emaillabel");
-  }, []);
+  }, [step]);
   return (
     <div style={{ display: !state.display && "none" }}>
       {step === 1 ? (
@@ -175,7 +180,10 @@ const AuthOverlaySignup = ({ state }) => {
                       ? "not-allowed"
                       : "pointer",
                 }}
-                onClick={() => setStep(2)}
+                onClick={() => {
+                  if (!validEmail) return;
+                  setStep(2);
+                }}
               >
                 Continue
               </div>
@@ -199,6 +207,7 @@ const AuthOverlaySignup = ({ state }) => {
         <AOSStep2
           username={username}
           password={password}
+          email={email}
           setStep={setStep}
           setUsername={setUsername}
           setPassword={setPassword}

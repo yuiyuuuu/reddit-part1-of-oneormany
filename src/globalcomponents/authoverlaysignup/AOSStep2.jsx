@@ -13,16 +13,33 @@ import { randomIntFromInterval } from "../../requests/randomNumber";
 import { adjectives, nouns, dashes } from "../../components/auth/words";
 import { makeGetRequest } from "../../requests/helperFunction";
 
+import gsap from "gsap";
+import PasswordMeter from "../passwordMeter/PasswordMeter";
+import { signup } from "../../store/auth";
+
 const AOSStep2 = ({
   username,
   password,
+  email,
   setStep,
   setUsername,
   setPassword,
   inputAnimation,
 }) => {
   const dispatch = useDispatch();
+
+  //error states
   const [usernameNotAvailable, setUsernameNotAvailable] = useState(false);
+  const [shortUsername, setShortUsername] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState(false);
+
+  const [shortPassword, setShortPassword] = useState(false);
+  const [weakPass, setWeakpass] = useState(false);
+
+  //valid states
+  const [validUsername, setValidUsername] = useState(false);
+  const [validPassword, setValidPassword] = useState(false);
+  const [passStrength, setPassStrength] = useState(0);
 
   function handleClose() {
     dispatch(dispatchSetAOS({ display: false, which: "" }));
@@ -64,16 +81,49 @@ const AOSStep2 = ({
       );
       if (user === "available") {
         setUsernameNotAvailable(false);
+        setUsernameAvailable(true);
+        setValidUsername(true);
       } else {
+        setUsernameAvailable(false);
         setUsernameNotAvailable(true);
       }
     }
   }
 
+  function availableAnimation() {
+    gsap.fromTo(
+      ".aos-available",
+      { opacity: 0, y: "-13px" },
+      { opacity: 1, y: 0, duration: 0.2 }
+    );
+  }
+
+  function handleSubmit() {
+    if (!validPassword || !validUsername) return;
+    setWeakpass(false);
+    if (passStrength < 1) {
+      setWeakpass(true);
+    }
+
+    const obj = {
+      username: username,
+      password: password,
+      email: email,
+    };
+
+    const sub = dispatch(signup(obj)).then((res) => {
+      if (res?.auth.id || res === "successful") {
+        dispatch(dispatchSetAOS({ display: false, which: "" }));
+      }
+    });
+  }
+
   useEffect(() => {
+    //timer for username input
     var typingTimer; //timer identifier
     var doneTypingInterval = 1000; //time in ms, 5 seconds for example
     var $input = $("#aos-username");
+    let prev = false;
 
     //on keyup, start the countdown
     $input.on("keyup", function () {
@@ -83,18 +133,65 @@ const AOSStep2 = ({
 
     //on keydown, clear the countdown
     $input.on("keydown", function () {
+      setValidUsername(false);
       clearTimeout(typingTimer);
     });
 
     //user is "finished typing," do something
     async function doneTyping() {
+      setShortUsername(false);
+      if ($("#aos-username").val().length < 3) {
+        setUsernameAvailable(false);
+        setUsernameNotAvailable(false);
+        setShortUsername(true);
+        prev = false;
+        return;
+      }
+
       const user = await makeGetRequest(
         `/users/find/${$("#aos-username").val()}`
       );
       if (user === "available") {
         setUsernameNotAvailable(false);
+        if (!prev) {
+          availableAnimation();
+        }
+        setUsernameAvailable(true);
+        setValidUsername(true);
+        prev = true;
       } else {
+        prev = false;
+        setUsernameAvailable(false);
         setUsernameNotAvailable(true);
+      }
+    }
+  }, []);
+
+  //password input
+  useEffect(() => {
+    var typingTimer; //timer identifier
+    var doneTypingInterval = 400; //time in ms, 5 seconds for example
+    var $input = $("#aos-password");
+
+    //on keyup, start the countdown
+    $input.on("keyup", function () {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown
+    $input.on("keydown", function () {
+      setValidPassword(false);
+      clearTimeout(typingTimer);
+    });
+
+    function doneTyping() {
+      if ($("#aos-password").val().length < 8) {
+        setShortPassword(true);
+        return;
+      } else {
+        setShortPassword(false);
+        setValidPassword(true);
       }
     }
   }, []);
@@ -122,7 +219,11 @@ const AOSStep2 = ({
                 id='aos-username'
                 value={username}
                 onChange={(e) => handleUsernameChange(e)}
-                style={{ border: usernameNotAvailable && "1px solid red" }}
+                style={{
+                  border:
+                    (usernameNotAvailable || shortUsername) && "1px solid red",
+                }}
+                maxLength={20}
               />
 
               <label
@@ -144,6 +245,26 @@ const AOSStep2 = ({
             >
               That username is already taken
             </div>
+
+            <div
+              className='aos-error'
+              style={{
+                display: shortUsername && "block",
+                marginTop: "4px",
+              }}
+            >
+              Username must be between 3 and 20 characters
+            </div>
+
+            <div
+              className='aos-available'
+              style={{
+                display: usernameAvailable && "block",
+                marginTop: "4px",
+              }}
+            >
+              Nice! Username available
+            </div>
           </div>
 
           <div className='aos-fieldset' style={{ marginTop: "16px" }}>
@@ -153,6 +274,10 @@ const AOSStep2 = ({
                 id='aos-password'
                 value={password}
                 onChange={(e) => handlePasswordChange(e)}
+                style={{
+                  border: (shortPassword || weakPass) && "1px solid red",
+                }}
+                type='password'
               />
 
               <label
@@ -161,10 +286,50 @@ const AOSStep2 = ({
               >
                 Password
               </label>
+
+              <PasswordMeter
+                inputValue={password}
+                top='-1px'
+                right='20px'
+                passStrength={passStrength}
+                setPassStrength={setPassStrength}
+              />
             </div>
+
+            <div
+              className='aos-error'
+              style={{
+                display: shortPassword && "block",
+                marginTop: "4px",
+              }}
+            >
+              Passwords must be at least 8 characters long
+            </div>
+
+            {weakPass && (
+              <div
+                className='aos-error'
+                style={{
+                  display: weakPass && "block",
+                  marginTop: "4px",
+                }}
+              >
+                That password is unacceptable
+              </div>
+            )}
           </div>
 
-          <div className='aos-continue'>Continue</div>
+          <div
+            className='aos-continue'
+            style={{
+              cursor:
+                !validUsername || !validPassword ? "not-allowed" : "pointer",
+              opacity: !validUsername || !validPassword ? 0.2 : 1,
+            }}
+            onClick={() => handleSubmit()}
+          >
+            Continue
+          </div>
           <div className='aos-left' onClick={() => setStep(1)}>
             <LeftArrowAOS />
           </div>

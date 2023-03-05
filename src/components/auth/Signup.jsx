@@ -12,7 +12,7 @@ const Signup = () => {
   const auth = useSelector((state) => state.auth);
   const history = useNavigate();
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [email, setEmail] = useState("");
 
   const [suggestionList, setSuggestionList] = useState([]);
@@ -155,7 +155,7 @@ const Signup = () => {
                   style={{ fontWeight: "400" }}
                   href='/login'
                 >
-                  LOGIN IN
+                  LOG IN
                 </a>
               </div>
             </form>

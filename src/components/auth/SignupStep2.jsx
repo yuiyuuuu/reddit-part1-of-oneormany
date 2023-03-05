@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../../store/auth";
+import { makeGetRequest } from "../../requests/helperFunction";
+import gsap from "gsap";
 import "./auth.scss";
 
 import ReloadIcon from "./ReloadIcon";
 
 import $ from "jquery";
+import PasswordMeter from "../../globalcomponents/passwordMeter/PasswordMeter";
 
 const SignupStep2 = ({
   suggestionList,
@@ -22,12 +25,37 @@ const SignupStep2 = ({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  //username error states
+  const [usernameNotAvailable, setUsernameNotAvailable] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState(false);
+  const [shortUsername, setShortUsername] = useState(false);
+
+  //password error states
+  const [shortPassword, setShortPassword] = useState(false);
+  const [weakPass, setWeakPass] = useState(false);
+
+  const [passStrength, setPassStrength] = useState(0);
+
+  //valid states
+  const [validUsername, setValidUsername] = useState(false);
+  const [validPassword, setValidPassword] = useState(false);
+
+  function availableAnimation() {
+    gsap.fromTo(
+      ".aos-available",
+      { opacity: 0, y: "-13px" },
+      { opacity: 1, y: 0, duration: 0.2 }
+    );
+  }
+
   const handleSubmit = async () => {
-    if (password.length < 8) {
-      $("#signup-passworderror").css("display", "block");
-      $("#signup-password").css("border", "1px solid red");
-      return;
+    if (!validPassword || !validUsername) return;
+    setWeakPass(false);
+
+    if (passStrength < 1) {
+      setWeakPass(true);
     }
+
     const object = {
       username: username,
       password: password,
@@ -43,6 +71,85 @@ const SignupStep2 = ({
       history("/");
     }
   };
+
+  //username input
+  useEffect(() => {
+    //timer for username input
+    var typingTimer; //timer identifier
+    var doneTypingInterval = 1000; //time in ms, 5 seconds for example
+    var $input = $("#signup-username");
+    let prev = false;
+
+    //on keyup, start the countdown
+    $input.on("keyup", function () {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown
+    $input.on("keydown", function () {
+      setValidUsername(false);
+      clearTimeout(typingTimer);
+    });
+
+    //user is "finished typing," do something
+    async function doneTyping() {
+      setShortUsername(false);
+      if ($("#signup-username").val().length < 3) {
+        setUsernameAvailable(false);
+        setUsernameNotAvailable(false);
+        setShortUsername(true);
+        prev = false;
+        return;
+      }
+
+      const user = await makeGetRequest(
+        `/users/find/${$("#signup-username").val()}`
+      );
+      if (user === "available") {
+        setUsernameNotAvailable(false);
+        if (!prev) {
+          availableAnimation();
+        }
+        setUsernameAvailable(true);
+        setValidUsername(true);
+        prev = true;
+      } else {
+        prev = false;
+        setUsernameAvailable(false);
+        setUsernameNotAvailable(true);
+      }
+    }
+  }, []);
+
+  //password input
+  useEffect(() => {
+    var typingTimer; //timer identifier
+    var doneTypingInterval = 400; //time in ms, 5 seconds for example
+    var $input = $("#signup-password");
+
+    //on keyup, start the countdown
+    $input.on("keyup", function () {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown
+    $input.on("keydown", function () {
+      setValidPassword(false);
+      clearTimeout(typingTimer);
+    });
+
+    function doneTyping() {
+      if ($("#signup-password").val().length < 8) {
+        setShortPassword(true);
+        return;
+      } else {
+        setShortPassword(false);
+        setValidPassword(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     //if user clicks suggestion name, we will move label out of way
@@ -129,8 +236,48 @@ const SignupStep2 = ({
               id='signup-username'
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              style={{
+                border:
+                  (shortUsername || usernameNotAvailable) && "1px solid red",
+              }}
             />
           </div>
+
+          {usernameNotAvailable && (
+            <div
+              className='aos-error'
+              style={{
+                display: usernameNotAvailable && "block",
+                marginTop: "4px",
+              }}
+            >
+              That username is already taken
+            </div>
+          )}
+
+          {shortUsername && (
+            <div
+              className='aos-error'
+              style={{
+                display: shortUsername && "block",
+                marginTop: "4px",
+              }}
+            >
+              Username must be between 3 and 20 characters
+            </div>
+          )}
+
+          {usernameAvailable && (
+            <div
+              className='aos-available'
+              style={{
+                display: usernameAvailable && "block",
+                marginTop: "4px",
+              }}
+            >
+              Nice! Username available
+            </div>
+          )}
 
           <div className='signup-fieldset' style={{ marginTop: "24px" }}>
             <label className='auth-inputlabel' id='signuplabel-password'>
@@ -143,7 +290,39 @@ const SignupStep2 = ({
               type='password'
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            <PasswordMeter
+              top={0}
+              right={0}
+              inputValue={password}
+              passStrength={passStrength}
+              setPassStrength={setPassStrength}
+            />
           </div>
+          {shortPassword && (
+            <div
+              className='aos-error'
+              style={{
+                display: shortPassword && "block",
+                marginTop: "4px",
+              }}
+            >
+              Passwords must be at least 8 characters long
+            </div>
+          )}
+
+          {weakPass && (
+            <div
+              className='aos-error'
+              style={{
+                display: weakPass && "block",
+                marginTop: "4px",
+              }}
+            >
+              That password is unacceptable
+            </div>
+          )}
+
           <div
             className='auth-redtext nodisplay'
             style={{ marginTop: "4px" }}
@@ -183,7 +362,15 @@ const SignupStep2 = ({
           Back
         </div>
         <div className='grow' />
-        <button className='signup-signup' onClick={() => handleSubmit()}>
+        <button
+          className='signup-signup'
+          onClick={() => handleSubmit()}
+          style={{
+            opacity: (!validPassword || !validUsername) && 0.2,
+            cursor:
+              !validPassword || !validUsername ? "not-allowed" : "pointer",
+          }}
+        >
           SIGN UP
         </button>
       </div>
