@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./comments.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Comment from "./Comment";
 
 //note
@@ -12,11 +12,17 @@ import Comment from "./Comment";
 
 import $ from "jquery";
 
-const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
-  const dispatch = useDispatch();
-  const commentsState = useSelector((state) => state.comments);
-  const newComments = useSelector((state) => state.newComments);
-
+const CommentsList = ({
+  which,
+  post,
+  top,
+  level,
+  idarr,
+  toggle,
+  margin,
+  commentsState,
+  newComments,
+}) => {
   useEffect(() => {
     if (level > 0) {
       $(`.${idarr[level - 1]}`)
@@ -35,10 +41,6 @@ const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
         );
     }
   }, [commentsState]);
-
-  if (which == "29165cde-1412-4af8-901f-4aea775e3c57") {
-    console.log();
-  }
 
   return (
     <div
@@ -70,6 +72,8 @@ const CommentsList = ({ which, post, top, level, idarr, toggle, margin }) => {
           idarr={idarr || []}
           margin={margin ? margin + 7 : 16}
           newComment={false}
+          commentsState={commentsState}
+          newComments={newComments}
         />
       ))}
 

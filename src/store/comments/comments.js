@@ -1,3 +1,5 @@
+import { makePutRequest } from "../../requests/helperFunction";
+
 const SET_COMMENTS = "SET_COMMENTS";
 const ADD_COMMENT_TOP = "ADD_COMMENT_TOP";
 const ADD_REPLY_F = "ADD_REPLY_F";
@@ -12,6 +14,14 @@ const SORT_CONTROVERSIAL = "SORT_CONTROVERSIAL";
 const REMOVE_DUPLICATES_NEWCOMMENTS = "REMOVE_DUPLICATES_NEWCOMMENTS";
 
 const PUSH_NEWCOMMENTS = "PUSH_NEWCOMMENTS";
+
+//test
+const HANDLE_UPVOTE_COMMENT = "HANDLE_UPVOTE_COMMENT";
+const HANDLE_DOWNVOTE_COMMENT = "HANDLE_DOWNVOTE_COMMENT";
+const HANDLE_REMOVEDOWNVOTE_COMMENT = "HANDLE_REMOVEDOWNVOTE_COMMENT";
+const HANDLE_REMOVEUPVOTE_COMMENT = "HANDLE_REMOVEUPVOTE_COMMENT";
+
+const CLEAR_STATE = "CLEAR_STATE_COMMENTS";
 
 //these sort by functions may not be 100% what reddit uses, especially sortByBest .
 //i wrote these functions based off of my testing and research. I tried to make it as close as possible
@@ -79,6 +89,34 @@ export const dispatchRemoveNewCommentDuplicates = (array) => ({
   array,
 });
 
+const dispatchUpvoteComment = (comment, parentid) => ({
+  type: HANDLE_UPVOTE_COMMENT,
+  comment,
+  parentid,
+});
+
+const dispatchDownvoteComment = (comment, parentid) => ({
+  type: HANDLE_DOWNVOTE_COMMENT,
+  comment,
+  parentid,
+});
+
+const dispatchRemoveUpvoteComment = (comment, parentid) => ({
+  type: HANDLE_REMOVEUPVOTE_COMMENT,
+  comment,
+  parentid,
+});
+
+const dispatchRemoveDownvoteComment = (comment, parentid) => ({
+  type: HANDLE_REMOVEDOWNVOTE_COMMENT,
+  comment,
+  parentid,
+});
+
+export const dispatchClearCommentState = () => ({
+  type: CLEAR_STATE,
+});
+
 export const dispatchSortComments = (comments, sorttype) => {
   return (dispatch) => {
     if (!comments.length) return;
@@ -90,6 +128,56 @@ export const dispatchSortComments = (comments, sorttype) => {
     sorttype.toLowerCase() == "old" && dispatch(dispatchSortOld());
   };
 };
+
+export function handleCommentUpvote(obj, parentid) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/comment/upvote", obj);
+      dispatch(dispatchUpvoteComment(data, parentid));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleCommentDownvote(obj, parentid) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("communities/comment/downvote", obj);
+      dispatch(dispatchDownvoteComment(data, parentid));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleRemoveCommentUpvote(obj, parentid) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest(
+        "/communities/comment/upvote/remove",
+        obj
+      );
+      dispatch(dispatchRemoveUpvoteComment(data, parentid));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function handleRemoveCommentDownvote(obj, parentid) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest(
+        "communities/comment/downvote/remove",
+        obj
+      );
+      dispatch(dispatchRemoveDownvoteComment(data, parentid));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
 
 export function setComments(comments) {
   return (dispatch) => {
@@ -153,6 +241,33 @@ export default function (state = { new: [] }, action) {
         return v.id !== find;
       });
       return state;
+
+    case HANDLE_UPVOTE_COMMENT:
+      const map = state[action.parentid].map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
+      );
+      return { ...state, [action.parentid]: map };
+
+    case HANDLE_DOWNVOTE_COMMENT:
+      const map2 = state[action.parentid].map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
+      );
+      return { ...state, [action.parentid]: map2 };
+
+    case HANDLE_REMOVEUPVOTE_COMMENT:
+      const map3 = state[action.parentid].map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
+      );
+      return { ...state, [action.parentid]: map3 };
+
+    case HANDLE_REMOVEDOWNVOTE_COMMENT:
+      const map4 = state[action.parentid].map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
+      );
+      return { ...state, [action.parentid]: map4 };
+
+    case CLEAR_STATE:
+      return { new: [] };
     default:
       return state;
   }

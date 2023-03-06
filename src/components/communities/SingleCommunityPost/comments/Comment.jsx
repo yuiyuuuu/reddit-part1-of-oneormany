@@ -16,16 +16,16 @@ import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import TextStylesReply from "./textstylescomponent/TextStylesReply";
 
+import { handleAddComment } from "../../../../store/posts-individualcommunity";
+
+import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 import {
-  handleAddComment,
+  dispatchAddReply,
   handleCommentDownvote,
   handleCommentUpvote,
   handleRemoveCommentDownvote,
   handleRemoveCommentUpvote,
-} from "../../../../store/posts-individualcommunity";
-
-import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
-import { dispatchAddReply } from "../../../../store/comments/comments";
+} from "../../../../store/comments/comments";
 import {
   handleNewCommentDownvote,
   handleNewCommentUpvote,
@@ -42,6 +42,8 @@ const Comment = ({
   idarr,
   margin,
   newComment,
+  newComments,
+  commentsState,
 }) => {
   const dispatch = useDispatch();
   const styleRef = useRef();
@@ -108,9 +110,9 @@ const Comment = ({
       }
     } else {
       if (comment.upvotes.includes(authState.id)) {
-        dispatch(handleRemoveCommentUpvote(obj));
+        dispatch(handleRemoveCommentUpvote(obj, comment.parentId));
       } else {
-        dispatch(handleCommentUpvote(obj));
+        dispatch(handleCommentUpvote(obj, comment.parentId));
       }
     }
   }
@@ -129,15 +131,15 @@ const Comment = ({
 
     if (newComment) {
       if (comment.downvotes.includes(authState.id)) {
-        dispatch(handleRemoveNewCommentDownvote(obj));
+        dispatch(handleRemoveCommentUpvote(obj));
       } else {
         dispatch(handleNewCommentDownvote(obj));
       }
     } else {
       if (comment.downvotes.includes(authState.id)) {
-        dispatch(handleRemoveCommentDownvote(obj));
+        dispatch(handleRemoveCommentDownvote(obj, comment.parentId));
       } else {
-        dispatch(handleCommentDownvote(obj));
+        dispatch(handleCommentDownvote(obj, comment.parentId));
       }
     }
   }
@@ -368,6 +370,8 @@ const Comment = ({
           toggle={toggleShow}
           post={post}
           margin={margin}
+          commentsState={commentsState}
+          newComments={newComments}
         />
       )}
     </div>

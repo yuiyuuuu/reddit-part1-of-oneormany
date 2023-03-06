@@ -22,11 +22,6 @@ const HANDLE_DOWNVOTE = "HANDLE_DOWNVOTE_COMMUNITY";
 const REMOVE_UPVOTE = "HANDLE_REMOVEUPVOTE_COMMUNITY";
 const REMOVE_DOWNVOTE = "HANDLE_REMOVEDOWNVOTE_COMMUNITY";
 
-const HANDLE_UPVOTE_COMMENT = "HANDLE_UPVOTE_COMMENT";
-const HANDLE_DOWNVOTE_COMMENT = "HANDLE_DOWNVOTE_COMMENT";
-const HANDLE_REMOVEDOWNVOTE_COMMENT = "HANDLE_REMOVEDOWNVOTE_COMMENT";
-const HANDLE_REMOVEUPVOTE_COMMENT = "HANDLE_REMOVEUPVOTE_COMMENT";
-
 const HANDLE_ADDCOMMENT = "HANDLE_ADDCOMMENT";
 
 const dispatchFetch = (community) => ({
@@ -85,26 +80,6 @@ const dispatchRemoveUpvoteCommunity = (post) => ({
 
 const dispatchRemoveDownvoteCommunity = (post) => ({
   type: REMOVE_DOWNVOTE,
-  post,
-});
-
-const dispatchUpvoteComment = (post) => ({
-  type: HANDLE_UPVOTE_COMMENT,
-  post,
-});
-
-const dispatchDownvoteComment = (post) => ({
-  type: HANDLE_DOWNVOTE_COMMENT,
-  post,
-});
-
-const dispatchRemoveUpvoteComment = (post) => ({
-  type: HANDLE_REMOVEUPVOTE_COMMENT,
-  post,
-});
-
-const dispatchRemoveDownvoteComment = (post) => ({
-  type: HANDLE_REMOVEDOWNVOTE_COMMENT,
   post,
 });
 
@@ -271,56 +246,6 @@ export function handleCommunityRemoveDownvote(obj) {
   };
 }
 
-export function handleCommentUpvote(obj) {
-  return async (dispatch) => {
-    try {
-      const data = await makePutRequest("/communities/comment/upvote", obj);
-      dispatch(dispatchUpvoteComment(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
-
-export function handleCommentDownvote(obj) {
-  return async (dispatch) => {
-    try {
-      const data = await makePutRequest("/communities/comment/downvote", obj);
-      dispatch(dispatchDownvoteComment(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
-
-export function handleRemoveCommentUpvote(obj) {
-  return async (dispatch) => {
-    try {
-      const data = await makePutRequest(
-        "/communities/comment/upvote/remove",
-        obj
-      );
-      dispatch(dispatchRemoveUpvoteComment(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
-
-export function handleRemoveCommentDownvote(obj) {
-  return async (dispatch) => {
-    try {
-      const data = await makePutRequest(
-        "/communities/comment/downvote/remove",
-        obj
-      );
-      dispatch(dispatchRemoveDownvoteComment(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
-
 export function handleAddComment(obj) {
   return async (dispatch) => {
     try {
@@ -371,27 +296,6 @@ export default function (state = {}, action) {
         .map((post) => (post.id === action.post.id ? action.post : post))
         .sort(sorting);
       return { ...state, posts: q };
-    case HANDLE_UPVOTE_COMMENT:
-      const w = state.posts.map((post) => {
-        return post.id === action.post.id ? action.post : post;
-      });
-
-      return { ...state, posts: w };
-    case HANDLE_DOWNVOTE_COMMENT:
-      const p = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
-      );
-      return { ...state, posts: p };
-    case HANDLE_REMOVEUPVOTE_COMMENT:
-      const m = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
-      );
-      return { ...state, posts: m };
-    case HANDLE_REMOVEDOWNVOTE_COMMENT:
-      const g = state.posts.map((post) =>
-        post.id === action.post.id ? action.post : post
-      );
-      return { ...state, posts: g };
     case HANDLE_ADDCOMMENT:
       const y = state.posts
         .map((post) => (post.id === action.post.id ? action.post : post))

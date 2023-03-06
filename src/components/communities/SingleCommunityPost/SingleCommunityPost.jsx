@@ -23,6 +23,7 @@ import NoCommentsyet from "./nocomment/NoCommentsyet";
 import CommentsList from "./comments/CommentsList";
 
 import {
+  dispatchClearCommentState,
   dispatchFilterAComment,
   dispatchRemoveNewCommentDuplicates,
   dispatchSortComments,
@@ -49,7 +50,6 @@ const SingleCommunityPost = ({
   const authState = useSelector((state) => state.auth);
   const newCommentState = useSelector((state) => state.newComments);
   const commentsState = useSelector((state) => state.comments);
-  console.log(commentsState);
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
@@ -122,10 +122,6 @@ const SingleCommunityPost = ({
 
   useEffect(() => {
     if (!selectedPost?.comments) return;
-    if (!firstSet) {
-      setFirstSet(true);
-      return;
-    }
 
     const v = window.localStorage.getItem("commentsort");
 
@@ -136,14 +132,16 @@ const SingleCommunityPost = ({
     if (newCommentState.length !== 0) {
       dispatch(dispatchRemoveNewCommentDuplicates(newCommentState));
     }
-  }, [selectedPost]);
+    setFirstSet(false);
+  }, [selectedPost?.comments]);
 
   //cleanup
   useEffect(() => {
-    return () => {
+    if (!selectedPost) {
       setShowCommentSortOverlay(false);
-    };
-  }, []);
+      dispatch(dispatchClearCommentState());
+    }
+  }, [selectedPost]);
 
   return (
     <div style={{ display: !selectedPost && "none" }}>
@@ -419,6 +417,8 @@ const SingleCommunityPost = ({
                     which={null}
                     post={selectedPost}
                     top={true}
+                    newComments={newCommentState}
+                    commentsState={commentsState}
                   />
                 </div>
               )}
