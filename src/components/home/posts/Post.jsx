@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setScp } from "../../../store/scp/scpConditional";
+import { setSelectedPost } from "../../../store/scp/selectedPost";
 import "./post.scss";
 
 import $ from "jquery";
@@ -11,8 +14,6 @@ import ThreeDotSvg from "./postssvgs/ThreeDotSvg";
 import UpVoteSvg from "./postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
-
-import { useNavigate } from "react-router-dom";
 import DefaultCommunitiesIcon from "../../communities/communitiessvg/DefaultCommunitiesIcon";
 
 //all posts
@@ -36,6 +37,7 @@ const Post = ({
   handleDownvote,
   handleRemoveDownvote,
   handleRemoveUpvote,
+  scp,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -120,6 +122,8 @@ const Post = ({
       className='single-postcontainer'
       id={`single-container${post.id}`}
       onClick={(e) => {
+        dispatch(setScp(scp || null));
+        dispatch(setSelectedPost(post));
         navigate(`/r/${post.community.name}/comment/${post.id}`);
       }}
     >

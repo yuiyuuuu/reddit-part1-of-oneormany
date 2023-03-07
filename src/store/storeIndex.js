@@ -18,6 +18,9 @@ import screenProperties from "./global/screenProperties";
 import authOverlaySignupState from "../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 import authOverlayLoginStates from "../globalcomponents/authoverlaylogin/authOverlayLoginStates";
 import newComments from "./comments/newComments";
+import scp from "./scp/scpConditional";
+import selectedPost from "./scp/selectedPost";
+import scrollPosition from "./global/scrollPosition";
 
 const reducer = combineReducers({
   auth,
@@ -35,6 +38,9 @@ const reducer = combineReducers({
   authOverlaySignupState,
   authOverlayLoginStates,
   newComments,
+  scp,
+  selectedPost,
+  scrollPosition,
 }); //reducers here
 
 let middleware = "";

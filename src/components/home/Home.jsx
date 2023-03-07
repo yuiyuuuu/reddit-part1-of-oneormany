@@ -287,6 +287,7 @@ const Home = () => {
                   handleDownvote={handleDownvote}
                   handleRemoveDownvote={handleRemoveDownvote}
                   handleRemoveUpvote={handleRemoveUpvote}
+                  scp='home'
                 />
               ))}
             </div>

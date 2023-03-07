@@ -16,8 +16,7 @@ import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import TextStylesReply from "./textstylescomponent/TextStylesReply";
 
-import { handleAddComment } from "../../../../store/posts-individualcommunity";
-
+import { handleAddComment } from "../../../../store/scp/selectedPost";
 import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 import {
   dispatchAddReply,
@@ -70,7 +69,7 @@ const Comment = ({
     dispatch(handleAddComment(obj)).then((res) => {
       setShowReply(false);
       setReply("");
-      dispatch(dispatchAddReply(res.comment));
+      // dispatch(dispatchAddReply(res.comment));
     });
   }
 
@@ -131,7 +130,7 @@ const Comment = ({
 
     if (newComment) {
       if (comment.downvotes.includes(authState.id)) {
-        dispatch(handleRemoveCommentUpvote(obj));
+        dispatch(handleRemoveNewCommentDownvote(obj));
       } else {
         dispatch(handleNewCommentDownvote(obj));
       }

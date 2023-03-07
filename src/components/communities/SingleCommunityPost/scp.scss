@@ -4,7 +4,7 @@
   position: absolute;
   top: 48px;
   left: 0;
-  z-index: 1000;
+  z-index: 1005;
   height: 100%;
   color: rgb(215, 218, 220); //change if needed
   overflow-y: scroll;
@@ -16,6 +16,8 @@
   margin: 0 auto;
   height: auto;
   min-height: 100vh;
+  position: relative;
+  z-index: 2;
 }
 
 .scp-banner {
@@ -27,7 +29,7 @@
   max-width: 1280px;
   margin: 0 auto;
   background-color: #030303;
-  z-index: 2;
+  z-index: 3;
 }
 
 .scp-bannerrow {
@@ -137,7 +139,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 0;
 }
 
 .scp-posttop {

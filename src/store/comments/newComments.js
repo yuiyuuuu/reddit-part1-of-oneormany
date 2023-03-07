@@ -1,3 +1,5 @@
+import { makePutRequest } from "../../requests/helperFunction";
+
 const ADD_NEWCOMMENT = "ADD_NEWCOMMENT";
 
 const HANDLE_UPVOTE_COMMENT = "HANDLE_UPVOTE_COMMENT_NEW";
@@ -6,8 +8,6 @@ const HANDLE_REMOVEDOWNVOTE_COMMENT = "HANDLE_REMOVEDOWNVOTE_COMMENT_NEW";
 const HANDLE_REMOVEUPVOTE_COMMENT = "HANDLE_REMOVEUPVOTE_COMMENT_NEW";
 
 const CLEAR_NEWCOMMENTS_STATE = "CLEAR_NEWCOMMENTS_STATE";
-
-import { makePutRequest } from "../../requests/helperFunction";
 
 export const dispatchAddCommentNew = (comment) => ({
   type: ADD_NEWCOMMENT,

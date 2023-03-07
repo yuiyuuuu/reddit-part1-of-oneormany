@@ -314,12 +314,6 @@ router.put("/upvote", async (req, res, next) => {
       },
     });
 
-    // const com = await prisma.community.findUnique({
-    //   where: {
-    //     id: req.body.communityid,
-    //   },
-    // });
-
     res.send(final);
   } catch (error) {
     next(error);
@@ -357,12 +351,6 @@ router.put("/downvote", async (req, res, next) => {
         },
       },
     });
-
-    // const com = await prisma.community.findUnique({
-    //   where: {
-    //     id: req.body.communityid,
-    //   },
-    // });
 
     res.send(final);
   } catch (error) {
@@ -422,6 +410,7 @@ router.put("/downvote/remove", async (req, res, next) => {
       },
       include: {
         user: true,
+        community: true,
         comments: {
           include: {
             user: true,

@@ -112,69 +112,69 @@ const SingleCommunity = () => {
     dispatch(leaveCommunity(authState.id, communityState.id));
   }
 
-  function handleUpvote() {
-    if (!authState?.id) {
-      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
-      return;
-    }
+  // function handleUpvote() {
+  //   if (!authState?.id) {
+  //     dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+  //     return;
+  //   }
 
-    const info = {
-      postid: selectedPost.id,
-      userid: authState.id,
-      communityid: selectedPost.community.id,
-    };
-    dispatch(handleCommunityUpvote(info)).then((res) => {
-      setSelectedPost(res);
-    });
-  }
+  //   const info = {
+  //     postid: selectedPost.id,
+  //     userid: authState.id,
+  //     communityid: selectedPost.community.id,
+  //   };
+  //   dispatch(handleCommunityUpvote(info)).then((res) => {
+  //     setSelectedPost(res);
+  //   });
+  // }
 
-  function handleDownvote() {
-    if (!authState?.id) {
-      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
-      return;
-    }
+  // function handleDownvote() {
+  //   if (!authState?.id) {
+  //     dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+  //     return;
+  //   }
 
-    const info = {
-      postid: selectedPost.id,
-      userid: authState.id,
-      communityid: selectedPost.community.id,
-    };
-    dispatch(handleCommunityDownvote(info)).then((res) => {
-      setSelectedPost(res);
-    });
-  }
+  //   const info = {
+  //     postid: selectedPost.id,
+  //     userid: authState.id,
+  //     communityid: selectedPost.community.id,
+  //   };
+  //   dispatch(handleCommunityDownvote(info)).then((res) => {
+  //     setSelectedPost(res);
+  //   });
+  // }
 
-  function handleRemoveUpvote() {
-    if (!authState?.id) {
-      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
-      return;
-    }
+  // function handleRemoveUpvote() {
+  //   if (!authState?.id) {
+  //     dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+  //     return;
+  //   }
 
-    const info = {
-      postid: selectedPost.id,
-      userid: authState.id,
-    };
+  //   const info = {
+  //     postid: selectedPost.id,
+  //     userid: authState.id,
+  //   };
 
-    dispatch(handleCommunityRemoveUpvote(info)).then((res) => {
-      setSelectedPost(res);
-    });
-  }
+  //   dispatch(handleCommunityRemoveUpvote(info)).then((res) => {
+  //     setSelectedPost(res);
+  //   });
+  // }
 
-  function handleRemoveDownvote() {
-    if (!authState?.id) {
-      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
-      return;
-    }
+  // function handleRemoveDownvote() {
+  //   if (!authState?.id) {
+  //     dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+  //     return;
+  //   }
 
-    const info = {
-      postid: selectedPost.id,
-      userid: authState.id,
-    };
+  //   const info = {
+  //     postid: selectedPost.id,
+  //     userid: authState.id,
+  //   };
 
-    dispatch(handleCommunityRemoveDownvote(info)).then((res) => {
-      setSelectedPost(res);
-    });
-  }
+  //   dispatch(handleCommunityRemoveDownvote(info)).then((res) => {
+  //     setSelectedPost(res);
+  //   });
+  // }
 
   function handleUpvote2(post) {
     if (!authState?.id) {
@@ -364,14 +364,6 @@ const SingleCommunity = () => {
       );
     });
   }, []);
-
-  useEffect(() => {
-    if (selectedPost) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [selectedPost]);
 
   useEffect(() => {
     if (loading) return;
@@ -596,6 +588,7 @@ const SingleCommunity = () => {
                     handleRemoveUpvote={handleRemoveUpvote2}
                     handleDownvote={handleDownvote2}
                     handleRemoveDownvote={handleRemoveDownvote2}
+                    scp='singleCommunity'
                   />
                 ))}
               </div>
@@ -617,16 +610,12 @@ const SingleCommunity = () => {
           </div>
         </div>
       </div>
-      <SingleCommunityPost
-        selectedPost={selectedPost}
-        nav={navigate}
-        selectedCommunity={communityState}
-        handleUpvote={handleUpvote}
-        handleDownvote={handleDownvote}
-        handleRemoveUpvote={handleRemoveUpvote}
-        handleRemoveDownvote={handleRemoveDownvote}
-        scrollPos={scrollPos}
-      />
+      {/* <SingleCommunityPost
+      // handleUpvote={handleUpvote}
+      // handleDownvote={handleDownvote}
+      // handleRemoveUpvote={handleRemoveUpvote}
+      // handleRemoveDownvote={handleRemoveDownvote}
+      /> */}
     </div>
   );
 };

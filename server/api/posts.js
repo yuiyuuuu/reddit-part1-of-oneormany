@@ -10,7 +10,11 @@ router.get("/", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -30,7 +34,11 @@ router.get("/community/:id", async (req, res, next) => {
         posts: {
           include: {
             user: true,
-            comments: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
             community: true,
           },
         },
@@ -49,6 +57,13 @@ router.post("/", async (req, res, next) => {
   try {
     const data = await prisma.post.create({
       data: req.body,
+      user: true,
+      comments: {
+        include: {
+          user: true,
+        },
+      },
+      community: true,
     });
 
     res.send(data);
@@ -79,7 +94,11 @@ router.put("/upvote", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -111,7 +130,11 @@ router.put("/downvote", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -139,7 +162,11 @@ router.put("/upvote/remove", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -167,7 +194,11 @@ router.put("/downvote/remove", async (req, res, next) => {
       include: {
         user: true,
         community: true,
-        comments: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 

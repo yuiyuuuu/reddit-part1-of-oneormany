@@ -1,7 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./scp.scss";
+
+import { dispatchSetAOS } from "../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
+import { handleAddComment } from "../../../store/scp/selectedPost";
+import { setSelectedPost } from "../../../store/scp/selectedPost";
+import {
+  dispatchClearCommentState,
+  dispatchFilterAComment,
+  dispatchRemoveNewCommentDuplicates,
+  dispatchSortComments,
+  setComments,
+} from "../../../store/comments/comments";
+import { dispatchAddCommentNew } from "../../../store/comments/newComments";
 
 import $ from "jquery";
 
@@ -21,43 +33,97 @@ import ShieldSvg from "./scpsvgs/ShieldSvg";
 import ThreeDot from "./scpsvgs/ThreeDot";
 import NoCommentsyet from "./nocomment/NoCommentsyet";
 import CommentsList from "./comments/CommentsList";
-
-import {
-  dispatchClearCommentState,
-  dispatchFilterAComment,
-  dispatchRemoveNewCommentDuplicates,
-  dispatchSortComments,
-  setComments,
-} from "../../../store/comments/comments";
-import { handleAddComment } from "../../../store/posts-individualcommunity";
 import TextStylesReply from "./comments/textstylescomponent/TextStylesReply";
 import SortCommentsMain from "./sortcomments/SortCommentsMain";
 import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
-import { dispatchSetAOS } from "../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
-import { dispatchAddCommentNew } from "../../../store/comments/newComments";
-const SingleCommunityPost = ({
-  selectedPost,
-  nav,
-  selectedCommunity,
-  handleUpvote,
-  handleDownvote,
-  handleRemoveUpvote,
-  handleRemoveDownvote,
-  scrollPos,
-}) => {
-  const navigate = useNavigate();
+
+const SingleCommunityPost = () => {
+  const nav = useNavigate();
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const newCommentState = useSelector((state) => state.newComments);
   const commentsState = useSelector((state) => state.comments);
+  const scpState = useSelector((state) => state.scp);
+  const selectedCommunity = useSelector(
+    (state) => state.postsindividualcommunity
+  );
+  const selectedPost = useSelector((state) => state.selectedPost);
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
 
-  const [firstSet, setFirstSet] = useState(true);
-
   const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
+
+  //scroll position
+  const scrollPos = useSelector((state) => state.scrollPosition);
+  //----------------HANDLING VOTES FUNCTIONS BELOW---------------------\\
+
+  function handleUpvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+      communityid: selectedPost.community.id,
+    };
+    dispatch(handleCommunityUpvote(info)).then((res) => {
+      dispatch(setSelectedPost(res));
+    });
+  }
+
+  function handleDownvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+      communityid: selectedPost.community.id,
+    };
+    dispatch(handleCommunityDownvote(info)).then((res) => {
+      dispatch(setSelectedPost(res));
+    });
+  }
+
+  function handleRemoveUpvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+    };
+
+    dispatch(handleCommunityRemoveUpvote(info)).then((res) => {
+      dispatch(setSelectedPost(res));
+    });
+  }
+
+  function handleRemoveDownvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+    };
+
+    dispatch(handleCommunityRemoveDownvote(info)).then((res) => {
+      dispatch(setSelectedPost(res));
+    });
+  }
+
+  //---------------------HANDLING VOTES FUNCTIONS ABOVE---------------------\\
 
   function handleCommentSubmit() {
     if (!authState.id) {
@@ -67,17 +133,15 @@ const SingleCommunityPost = ({
     if (!commentInput.length) return;
     //this one has no parent id since its root comment
     const obj = {
-      communityid: selectedCommunity.id,
+      communityid: selectedPost.community.id,
       message: commentInput,
       userId: authState.id,
       postId: selectedPost.id,
       parentId: null,
     };
 
-    setFirstSet(false);
-
     dispatch(handleAddComment(obj)).then((res) => {
-      const v = window.localStorage.getItem("commentsort");
+      console.log(res);
       setCommentInput("");
       dispatch(dispatchAddCommentNew(res.comment));
       dispatch(dispatchFilterAComment(res.comment.id));
@@ -90,6 +154,12 @@ const SingleCommunityPost = ({
 
     window.localStorage.setItem("commentsort", which);
   }
+
+  const scroll = useCallback(() => {
+    setScrollpos(window.scrollY);
+  }, []);
+
+  //-------------------USE EFFECTS BELOW----------------------\\
 
   useEffect(() => {
     const v = window.localStorage.getItem("commentsort");
@@ -132,7 +202,6 @@ const SingleCommunityPost = ({
     if (newCommentState.length !== 0) {
       dispatch(dispatchRemoveNewCommentDuplicates(newCommentState));
     }
-    setFirstSet(false);
   }, [selectedPost?.comments]);
 
   //cleanup
@@ -143,8 +212,30 @@ const SingleCommunityPost = ({
     }
   }, [selectedPost]);
 
+  // useEffect(() => {
+  //   window.addEventListener("scroll", scroll);
+  //   return () => {
+  //     dispatch(setSelectedPost({})); //clear selected post state
+  //     window.removeEventListener("scroll", scroll);
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    if (selectedPost?.id) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedPost]);
+
   return (
-    <div style={{ display: !selectedPost && "none" }}>
+    <div
+      style={{ display: (!selectedPost?.id || scpState === null) && "none" }}
+    >
       <div className='scp-parent' style={{ top: scrollPos + 48 + "px" }}>
         <div className='scp-banner'>
           <div className='scp-bannerrow'>
@@ -209,7 +300,10 @@ const SingleCommunityPost = ({
 
             <div
               className='scp-irow2'
-              onClick={() => nav(`/r/${selectedPost?.community?.name}`)}
+              onClick={() => {
+                dispatch(setSelectedPost({}));
+                nav(-1);
+              }}
             >
               <CloseIcon />
               Close
@@ -218,7 +312,9 @@ const SingleCommunityPost = ({
         </div>
         <div
           className='scp-inner'
-          style={{ backgroundColor: "#" + selectedCommunity?.themeBodyColor }}
+          style={{
+            backgroundColor: "#" + selectedPost.community?.themeBodyColor,
+          }}
         >
           <div className='scp-main'>
             <div className='scp-postcontainer'>
@@ -279,9 +375,10 @@ const SingleCommunityPost = ({
                 <div className='scp-cominforow'>
                   <div
                     className='scp-q'
-                    onClick={() =>
-                      navigate(`/r/${selectedPost.community.name}`)
-                    }
+                    onClick={() => {
+                      dispatch(setSelectedPost({}));
+                      nav(`/r/${selectedPost.community.name}`);
+                    }}
                   >
                     <div className='scp-compfp'>
                       {!selectedPost?.community?.iconImage ? (
@@ -425,14 +522,19 @@ const SingleCommunityPost = ({
             </div>
 
             <div className='scp-cominfocontainer'>
-              <CommunityInformation selectedCommunity={selectedCommunity} />
+              <CommunityInformation
+                selectedCommunity={selectedPost.community}
+              />
             </div>
           </div>
         </div>
 
         <div
           className='scp-clickback'
-          onClick={() => navigate(`/r/${selectedPost.community.name}`)}
+          onClick={() => {
+            dispatch(setSelectedPost({}));
+            nav(-1);
+          }}
         />
 
         <SortCommentsListPopup

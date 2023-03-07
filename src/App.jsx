@@ -1,5 +1,5 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocalData } from "./store/auth";
 import { handleSet } from "./store/global/screenProperties";
@@ -19,8 +19,16 @@ import DiscardChanges from "./discardChanges/DiscardChanges";
 import AuthOverlaySignup from "./globalcomponents/authoverlaysignup/AuthOverlaySignup";
 import AuthOverlayLogin from "./globalcomponents/authoverlaylogin/AuthOverlayLogin";
 
+import routeObject from "./routeObject";
+import SingleCommunityPostNotOverlay from "./components/communities/SingleCommunityPost/SingleCommunityPostNotOverlay/SingleCommunityPostNotOverlay";
+import SingleCommunityPost from "./components/communities/SingleCommunityPost/SingleCommunityPost";
+import { setScrollPosition } from "./store/global/scrollPosition";
+
 function App() {
   const dispatch = useDispatch();
+  // const [Component, setComponent] = useState(Home);
+  const [componentUpdate, setComponentUpdate] = useState(0);
+
   const createOverlayState = useSelector((state) => state.navToggleCreate);
   const discardState = useSelector((state) => state.discardChanges);
   const authOverlaySignupState = useSelector(
@@ -29,10 +37,24 @@ function App() {
   const authOverlayLoginState = useSelector(
     (state) => state.authOverlayLoginStates
   );
+  const scp = useSelector((state) => state.scp);
+  const selectedPost = useSelector((state) => state.selectedPost);
+
+  //single community post -- that way the overlay will pop up where the user last was
+  let Component = routeObject[scp];
 
   const resize = useCallback(() => {
     dispatch(handleSet(window.innerWidth));
   });
+
+  const scroll = useCallback(() => {
+    dispatch(setScrollPosition());
+  }, []);
+
+  useEffect(() => {
+    Component = routeObject[scp];
+    setComponentUpdate((prev) => prev + 1); //updates a random state so our component rerenders
+  }, [scp]);
 
   useEffect(() => {
     resize();
@@ -45,6 +67,11 @@ function App() {
 
   useEffect(() => {
     dispatch(getLocalData());
+
+    //scrollpos
+    window.addEventListener("scroll", scroll);
+
+    return () => window.removeEventListener("scroll", scroll);
   }, []);
 
   return (
@@ -63,6 +90,8 @@ function App() {
       {authOverlayLoginState.display && (
         <AuthOverlayLogin state={authOverlayLoginState} />
       )}
+
+      {selectedPost?.id && <SingleCommunityPost />}
       <Routes>
         <Route exact path='/submit' element={<Submit />} />
         <Route exact path='/submit/:type' element={<Submit />} />
@@ -70,14 +99,9 @@ function App() {
         <Route exact path='/submit/r/:id/:type' element={<Submit />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
-
         <Route exact path='/r/:id' element={<SingleCommunity />} />
 
-        <Route
-          exact
-          path='/r/:id/comment/:postid'
-          element={<SingleCommunity />}
-        />
+        <Route exact path='/r/:id/comment/:postid' element={<Component />} />
         <Route exact path='/404' element={<Communities404 />} />
         <Route exact path='/' element={<Home />} />
         <Route exact path='/r/:id/about/:section' element={<MainTools />} />

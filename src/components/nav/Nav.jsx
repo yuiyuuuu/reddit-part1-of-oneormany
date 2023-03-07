@@ -21,7 +21,6 @@ import SearchIconSvg from "./navsvgs/SearchIconSvg";
 import LogoutIcon2 from "./navsvgs/rightoverlay/LogoutIcon2";
 
 import { logout } from "../../store/auth";
-import { sectionCheck } from "../communities/ModeratorTools/section";
 
 const Nav = () => {
   const location = useLocation();
@@ -29,6 +28,7 @@ const Nav = () => {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const communityStylingState = useSelector((state) => state.communityStyling);
+  const selectedPost = useSelector((state) => state.selectedPost);
 
   const [showRightOverlay, setShowRightOverlay] = useState(false);
   const [showCommunitiesOverlay, setShowCommunitiesOverlay] = useState(false);
@@ -92,7 +92,11 @@ const Nav = () => {
       {/* the point of this hide element is so for the /about/:section. The navbar usually shows up before we can hide it so we use this to cover it and then remove it once the page loads*/}
       <div
         className='hide'
-        style={{ display: location.pathname.slice(0, 2) !== "/r" && "none" }}
+        style={{
+          display:
+            (location.pathname.slice(0, 2) !== "/r" || selectedPost?.id) &&
+            "none",
+        }}
       />
 
       <div className='nav-inner-1'>

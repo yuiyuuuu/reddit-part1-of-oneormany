@@ -22,8 +22,6 @@ const HANDLE_DOWNVOTE = "HANDLE_DOWNVOTE_COMMUNITY";
 const REMOVE_UPVOTE = "HANDLE_REMOVEUPVOTE_COMMUNITY";
 const REMOVE_DOWNVOTE = "HANDLE_REMOVEDOWNVOTE_COMMUNITY";
 
-const HANDLE_ADDCOMMENT = "HANDLE_ADDCOMMENT";
-
 const dispatchFetch = (community) => ({
   type: FETCH_COMMUNITY,
   community,
@@ -80,11 +78,6 @@ const dispatchRemoveUpvoteCommunity = (post) => ({
 
 const dispatchRemoveDownvoteCommunity = (post) => ({
   type: REMOVE_DOWNVOTE,
-  post,
-});
-
-const dispatchAddComment = (post) => ({
-  type: HANDLE_ADDCOMMENT,
   post,
 });
 
@@ -246,18 +239,6 @@ export function handleCommunityRemoveDownvote(obj) {
   };
 }
 
-export function handleAddComment(obj) {
-  return async (dispatch) => {
-    try {
-      const data = await makePostRequest("communities/comment/add", obj);
-      dispatch(dispatchAddComment(data.post));
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
-
 export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_COMMUNITY:
@@ -296,11 +277,7 @@ export default function (state = {}, action) {
         .map((post) => (post.id === action.post.id ? action.post : post))
         .sort(sorting);
       return { ...state, posts: q };
-    case HANDLE_ADDCOMMENT:
-      const y = state.posts
-        .map((post) => (post.id === action.post.id ? action.post : post))
-        .sort(sorting);
-      return { ...state, posts: y };
+
     default:
       return state;
   }
