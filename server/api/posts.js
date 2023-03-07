@@ -57,13 +57,15 @@ router.post("/", async (req, res, next) => {
   try {
     const data = await prisma.post.create({
       data: req.body,
-      user: true,
-      comments: {
-        include: {
-          user: true,
+      include: {
+        user: true,
+        comments: {
+          include: {
+            user: true,
+          },
         },
+        community: true,
       },
-      community: true,
     });
 
     res.send(data);

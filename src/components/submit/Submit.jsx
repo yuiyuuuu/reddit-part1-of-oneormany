@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "./submit.scss";
 import { makePostRequest } from "../../requests/helperFunction";
+import { toggleCreateCommunity } from "../../store/nav-createcommunity";
+import { setScp } from "../../store/scp/scpConditional";
 
 import $ from "jquery";
 
@@ -22,7 +24,6 @@ import LinkText from "./submit-components/LinkText";
 import PollText from "./submit-components/PollText";
 import SearchIcon from "./submitsvgs/SearchIcon";
 import SubmitRight from "./SubmitRight";
-import { toggleCreateCommunity } from "../../store/nav-createcommunity";
 
 const Submit = () => {
   const history = useNavigate();
@@ -93,6 +94,7 @@ const Submit = () => {
   }
 
   async function handleSubmit() {
+    dispatch(setScp(null));
     try {
       switch (selected) {
         case "post":

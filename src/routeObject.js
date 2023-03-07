@@ -12,9 +12,10 @@ import AuthOverlaySignup from "./globalcomponents/authoverlaysignup/AuthOverlayS
 import AuthOverlayLogin from "./globalcomponents/authoverlaylogin/AuthOverlayLogin";
 import SingleCommunityPostNotOverlay from "./components/communities/SingleCommunityPost/SingleCommunityPostNotOverlay/SingleCommunityPostNotOverlay";
 
+//the only paths that belong here are the possible paths where singlepost can be an overlay, for example home u can click on a post and it will show as an overlay
+//other paths should not be here
 const routeObject = {
   home: Home,
-  submit: Submit,
   singleCommunity: SingleCommunity,
   null: SingleCommunityPostNotOverlay,
 };
