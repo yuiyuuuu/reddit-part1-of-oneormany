@@ -13,6 +13,12 @@ import {
   dispatchSortComments,
   setComments,
 } from "../../../store/comments/comments";
+import {
+  handleSelectedPostUpvote,
+  handleSelectedPostDownvote,
+  handleSelectedPostRemoveDownvote,
+  handleSelectedPostRemoveUpvote,
+} from "../../../store/scp/selectedPost";
 import { dispatchAddCommentNew } from "../../../store/comments/newComments";
 
 import $ from "jquery";
@@ -70,7 +76,7 @@ const SingleCommunityPost = () => {
       userid: authState.id,
       communityid: selectedPost.community.id,
     };
-    dispatch(handleCommunityUpvote(info)).then((res) => {
+    dispatch(handleSelectedPostUpvote(info)).then((res) => {
       dispatch(setSelectedPost(res));
     });
   }
@@ -86,7 +92,7 @@ const SingleCommunityPost = () => {
       userid: authState.id,
       communityid: selectedPost.community.id,
     };
-    dispatch(handleCommunityDownvote(info)).then((res) => {
+    dispatch(handleSelectedPostDownvote(info)).then((res) => {
       dispatch(setSelectedPost(res));
     });
   }
@@ -102,7 +108,7 @@ const SingleCommunityPost = () => {
       userid: authState.id,
     };
 
-    dispatch(handleCommunityRemoveUpvote(info)).then((res) => {
+    dispatch(handleSelectedPostRemoveUpvote(info)).then((res) => {
       dispatch(setSelectedPost(res));
     });
   }
@@ -118,7 +124,7 @@ const SingleCommunityPost = () => {
       userid: authState.id,
     };
 
-    dispatch(handleCommunityRemoveDownvote(info)).then((res) => {
+    dispatch(handleSelectedPostRemoveDownvote(info)).then((res) => {
       dispatch(setSelectedPost(res));
     });
   }
@@ -206,19 +212,11 @@ const SingleCommunityPost = () => {
 
   //cleanup
   useEffect(() => {
-    if (!selectedPost) {
+    if (!selectedPost?.id) {
       setShowCommentSortOverlay(false);
       dispatch(dispatchClearCommentState());
     }
   }, [selectedPost]);
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", scroll);
-  //   return () => {
-  //     dispatch(setSelectedPost({})); //clear selected post state
-  //     window.removeEventListener("scroll", scroll);
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (selectedPost?.id) {

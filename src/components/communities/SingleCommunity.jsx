@@ -27,8 +27,6 @@ import Post from "../home/posts/Post";
 import Communities404 from "./Communities404";
 import { clearPostState, fetchSpecificCommunityPosts } from "../../store/posts";
 import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
-import SingleCommunityPost from "./SingleCommunityPost/SingleCommunityPost";
-import { handleCommunityUpvote } from "../../store/posts-individualcommunity";
 import { sorting } from "../../requests/sortingfunction";
 import { dispatchSetAOS } from "../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 
@@ -328,7 +326,7 @@ const SingleCommunity = () => {
     return () => {
       dispatch(clearPostState()); //clear post state
     };
-  }, []);
+  }, [window.location.href]);
 
   useEffect(() => {
     const postid = params?.postid;
