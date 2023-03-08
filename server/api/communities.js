@@ -21,7 +21,11 @@ router.get("/single/:id", async (req, res, next) => {
               },
             },
             user: true,
-            community: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
           },
         },
         users: {
@@ -106,7 +110,11 @@ router.put("/join", async (req, res, next) => {
               },
             },
             user: true,
-            community: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
           },
         },
         users: {
@@ -153,7 +161,11 @@ router.put("/leave", async (req, res, next) => {
               },
             },
             user: true,
-            community: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
           },
         },
         users: {
@@ -302,7 +314,11 @@ router.put("/upvote", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,
@@ -340,7 +356,11 @@ router.put("/downvote", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,
@@ -375,7 +395,11 @@ router.put("/upvote/remove", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,
@@ -410,7 +434,11 @@ router.put("/downvote/remove", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,
@@ -556,7 +584,11 @@ router.post("/comment/add", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,

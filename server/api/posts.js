@@ -9,7 +9,11 @@ router.get("/", async (req, res, next) => {
     const posts = await prisma.post.findMany({
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,
@@ -39,7 +43,11 @@ router.get("/community/:id", async (req, res, next) => {
                 user: true,
               },
             },
-            community: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
           },
         },
       },
@@ -64,7 +72,11 @@ router.post("/", async (req, res, next) => {
             user: true,
           },
         },
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
       },
     });
 
@@ -95,7 +107,11 @@ router.put("/upvote", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,
@@ -131,7 +147,11 @@ router.put("/downvote", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,
@@ -163,7 +183,11 @@ router.put("/upvote/remove", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,
@@ -195,7 +219,11 @@ router.put("/downvote/remove", async (req, res, next) => {
       },
       include: {
         user: true,
-        community: true,
+        community: {
+          include: {
+            users: true,
+          },
+        },
         comments: {
           include: {
             user: true,

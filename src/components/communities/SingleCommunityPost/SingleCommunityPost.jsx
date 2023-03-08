@@ -230,6 +230,8 @@ const SingleCommunityPost = () => {
     };
   }, [selectedPost]);
 
+  console.log(selectedPost);
+
   return (
     <div
       style={{ display: (!selectedPost?.id || scpState === null) && "none" }}

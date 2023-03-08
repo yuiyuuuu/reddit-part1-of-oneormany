@@ -5,8 +5,7 @@ import "./cominfo.scss";
 import CreatedAtInformation from "./CreatedAtInformation";
 
 const CommunityInformation = ({ selectedCommunity }) => {
-  // const year = selectedCommunity.createAt.getFullYear();
-
+  console.log(selectedCommunity, "selectedddd");
   return (
     <div className='cominfo-parent'>
       <div
