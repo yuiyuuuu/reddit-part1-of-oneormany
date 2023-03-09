@@ -176,6 +176,7 @@ router.put("/leave", async (req, res, next) => {
             password: false,
           },
         },
+        owner: true,
       },
     });
 
@@ -203,6 +204,32 @@ router.put("/stylingchange", async (req, res, next) => {
           req.body?.highlight || community.themeHighlightColor,
         themeBodyColor: req.body?.body || community.themeBodyColor,
         image: req.body.image,
+      },
+      include: {
+        posts: {
+          include: {
+            comments: {
+              orderBy: {
+                id: "asc",
+              },
+            },
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
+        owner: true,
       },
     });
 
@@ -250,6 +277,33 @@ router.put("/description", async (req, res, next) => {
       data: {
         description: req.body.description,
       },
+
+      include: {
+        posts: {
+          include: {
+            comments: {
+              orderBy: {
+                id: "asc",
+              },
+            },
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
+        owner: true,
+      },
     });
 
     res.send(update);
@@ -286,6 +340,35 @@ router.put("/banner", async (req, res, next) => {
         bannerImage: req.body.bannerImage,
         bannerColor: req.body.bannerColor,
         communityBannerSize: req.body.communityBannerSize,
+      },
+      include: {
+        posts: {
+          include: {
+            comments: {
+              include: {
+                user: true,
+              },
+              orderBy: {
+                id: "asc",
+              },
+            },
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
+        owner: true,
       },
     });
     res.send(update);

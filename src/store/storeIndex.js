@@ -21,6 +21,9 @@ import newComments from "./comments/newComments";
 import scp from "./scp/scpConditional";
 import selectedPost from "./scp/selectedPost";
 import scrollPosition from "./global/scrollPosition";
+import copyLink from "./shareoverlay/copyLink";
+import threeDotOverlay from "./postoverlays/threeDotOverlay";
+import shareOverlay from "./postoverlays/shareOverlay";
 
 const reducer = combineReducers({
   auth,
@@ -41,6 +44,9 @@ const reducer = combineReducers({
   scp,
   selectedPost,
   scrollPosition,
+  copyLink,
+  shareOverlay,
+  threeDotOverlay,
 }); //reducers here
 
 let middleware = "";

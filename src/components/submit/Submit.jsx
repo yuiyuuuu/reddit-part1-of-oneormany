@@ -50,7 +50,6 @@ const Submit = () => {
   const [communities, setCommunities] = useState([]);
   //selected community
   const [selectedCommunity, setSelectedCommunity] = useState({});
-  console.log(selectedCommunity, "submittt");
 
   //find community based on textinput
   function findCommunity() {

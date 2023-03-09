@@ -147,7 +147,6 @@ const SingleCommunityPost = () => {
     };
 
     dispatch(handleAddComment(obj)).then((res) => {
-      console.log(res);
       setCommentInput("");
       dispatch(dispatchAddCommentNew(res.comment));
       dispatch(dispatchFilterAComment(res.comment.id));
@@ -229,8 +228,6 @@ const SingleCommunityPost = () => {
       document.body.style.overflow = "auto";
     };
   }, [selectedPost]);
-
-  console.log(selectedPost);
 
   return (
     <div
@@ -521,11 +518,12 @@ const SingleCommunityPost = () => {
               )}
             </div>
 
-            <div className='scp-cominfocontainer'>
+            <a className='scp-cominfocontainer'>
               <CommunityInformation
                 selectedCommunity={selectedPost.community}
+                anchor={true}
               />
-            </div>
+            </a>
           </div>
         </div>
 

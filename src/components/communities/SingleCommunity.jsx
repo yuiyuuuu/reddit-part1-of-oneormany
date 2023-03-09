@@ -342,26 +342,26 @@ const SingleCommunity = () => {
 
   //set min height of mainbot
   useEffect(() => {
-    document.addEventListener("readystatechange", () => {
-      const windowheight = window.innerHeight;
-      const bannerheight = document
-        .querySelector(".communities-bannertop")
-        .getBoundingClientRect().height;
-      const nameContainerHeight = document
-        .querySelector(".communities-namecontainer")
-        .getBoundingClientRect().height;
+    const windowheight = window.innerHeight;
+    const bannerheight = document
+      ?.querySelector(".communities-bannertop")
+      ?.getBoundingClientRect().height;
+    const nameContainerHeight = document
+      ?.querySelector(".communities-namecontainer")
+      ?.getBoundingClientRect().height;
 
-      $(".communities-mainbot").css(
-        "min-height",
-        windowheight - bannerheight - nameContainerHeight - 48 + "px"
-      );
+    if (!bannerheight || !nameContainerHeight) return;
 
-      $(".communities-backgroundimage").css(
-        "height",
-        windowheight - bannerheight - nameContainerHeight - 48 + "px"
-      );
-    });
-  }, []);
+    $(".communities-mainbot").css(
+      "min-height",
+      windowheight - bannerheight - nameContainerHeight - 48 + "px"
+    );
+
+    $(".communities-backgroundimage").css(
+      "height",
+      windowheight - bannerheight - nameContainerHeight - 48 + "px"
+    );
+  }, [communityState]);
 
   useEffect(() => {
     if (loading) return;
@@ -419,7 +419,7 @@ const SingleCommunity = () => {
         dispatch(toggleCommunityStyling(styleParms === "true"));
       }
     });
-  }, [loading, authState, communityState]);
+  }, [loading, authState, communityState.owner?.id, communityState.moderators]);
 
   $(document).ready(() => {
     setLoading(false);

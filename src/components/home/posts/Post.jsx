@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setScp } from "../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../store/scp/selectedPost";
+import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
+import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
+
 import "./post.scss";
 
 import $ from "jquery";
@@ -15,6 +18,7 @@ import UpVoteSvg from "./postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
 import DefaultCommunitiesIcon from "../../communities/communitiessvg/DefaultCommunitiesIcon";
+import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
 
 //all posts
 const Post = ({
@@ -41,52 +45,74 @@ const Post = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const shareOverlayState = useSelector((state) => state.shareOverlay);
+  const threeState = useSelector((state) => state.threeDotOverlay);
 
   function set() {
-    if (overlayId === post.id && showOverlay) {
-      setShowOverlay(false);
+    const scrollpos = window.scrollY;
+    //if the one we clicked on was the same one as before, we set the display to none.
+    if (shareOverlayState.id === post.id && shareOverlayState.display) {
+      dispatch(setOverlayState({ display: false }));
 
       return;
-    } else if (overlayId !== post.id && showOverlay) {
-      setScrollpos(window.scrollY);
+    } else if (shareOverlayState.id !== post.id && shareOverlayState.display) {
+      //if the one we clicked was not the one we clicked before, we keep the display active but set the top and left of the new one clicked
       const v = document
         .getElementById(`share-${post.id}`)
         .getBoundingClientRect();
-      setOverlayLeft(v.left);
-      setOverlayTop(v.top + v.height);
-      setOverlayId(post.id);
-      setShowOverlay(true);
+      dispatch(
+        setOverlayState({
+          left: v.left,
+          top: v.top + v.height,
+          id: post.id,
+          display: true,
+          scroll: scrollpos,
+        })
+      );
       return;
     }
 
-    setScrollpos(window.scrollY);
+    //else we just set the display to true and update id for next click
+
     const v = document
       .getElementById(`share-${post.id}`)
       .getBoundingClientRect();
-    setOverlayLeft(v.left);
-    setOverlayTop(v.top + v.height);
-    setOverlayId(post.id);
-    setShowOverlay2(false);
-    setShowOverlay(true);
+
+    dispatch(
+      setOverlayState({
+        display: true,
+        left: v.left,
+        top: v.top + v.height,
+        id: post.id,
+        scroll: scrollpos,
+      })
+    );
+    dispatch(setThreeState({ display: false }));
   }
 
   function set2() {
-    if (overlayId2 === post.id && showOverlay2) {
-      setShowOverlay2(false);
+    const scrollpos = window.scrollY;
+
+    if (threeState.id === post.id && threeState.display) {
+      dispatch(setThreeState({ display: false }));
       return;
     }
-
-    setScrollpos(window.scrollY);
 
     const v = document
       .getElementById(`threedot-${post.id}`)
       .getBoundingClientRect();
 
-    setOverlayLeft2(v.left);
-    setOverlayTop2(v.top + v.height);
-    setOverlayId2(post.id);
-    setShowOverlay(false); //sets other one to false
-    setShowOverlay2(true);
+    dispatch(
+      setThreeState({
+        display: true,
+        left: v.left,
+        top: v.top + v.height,
+        id: post.id,
+        scroll: scrollpos,
+      })
+    );
+
+    dispatch(setOverlayState({ display: false }));
   }
 
   useEffect(() => {
@@ -266,6 +292,7 @@ const Post = ({
             onClick={(e) => {
               e.stopPropagation();
               set();
+              dispatch(setLinkToCopy(post));
             }}
           >
             <ShareSvg />

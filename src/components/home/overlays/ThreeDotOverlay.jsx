@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import ClipSvg from "../posts/postssvgs/ClipSvg";
 import EmbedSvg from "../posts/postssvgs/EmbedSvg";
 import AwardSvg2 from "../posts/postssvgs/AwardSvg2";
@@ -6,20 +8,16 @@ import HideSvg from "../posts/postssvgs/HideSvg";
 import SaveSvg2 from "../posts/postssvgs/SaveSvg2";
 import ReportSvg from "../posts/postssvgs/ReportSvg";
 
-const ThreeDotOverlay = ({
-  showOverlay2,
-  overlayTop2,
-  overlayLeft2,
-  scrollPos,
-}) => {
+const ThreeDotOverlay = () => {
+  const threeState = useSelector((state) => state.threeDotOverlay);
   return (
     <div
       className='shareoverlay-container'
       id='tdot-overlay'
       style={{
-        display: showOverlay2 ? "" : "none",
-        top: overlayTop2 + scrollPos,
-        left: overlayLeft2,
+        display: !threeState.display && "none",
+        top: threeState.top + threeState.scroll,
+        left: threeState.left,
       }}
     >
       <div

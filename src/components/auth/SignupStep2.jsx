@@ -72,6 +72,31 @@ const SignupStep2 = ({
     }
   };
 
+  async function clickedSuggestionList(name) {
+    setUsername(name);
+
+    setShortUsername(false);
+    if (name.length < 3) {
+      setUsernameAvailable(false);
+      setUsernameNotAvailable(false);
+      setShortUsername(true);
+      prev = false;
+      return;
+    }
+
+    const user = await makeGetRequest(`/users/find/${name}`);
+    if (user === "available") {
+      setUsernameNotAvailable(false);
+      availableAnimation();
+
+      setUsernameAvailable(true);
+      setValidUsername(true);
+    } else {
+      setUsernameAvailable(false);
+      setUsernameNotAvailable(true);
+    }
+  }
+
   //username input
   useEffect(() => {
     //timer for username input
@@ -342,7 +367,7 @@ const SignupStep2 = ({
           {suggestionList.map((item) => (
             <div
               className='suggestion-option'
-              onClick={() => setUsername(item)}
+              onClick={() => clickedSuggestionList(item)}
             >
               {item}
             </div>
