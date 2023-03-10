@@ -91,7 +91,7 @@ function App() {
         <AuthOverlayLogin state={authOverlayLoginState} />
       )}
 
-      {selectedPost?.id && <SingleCommunityPost />}
+      {selectedPost?.id ? scp ? <SingleCommunityPost /> : "" : ""}
       <Routes>
         <Route exact path='/submit' element={<Submit />} />
         <Route exact path='/submit/:type' element={<Submit />} />

@@ -53,6 +53,9 @@ const includes = {
             orderBy: {
               id: "asc",
             },
+            include: {
+              user: true,
+            },
           },
           user: true,
           community: {

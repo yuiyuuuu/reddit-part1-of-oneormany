@@ -110,70 +110,6 @@ const SingleCommunity = () => {
     dispatch(leaveCommunity(authState.id, communityState.id));
   }
 
-  // function handleUpvote() {
-  //   if (!authState?.id) {
-  //     dispatch(dispatchSetAOS({ display: true, which: "vote" }));
-  //     return;
-  //   }
-
-  //   const info = {
-  //     postid: selectedPost.id,
-  //     userid: authState.id,
-  //     communityid: selectedPost.community.id,
-  //   };
-  //   dispatch(handleCommunityUpvote(info)).then((res) => {
-  //     setSelectedPost(res);
-  //   });
-  // }
-
-  // function handleDownvote() {
-  //   if (!authState?.id) {
-  //     dispatch(dispatchSetAOS({ display: true, which: "vote" }));
-  //     return;
-  //   }
-
-  //   const info = {
-  //     postid: selectedPost.id,
-  //     userid: authState.id,
-  //     communityid: selectedPost.community.id,
-  //   };
-  //   dispatch(handleCommunityDownvote(info)).then((res) => {
-  //     setSelectedPost(res);
-  //   });
-  // }
-
-  // function handleRemoveUpvote() {
-  //   if (!authState?.id) {
-  //     dispatch(dispatchSetAOS({ display: true, which: "vote" }));
-  //     return;
-  //   }
-
-  //   const info = {
-  //     postid: selectedPost.id,
-  //     userid: authState.id,
-  //   };
-
-  //   dispatch(handleCommunityRemoveUpvote(info)).then((res) => {
-  //     setSelectedPost(res);
-  //   });
-  // }
-
-  // function handleRemoveDownvote() {
-  //   if (!authState?.id) {
-  //     dispatch(dispatchSetAOS({ display: true, which: "vote" }));
-  //     return;
-  //   }
-
-  //   const info = {
-  //     postid: selectedPost.id,
-  //     userid: authState.id,
-  //   };
-
-  //   dispatch(handleCommunityRemoveDownvote(info)).then((res) => {
-  //     setSelectedPost(res);
-  //   });
-  // }
-
   function handleUpvote2(post) {
     if (!authState?.id) {
       dispatch(dispatchSetAOS({ display: true, which: "vote" }));
@@ -250,16 +186,14 @@ const SingleCommunity = () => {
   //only runs if current user is joined
   useEffect(() => {
     if (userIds.includes(authState.id)) {
-      $(document).ready(() => {
-        $(".communities-joinbut").hover(
-          () => {
-            $("#joined-hover").html("Leave");
-          },
-          () => {
-            $("#joined-hover").html("Joined");
-          }
-        );
-      });
+      $(".communities-joinbut").hover(
+        () => {
+          $("#joined-hover").html("Leave");
+        },
+        () => {
+          $("#joined-hover").html("Joined");
+        }
+      );
     }
   }, [userIds]);
 

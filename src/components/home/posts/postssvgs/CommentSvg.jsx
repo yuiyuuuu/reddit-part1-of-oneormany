@@ -1,6 +1,6 @@
 import React from "react";
 
-const CommentSvg = () => {
+const CommentSvg = ({ id }) => {
   return (
     <svg
       width='20'
@@ -11,10 +11,14 @@ const CommentSvg = () => {
       xmlnsXlink='http://www.w3.org/1999/xlink'
       style={{ marginRight: "6px" }}
     >
-      <rect width='84' height='82' fill='url(#pattern9102340)' />
+      <rect
+        width='84'
+        height='82'
+        fill={`url(#pattern9102340-${id || "main"})`}
+      />
       <defs>
         <pattern
-          id='pattern9102340'
+          id={`pattern9102340-${id || "main"}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

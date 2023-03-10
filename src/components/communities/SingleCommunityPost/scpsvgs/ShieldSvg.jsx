@@ -1,6 +1,6 @@
 import React from "react";
 
-const ShieldSvg = () => {
+const ShieldSvg = ({ id }) => {
   return (
     <svg
       width='20'
@@ -10,10 +10,14 @@ const ShieldSvg = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='33' height='34' fill='url(#patternshieldscp0)' />
+      <rect
+        width='33'
+        height='34'
+        fill={`url(#patternshieldscp0-${id || "main"})`}
+      />
       <defs>
         <pattern
-          id='patternshieldscp0'
+          id={`patternshieldscp0-${id || "main"}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

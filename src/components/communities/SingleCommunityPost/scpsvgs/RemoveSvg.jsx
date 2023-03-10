@@ -1,6 +1,6 @@
 import React from "react";
 
-const RemoveSvg = () => {
+const RemoveSvg = ({ id }) => {
   return (
     <svg
       width='20'
@@ -10,10 +10,14 @@ const RemoveSvg = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='35' height='35' fill='url(#patternremovescp0)' />
+      <rect
+        width='35'
+        height='35'
+        fill={`url(#patternremovescp0-${id || "main"})`}
+      />
       <defs>
         <pattern
-          id='patternremovescp0'
+          id={`patternremovescp0-${id || "main"}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

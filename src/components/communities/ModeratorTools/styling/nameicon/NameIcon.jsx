@@ -56,7 +56,10 @@ const NameIcon = ({ community, setSelectedSection }) => {
       image: selectedImageState,
       communityNameFormat: selectedName,
     };
-    dispatch(ChangeIconImage(obj)).then(() => setSelectedSection(""));
+    dispatch(ChangeIconImage(obj)).then(() => {
+      setSelectedSection("");
+      dispatch(setMadeChange(false));
+    });
   }
 
   useEffect(() => {

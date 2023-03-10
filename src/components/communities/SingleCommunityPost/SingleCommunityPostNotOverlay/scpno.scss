@@ -1,0 +1,117 @@
+.scpno-parent {
+  width: 100%;
+}
+
+.scpno-navigateposts {
+  position: relative;
+  width: 100%;
+}
+
+.scpno-b {
+  padding: 8px 16px;
+  font-size: 22px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.scpno-navigatepostsinner {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 16px;
+  max-width: 1200px;
+  min-width: 260px;
+  width: 100%;
+  height: 26px;
+}
+
+.scpno-a-posts {
+  border-bottom: 3px solid #0079d3;
+  padding: 0 8px 1px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0079d3;
+}
+
+.scpno-mainbottom {
+  padding: 20px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.scpno-iconparent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.scpno-noiconadd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 8px;
+  background-color: #f6f7f8;
+  height: 54px;
+  width: 54px;
+  border-radius: 100%;
+
+  border-style: dashed;
+  border-width: 1px;
+  transition: 0.15s linear all;
+}
+
+.scpno-blueadd {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+  cursor: pointer;
+  color: #0079d3;
+}
+
+.scpno-t {
+  font-weight: 500;
+}
+
+.scpno-plus {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.scpno-p-1 {
+  height: 2px;
+  border-radius: 10px;
+  width: 24px;
+  position: absolute;
+}
+
+.scpno-p-2 {
+  height: 2px;
+  border-radius: 10px;
+  width: 24px;
+  transform: rotate(90deg);
+  position: absolute;
+}
+
+.scpno-icon {
+  height: 54px;
+  width: 54px;
+  border-radius: 100%;
+  background-size: cover;
+  background-position: center;
+  margin-right: 8px;
+}
+
+.scpno-default {
+  height: 54px;
+  width: 54px;
+  border-radius: 100%;
+}

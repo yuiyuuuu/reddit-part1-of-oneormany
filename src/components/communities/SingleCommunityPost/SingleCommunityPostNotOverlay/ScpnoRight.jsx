@@ -1,27 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "./right.scss";
+
+import { lightOrDark } from "../../../../requests/lightOrDark";
+import { setBodyBrightness } from "../../../../store/bodyBrightness";
+import {
+  changeDescription,
+  ChangeIconImage,
+} from "../../../../store/posts-individualcommunity";
+import "../../SingleCommunityRight/right.scss";
+
+import {
+  getBase64Image,
+  onSelectFile,
+} from "../../../../requests/getBase64Image";
+import {
+  joinCommunity,
+  leaveCommunity,
+} from "../../../../store/posts-individualcommunity";
 
 import $ from "jquery";
 
-import ModToolsIconSvg from "../communitiessvg/ModToolsIconSvg";
-import ModToolsIconWhite from "../communitiessvg/ModToolsIconWhite";
-import ThreeDotComRightSvg from "../communitiessvg/ThreeDotComRightSvg";
-import ThreeDotRightWhite from "../communitiessvg/ThreeDotRightWhite";
-import CreatedAtInformation from "../../submit/cominfo/CreatedAtInformation";
-import { changeDescription } from "../../../store/posts-individualcommunity";
-import PenEditSvg from "../communitiessvg/PenEditSvg";
-import { lightOrDark } from "../../../requests/lightOrDark";
-import { setBodyBrightness } from "../../../store/bodyBrightness";
-import Moderators from "./Moderators";
+import ModToolsIconSvg from "../../communitiessvg/ModToolsIconSvg";
+import ModToolsIconWhite from "../../communitiessvg/ModToolsIconWhite";
+import ThreeDotComRightSvg from "../../communitiessvg/ThreeDotComRightSvg";
+import ThreeDotRightWhite from "../../communitiessvg/ThreeDotRightWhite";
+import CreatedAtInformation from "../../../submit/cominfo/CreatedAtInformation";
+import PenEditSvg from "../../communitiessvg/PenEditSvg";
+import Moderators from "../../SingleCommunityRight/Moderators";
+import DefaultCommunitiesIcon from "../../communitiessvg/DefaultCommunitiesIcon";
 
-const SingleCommunityRight = ({ communityState }) => {
-  const authState = useSelector((state) => state.auth);
+const ScpnoRight = ({ communityState }) => {
   const dispatch = useDispatch();
+
+  const authState = useSelector((state) => state.auth);
   const bodyBrightness = useSelector((state) => state.bodyBrightness);
 
   const [descState, setDescState] = useState(false);
   const [desc, setDesc] = useState("");
+
+  //array of userids of all users in community
+  const [userIds, setUserIds] = useState([]);
 
   function handleSubmit() {
     const obj = {
@@ -29,6 +47,38 @@ const SingleCommunityRight = ({ communityState }) => {
       description: desc,
     };
     dispatch(changeDescription(obj)).then(setDescState(false));
+  }
+
+  function handleIconAddClick() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/png, image/jpeg";
+    input.onchange = handleImageUpload;
+    input.hidden = true;
+    input.click();
+  }
+
+  async function handleImageUpload(e) {
+    const binary = onSelectFile(e);
+
+    const obj = {
+      id: communityState.id,
+      image: await getBase64Image(binary.blob),
+      communityNameFormat:
+        communityState?.communityNameFormat || `r/${communityState.name}`,
+    };
+
+    dispatch(ChangeIconImage(obj));
+  }
+
+  function handleCommunityJoinAndLeave() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "joincommunity" }));
+    } else if (!userIds.includes(authState.id)) {
+      dispatch(joinCommunity(authState.id, communityState.id));
+    } else {
+      dispatch(leaveCommunity(authState.id, communityState.id));
+    }
   }
 
   useEffect(() => {
@@ -92,7 +142,36 @@ const SingleCommunityRight = ({ communityState }) => {
 
   useEffect(() => {
     setDesc(communityState?.description || "");
+
+    const userids = communityState.users?.map((user) => user.id);
+    if (userids) {
+      setUserIds(userids);
+    }
   }, [communityState]);
+
+  useEffect(() => {
+    $(".scpno-noiconadd").hover(
+      () => {
+        $(".scpno-noiconadd").css("border-style", "solid");
+      },
+      () => {
+        $(".scpno-noiconadd").css("border-style", "dashed");
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    if (userIds.includes(authState.id)) {
+      $("#scpno-join").hover(
+        () => {
+          $("#scpno-joined").html("Leave");
+        },
+        () => {
+          $("#scpno-joined").html("Joined");
+        }
+      );
+    }
+  }, [userIds]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -151,6 +230,68 @@ const SingleCommunityRight = ({ communityState }) => {
         </div>
 
         <div className='comright-descparent' id='comright-descparent'>
+          <div className='scpno-iconparent'>
+            <div className='scpno-icon'>
+              {!communityState?.iconImage ? (
+                communityState?.owner?.id === authState?.id ||
+                communityState?.moderators?.includes(authState?.id) ? (
+                  <div
+                    className='scpno-noiconadd'
+                    onClick={() => handleIconAddClick()}
+                    style={{ borderColor: `#${communityState.themeBaseColor}` }}
+                  >
+                    <div className='scpno-plus'>
+                      <div
+                        className='scpno-p-1'
+                        style={{
+                          backgroundColor: `#${communityState.themeBaseColor}`,
+                        }}
+                      />
+                      <div
+                        className='scpno-p-2'
+                        style={{
+                          backgroundColor: `#${communityState.themeBaseColor}`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className='scpno-default'>
+                    <DefaultCommunitiesIcon
+                      fillcolor={"#" + communityState?.themeHighlightColor}
+                      height={54}
+                      community={communityState}
+                    />
+                  </div>
+                )
+              ) : (
+                <div
+                  className='scpno-icon'
+                  style={{
+                    backgroundImage: `url(data:image/png;base64,${communityState.iconImage})`,
+                  }}
+                ></div>
+              )}
+            </div>
+            <div className='scpno-infoadd'>
+              <a className='scpno-t' href={`/r/${communityState?.name}`}>
+                r/{communityState?.name}
+              </a>
+
+              {communityState?.owner?.id === authState?.id ||
+              communityState?.moderators?.includes(authState?.id) ? (
+                <div
+                  className='scpno-blueadd'
+                  onClick={() => handleIconAddClick()}
+                >
+                  {communityState?.iconImage ? "Update icon" : "Add icon"}
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+
           {descState ? (
             <div
               className='comright-descedit'
@@ -196,6 +337,9 @@ const SingleCommunityRight = ({ communityState }) => {
               communityState.description === "") ? (
             <div
               className='comright-adddesc'
+              style={{
+                border: `1px solid #${communityState?.themeBodyColor}`,
+              }}
               onClick={() => {
                 setDescState(true);
               }}
@@ -208,11 +352,15 @@ const SingleCommunityRight = ({ communityState }) => {
             <div
               className='comright-description'
               onClick={() => setDescState(true)}
+              style={{ marginTop: "8px" }}
             >
               {communityState?.description} <PenEditSvg />
             </div>
           ) : (
-            <div className='comright-description-noadmin'>
+            <div
+              className='comright-description-noadmin'
+              style={{ marginTop: "8px" }}
+            >
               {communityState?.description}
             </div>
           )}
@@ -252,6 +400,34 @@ const SingleCommunityRight = ({ communityState }) => {
 
           <div className='divider' style={{ margin: "16px 0" }} />
 
+          <div
+            className={
+              userIds?.includes(authState?.id)
+                ? "blueborder-button"
+                : "bluebutton-button"
+            }
+            style={{
+              marginBottom: "8px",
+              borderColor:
+                userIds?.includes(authState?.id) &&
+                `#${communityState?.themeHighlightColor}`,
+              backgroundColor:
+                !userIds?.includes(authState?.id) &&
+                `#${communityState?.themeHighlightColor}`,
+              color: userIds?.includes(authState?.id)
+                ? `#${communityState.themeHighlightColor}`
+                : "white",
+            }}
+            id='scpno-join'
+            onClick={() => handleCommunityJoinAndLeave()}
+          >
+            {userIds?.includes(authState?.id) ? (
+              <span id='scpno-joined'>Joined</span>
+            ) : (
+              <span>Join</span>
+            )}
+          </div>
+
           <a
             className='bluebutton-button'
             id={`communitypost-create-${communityState.id}`}
@@ -270,4 +446,4 @@ const SingleCommunityRight = ({ communityState }) => {
   );
 };
 
-export default SingleCommunityRight;
+export default ScpnoRight;

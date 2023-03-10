@@ -1,4 +1,6 @@
 import React, { useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
+
 import "./sortcomments.scss";
 
 import $ from "jquery";
@@ -7,6 +9,8 @@ import DownArrow from "./DownArrow";
 import SearchIconSvg from "./SearchIconSvg";
 
 const SortCommentsMain = ({ selectedSort, setShowCommentSortOverlay }) => {
+  const scp = useSelector((state) => state.scp);
+
   const resize = useCallback(() => {
     setShowCommentSortOverlay(false);
     const rect = document.getElementById("sc-main").getBoundingClientRect();
@@ -18,12 +22,19 @@ const SortCommentsMain = ({ selectedSort, setShowCommentSortOverlay }) => {
 
   useEffect(() => {
     $(document).ready(() => {
-      const rect = document.getElementById("sc-main").getBoundingClientRect();
-      const scroll = document.querySelector(".scp-parent").scrollTop;
+      if (scp) {
+        const rect = document.getElementById("sc-main").getBoundingClientRect();
+        const scroll = document.querySelector(".scp-parent").scrollTop;
 
-      $(".scl-parent")
-        .css("top", rect.top - 18 + scroll)
-        .css("left", rect.left);
+        $(".scl-parent")
+          .css("top", rect.top - 18 + scroll)
+          .css("left", rect.left);
+      } else {
+        const rect = document.getElementById("sc-main").getBoundingClientRect();
+        $(".scl-parent")
+          .css("top", rect.top + rect.height - 10 + window.scrollY)
+          .css("left", rect.left);
+      }
     });
   }, [$("#sc-main")]);
 

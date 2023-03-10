@@ -64,16 +64,15 @@
   margin: 8px 0 12px 0;
   padding: 8px;
   background-color: #f6f7f8;
-  border: 1px solid #dae0e6;
   cursor: pointer;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 700;
   color: #0079d3;
-  transition: 0.1s linear all;
+  transition: 0.15s linear all !important;
 
   &:hover {
-    border: 1px solid #0079d3;
+    border: 1px solid #0079d3 !important;
   }
 }
 

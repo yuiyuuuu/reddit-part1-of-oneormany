@@ -31,7 +31,6 @@ model Community{
   communityNameFormat String? @db.VarChar(102) @unique
   tag String
   description String?
-  moderators String []
   rules String?
   posts Post[] 
   image String?
@@ -42,17 +41,24 @@ model Community{
   allowtalk Boolean @default(false)
   visibility visibility @default(public)
   NSFW Boolean @default(false)
-  themeBaseColor String @default("33A8FF")
-  themeHighlightColor String @default("0079D3")
-  themeBodyColor String @default("DAE0E6")
+  createAt DateTime?
+  users User[]
+
+//owner and moderators
+  owner User? @relation("owner", fields:[ownerId], references: [id])
+  ownerId String?
+  moderators String []
+
+  //banner stuff
   bannerColor String?
   bannerImage String? @db.VarChar(1048576)
   bannerImageType String? @default("fill")
   communityBannerSize BannerSize @default(small)
-  createAt DateTime?
-  users User[]
-  owner User? @relation("owner", fields:[ownerId], references: [id])
-  ownerId String?
+
+  //theme colors 
+  themeBaseColor String @default("33A8FF")
+  themeHighlightColor String @default("0079D3")
+  themeBodyColor String @default("DAE0E6")
 }
 
 enum BannerSize{

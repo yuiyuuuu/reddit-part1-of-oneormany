@@ -108,6 +108,9 @@ router.put("/join", async (req, res, next) => {
               orderBy: {
                 id: "asc",
               },
+              include: {
+                user: true,
+              },
             },
             user: true,
             community: {
@@ -125,6 +128,7 @@ router.put("/join", async (req, res, next) => {
             password: false,
           },
         },
+        owner: true,
       },
     });
 
@@ -158,6 +162,9 @@ router.put("/leave", async (req, res, next) => {
             comments: {
               orderBy: {
                 id: "asc",
+              },
+              include: {
+                user: true,
               },
             },
             user: true,
@@ -285,6 +292,9 @@ router.put("/description", async (req, res, next) => {
               orderBy: {
                 id: "asc",
               },
+              include: {
+                user: true,
+              },
             },
             user: true,
             community: {
@@ -321,6 +331,36 @@ router.put("/iconimage", async (req, res, next) => {
       data: {
         iconImage: req.body.image,
         communityNameFormat: req.body.communityNameFormat,
+      },
+
+      include: {
+        posts: {
+          include: {
+            comments: {
+              orderBy: {
+                id: "asc",
+              },
+              include: {
+                user: true,
+              },
+            },
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
+        owner: true,
       },
     });
 

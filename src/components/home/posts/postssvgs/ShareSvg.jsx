@@ -1,6 +1,6 @@
 import React from "react";
 
-const ShareSvg = () => {
+const ShareSvg = ({ id }) => {
   return (
     <svg
       width='20'
@@ -11,10 +11,14 @@ const ShareSvg = () => {
       xmlnsXlink='http://www.w3.org/1999/xlink'
       style={{ marginRight: "8px" }}
     >
-      <rect width='56' height='57' fill='url(#patternsharesvg0)' />
+      <rect
+        width='56'
+        height='57'
+        fill={`url(#patternsharesvg0-${id || "main"})`}
+      />
       <defs>
         <pattern
-          id='patternsharesvg0'
+          id={`patternsharesvg0-${id || "main"}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

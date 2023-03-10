@@ -1,6 +1,6 @@
 import React from "react";
 
-const ThreeDot = () => {
+const ThreeDot = ({ id }) => {
   return (
     <svg
       width='16'
@@ -10,10 +10,14 @@ const ThreeDot = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='27' height='27' fill='url(#patternthreedotscp0)' />
+      <rect
+        width='27'
+        height='27'
+        fill={`url(#patternthreedotscp0-${id || "main"})`}
+      />
       <defs>
         <pattern
-          id='patternthreedotscp0'
+          id={`patternthreedotscp0-${id || "main"}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'
