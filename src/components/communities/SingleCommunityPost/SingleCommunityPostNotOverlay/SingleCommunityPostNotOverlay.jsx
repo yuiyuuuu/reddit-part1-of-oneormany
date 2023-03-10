@@ -142,8 +142,6 @@ const SingleCommunityPostNotOverlay = () => {
       <div className='heightholder'></div>
       <div className='scpno-parent'>
         <div
-          className='communities-bannertop'
-          id={`communities-banner${communityState.id}`}
           style={{
             backgroundColor:
               "#" +
@@ -156,25 +154,39 @@ const SingleCommunityPostNotOverlay = () => {
                 : communityState?.communityBannerSize === "medium"
                 ? "128px"
                 : "192px",
+            padding: "8px 16px",
           }}
         >
-          <div className='scpno-b'>
-            <PlanetIcon
-              backgroundcolor={
-                !communityState?.bannerImage &&
-                hexToRgb(
-                  communityState?.bannerColor
-                    ? communityState?.bannerColor
-                    : communityState?.themeBaseColor
-                )
-              }
-            />
-            <span>
-              {communityState?.communityNameFormat
-                ? communityState?.communityNameFormat
-                : ""}
-            </span>
-          </div>
+          <a
+            className='communities-bannertop'
+            id={`communities-banner${communityState.id}`}
+            style={{
+              maxWidth: "1200px",
+              margin: " 0 auto",
+              padding: 0,
+              display: "flex",
+              cursor: "pointer",
+            }}
+            href={`/r/${communityState?.name}`}
+          >
+            <div className='scpno-b'>
+              <PlanetIcon
+                backgroundcolor={
+                  !communityState?.bannerImage &&
+                  hexToRgb(
+                    communityState?.bannerColor
+                      ? communityState?.bannerColor
+                      : communityState?.themeBaseColor
+                  )
+                }
+              />
+              <span className='scpno-e'>
+                {communityState?.communityNameFormat
+                  ? communityState?.communityNameFormat
+                  : ""}
+              </span>
+            </div>
+          </a>
         </div>
 
         <div
