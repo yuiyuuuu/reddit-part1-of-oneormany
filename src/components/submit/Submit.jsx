@@ -110,7 +110,7 @@ const Submit = () => {
             communityId: selectedCommunity.id,
           });
 
-          history(`/r/${selectedCommunity.name}/comment/${v?.id}`);
+          history(`/r/${selectedCommunity.name}/comments/${v?.id}`);
           break;
         case "image/video":
           if (!title.length) {
@@ -124,7 +124,7 @@ const Submit = () => {
             communityId: selectedCommunity.id,
             image: images,
           });
-          history(`/r/${selectedCommunity.name}/comment/${a?.id}`);
+          history(`/r/${selectedCommunity.name}/comments/${a?.id}`);
       }
     } catch (error) {
       console.log(error);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./scp.scss";
 
@@ -44,6 +44,7 @@ import SortCommentsMain from "./sortcomments/SortCommentsMain";
 import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
 
 const SingleCommunityPost = () => {
+  const params = useParams();
   const nav = useNavigate();
   const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
@@ -60,6 +61,9 @@ const SingleCommunityPost = () => {
 
   const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
+
+  //search comment state
+  const [searchValue, setSearchValue] = useState("");
 
   //scroll position
   const scrollPos = useSelector((state) => state.scrollPosition);
@@ -197,6 +201,8 @@ const SingleCommunityPost = () => {
 
   useEffect(() => {
     if (!selectedPost?.comments) return;
+    const commentid = params.commentid;
+    if (commentid) return;
 
     const v = window.localStorage.getItem("commentsort");
 
@@ -498,6 +504,8 @@ const SingleCommunityPost = () => {
                     <SortCommentsMain
                       selectedSort={selectedSort}
                       setShowCommentSortOverlay={setShowCommentSortOverlay}
+                      value={searchValue}
+                      onchange={setSearchValue}
                     />
                   </div>
                 </div>

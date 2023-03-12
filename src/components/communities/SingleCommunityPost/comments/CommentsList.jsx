@@ -22,6 +22,7 @@ const CommentsList = ({
   margin,
   commentsState,
   newComments,
+  ogComment,
 }) => {
   useEffect(() => {
     if (level > 0) {
@@ -74,6 +75,7 @@ const CommentsList = ({
           newComment={false}
           commentsState={commentsState}
           newComments={newComments}
+          ogComment={ogComment}
         />
       ))}
 

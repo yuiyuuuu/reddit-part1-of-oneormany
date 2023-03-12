@@ -14,7 +14,7 @@ const ShareOverlay = () => {
 
   function handleCopyLink() {
     navigator.clipboard.writeText(
-      `${window.location.host}/r/${selectedPostLink.community.name}/comment/${selectedPostLink.id}`
+      `${window.location.host}/r/${selectedPostLink.community.name}/comments/${selectedPostLink.id}`
     );
   }
 

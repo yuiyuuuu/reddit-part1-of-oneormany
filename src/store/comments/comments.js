@@ -1,6 +1,7 @@
 import { makePutRequest } from "../../requests/helperFunction";
 
 const SET_COMMENTS = "SET_COMMENTS";
+const SET_NULL_COMMENTS = "SET_NULL_COMMENTS";
 const ADD_COMMENT_TOP = "ADD_COMMENT_TOP";
 const ADD_REPLY_F = "ADD_REPLY_F";
 const FILTER_A_COMMENT = "FILTER_A_COMMENT"; //FILTER A COMMENT SO NEW COMMENTS ARE ON TOP
@@ -114,6 +115,10 @@ const dispatchRemoveDownvoteComment = (comment, parentid) => ({
 
 export const dispatchClearCommentState = () => ({
   type: CLEAR_STATE,
+});
+
+export const setNotFoundComment = () => ({
+  type: SET_NULL_COMMENTS,
 });
 
 export const dispatchSortComments = (comments, sorttype) => {

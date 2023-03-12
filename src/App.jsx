@@ -101,7 +101,13 @@ function App() {
         <Route exact path='/signup' element={<Signup />} />
         <Route exact path='/r/:id' element={<SingleCommunity />} />
 
-        <Route exact path='/r/:id/comment/:postid' element={<Component />} />
+        <Route exact path='/r/:id/comments/:postid' element={<Component />} />
+        <Route
+          exact
+          path='/r/:id/comments/:postid/comment/:commentid'
+          element={<Component />}
+        />
+
         <Route exact path='/404' element={<Communities404 />} />
         <Route exact path='/' element={<Home />} />
         <Route exact path='/r/:id/about/:section' element={<MainTools />} />

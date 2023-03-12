@@ -150,7 +150,7 @@ const Post = ({
       onClick={(e) => {
         dispatch(setScp(scp || null));
         dispatch(setSelectedPost(post));
-        navigate(`/r/${post.community.name}/comment/${post.id}`);
+        navigate(`/r/${post.community.name}/comments/${post.id}`);
       }}
     >
       <div className='posts-vote post-voteleft'>

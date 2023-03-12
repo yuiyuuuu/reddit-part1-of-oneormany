@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { fetchCommunity } from "../../../../store/posts-individualcommunity";
 import { hexToRgb } from "../../../../requests/rgbHexFunctions";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
@@ -11,6 +11,7 @@ import { handleAddComment } from "../../../../store/scp/selectedPost";
 import { setComments } from "../../../../store/comments/comments";
 import { dispatchSortComments } from "../../../../store/comments/comments";
 import { dispatchRemoveNewCommentDuplicates } from "../../../../store/comments/comments";
+import { setCommentIdFind } from "../../../../store/comments/commentIdFind";
 
 import "./scpno.scss";
 
@@ -34,10 +35,14 @@ import CommentsList from "../comments/CommentsList";
 import SortCommentsListPopup from "../sortcomments/SortCommentsListPopup";
 import ScpnoRight from "./ScpnoRight";
 import PlanetIcon from "./svg/PlanetIcon";
+import NothingHere from "../comments/NothingHere";
+import CommentSearch from "../comments/searchcomponent/CommentSearch";
 
 const SingleCommunityPostNotOverlay = () => {
   const dispatch = useDispatch();
   const params = useParams();
+  const nav = useNavigate();
+  const loc = useLocation();
 
   const authState = useSelector((state) => state.auth);
   const communityState = useSelector((state) => state.postsindividualcommunity);
@@ -50,6 +55,17 @@ const SingleCommunityPostNotOverlay = () => {
   const [commentInput, setCommentInput] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
   const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
+
+  //error states
+  const [commentNotFound, setCommentNotFound] = useState(false);
+
+  const [isThereSelectedComment, setIsThereSelectedComment] = useState(
+    params?.commentid ? true : false
+  );
+
+  //search comment state
+  const [searchValue, setSearchValue] = useState("");
+  const [commentSearchActive, setCommentSearchActive] = useState(false);
 
   function handleCommentSubmit() {
     if (!authState.id) {
@@ -102,7 +118,7 @@ const SingleCommunityPostNotOverlay = () => {
     if (!communityState?.id) return;
     //sets value of nav posts, .15 opacity of theme base color
     const value = hexToRgb(communityState.themeBaseColor);
-    setThemeBaseColorRgba(`rgba(${value.r}, ${value.g}, ${value.b}, 0.15)`);
+    setThemeBaseColorRgba(`rgba(${value.r}, ${value.g}, ${value.b}, 0.5)`);
 
     //sets min height of main bottom
     const windowheight = window.innerHeight;
@@ -121,8 +137,11 @@ const SingleCommunityPostNotOverlay = () => {
     dispatch(setSelectedPost(post));
   }, [communityState]);
 
+  //if there is no selected comment then we run this function
   useEffect(() => {
     if (!selectedPost?.comments) return;
+    const commentid = params.commentid;
+    if (commentid) return;
 
     const v = window.localStorage.getItem("commentsort");
 
@@ -135,7 +154,78 @@ const SingleCommunityPostNotOverlay = () => {
     }
   }, [selectedPost?.comments]);
 
-  console.log(communityState);
+  //if there is a selected comment we set comments with this function
+  useEffect(() => {
+    const commentid = params.commentid;
+    if (!commentid) return;
+    if (!selectedPost?.comments) return;
+
+    //find comment based off id
+    const cur = selectedPost?.comments?.find((v) => v.id === commentid);
+    if (!cur) {
+      //if no comment found
+      setCommentNotFound(true);
+      return;
+    }
+
+    const parentCommentsWithOgComment = dispatch(
+      setCommentIdFind(selectedPost?.comments, cur)
+    );
+
+    const childrenComments = [];
+
+    function findChildrenComments(commentState, startingComment) {
+      const cur = startingComment;
+      const filter = commentState.filter(
+        (comment) => comment?.parentId === cur?.id
+      );
+
+      childrenComments.push(...filter);
+
+      if (filter.length > 0) {
+        filter.slice().forEach((c) => {
+          return findChildrenComments(selectedPost?.comments, c);
+        });
+      }
+    }
+
+    findChildrenComments(selectedPost?.comments, cur);
+
+    dispatch(
+      setComments([...parentCommentsWithOgComment, ...childrenComments])
+    );
+  }, [selectedPost?.comments]);
+
+  //comment search enter event listener
+  useEffect(() => {
+    $(document).ready(() => {
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && $(".sc-input").val().length > 0) {
+          const isInputFocused = $(".sc-input").is(":focus");
+
+          if (isInputFocused) {
+            nav(loc.pathname + `/?q=${$(".sc-input").val()}`);
+          }
+        }
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    const commentQuery = new URLSearchParams(
+      new URL(window.location.href).search
+    ).getAll("q")[0];
+
+    if (commentQuery) {
+      setCommentSearchActive(true);
+    } else {
+      setCommentSearchActive(false);
+    }
+  }, [window.location.href]);
+
+  if (commentNotFound) {
+    return <NothingHere />;
+  }
 
   return (
     <div>
@@ -388,23 +478,39 @@ const SingleCommunityPostNotOverlay = () => {
                   <SortCommentsMain
                     selectedSort={selectedSort}
                     setShowCommentSortOverlay={setShowCommentSortOverlay}
+                    value={searchValue}
+                    onchange={setSearchValue}
                   />
                 </div>
+
+                {isThereSelectedComment && (
+                  <a
+                    className='scp-allcomments'
+                    href={`/r/${communityState?.name}/comments/${selectedPost?.id}`}
+                  >
+                    View all comments
+                  </a>
+                )}
               </div>
 
               {!selectedPost?.comments?.length && <NoCommentsyet />}
             </div>
-            {selectedPost?.comments?.length && (
-              <div className='comment-mla'>
-                <CommentsList
-                  comments={selectedPost?.comments}
-                  which={null}
-                  post={selectedPost}
-                  top={true}
-                  newComments={newCommentState}
-                  commentsState={commentsState}
-                />
-              </div>
+            {commentSearchActive ? (
+              <CommentSearch />
+            ) : (
+              selectedPost?.comments?.length && (
+                <div className='comment-mla'>
+                  <CommentsList
+                    comments={selectedPost?.comments}
+                    which={null}
+                    post={selectedPost}
+                    top={true}
+                    newComments={newCommentState}
+                    commentsState={commentsState}
+                    ogComment={params.commentid || null}
+                  />
+                </div>
+              )
             )}
           </div>
 

@@ -7,8 +7,14 @@ import $ from "jquery";
 
 import DownArrow from "./DownArrow";
 import SearchIconSvg from "./SearchIconSvg";
+import XIconSortCommentInput from "./svg/XIconSortCommentInput";
 
-const SortCommentsMain = ({ selectedSort, setShowCommentSortOverlay }) => {
+const SortCommentsMain = ({
+  selectedSort,
+  setShowCommentSortOverlay,
+  value,
+  onchange,
+}) => {
   const scp = useSelector((state) => state.scp);
 
   const resize = useCallback(() => {
@@ -90,7 +96,14 @@ const SortCommentsMain = ({ selectedSort, setShowCommentSortOverlay }) => {
           <div className='sc-search'>
             <SearchIconSvg />
           </div>
-          <input className='sc-input' placeholder='Search comments' />
+          <input
+            className='sc-input'
+            placeholder='Search comments'
+            value={value}
+            onChange={(e) => onchange(e.target.value)}
+          />
+
+          <XIconSortCommentInput value={value} onchange={onchange} />
         </div>
       </div>
     </div>

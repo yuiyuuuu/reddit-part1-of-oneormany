@@ -43,6 +43,7 @@ const Comment = ({
   newComment,
   newComments,
   commentsState,
+  ogComment,
 }) => {
   const dispatch = useDispatch();
   const styleRef = useRef();
@@ -183,6 +184,7 @@ const Comment = ({
             marginTop: top && "16px",
             padding: top && "8px 0 0 0px",
             display: !show && "none",
+            backgroundColor: comment.id === ogComment && "rgba(0,121,211,0.05)",
           }}
         >
           <div

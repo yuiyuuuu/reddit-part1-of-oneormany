@@ -161,6 +161,21 @@ const ScpnoRight = ({ communityState }) => {
   }, []);
 
   useEffect(() => {
+    $(document).ready(() => {
+      if (userIds.includes(authState.id)) {
+        $("#scpno-join").hover(
+          () => {
+            $("#scpno-joined").html("Leave");
+          },
+          () => {
+            $("#scpno-joined").html("Joined");
+          }
+        );
+      }
+
+      return;
+    });
+
     if (userIds.includes(authState.id)) {
       $("#scpno-join").hover(
         () => {
