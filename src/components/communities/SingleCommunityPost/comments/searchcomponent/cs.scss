@@ -1,0 +1,87 @@
+.cs-parent {
+  margin: 0 48px;
+}
+
+.cs-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 12px;
+  padding: 16px 0;
+}
+
+.cs-divider {
+  padding: 0 12px;
+  color: #edeff1;
+  line-height: 20px;
+}
+
+.cs-all {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0079d3;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.cs-result {
+  padding: 16px 0;
+}
+
+.cs-resulttoprow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.cs-resultbot {
+  margin-top: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 8px;
+  background-color: #e9f5fd;
+}
+
+.cs-op {
+  padding-left: 4px;
+  color: #0079d3;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cs-username {
+  font-size: 12px;
+  font-weight: 500;
+  color: black;
+}
+
+.cs-d {
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+.cs-p {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 12px;
+  color: #7c7c7c;
+}
+
+.cs-mright {
+  margin-right: 12px;
+}
+
+.cs-t {
+  font-size: 12px;
+  color: #7c7c7c;
+}
+
+.cs-body {
+  font-size: 14px;
+  line-height: 21px;
+  color: #1c1c1c;
+}

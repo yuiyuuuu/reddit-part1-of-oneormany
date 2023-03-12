@@ -66,6 +66,7 @@ const SingleCommunityPostNotOverlay = () => {
   //search comment state
   const [searchValue, setSearchValue] = useState("");
   const [commentSearchActive, setCommentSearchActive] = useState(false);
+  const [commentResults, setCommentResults] = useState([]);
 
   function handleCommentSubmit() {
     if (!authState.id) {
@@ -94,6 +95,16 @@ const SingleCommunityPostNotOverlay = () => {
     window.localStorage.removeItem("commentsort");
 
     window.localStorage.setItem("commentsort", which);
+  }
+
+  function handleCommentSearchQuery(value) {
+    if (!selectedPost?.comments) return;
+    selectedPost?.comments?.forEach((c) => {
+      const split = c.message.split(" ").map((q) => q.toLowerCase().trim());
+      if (split.includes(value.toLowerCase())) {
+        setCommentResults((prev) => [...prev, c]);
+      }
+    });
   }
 
   useEffect(() => {
@@ -217,11 +228,14 @@ const SingleCommunityPostNotOverlay = () => {
     ).getAll("q")[0];
 
     if (commentQuery) {
+      setCommentResults([]);
       setCommentSearchActive(true);
+      handleCommentSearchQuery(commentQuery);
     } else {
+      setCommentResults([]);
       setCommentSearchActive(false);
     }
-  }, [window.location.href]);
+  }, [window.location.href, selectedPost?.comments]);
 
   if (commentNotFound) {
     return <NothingHere />;
@@ -442,12 +456,17 @@ const SingleCommunityPostNotOverlay = () => {
               </div>
 
               <div className='scp-commentparent'>
-                <div style={{ marginBottom: "4px" }}>
-                  Comment as{" "}
-                  <span className='scp-blue'>u/{authState?.name}</span>
-                </div>
+                {!commentSearchActive && (
+                  <div style={{ marginBottom: "4px" }}>
+                    Comment as{" "}
+                    <span className='scp-blue'>u/{authState?.name}</span>
+                  </div>
+                )}
 
-                <div className='scp-inputparent'>
+                <div
+                  className='scp-inputparent'
+                  style={{ display: commentSearchActive && "none" }}
+                >
                   <textarea
                     className='scp-input'
                     placeholder='What are your thoughts?'
@@ -496,7 +515,10 @@ const SingleCommunityPostNotOverlay = () => {
               {!selectedPost?.comments?.length && <NoCommentsyet />}
             </div>
             {commentSearchActive ? (
-              <CommentSearch />
+              <CommentSearch
+                commentResults={commentResults}
+                selectedPost={selectedPost}
+              />
             ) : (
               selectedPost?.comments?.length && (
                 <div className='comment-mla'>
