@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useMatch,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./scp.scss";
 
@@ -20,6 +25,8 @@ import {
   handleSelectedPostRemoveUpvote,
 } from "../../../store/scp/selectedPost";
 import { dispatchAddCommentNew } from "../../../store/comments/newComments";
+import { setCommentIdFind } from "../../../store/comments/commentIdFind";
+import { setScp } from "../../../store/scp/scpConditional";
 
 import $ from "jquery";
 
@@ -42,18 +49,20 @@ import CommentsList from "./comments/CommentsList";
 import TextStylesReply from "./comments/textstylescomponent/TextStylesReply";
 import SortCommentsMain from "./sortcomments/SortCommentsMain";
 import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
+import CommentSearch from "./comments/searchcomponent/CommentSearch";
 
 const SingleCommunityPost = () => {
   const params = useParams();
   const nav = useNavigate();
   const dispatch = useDispatch();
+  const loc = useLocation();
+  const match = useMatch({
+    path: "/r/:id/comments/:postid/comment/:commentid",
+  });
   const authState = useSelector((state) => state.auth);
   const newCommentState = useSelector((state) => state.newComments);
   const commentsState = useSelector((state) => state.comments);
   const scpState = useSelector((state) => state.scp);
-  const selectedCommunity = useSelector(
-    (state) => state.postsindividualcommunity
-  );
   const selectedPost = useSelector((state) => state.selectedPost);
 
   const [commentInput, setCommentInput] = useState("");
@@ -64,9 +73,14 @@ const SingleCommunityPost = () => {
 
   //search comment state
   const [searchValue, setSearchValue] = useState("");
+  const [isTherePreviousQuery, setIsTherePreviousQuery] = useState(false);
+  const [commentSearchActive, setCommentSearchActive] = useState(false);
+  const [commentResults, setCommentResults] = useState([]);
+  const [disablePreviousCsTop, setDisablePreviousCsTop] = useState(false);
 
   //scroll position
   const scrollPos = useSelector((state) => state.scrollPosition);
+
   //----------------HANDLING VOTES FUNCTIONS BELOW---------------------\\
 
   function handleUpvote() {
@@ -130,6 +144,35 @@ const SingleCommunityPost = () => {
 
     dispatch(handleSelectedPostRemoveDownvote(info)).then((res) => {
       dispatch(setSelectedPost(res));
+    });
+  }
+
+  //used for when a user has a selected comment and they want to see all comments
+  function setAllComments() {
+    dispatch(dispatchClearCommentState());
+    setIsTherePreviousQuery(false);
+
+    nav(`/r/${selectedPost.community.name}/comments/${selectedPost.id}`);
+    const v = window.localStorage.getItem("commentsort");
+
+    dispatch(setComments(selectedPost?.comments));
+
+    dispatch(dispatchSortComments(selectedPost?.comments, v));
+
+    if (newCommentState.length !== 0) {
+      dispatch(dispatchRemoveNewCommentDuplicates(newCommentState));
+    }
+  }
+
+  function handleCommentSearchQuery(value) {
+    if (!selectedPost?.comments) return;
+    setDisablePreviousCsTop(true); //disable the cs top div that was from previous state
+    if (!value) return;
+    selectedPost?.comments?.forEach((c) => {
+      const split = c.message.split(" ").map((q) => q.toLowerCase().trim());
+      if (split.includes(value.toLowerCase())) {
+        setCommentResults((prev) => [...prev, c]);
+      }
     });
   }
 
@@ -201,8 +244,7 @@ const SingleCommunityPost = () => {
 
   useEffect(() => {
     if (!selectedPost?.comments) return;
-    const commentid = params.commentid;
-    if (commentid) return;
+    if (match?.params?.commentid) return;
 
     const v = window.localStorage.getItem("commentsort");
 
@@ -214,6 +256,85 @@ const SingleCommunityPost = () => {
       dispatch(dispatchRemoveNewCommentDuplicates(newCommentState));
     }
   }, [selectedPost?.comments]);
+
+  //if there is a selected comment we set comments with this function
+  useEffect(() => {
+    const commentid = match?.params?.commentid;
+    if (!commentid) return;
+    if (!selectedPost?.comments) return;
+
+    //find comment based off id
+    const cur = selectedPost?.comments?.find((v) => v.id === commentid);
+
+    const parentCommentsWithOgComment = dispatch(
+      setCommentIdFind(selectedPost?.comments, cur)
+    );
+
+    const childrenComments = [];
+
+    function findChildrenComments(commentState, startingComment) {
+      const cur = startingComment;
+      const filter = commentState.filter(
+        (comment) => comment?.parentId === cur?.id
+      );
+
+      childrenComments.push(...filter);
+
+      if (filter.length > 0) {
+        filter.slice().forEach((c) => {
+          return findChildrenComments(selectedPost?.comments, c);
+        });
+      }
+    }
+
+    findChildrenComments(selectedPost?.comments, cur);
+
+    dispatch(
+      setComments([...parentCommentsWithOgComment, ...childrenComments])
+    );
+  }, [selectedPost?.comments, window.location.href]);
+
+  //check for previous query
+  useEffect(() => {
+    const query = loc.state?.from;
+    if (query) {
+      setIsTherePreviousQuery(true);
+    }
+  }, []);
+
+  //comment search enter event listener
+  useEffect(() => {
+    $(document).ready(() => {
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && $(".sc-input").val().length > 0) {
+          const isInputFocused = $(".sc-input").is(":focus");
+
+          if (isInputFocused) {
+            nav(loc.pathname + `?q=${$(".sc-input").val()}`);
+          }
+        }
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    const commentQuery = new URLSearchParams(
+      new URL(window.location.href).search
+    ).getAll("q")[0];
+
+    if (commentQuery) {
+      setCommentResults([]);
+      setCommentSearchActive(true);
+      handleCommentSearchQuery(commentQuery);
+    } else {
+      setCommentResults([]);
+      setCommentSearchActive(false);
+    }
+
+    if (!commentQuery && match?.params?.commentid) {
+      setDisablePreviousCsTop(false);
+    }
+  }, [window.location.href, selectedPost?.comments]);
 
   //cleanup
   useEffect(() => {
@@ -468,12 +589,17 @@ const SingleCommunityPost = () => {
                 </div>
 
                 <div className='scp-commentparent'>
-                  <div style={{ marginBottom: "4px" }}>
-                    Comment as{" "}
-                    <span className='scp-blue'>u/{authState?.name}</span>
-                  </div>
+                  {!commentSearchActive && (
+                    <div style={{ marginBottom: "4px" }}>
+                      Comment as{" "}
+                      <span className='scp-blue'>u/{authState?.name}</span>
+                    </div>
+                  )}
 
-                  <div className='scp-inputparent'>
+                  <div
+                    className='scp-inputparent'
+                    style={{ display: commentSearchActive && "none" }}
+                  >
                     <textarea
                       className='scp-input'
                       placeholder='What are your thoughts?'
@@ -509,20 +635,57 @@ const SingleCommunityPost = () => {
                     />
                   </div>
                 </div>
+                {(isTherePreviousQuery || match?.params?.commentid) &&
+                  !disablePreviousCsTop && (
+                    <div className='cs-top'>
+                      <div
+                        className='cs-all'
+                        style={{ display: !isTherePreviousQuery && "none" }}
+                        onClick={() => {
+                          nav(-1);
+                          dispatch(setScp(null));
+                        }}
+                      >
+                        Back to comments with "{loc.state?.from}"
+                      </div>
+                      <div
+                        className='cs-divider'
+                        style={{ display: !isTherePreviousQuery && "none" }}
+                      >
+                        |
+                      </div>
 
+                      <div className='cs-all' onClick={() => setAllComments()}>
+                        All comments
+                      </div>
+                    </div>
+                  )}
                 {!selectedPost?.comments?.length && <NoCommentsyet />}
               </div>
-              {selectedPost?.comments.length && (
-                <div className='comment-mla'>
-                  <CommentsList
-                    comments={selectedPost?.comments}
-                    which={null}
-                    post={selectedPost}
-                    top={true}
-                    newComments={newCommentState}
-                    commentsState={commentsState}
-                  />
-                </div>
+              {commentSearchActive ? (
+                <CommentSearch
+                  commentResults={commentResults}
+                  selectedPost={selectedPost}
+                  query={
+                    new URLSearchParams(
+                      new URL(window.location.href).search
+                    ).getAll("q")[0]
+                  }
+                />
+              ) : (
+                selectedPost?.comments.length && (
+                  <div className='comment-mla'>
+                    <CommentsList
+                      comments={selectedPost?.comments}
+                      which={null}
+                      post={selectedPost}
+                      top={true}
+                      newComments={newCommentState}
+                      commentsState={commentsState}
+                      ogComment={match?.params?.commentid || null}
+                    />
+                  </div>
+                )
               )}
             </div>
 
@@ -538,8 +701,19 @@ const SingleCommunityPost = () => {
         <div
           className='scp-clickback'
           onClick={() => {
-            dispatch(setSelectedPost({}));
-            nav(-1);
+            if (scpState !== "scpno") {
+              dispatch(setSelectedPost({}));
+            } else {
+              dispatch(setScp(null));
+            }
+
+            if (loc.state?.from) {
+              nav(
+                `/r/${selectedPost.community.name}/comments/${selectedPost.id}/?q=${loc.state?.from}`
+              );
+            } else {
+              nav(-1);
+            }
           }}
         />
 

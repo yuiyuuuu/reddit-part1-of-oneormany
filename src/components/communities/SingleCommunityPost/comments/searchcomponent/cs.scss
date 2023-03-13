@@ -1,5 +1,5 @@
 .cs-parent {
-  margin: 0 48px;
+  margin: 0 48px 24px;
 }
 
 .cs-top {
@@ -8,6 +8,7 @@
   align-items: center;
   font-size: 12px;
   padding: 16px 0;
+  color: #1c1c1c;
 }
 
 .cs-divider {
@@ -20,6 +21,7 @@
   font-size: 12px;
   font-weight: 500;
   color: #0079d3;
+  cursor: pointer;
 
   &:hover {
     text-decoration: underline;
@@ -84,4 +86,41 @@
   font-size: 14px;
   line-height: 21px;
   color: #1c1c1c;
+}
+
+.nr-parent {
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+  border: 1px solid #ccc;
+}
+
+.nr-img {
+  width: 134px;
+  height: 126px;
+}
+
+.nr-h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: black;
+  padding: 16px 0;
+  text-align: center;
+}
+
+.nr-p {
+  font-size: 14px;
+  color: #7c7c7c;
+}
+
+.nr-adjust {
+  color: #0079d3;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

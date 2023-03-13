@@ -17,6 +17,7 @@ import SingleCommunityPostNotOverlay from "./components/communities/SingleCommun
 const routeObject = {
   home: Home,
   singleCommunity: SingleCommunity,
+  scpno: SingleCommunityPostNotOverlay,
   null: SingleCommunityPostNotOverlay,
 };
 

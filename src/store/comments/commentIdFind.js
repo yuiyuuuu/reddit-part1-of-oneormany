@@ -13,7 +13,7 @@ export function setCommentIdFind(commentState, commentToFind) {
 
     //finds all parent comments
     while (find) {
-      const parentComment = commentState.find((v) => v.id == find.parentId);
+      const parentComment = commentState.find((v) => v.id == find?.parentId);
       if (!parentComment) break;
 
       result.push(parentComment);

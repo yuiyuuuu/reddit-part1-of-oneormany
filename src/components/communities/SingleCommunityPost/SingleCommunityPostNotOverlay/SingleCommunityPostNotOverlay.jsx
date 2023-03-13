@@ -49,6 +49,7 @@ const SingleCommunityPostNotOverlay = () => {
   const selectedPost = useSelector((state) => state.selectedPost);
   const newCommentState = useSelector((state) => state.newComments);
   const commentsState = useSelector((state) => state.comments);
+  const scp = useSelector((state) => state.scp);
 
   const [themeBaseColorRgba, setThemeBaseColorRgba] = useState("");
 
@@ -61,6 +62,12 @@ const SingleCommunityPostNotOverlay = () => {
 
   const [isThereSelectedComment, setIsThereSelectedComment] = useState(
     params?.commentid ? true : false
+  );
+
+  const [isThereQuery, setIsThereQuery] = useState(
+    new URLSearchParams(new URL(window.location.href).search).getAll("q")[0]
+      ? true
+      : false
   );
 
   //search comment state
@@ -163,7 +170,7 @@ const SingleCommunityPostNotOverlay = () => {
     if (newCommentState.length !== 0) {
       dispatch(dispatchRemoveNewCommentDuplicates(newCommentState));
     }
-  }, [selectedPost?.comments]);
+  }, [selectedPost?.comments, window.location.href]);
 
   //if there is a selected comment we set comments with this function
   useEffect(() => {
@@ -205,7 +212,7 @@ const SingleCommunityPostNotOverlay = () => {
     dispatch(
       setComments([...parentCommentsWithOgComment, ...childrenComments])
     );
-  }, [selectedPost?.comments]);
+  }, [selectedPost?.comments, window.location.href]);
 
   //comment search enter event listener
   useEffect(() => {
@@ -215,7 +222,7 @@ const SingleCommunityPostNotOverlay = () => {
           const isInputFocused = $(".sc-input").is(":focus");
 
           if (isInputFocused) {
-            nav(loc.pathname + `/?q=${$(".sc-input").val()}`);
+            nav(loc.pathname + `?q=${$(".sc-input").val()}`);
           }
         }
       });
@@ -223,6 +230,8 @@ const SingleCommunityPostNotOverlay = () => {
   }, []);
 
   useEffect(() => {
+    //only want the query to refresh is the popup is not active
+    if (scp !== null) return;
     const commentQuery = new URLSearchParams(
       new URL(window.location.href).search
     ).getAll("q")[0];
@@ -518,6 +527,11 @@ const SingleCommunityPostNotOverlay = () => {
               <CommentSearch
                 commentResults={commentResults}
                 selectedPost={selectedPost}
+                query={
+                  new URLSearchParams(
+                    new URL(window.location.href).search
+                  ).getAll("q")[0]
+                }
               />
             ) : (
               selectedPost?.comments?.length && (
