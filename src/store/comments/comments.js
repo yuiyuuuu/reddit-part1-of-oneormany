@@ -185,7 +185,6 @@ export function handleRemoveCommentDownvote(obj, parentid) {
 
 export function setComments(comments) {
   return (dispatch) => {
-    console.log(comments);
     const group = { new: [] };
     comments.slice().forEach((v) => {
       group[v?.parentId] ||= [];

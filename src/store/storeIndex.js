@@ -25,6 +25,7 @@ import copyLink from "./shareoverlay/copyLink";
 import threeDotOverlay from "./postoverlays/threeDotOverlay";
 import shareOverlay from "./postoverlays/shareOverlay";
 import commentIdFind from "./comments/commentIdFind";
+import searchQueryComment from "./comments/searchQuery";
 
 const reducer = combineReducers({
   auth,
@@ -49,6 +50,7 @@ const reducer = combineReducers({
   shareOverlay,
   threeDotOverlay,
   commentIdFind,
+  searchQueryComment,
 }); //reducers here
 
 let middleware = "";

@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./sortcomments.scss";
 
@@ -16,6 +16,7 @@ const SortCommentsMain = ({
   onchange,
 }) => {
   const scp = useSelector((state) => state.scp);
+  const dispatch = useDispatch();
 
   const resize = useCallback(() => {
     setShowCommentSortOverlay(false);
@@ -100,7 +101,9 @@ const SortCommentsMain = ({
             className='sc-input'
             placeholder='Search comments'
             value={value}
-            onChange={(e) => onchange(e.target.value)}
+            onChange={(e) => {
+              onchange(e.target.value);
+            }}
           />
 
           <XIconSortCommentInput value={value} onchange={onchange} />

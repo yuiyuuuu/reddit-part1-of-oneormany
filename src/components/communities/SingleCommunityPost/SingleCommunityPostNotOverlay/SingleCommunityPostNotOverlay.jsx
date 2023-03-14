@@ -37,6 +37,7 @@ import ScpnoRight from "./ScpnoRight";
 import PlanetIcon from "./svg/PlanetIcon";
 import NothingHere from "../comments/NothingHere";
 import CommentSearch from "../comments/searchcomponent/CommentSearch";
+import { dispatchSetCommentSearchQuery } from "../../../../store/comments/searchQuery";
 
 const SingleCommunityPostNotOverlay = () => {
   const dispatch = useDispatch();
@@ -244,7 +245,16 @@ const SingleCommunityPostNotOverlay = () => {
       setCommentResults([]);
       setCommentSearchActive(false);
     }
-  }, [window.location.href, selectedPost?.comments]);
+
+    if (!scp && commentQuery) {
+      dispatch(dispatchSetCommentSearchQuery(commentQuery));
+    }
+
+    // return () => {
+    //   console.log("unmounted");
+    //   dispatch(dispatchSetCommentSearchQuery(null));
+    // };
+  }, [window.location.href, selectedPost?.comments, scp]);
 
   if (commentNotFound) {
     return <NothingHere />;

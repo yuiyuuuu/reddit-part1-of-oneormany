@@ -64,6 +64,7 @@ const SingleCommunityPost = () => {
   const commentsState = useSelector((state) => state.comments);
   const scpState = useSelector((state) => state.scp);
   const selectedPost = useSelector((state) => state.selectedPost);
+  const searchQuery = useSelector((state) => state.searchQueryComment);
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
@@ -355,6 +356,8 @@ const SingleCommunityPost = () => {
       document.body.style.overflow = "auto";
     };
   }, [selectedPost]);
+
+  console.log(searchQuery, "searchcccc");
 
   return (
     <div
@@ -707,9 +710,24 @@ const SingleCommunityPost = () => {
               dispatch(setScp(null));
             }
 
-            if (loc.state?.from) {
+            //search query will only not be falsy if a search was made on the scpno component
+            if (searchQuery) {
               nav(
-                `/r/${selectedPost.community.name}/comments/${selectedPost.id}/?q=${loc.state?.from}`
+                `/r/${selectedPost.community.name}/comments/${selectedPost.id}/?q=${searchQuery}`
+              );
+              return;
+            }
+
+            if (scpState === "home") {
+              nav("/");
+            } else if (scpState === "singleCommunity") {
+              nav(`/r/${selectedPost.community.name}`);
+            } else if (scpState === "scpno") {
+              //i dont think this will ever get ran, but i will just keep it here just in case
+              //wont get ran because the only reason this overlay will every be active on this route is when a search is made
+              //which is already handled above
+              nav(
+                `/r/${selectedPost.community.name}/comments/${selectedPost.id}`
               );
             } else {
               nav(-1);
