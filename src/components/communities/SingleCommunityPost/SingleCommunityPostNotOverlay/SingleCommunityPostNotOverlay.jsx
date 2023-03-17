@@ -119,9 +119,7 @@ const SingleCommunityPostNotOverlay = () => {
     const id = params.id;
     dispatch(fetchCommunity(id));
 
-    $(document).ready(() => {
-      $(".hide").css("display", "none");
-    });
+    $(".hide").css("display", "none");
 
     //set selected sort
     const v = window.localStorage.getItem("commentsort");
@@ -130,7 +128,7 @@ const SingleCommunityPostNotOverlay = () => {
     } else {
       setSelectedSort("Best");
     }
-  }, []);
+  }, [window.location.href]);
 
   //set themebasecolor rgba
   useEffect(() => {
@@ -249,11 +247,6 @@ const SingleCommunityPostNotOverlay = () => {
     if (!scp && commentQuery) {
       dispatch(dispatchSetCommentSearchQuery(commentQuery));
     }
-
-    // return () => {
-    //   console.log("unmounted");
-    //   dispatch(dispatchSetCommentSearchQuery(null));
-    // };
   }, [window.location.href, selectedPost?.comments, scp]);
 
   if (commentNotFound) {

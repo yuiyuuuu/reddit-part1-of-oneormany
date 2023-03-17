@@ -20,7 +20,10 @@ const SortCommentsMain = ({
 
   const resize = useCallback(() => {
     setShowCommentSortOverlay(false);
-    const rect = document.getElementById("sc-main").getBoundingClientRect();
+    const rect = document.getElementById("sc-main")?.getBoundingClientRect();
+    if (!rect) {
+      return;
+    }
 
     $(".scl-parent")
       .css("top", rect.top - 18)
@@ -30,14 +33,19 @@ const SortCommentsMain = ({
   useEffect(() => {
     $(document).ready(() => {
       if (scp) {
-        const rect = document.getElementById("sc-main").getBoundingClientRect();
-        const scroll = document.querySelector(".scp-parent").scrollTop;
+        const rect = document
+          .getElementById("sc-main")
+          ?.getBoundingClientRect();
+        const scroll = document.querySelector(".scp-parent")?.scrollTop;
 
+        if (!rect) return;
         $(".scl-parent")
           .css("top", rect.top - 18 + scroll)
           .css("left", rect.left);
       } else {
-        const rect = document.getElementById("sc-main").getBoundingClientRect();
+        const rect = document
+          .getElementById("sc-main")
+          ?.getBoundingClientRect();
         $(".scl-parent")
           .css("top", rect.top + rect.height - 10 + window.scrollY)
           .css("left", rect.left);

@@ -59,6 +59,11 @@ const SingleCommunityPost = () => {
   const match = useMatch({
     path: "/r/:id/comments/:postid/comment/:commentid",
   });
+  const postidmatch = useMatch({ path: "/r/:id/comments/:postid" });
+  const postidmatchwithid = useMatch({
+    path: "/r/:id/comments/:postid/comment/:commentid",
+  });
+
   const authState = useSelector((state) => state.auth);
   const newCommentState = useSelector((state) => state.newComments);
   const commentsState = useSelector((state) => state.comments);
@@ -81,6 +86,35 @@ const SingleCommunityPost = () => {
 
   //scroll position
   const scrollPos = useSelector((state) => state.scrollPosition);
+
+  function handleCloseOverlay() {
+    if (scpState !== "scpno") {
+      dispatch(setSelectedPost({}));
+    } else {
+      dispatch(setScp(null));
+    }
+
+    //search query will only not be falsy if a search was made on the scpno component
+    if (searchQuery) {
+      nav(
+        `/r/${selectedPost.community.name}/comments/${selectedPost.id}/?q=${searchQuery}`
+      );
+      return;
+    }
+
+    if (scpState === "home") {
+      nav("/");
+    } else if (scpState === "singleCommunity") {
+      nav(`/r/${selectedPost.community.name}`);
+    } else if (scpState === "scpno") {
+      //i dont think this will ever get ran, but i will just keep it here just in case
+      //wont get ran because the only reason this overlay will every be active on this route is when a search is made
+      //which is already handled above
+      nav(`/r/${selectedPost.community.name}/comments/${selectedPost.id}`);
+    } else {
+      nav(-1);
+    }
+  }
 
   //----------------HANDLING VOTES FUNCTIONS BELOW---------------------\\
 
@@ -357,7 +391,12 @@ const SingleCommunityPost = () => {
     };
   }, [selectedPost]);
 
-  console.log(searchQuery, "searchcccc");
+  useEffect(() => {
+    console.log(postidmatch?.params?.postid);
+    if (!postidmatch?.params?.postid && !postidmatchwithid?.params?.postid) {
+      dispatch(setSelectedPost({}));
+    }
+  }, [window.location.href]);
 
   return (
     <div
@@ -428,8 +467,7 @@ const SingleCommunityPost = () => {
             <div
               className='scp-irow2'
               onClick={() => {
-                dispatch(setSelectedPost({}));
-                nav(-1);
+                handleCloseOverlay();
               }}
             >
               <CloseIcon />
@@ -701,39 +739,7 @@ const SingleCommunityPost = () => {
           </div>
         </div>
 
-        <div
-          className='scp-clickback'
-          onClick={() => {
-            if (scpState !== "scpno") {
-              dispatch(setSelectedPost({}));
-            } else {
-              dispatch(setScp(null));
-            }
-
-            //search query will only not be falsy if a search was made on the scpno component
-            if (searchQuery) {
-              nav(
-                `/r/${selectedPost.community.name}/comments/${selectedPost.id}/?q=${searchQuery}`
-              );
-              return;
-            }
-
-            if (scpState === "home") {
-              nav("/");
-            } else if (scpState === "singleCommunity") {
-              nav(`/r/${selectedPost.community.name}`);
-            } else if (scpState === "scpno") {
-              //i dont think this will ever get ran, but i will just keep it here just in case
-              //wont get ran because the only reason this overlay will every be active on this route is when a search is made
-              //which is already handled above
-              nav(
-                `/r/${selectedPost.community.name}/comments/${selectedPost.id}`
-              );
-            } else {
-              nav(-1);
-            }
-          }}
-        />
+        <div className='scp-clickback' onClick={() => handleCloseOverlay()} />
 
         <SortCommentsListPopup
           selectedSort={selectedSort}

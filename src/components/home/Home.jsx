@@ -24,12 +24,14 @@ import {
   removeDownvote,
   removeUpvote,
 } from "../../store/posts";
+import { setScp } from "../../store/scp/scpConditional";
 
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const authState = useSelector((state) => state.auth);
+  const selectedPost = useSelector((state) => state.selectedPost);
 
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
   const [scrollPos, setScrollpos] = useState(0);
@@ -112,6 +114,10 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchPosts());
+
+    if (!selectedPost?.id) {
+      dispatch(setScp(null));
+    }
 
     return () => {
       dispatch(clearPostState()); //set posts to empty array

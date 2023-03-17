@@ -76,7 +76,7 @@ const CommentSearch = ({ commentResults, selectedPost, query }) => {
                   className='cs-op'
                   style={{
                     display:
-                      selectedPost?.user.id !== comment.user.id && "none",
+                      selectedPost?.user?.id !== comment?.user?.id && "none",
                   }}
                 >
                   OP
