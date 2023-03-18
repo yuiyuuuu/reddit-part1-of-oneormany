@@ -75,7 +75,7 @@ const CommentsList = ({
           newComment={false}
           commentsState={commentsState}
           newComments={newComments}
-          ogComment={ogComment}
+          ogComment={ogComment || null}
         />
       ))}
 

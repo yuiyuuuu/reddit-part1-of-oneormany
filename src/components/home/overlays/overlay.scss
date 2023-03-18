@@ -4,6 +4,7 @@
   border: 1px solid #edeff1;
   background-color: white;
   box-shadow: 0 2px 4px 0 rgba(28, 28, 28, 0.2);
+  z-index: 1007;
 }
 
 .shareoverlay-inner {
@@ -37,6 +38,7 @@
 .tdot-container {
   position: absolute;
   top: 0;
+  z-index: 1007;
 }
 
 .tdot-save {

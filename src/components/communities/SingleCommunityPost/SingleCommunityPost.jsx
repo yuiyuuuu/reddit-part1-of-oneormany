@@ -27,6 +27,9 @@ import {
 import { dispatchAddCommentNew } from "../../../store/comments/newComments";
 import { setCommentIdFind } from "../../../store/comments/commentIdFind";
 import { setScp } from "../../../store/scp/scpConditional";
+import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
+import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
+import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
 
 import $ from "jquery";
 
@@ -70,6 +73,8 @@ const SingleCommunityPost = () => {
   const scpState = useSelector((state) => state.scp);
   const selectedPost = useSelector((state) => state.selectedPost);
   const searchQuery = useSelector((state) => state.searchQueryComment);
+  const shareOverlayState = useSelector((state) => state.shareOverlay);
+  const threeState = useSelector((state) => state.threeDotOverlay);
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
@@ -246,6 +251,76 @@ const SingleCommunityPost = () => {
     setScrollpos(window.scrollY);
   }, []);
 
+  function handleShareClick() {
+    const scrollpos = window.scrollY;
+    //if the one we clicked on was the same one as before, we set the display to none.
+    if (shareOverlayState.id === selectedPost.id && shareOverlayState.display) {
+      dispatch(setOverlayState({ display: false }));
+
+      return;
+    } else if (
+      shareOverlayState.id !== selectedPost.id &&
+      shareOverlayState.display
+    ) {
+      //if the one we clicked was not the one we clicked before, we keep the display active but set the top and left of the new one clicked
+      const v = document
+        .getElementById(`share-${selectedPost.id}`)
+        .getBoundingClientRect();
+      dispatch(
+        setOverlayState({
+          left: v.left,
+          top: v.top + v.height,
+          id: selectedPost.id,
+          display: true,
+          scroll: scrollpos,
+        })
+      );
+      return;
+    }
+
+    //else we just set the display to true and update id for next click
+
+    const v = document
+      .getElementById(`share-${selectedPost.id}`)
+      .getBoundingClientRect();
+
+    dispatch(
+      setOverlayState({
+        display: true,
+        left: v.left,
+        top: v.top + v.height,
+        id: selectedPost.id,
+        scroll: scrollpos,
+      })
+    );
+    dispatch(setThreeState({ display: false }));
+  }
+
+  function handleTDotClick() {
+    const scrollpos = window.scrollY;
+
+    if (threeState.id === selectedPost.id && threeState.display) {
+      dispatch(setThreeState({ display: false }));
+      return;
+    }
+
+    const v = document
+      .getElementById(`threedot-${selectedPost.id}`)
+      .getBoundingClientRect();
+
+    dispatch(
+      setThreeState({
+        display: true,
+        left: v.left,
+        top: v.top + v.height,
+        id: selectedPost.id,
+        scroll: scrollpos,
+      })
+    );
+
+    dispatch(setOverlayState({ display: false }));
+  }
+
   //-------------------USE EFFECTS BELOW----------------------\\
 
   useEffect(() => {
@@ -392,11 +467,53 @@ const SingleCommunityPost = () => {
   }, [selectedPost]);
 
   useEffect(() => {
-    console.log(postidmatch?.params?.postid);
     if (!postidmatch?.params?.postid && !postidmatchwithid?.params?.postid) {
       dispatch(setSelectedPost({}));
     }
   }, [window.location.href]);
+
+  useEffect(() => {
+    $(document)
+      .off()
+      .click(function (event) {
+        let run = true;
+        let run2 = true;
+        var $target = $(event.target);
+
+        //prevents run if the element clicked is another share button
+        const l = document.getElementsByClassName("post-share");
+        const m = document.getElementsByClassName("threedot");
+        Array.prototype.forEach.call(l, function (r) {
+          if ($target.closest(r).length) {
+            run = false;
+            return false;
+          }
+        });
+
+        Array.prototype.forEach.call(m, function (r) {
+          if ($target.closest(r).length) {
+            run2 = false;
+            return false;
+          }
+        });
+
+        if (
+          !$target.closest("#tdot-overlay").length &&
+          $("#tdot-overlay").is(":visible") &&
+          run2
+        ) {
+          dispatch(setThreeState({ display: false }));
+        }
+
+        if (
+          !$target.closest("#share-overlay").length &&
+          $("#share-overlay").is(":visible") &&
+          run
+        ) {
+          dispatch(setOverlayState({ display: false }));
+        }
+      });
+  }, []);
 
   return (
     <div
@@ -595,7 +712,18 @@ const SingleCommunityPost = () => {
                     <span>{selectedPost?.comments.length}</span>
                   </div>
 
-                  <div className='scp-share scp-selectionaligncenter scp-but'>
+                  <div
+                    className='scp-share scp-selectionaligncenter scp-but post-share'
+                    id={`share-${selectedPost.id}`}
+                    onClick={() => {
+                      handleShareClick();
+                      dispatch(
+                        setLinkToCopy(
+                          `${window.location.host}/r/${selectedPost.community.name}/comments/${selectedPost.id}`
+                        )
+                      );
+                    }}
+                  >
                     <ShareSvg />
                     <span>Share</span>
                   </div>
@@ -621,8 +749,17 @@ const SingleCommunityPost = () => {
                     </div>
 
                     <div
-                      className='scp-modrow'
+                      className='scp-modrow threedot'
+                      id={`threedot-${selectedPost.id}`}
                       style={{ padding: "2px 4px", height: "20px" }}
+                      onClick={() => {
+                        handleTDotClick();
+                        dispatch(
+                          setLinkToCopy(
+                            `${window.location.host}/r/${selectedPost.community.name}/comments/${selectedPost.id}`
+                          )
+                        );
+                      }}
                     >
                       <ThreeDot />
                     </div>

@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMatch, useParams } from "react-router";
 import "./comments.scss";
-import CommentsList from "./CommentsList";
 
 import $ from "jquery";
-import NoShow from "./noshow/NoShow";
 
 import gsap from "gsap";
 
@@ -15,11 +14,12 @@ import DistinguishSvg from "./svgs/DistinguishSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import TextStylesReply from "./textstylescomponent/TextStylesReply";
+import NoShow from "./noshow/NoShow";
+import CommentsList from "./CommentsList";
 
 import { handleAddComment } from "../../../../store/scp/selectedPost";
 import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 import {
-  dispatchAddReply,
   handleCommentDownvote,
   handleCommentUpvote,
   handleRemoveCommentDownvote,
@@ -31,6 +31,9 @@ import {
   handleRemoveNewCommentDownvote,
   handleRemoveNewCommentUpvote,
 } from "../../../../store/comments/newComments";
+import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
+import { setOverlayState } from "../../../../store/postoverlays/shareOverlay";
+import { setThreeState } from "../../../../store/postoverlays/threeDotOverlay";
 
 const Comment = ({
   comment,
@@ -48,6 +51,12 @@ const Comment = ({
   const dispatch = useDispatch();
   const styleRef = useRef();
   const authState = useSelector((state) => state.auth);
+  const shareOverlayState = useSelector((state) => state.shareOverlay);
+  const params = useParams();
+
+  const match = useMatch({
+    path: "/r/:id/comments/:postid/comment/:commentid",
+  });
 
   const [show, setShow] = useState(true);
   const [showReply, setShowReply] = useState(false);
@@ -70,7 +79,6 @@ const Comment = ({
     dispatch(handleAddComment(obj)).then((res) => {
       setShowReply(false);
       setReply("");
-      // dispatch(dispatchAddReply(res.comment));
     });
   }
 
@@ -144,6 +152,57 @@ const Comment = ({
     }
   }
 
+  function handleShareClick() {
+    dispatch(
+      setLinkToCopy(
+        `${window.location.host}/r/${post.community.name}/comments/${post.id}/comment/${comment.id}`
+      )
+    );
+
+    const scrollpos = window.scrollY;
+    //if the one we clicked on was the same one as before, we set the display to none.
+    if (shareOverlayState.id === comment.id && shareOverlayState.display) {
+      dispatch(setOverlayState({ display: false }));
+
+      return;
+    } else if (
+      shareOverlayState.id !== comment.id &&
+      shareOverlayState.display
+    ) {
+      //if the one we clicked was not the one we clicked before, we keep the display active but set the top and left of the new one clicked
+      const v = document
+        .getElementById(`share-${comment.id}`)
+        .getBoundingClientRect();
+      dispatch(
+        setOverlayState({
+          left: v.left,
+          top: v.top + v.height,
+          id: comment.id,
+          display: true,
+          scroll: scrollpos,
+        })
+      );
+      return;
+    }
+
+    //else we just set the display to true and update id for next click
+
+    const v = document
+      .getElementById(`share-${comment.id}`)
+      .getBoundingClientRect();
+
+    dispatch(
+      setOverlayState({
+        display: true,
+        left: v.left,
+        top: v.top + v.height,
+        id: comment.id,
+        scroll: scrollpos,
+      })
+    );
+    dispatch(setThreeState({ display: false }));
+  }
+
   useEffect(() => {
     $(document).ready(() => {
       $(".comment-m").focus(() => {
@@ -184,7 +243,10 @@ const Comment = ({
             marginTop: top && "16px",
             padding: top && "8px 0 0 0px",
             display: !show && "none",
-            backgroundColor: comment.id === ogComment && "rgba(0,121,211,0.05)",
+            backgroundColor:
+              (comment.id === params.commentid ||
+                match?.params?.commentid === comment.id) &&
+              "rgba(0,121,211,0.05)",
           }}
         >
           <div
@@ -281,8 +343,14 @@ const Comment = ({
                 <span style={{ marginLeft: "6px" }}>Reply</span>
               </button>
 
-              <button className='comment-hover comment-but'>Share</button>
-              <button className='comment-hover comment-but comment-al'>
+              <button
+                className='comment-hover comment-but scp-share post-share'
+                id={`share-${comment.id}`}
+                onClick={() => handleShareClick()}
+              >
+                Share
+              </button>
+              <button className='comment-hover comment-but comment-al threedot'>
                 <ThreeDot />
               </button>
               <button

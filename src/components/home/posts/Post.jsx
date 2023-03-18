@@ -5,6 +5,7 @@ import { setScp } from "../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../store/scp/selectedPost";
 import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
 import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
+import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
 
 import "./post.scss";
 
@@ -18,24 +19,10 @@ import UpVoteSvg from "./postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
 import DefaultCommunitiesIcon from "../../communities/communitiessvg/DefaultCommunitiesIcon";
-import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
 
 //all posts
 const Post = ({
   post,
-  setOverlayTop,
-  setOverlayLeft,
-  setShowOverlay,
-  setOverlayId,
-  overlayId,
-  showOverlay,
-  setOverlayTop2,
-  setOverlayLeft2,
-  setShowOverlay2,
-  setOverlayId2,
-  overlayId2,
-  showOverlay2,
-  setScrollpos,
   authState,
   handleUpvote,
   handleDownvote,
@@ -48,6 +35,7 @@ const Post = ({
   const shareOverlayState = useSelector((state) => state.shareOverlay);
   const threeState = useSelector((state) => state.threeDotOverlay);
 
+  //share overlay set
   function set() {
     const scrollpos = window.scrollY;
     //if the one we clicked on was the same one as before, we set the display to none.
@@ -90,6 +78,7 @@ const Post = ({
     dispatch(setThreeState({ display: false }));
   }
 
+  //three state set
   function set2() {
     const scrollpos = window.scrollY;
 
@@ -292,7 +281,11 @@ const Post = ({
             onClick={(e) => {
               e.stopPropagation();
               set();
-              dispatch(setLinkToCopy(post));
+              dispatch(
+                setLinkToCopy(
+                  `${window.location.host}/r/${post.community.name}/comments/${post.id}`
+                )
+              );
             }}
           >
             <ShareSvg />

@@ -89,7 +89,9 @@ const CommentSearch = ({ commentResults, selectedPost, query }) => {
               <div className='cs-resultbot'>
                 <div className='cs-body'>{comment.message}</div>
                 <div className='cs-p'>
-                  <div className='cs-mright'>1 upvote</div>
+                  <div className='cs-mright'>
+                    {comment.upvotes.length - comment.downvotes.length} upvote
+                  </div>
                   <span>0 awards</span>
                 </div>
               </div>

@@ -74,9 +74,6 @@ function App() {
     return () => window.removeEventListener("scroll", scroll);
   }, []);
 
-  console.log(scp);
-  console.log("post", selectedPost);
-
   return (
     <BrowserRouter>
       <Nav />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   fetchCommunity,
   handleCommunityDownvote,
@@ -10,7 +11,11 @@ import {
   leaveCommunity,
 } from "../../store/posts-individualcommunity";
 import CommunityStyling from "./ModeratorTools/styling/CommunityStyling";
-
+import { sorting } from "../../requests/sortingfunction";
+import { dispatchSetAOS } from "../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
+import { setThreeState } from "../../store/postoverlays/threeDotOverlay";
+import { setOverlayState } from "../../store/postoverlays/shareOverlay";
+import { clearPostState, fetchSpecificCommunityPosts } from "../../store/posts";
 import { toggleCommunityStyling } from "../../store/communitystyling";
 
 import "./communities.scss";
@@ -25,10 +30,7 @@ import ThreeDotOverlay from "../home/overlays/ThreeDotOverlay";
 import ShareOverlay from "../home/overlays/ShareOverlay";
 import Post from "../home/posts/Post";
 import Communities404 from "./Communities404";
-import { clearPostState, fetchSpecificCommunityPosts } from "../../store/posts";
 import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
-import { sorting } from "../../requests/sortingfunction";
-import { dispatchSetAOS } from "../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();
@@ -40,18 +42,6 @@ const SingleCommunity = () => {
   const communityStylingState = useSelector((state) => state.communityStyling);
   const iconImageState = useSelector((state) => state.iconImage);
 
-  //share overlay
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [overlayId, setOverlayId] = useState("");
-  const [overlayTop, setOverlayTop] = useState(0);
-  const [overlayLeft, setOverlayLeft] = useState(0);
-
-  //three dots overlay
-  const [showOverlay2, setShowOverlay2] = useState(false);
-  const [overlayId2, setOverlayId2] = useState("");
-  const [overlayTop2, setOverlayTop2] = useState(0);
-  const [overlayLeft2, setOverlayLeft2] = useState(0);
-
   //scroll position
   const [scrollPos, setScrollpos] = useState(0);
 
@@ -60,18 +50,14 @@ const SingleCommunity = () => {
 
   //loading state
   const [loading, setLoading] = useState(true);
-  const [postLoad, setPostLoad] = useState(true);
-
-  //single community post
-  const [selectedPost, setSelectedPost] = useState(null);
 
   //resize handling
   const resizeShare = useCallback(() => {
-    setShowOverlay(false);
+    dispatch(setOverlayState({ display: false }));
   }, []);
 
   const resizeTdot = useCallback(() => {
-    setShowOverlay2(false);
+    dispatch(setThreeState({ display: false }));
   }, []);
 
   const scroll = useCallback(() => {
@@ -239,7 +225,7 @@ const SingleCommunity = () => {
         $("#tdot-overlay").is(":visible") &&
         run2
       ) {
-        setShowOverlay2(false);
+        dispatch(setThreeState({ display: false }));
       }
 
       if (
@@ -247,7 +233,7 @@ const SingleCommunity = () => {
         $("#share-overlay").is(":visible") &&
         run
       ) {
-        setShowOverlay(false);
+        dispatch(setOverlayState({ display: false }));
       }
     });
   }, []);
@@ -261,18 +247,6 @@ const SingleCommunity = () => {
       dispatch(clearPostState()); //clear post state
     };
   }, [window.location.href]);
-
-  useEffect(() => {
-    const postid = params?.postid;
-
-    if (postid) {
-      setSelectedPost(communityState.posts?.find((p) => p.id === postid));
-    } else {
-      setSelectedPost(null);
-    }
-
-    setPostLoad(false);
-  }, [communityState, window.location.href]);
 
   //set min height of mainbot
   useEffect(() => {
@@ -359,7 +333,7 @@ const SingleCommunity = () => {
     setLoading(false);
   });
 
-  if (communityState !== "not found" && (loading || postLoad)) {
+  if (communityState !== "not found" && loading) {
     return "loading";
   }
 
@@ -502,19 +476,6 @@ const SingleCommunity = () => {
                 {communityState.posts?.sort(sorting).map((item) => (
                   <Post
                     post={item}
-                    setOverlayLeft={setOverlayLeft}
-                    setOverlayTop={setOverlayTop}
-                    setShowOverlay={setShowOverlay}
-                    setOverlayId={setOverlayId}
-                    overlayId={overlayId}
-                    showOverlay={showOverlay}
-                    setOverlayLeft2={setOverlayLeft2}
-                    setOverlayTop2={setOverlayTop2}
-                    setShowOverlay2={setShowOverlay2}
-                    setOverlayId2={setOverlayId2}
-                    overlayId2={overlayId2}
-                    showOverlay2={showOverlay2}
-                    setScrollpos={setScrollpos}
                     authState={authState}
                     handleUpvote={handleUpvote2}
                     handleRemoveUpvote={handleRemoveUpvote2}
@@ -526,28 +487,13 @@ const SingleCommunity = () => {
               </div>
             </div>
             <SingleCommunityRight communityState={communityState} />
-            <ShareOverlay
-              showOverlay={showOverlay}
-              overlayLeft={overlayLeft}
-              overlayTop={overlayTop}
-              scrollPos={scrollPos}
-            />
-
-            <ThreeDotOverlay
-              showOverlay2={showOverlay2}
-              overlayTop2={overlayTop2}
-              overlayLeft2={overlayLeft2}
-              scrollPos={scrollPos}
-            />
           </div>
         </div>
       </div>
-      {/* <SingleCommunityPost
-      // handleUpvote={handleUpvote}
-      // handleDownvote={handleDownvote}
-      // handleRemoveUpvote={handleRemoveUpvote}
-      // handleRemoveDownvote={handleRemoveDownvote}
-      /> */}
+
+      <ShareOverlay />
+
+      <ThreeDotOverlay />
     </div>
   );
 };

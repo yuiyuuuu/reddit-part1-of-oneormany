@@ -8,6 +8,15 @@ import "./home.scss";
 import { clearPostState, fetchPosts } from "../../store/posts";
 import { addCommunity } from "../../store/auth";
 import { toggleCreateCommunity } from "../../store/nav-createcommunity";
+import {
+  upvote,
+  downvote,
+  removeDownvote,
+  removeUpvote,
+} from "../../store/posts";
+import { setScp } from "../../store/scp/scpConditional";
+import { setOverlayState } from "../../store/postoverlays/shareOverlay";
+import { setThreeState } from "../../store/postoverlays/threeDotOverlay";
 
 import ClipSvg from "./homesvgs/ClipSvg";
 import DefaultPfp from "./homesvgs/DefaultPfp";
@@ -18,13 +27,6 @@ import Post from "./posts/Post";
 import ShareOverlay from "./overlays/ShareOverlay";
 import ThreeDotOverlay from "./overlays/ThreeDotOverlay";
 import TOS from "./TOS";
-import {
-  upvote,
-  downvote,
-  removeDownvote,
-  removeUpvote,
-} from "../../store/posts";
-import { setScp } from "../../store/scp/scpConditional";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -35,18 +37,6 @@ const Home = () => {
 
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
   const [scrollPos, setScrollpos] = useState(0);
-
-  //share overlay
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [overlayId, setOverlayId] = useState("");
-  const [overlayTop, setOverlayTop] = useState(0);
-  const [overlayLeft, setOverlayLeft] = useState(0);
-
-  //three dots overlay
-  const [showOverlay2, setShowOverlay2] = useState(false);
-  const [overlayId2, setOverlayId2] = useState("");
-  const [overlayTop2, setOverlayTop2] = useState(0);
-  const [overlayLeft2, setOverlayLeft2] = useState(0);
 
   // const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -156,7 +146,7 @@ const Home = () => {
           $("#tdot-overlay").is(":visible") &&
           run2
         ) {
-          setShowOverlay2(false);
+          dispatch(setThreeState({ display: false }));
         }
 
         if (
@@ -164,7 +154,7 @@ const Home = () => {
           $("#share-overlay").is(":visible") &&
           run
         ) {
-          setShowOverlay(false);
+          dispatch(setOverlayState({ display: false }));
         }
       });
   }, []);
@@ -275,19 +265,6 @@ const Home = () => {
               {posts.map((item) => (
                 <Post
                   post={item}
-                  setOverlayLeft={setOverlayLeft}
-                  setOverlayTop={setOverlayTop}
-                  setShowOverlay={setShowOverlay}
-                  setOverlayId={setOverlayId}
-                  overlayId={overlayId}
-                  showOverlay={showOverlay}
-                  setOverlayLeft2={setOverlayLeft2}
-                  setOverlayTop2={setOverlayTop2}
-                  setShowOverlay2={setShowOverlay2}
-                  setOverlayId2={setOverlayId2}
-                  overlayId2={overlayId2}
-                  showOverlay2={showOverlay2}
-                  setScrollpos={setScrollpos}
                   authState={authState}
                   handleUpvote={handleUpvote}
                   handleDownvote={handleDownvote}
@@ -430,19 +407,9 @@ const Home = () => {
               Back to Top
             </div>
           </div>
-          <ShareOverlay
-            showOverlay={showOverlay}
-            overlayLeft={overlayLeft}
-            overlayTop={overlayTop}
-            scrollPos={scrollPos}
-          />
+          <ShareOverlay />
 
-          <ThreeDotOverlay
-            showOverlay2={showOverlay2}
-            overlayTop2={overlayTop2}
-            overlayLeft2={overlayLeft2}
-            scrollPos={scrollPos}
-          />
+          <ThreeDotOverlay />
         </div>
       </div>
     </div>

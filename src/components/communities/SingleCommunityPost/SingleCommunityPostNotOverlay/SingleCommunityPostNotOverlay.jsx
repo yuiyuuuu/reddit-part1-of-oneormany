@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router";
+
 import { fetchCommunity } from "../../../../store/posts-individualcommunity";
 import { hexToRgb } from "../../../../requests/rgbHexFunctions";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
@@ -12,6 +13,14 @@ import { setComments } from "../../../../store/comments/comments";
 import { dispatchSortComments } from "../../../../store/comments/comments";
 import { dispatchRemoveNewCommentDuplicates } from "../../../../store/comments/comments";
 import { setCommentIdFind } from "../../../../store/comments/commentIdFind";
+import { setOverlayState } from "../../../../store/postoverlays/shareOverlay";
+import { setThreeState } from "../../../../store/postoverlays/threeDotOverlay";
+import {
+  handleSelectedPostUpvote,
+  handleSelectedPostDownvote,
+  handleSelectedPostRemoveDownvote,
+  handleSelectedPostRemoveUpvote,
+} from "../../../../store/scp/selectedPost";
 
 import "./scpno.scss";
 
@@ -38,6 +47,9 @@ import PlanetIcon from "./svg/PlanetIcon";
 import NothingHere from "../comments/NothingHere";
 import CommentSearch from "../comments/searchcomponent/CommentSearch";
 import { dispatchSetCommentSearchQuery } from "../../../../store/comments/searchQuery";
+import ShareOverlay from "../../../home/overlays/ShareOverlay";
+import ThreeDotOverlay from "../../../home/overlays/ThreeDotOverlay";
+import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 
 const SingleCommunityPostNotOverlay = () => {
   const dispatch = useDispatch();
@@ -51,6 +63,7 @@ const SingleCommunityPostNotOverlay = () => {
   const newCommentState = useSelector((state) => state.newComments);
   const commentsState = useSelector((state) => state.comments);
   const scp = useSelector((state) => state.scp);
+  const shareOverlayState = useSelector((state) => state.shareOverlay);
 
   const [themeBaseColorRgba, setThemeBaseColorRgba] = useState("");
 
@@ -115,6 +128,110 @@ const SingleCommunityPostNotOverlay = () => {
     });
   }
 
+  function handleShareOverlayClick(id) {
+    const scrollpos = window.scrollY;
+    //if the one we clicked on was the same one as before, we set the display to none.
+    if (shareOverlayState.id === id && shareOverlayState.display) {
+      dispatch(setOverlayState({ display: false }));
+
+      return;
+    } else if (shareOverlayState.id !== id && shareOverlayState.display) {
+      //if the one we clicked was not the one we clicked before, we keep the display active but set the top and left of the new one clicked
+      const v = document.getElementById(`share-${id}`).getBoundingClientRect();
+      dispatch(
+        setOverlayState({
+          left: v.left,
+          top: v.top + v.height,
+          id: id,
+          display: true,
+          scroll: scrollpos,
+        })
+      );
+      return;
+    }
+
+    //else we just set the display to true and update id for next click
+
+    const v = document.getElementById(`share-${id}`).getBoundingClientRect();
+
+    dispatch(
+      setOverlayState({
+        display: true,
+        left: v.left,
+        top: v.top + v.height,
+        id: id,
+        scroll: scrollpos,
+      })
+    );
+    dispatch(setThreeState({ display: false }));
+  }
+
+  //-----------------HANDLE VOTES BELOW---------------------\\
+
+  function handleUpvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+      communityid: selectedPost.community.id,
+    };
+    dispatch(handleSelectedPostUpvote(info)).then((res) => {
+      dispatch(setSelectedPost(res));
+    });
+  }
+
+  function handleDownvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+      communityid: selectedPost.community.id,
+    };
+    dispatch(handleSelectedPostDownvote(info)).then((res) => {
+      dispatch(setSelectedPost(res));
+    });
+  }
+
+  function handleRemoveUpvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+    };
+
+    dispatch(handleSelectedPostRemoveUpvote(info)).then((res) => {
+      dispatch(setSelectedPost(res));
+    });
+  }
+
+  function handleRemoveDownvote() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
+    const info = {
+      postid: selectedPost.id,
+      userid: authState.id,
+    };
+
+    dispatch(handleSelectedPostRemoveDownvote(info)).then((res) => {
+      dispatch(setSelectedPost(res));
+    });
+  }
+
   useEffect(() => {
     const id = params.id;
     dispatch(fetchCommunity(id));
@@ -129,6 +246,49 @@ const SingleCommunityPostNotOverlay = () => {
       setSelectedSort("Best");
     }
   }, [window.location.href]);
+
+  useEffect(() => {
+    $(document)
+      .off()
+      .click(function (event) {
+        let run = true;
+        let run2 = true;
+        var $target = $(event.target);
+
+        //prevents run if the element clicked is another share button
+        const l = document.getElementsByClassName("scp-share");
+        const m = document.getElementsByClassName("threedot");
+        Array.prototype.forEach.call(l, function (r) {
+          if ($target.closest(r).length) {
+            run = false;
+            return false;
+          }
+        });
+
+        Array.prototype.forEach.call(m, function (r) {
+          if ($target.closest(r).length) {
+            run2 = false;
+            return false;
+          }
+        });
+
+        if (
+          !$target.closest("#tdot-overlay").length &&
+          $("#tdot-overlay").is(":visible") &&
+          run2
+        ) {
+          dispatch(setThreeState({ display: false }));
+        }
+
+        if (
+          !$target.closest("#share-overlay").length &&
+          $("#share-overlay").is(":visible") &&
+          run
+        ) {
+          dispatch(setOverlayState({ display: false }));
+        }
+      });
+  }, []);
 
   //set themebasecolor rgba
   useEffect(() => {
@@ -433,7 +593,19 @@ const SingleCommunityPostNotOverlay = () => {
                   <span>{selectedPost?.comments?.length}</span>
                 </div>
 
-                <div className='scp-share scp-selectionaligncenter scp-but'>
+                <div
+                  className={`scp-share scp-selectionaligncenter scp-but`}
+                  id={`share-${selectedPost.id}`}
+                  onClick={() => {
+                    handleShareOverlayClick(selectedPost.id);
+                    //set the link to copy
+                    dispatch(
+                      setLinkToCopy(
+                        `${window.location.host}/r/${selectedPost.community.name}/comments/${selectedPost.id}`
+                      )
+                    );
+                  }}
+                >
                   <ShareSvg id={selectedPost?.id} />
                   <span>Share</span>
                 </div>
@@ -546,7 +718,6 @@ const SingleCommunityPostNotOverlay = () => {
                     top={true}
                     newComments={newCommentState}
                     commentsState={commentsState}
-                    ogComment={params.commentid || null}
                   />
                 </div>
               )
@@ -562,6 +733,9 @@ const SingleCommunityPostNotOverlay = () => {
           showCommentSortOverlay={showCommentSortOverlay}
           setShowCommentSortOverlay={setShowCommentSortOverlay}
         />
+
+        <ShareOverlay />
+        <ThreeDotOverlay />
       </div>
     </div>
   );

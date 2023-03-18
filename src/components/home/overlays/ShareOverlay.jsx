@@ -1,5 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
+
 import ChatSvg from "../homesvgs/ChatSvg";
 import ClipSvg2 from "../homesvgs/ClipSvg2";
 import CrossPostSvg from "../homesvgs/CrossPostSvg";
@@ -8,14 +10,14 @@ import EmbedSvg from "../homesvgs/EmbedSvg";
 import "./overlay.scss";
 
 const ShareOverlay = () => {
+  const dispatch = useDispatch();
+
   const selectedPostLink = useSelector((state) => state.copyLink);
   const shareOverlayState = useSelector((state) => state.shareOverlay);
-  const scrollPosition = useSelector((state) => state.scrollPosition);
 
   function handleCopyLink() {
-    navigator.clipboard.writeText(
-      `${window.location.host}/r/${selectedPostLink.community.name}/comments/${selectedPostLink.id}`
-    );
+    navigator.clipboard.writeText(selectedPostLink);
+    dispatch(setOverlayState({ display: false }));
   }
 
   return (
