@@ -34,6 +34,8 @@ import {
 import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 import { setOverlayState } from "../../../../store/postoverlays/shareOverlay";
 import { setThreeState } from "../../../../store/postoverlays/threeDotOverlay";
+import { setOverlayStateSCP } from "../../../../store/postoverlays/shareOverlayScp";
+import { setThreeStateSCP } from "../../../../store/postoverlays/threeDotoverlaySCP";
 
 const Comment = ({
   comment,
@@ -46,13 +48,13 @@ const Comment = ({
   newComment,
   newComments,
   commentsState,
-  ogComment,
 }) => {
   const dispatch = useDispatch();
   const styleRef = useRef();
   const authState = useSelector((state) => state.auth);
   const shareOverlayState = useSelector((state) => state.shareOverlay);
   const params = useParams();
+  const scpState = useSelector((state) => state.scp);
 
   const match = useMatch({
     path: "/r/:id/comments/:postid/comment/:commentid",
@@ -162,6 +164,11 @@ const Comment = ({
     const scrollpos = window.scrollY;
     //if the one we clicked on was the same one as before, we set the display to none.
     if (shareOverlayState.id === comment.id && shareOverlayState.display) {
+      if (scpState) {
+        dispatch(setOverlayStateSCP({ display: false }));
+        return;
+      }
+
       dispatch(setOverlayState({ display: false }));
 
       return;
@@ -173,6 +180,22 @@ const Comment = ({
       const v = document
         .getElementById(`share-${comment.id}`)
         .getBoundingClientRect();
+
+      if (scpState) {
+        dispatch(
+          setOverlayStateSCP({
+            left: v.left,
+            top: v.top + v.height - 48,
+            id: comment.id,
+            display: true,
+            scroll: $(".scp-parent").scrollTop(),
+          })
+        );
+
+        dispatch(setThreeStateSCP({ display: false }));
+        return;
+      }
+
       dispatch(
         setOverlayState({
           left: v.left,
@@ -190,6 +213,21 @@ const Comment = ({
     const v = document
       .getElementById(`share-${comment.id}`)
       .getBoundingClientRect();
+
+    if (scpState) {
+      dispatch(
+        setOverlayStateSCP({
+          left: v.left,
+          top: v.top + v.height - 48,
+          id: comment.id,
+          display: true,
+          scroll: $(".scp-parent").scrollTop(),
+        })
+      );
+
+      dispatch(setThreeStateSCP({ display: false }));
+      return;
+    }
 
     dispatch(
       setOverlayState({

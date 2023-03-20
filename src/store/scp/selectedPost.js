@@ -110,6 +110,7 @@ export function handleSelectedPostRemoveDownvote(obj) {
 export default function (state = {}, action) {
   switch (action.type) {
     case SET_SELECTEDPOST_SINGLE:
+      ``;
       return action.post;
 
     case HANDLE_ADDCOMMENT:

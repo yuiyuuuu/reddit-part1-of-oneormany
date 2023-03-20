@@ -1,23 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
 
-import ChatSvg from "../homesvgs/ChatSvg";
-import ClipSvg2 from "../homesvgs/ClipSvg2";
-import CrossPostSvg from "../homesvgs/CrossPostSvg";
-import EmbedSvg from "../homesvgs/EmbedSvg";
+import ChatSvg from "../../../home/homesvgs/ChatSvg";
+import ClipSvg2 from "../../../home/homesvgs/ClipSvg2";
+import CrossPostSvg from "../../../home/homesvgs/CrossPostSvg";
+import EmbedSvg from "../../../home/homesvgs/EmbedSvg";
 
-import "./overlay.scss";
-
-const ShareOverlay = () => {
+const ShareOverlaySCP = () => {
   const dispatch = useDispatch();
+  const shareOverlayState = useSelector((state) => state.shareOverlayScp);
 
   const selectedPostLink = useSelector((state) => state.copyLink);
-  const shareOverlayState = useSelector((state) => state.shareOverlay);
 
   function handleCopyLink() {
     navigator.clipboard.writeText(selectedPostLink);
-    dispatch(setOverlayState({ display: false }));
   }
 
   return (
@@ -28,6 +24,7 @@ const ShareOverlay = () => {
         display: !shareOverlayState?.display && "none",
         top: shareOverlayState?.top + shareOverlayState?.scroll,
         left: shareOverlayState?.left,
+        zIndex: 2,
       }}
     >
       <div
@@ -54,4 +51,4 @@ const ShareOverlay = () => {
   );
 };
 
-export default ShareOverlay;
+export default ShareOverlaySCP;

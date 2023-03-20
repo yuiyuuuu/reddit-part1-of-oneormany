@@ -27,8 +27,6 @@ import {
 import { dispatchAddCommentNew } from "../../../store/comments/newComments";
 import { setCommentIdFind } from "../../../store/comments/commentIdFind";
 import { setScp } from "../../../store/scp/scpConditional";
-import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
-import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
 import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
 
 import $ from "jquery";
@@ -53,6 +51,10 @@ import TextStylesReply from "./comments/textstylescomponent/TextStylesReply";
 import SortCommentsMain from "./sortcomments/SortCommentsMain";
 import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
 import CommentSearch from "./comments/searchcomponent/CommentSearch";
+import ShareOverlaySCP from "./overlay/ShareOverlaySCP";
+import ThreeDotOverlaySCP from "./overlay/ThreeDotOverlaySCP";
+import { setOverlayStateSCP } from "../../../store/postoverlays/shareOverlayScp";
+import { setThreeStateSCP } from "../../../store/postoverlays/threeDotoverlaySCP";
 
 const SingleCommunityPost = () => {
   const params = useParams();
@@ -73,8 +75,8 @@ const SingleCommunityPost = () => {
   const scpState = useSelector((state) => state.scp);
   const selectedPost = useSelector((state) => state.selectedPost);
   const searchQuery = useSelector((state) => state.searchQueryComment);
-  const shareOverlayState = useSelector((state) => state.shareOverlay);
-  const threeState = useSelector((state) => state.threeDotOverlay);
+  const shareOverlayState = useSelector((state) => state.shareOverlayScp);
+  const threeState = useSelector((state) => state.threeDotOverlaySCP);
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
@@ -252,10 +254,10 @@ const SingleCommunityPost = () => {
   }, []);
 
   function handleShareClick() {
-    const scrollpos = window.scrollY;
+    const scrollpos = $(".scp-parent").scrollTop();
     //if the one we clicked on was the same one as before, we set the display to none.
     if (shareOverlayState.id === selectedPost.id && shareOverlayState.display) {
-      dispatch(setOverlayState({ display: false }));
+      dispatch(setOverlayStateSCP({ display: false }));
 
       return;
     } else if (
@@ -263,13 +265,14 @@ const SingleCommunityPost = () => {
       shareOverlayState.display
     ) {
       //if the one we clicked was not the one we clicked before, we keep the display active but set the top and left of the new one clicked
+
       const v = document
         .getElementById(`share-${selectedPost.id}`)
         .getBoundingClientRect();
       dispatch(
-        setOverlayState({
+        setOverlayStateSCP({
           left: v.left,
-          top: v.top + v.height,
+          top: v.top + v.height - 48,
           id: selectedPost.id,
           display: true,
           scroll: scrollpos,
@@ -285,22 +288,22 @@ const SingleCommunityPost = () => {
       .getBoundingClientRect();
 
     dispatch(
-      setOverlayState({
+      setOverlayStateSCP({
         display: true,
         left: v.left,
-        top: v.top + v.height,
+        top: v.top + v.height - 48,
         id: selectedPost.id,
         scroll: scrollpos,
       })
     );
-    dispatch(setThreeState({ display: false }));
+    dispatch(setThreeStateSCP({ display: false }));
   }
 
   function handleTDotClick() {
     const scrollpos = window.scrollY;
 
     if (threeState.id === selectedPost.id && threeState.display) {
-      dispatch(setThreeState({ display: false }));
+      dispatch(setThreeStateSCP({ display: false }));
       return;
     }
 
@@ -309,16 +312,16 @@ const SingleCommunityPost = () => {
       .getBoundingClientRect();
 
     dispatch(
-      setThreeState({
+      setThreeStateSCP({
         display: true,
         left: v.left,
-        top: v.top + v.height,
+        top: v.top + v.height - 48,
         id: selectedPost.id,
         scroll: scrollpos,
       })
     );
 
-    dispatch(setOverlayState({ display: false }));
+    dispatch(setOverlayStateSCP({ display: false }));
   }
 
   //-------------------USE EFFECTS BELOW----------------------\\
@@ -502,7 +505,7 @@ const SingleCommunityPost = () => {
           $("#tdot-overlay").is(":visible") &&
           run2
         ) {
-          dispatch(setThreeState({ display: false }));
+          dispatch(setThreeStateSCP({ display: false }));
         }
 
         if (
@@ -510,7 +513,7 @@ const SingleCommunityPost = () => {
           $("#share-overlay").is(":visible") &&
           run
         ) {
-          dispatch(setOverlayState({ display: false }));
+          dispatch(setOverlayStateSCP({ display: false }));
         }
       });
   }, []);
@@ -884,6 +887,9 @@ const SingleCommunityPost = () => {
           showCommentSortOverlay={showCommentSortOverlay}
           setShowCommentSortOverlay={setShowCommentSortOverlay}
         />
+
+        <ShareOverlaySCP />
+        <ThreeDotOverlaySCP />
       </div>
     </div>
   );

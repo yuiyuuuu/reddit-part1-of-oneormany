@@ -24,6 +24,8 @@ import scrollPosition from "./global/scrollPosition";
 import copyLink from "./shareoverlay/copyLink";
 import threeDotOverlay from "./postoverlays/threeDotOverlay";
 import shareOverlay from "./postoverlays/shareOverlay";
+import shareOverlayScp from "./postoverlays/shareOverlayScp";
+import threeDotOverlaySCP from "./postoverlays/threeDotoverlaySCP";
 import commentIdFind from "./comments/commentIdFind";
 import searchQueryComment from "./comments/searchQuery";
 
@@ -48,6 +50,8 @@ const reducer = combineReducers({
   scrollPosition,
   copyLink,
   shareOverlay,
+  shareOverlayScp,
+  threeDotOverlaySCP,
   threeDotOverlay,
   commentIdFind,
   searchQueryComment,
