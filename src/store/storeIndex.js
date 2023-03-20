@@ -28,6 +28,7 @@ import shareOverlayScp from "./postoverlays/shareOverlayScp";
 import threeDotOverlaySCP from "./postoverlays/threeDotoverlaySCP";
 import commentIdFind from "./comments/commentIdFind";
 import searchQueryComment from "./comments/searchQuery";
+import alerts from "./alerts/alerts";
 
 const reducer = combineReducers({
   auth,
@@ -55,6 +56,7 @@ const reducer = combineReducers({
   threeDotOverlay,
   commentIdFind,
   searchQueryComment,
+  alerts,
 }); //reducers here
 
 let middleware = "";

@@ -17,6 +17,7 @@ import {
   joinCommunity,
   leaveCommunity,
 } from "../../../../store/posts-individualcommunity";
+import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 
 import $ from "jquery";
 

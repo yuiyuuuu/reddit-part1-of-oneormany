@@ -23,6 +23,7 @@ import routeObject from "./routeObject";
 import SingleCommunityPostNotOverlay from "./components/communities/SingleCommunityPost/SingleCommunityPostNotOverlay/SingleCommunityPostNotOverlay";
 import SingleCommunityPost from "./components/communities/SingleCommunityPost/SingleCommunityPost";
 import { setScrollPosition } from "./store/global/scrollPosition";
+import Alert from "./globalcomponents/alerts/Alert";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function App() {
   );
   const scp = useSelector((state) => state.scp);
   const selectedPost = useSelector((state) => state.selectedPost);
+  const alertsQueue = useSelector((state) => state.alerts);
 
   //single community post -- that way the overlay will pop up where the user last was
   let Component = routeObject[scp];
@@ -92,6 +94,8 @@ function App() {
       )}
 
       {selectedPost?.id ? scp ? <SingleCommunityPost /> : "" : ""}
+
+      {alertsQueue.length !== 0 && <Alert />}
       <Routes>
         <Route exact path='/submit' element={<Submit />} />
         <Route exact path='/submit/:type' element={<Submit />} />

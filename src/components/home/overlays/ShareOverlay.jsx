@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { addAlert } from "../../../globalcomponents/alerts/addAlertsFunctions";
 import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
 
 import ChatSvg from "../homesvgs/ChatSvg";
@@ -18,6 +19,7 @@ const ShareOverlay = () => {
   function handleCopyLink() {
     navigator.clipboard.writeText(selectedPostLink);
     dispatch(setOverlayState({ display: false }));
+    addAlert("Copied link!", dispatch);
   }
 
   return (
