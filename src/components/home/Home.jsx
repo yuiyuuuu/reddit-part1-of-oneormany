@@ -161,11 +161,11 @@ const Home = () => {
 
   //resize handling
   const resizeShare = useCallback(() => {
-    setShowOverlay(false);
+    dispatch(setOverlayState({ display: false }));
   }, []);
 
   const resizeTdot = useCallback(() => {
-    setShowOverlay2(false);
+    dispatch(setThreeState({ display: false }));
   }, []);
 
   const scroll = useCallback(() => {

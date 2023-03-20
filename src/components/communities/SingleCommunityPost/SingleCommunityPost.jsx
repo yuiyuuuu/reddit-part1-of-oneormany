@@ -518,6 +518,24 @@ const SingleCommunityPost = () => {
       });
   }, []);
 
+  const resizeShare = useCallback(() => {
+    dispatch(setOverlayStateSCP({ display: false }));
+  }, []);
+
+  const resizeTDot = useCallback(() => {
+    dispatch(setThreeStateSCP({ display: false }));
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", resizeShare);
+    window.addEventListener("resize", resizeTDot);
+
+    return () => {
+      window.removeEventListener("resize", resizeShare);
+      window.removeEventListener("resize", resizeTDot);
+    };
+  }, []);
+
   return (
     <div
       style={{ display: (!selectedPost?.id || scpState === null) && "none" }}
