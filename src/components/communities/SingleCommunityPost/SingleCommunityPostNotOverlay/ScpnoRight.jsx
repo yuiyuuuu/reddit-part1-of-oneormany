@@ -18,6 +18,7 @@ import {
   leaveCommunity,
 } from "../../../../store/posts-individualcommunity";
 import { dispatchSetAOS } from "../../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
+import { addAlert } from "../../../../globalcomponents/alerts/addAlertsFunctions";
 
 import $ from "jquery";
 
@@ -77,8 +78,10 @@ const ScpnoRight = ({ communityState }) => {
       dispatch(dispatchSetAOS({ display: true, which: "joincommunity" }));
     } else if (!userIds.includes(authState.id)) {
       dispatch(joinCommunity(authState.id, communityState.id));
+      addAlert(`Successfully joined ${communityState.tag}`, dispatch);
     } else {
       dispatch(leaveCommunity(authState.id, communityState.id));
+      addAlert(`Successfully left ${communityState.tag}`, dispatch);
     }
   }
 

@@ -17,6 +17,7 @@ import { setThreeState } from "../../store/postoverlays/threeDotOverlay";
 import { setOverlayState } from "../../store/postoverlays/shareOverlay";
 import { clearPostState, fetchSpecificCommunityPosts } from "../../store/posts";
 import { toggleCommunityStyling } from "../../store/communitystyling";
+import { addAlert } from "../../globalcomponents/alerts/addAlertsFunctions";
 
 import "./communities.scss";
 
@@ -89,11 +90,13 @@ const SingleCommunity = () => {
       dispatch(dispatchSetAOS({ display: true, which: "joincommunity" }));
     } else {
       dispatch(joinCommunity(authState.id, communityState.id));
+      addAlert(`Successfully joined ${communityState.tag}`, dispatch);
     }
   }
 
   function handleLeaveCommunity() {
     dispatch(leaveCommunity(authState.id, communityState.id));
+    addAlert(`Successfully left ${communityState.tag}`, dispatch);
   }
 
   function handleUpvote2(post) {
@@ -197,8 +200,49 @@ const SingleCommunity = () => {
 
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
   //we will close the overlay
-  useEffect(() => {
-    $(document).click(function (event) {
+  // useEffect(() => {
+  //   // $(document).off().click(function (event) {
+  //   //   console.log("ran");
+  //   //   let run = true;
+  //   //   let run2 = true;
+  //   //   var $target = $(event.target);
+  //   //   //prevents run if the element clicked is another share button
+  //   //   const l = document.getElementsByClassName("post-share");
+  //   //   const m = document.getElementsByClassName("threedot");
+  //   //   Array.prototype.forEach.call(l, function (r) {
+  //   //     if ($target.closest(r).length) {
+  //   //       run = false;
+  //   //       return false;
+  //   //     }
+  //   //   });
+  //   //   Array.prototype.forEach.call(m, function (r) {
+  //   //     if ($target.closest(r).length) {
+  //   //       run2 = false;
+  //   //       return false;
+  //   //     }
+  //   //   });
+  //   //   if (
+  //   //     !$target.closest("#tdot-overlay").length &&
+  //   //     $("#tdot-overlay").is(":visible") &&
+  //   //     run2
+  //   //   ) {
+  //   //     dispatch(setThreeState({ display: false }));
+  //   //   }
+  //   //   if (
+  //   //     !$target.closest("#share-overlay").length &&
+  //   //     $("#share-overlay").is(":visible") &&
+  //   //     run
+  //   //   ) {
+  //   //     dispatch(setOverlayState({ display: false }));
+  //   //   }
+  //   // });
+  // }, []);
+
+  $(document)
+    .off()
+    .click(function (event) {
+      console.log("ran");
+
       let run = true;
       let run2 = true;
       var $target = $(event.target);
@@ -236,7 +280,6 @@ const SingleCommunity = () => {
         dispatch(setOverlayState({ display: false }));
       }
     });
-  }, []);
 
   useEffect(() => {
     const id = params.id;

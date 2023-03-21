@@ -1,0 +1,14 @@
+Component legend-
+
+communities - Communities
+scp- SingleCommunityPost
+scpno- SingleCommunityPostNotOverlay
+comment - comment
+createoverlay - CreateCommunityOverlay
+comright - SingleCommunityRight
+rightmod - Moderators
+cs - CommentSearch
+nr - NoResults
+ns - NoShow
+tsc - TextStylesComment
+
