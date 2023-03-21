@@ -20,6 +20,7 @@
   box-sizing: border-box;
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.3);
   border: 1px solid #878a8c;
+  scale: 0.3;
 
   &:hover > .alert-left {
     width: 30px;

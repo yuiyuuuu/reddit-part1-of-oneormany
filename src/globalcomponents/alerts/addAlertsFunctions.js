@@ -3,13 +3,11 @@ import {
   dispatchAddToAlertsQueue,
   dispatchRemoveToAlertsQueue,
 } from "../../store/alerts/alerts";
+
 import $ from "jquery";
+import gsap from "gsap";
 
 export function addAlert(message, dispatch) {
   const id = uuidv4();
   dispatch(dispatchAddToAlertsQueue({ id: id, message: message }));
-
-  setTimeout(() => {
-    dispatch(dispatchRemoveToAlertsQueue(id));
-  }, 5000);
 }
