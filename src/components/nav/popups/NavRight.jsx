@@ -17,6 +17,8 @@ import HelpNoHover from "../navsvgs/rightoverlay/help/HelpNoHover";
 import HelpHovered from "../navsvgs/rightoverlay/help/HelpHovered";
 import NmodeNotHovered from "../navsvgs/rightoverlay/nightmode/NmodeNotHovered";
 import NmodeHovered from "../navsvgs/rightoverlay/nightmode/NmodeHovered";
+import MyStuff from "../navsvgs/rightoverlay/loggedin/MyStuff";
+import ViewOptions from "../navsvgs/rightoverlay/loggedin/ViewOptions";
 
 const NavRight = ({
   showWhenLoggedIn,
@@ -27,61 +29,6 @@ const NavRight = ({
   const dispatch = useDispatch();
 
   const authstate = useSelector((state) => state.auth);
-
-  const [isHoveredAuth, setIsHoveredAuth] = useState(false);
-  const [isAdHovered, setIsAdHovered] = useState(false);
-  const [isTermsHovered, setIsTermsHovered] = useState(false);
-  const [isMoreHovered, setIsMoreHovered] = useState(false);
-  const [isHelpHovered, setIsHelpHovered] = useState(false);
-  const [isNmodeHovered, setIsNmodeHovered] = useState(false);
-
-  const authHover = useCallback(() => {
-    if ($("#nav-logout").is(":hover")) {
-      setIsHoveredAuth(true);
-    } else {
-      setIsHoveredAuth(false);
-    }
-  }, []);
-
-  const adHover = useCallback(() => {
-    if ($("#nav-ad").is(":hover")) {
-      setIsAdHovered(true);
-    } else {
-      setIsAdHovered(false);
-    }
-  }, []);
-
-  const termsHover = useCallback(() => {
-    if ($("#nav-terms").is(":hover")) {
-      setIsTermsHovered(true);
-    } else {
-      setIsTermsHovered(false);
-    }
-  }, []);
-
-  const moreHover = useCallback(() => {
-    if ($("#nav-more").is(":hover")) {
-      setIsMoreHovered(true);
-    } else {
-      setIsMoreHovered(false);
-    }
-  }, []);
-
-  const helpHover = useCallback(() => {
-    if ($("#nav-help").is(":hover")) {
-      setIsHelpHovered(true);
-    } else {
-      setIsHelpHovered(false);
-    }
-  }, []);
-
-  const nmodeHover = useCallback(() => {
-    if ($("#nav-nmode").is(":hover")) {
-      setIsNmodeHovered(true);
-    } else {
-      setIsNmodeHovered(false);
-    }
-  }, []);
 
   const clickout = useCallback(() => {
     var $target = $(event.target);
@@ -94,12 +41,6 @@ const NavRight = ({
     }
   }, []);
 
-  $("#nav-logout").off("hover", "#nav-logout", authHover).hover(authHover);
-  $("#nav-ad").off("hover", "#nav-ad", adHover).hover(adHover);
-  $("#nav-terms").off("hover", "#nav-terms", termsHover).hover(termsHover);
-  $("#nav-more").off("hover", "#nav-more", moreHover).hover(moreHover);
-  $("#nav-help").off("hover", "#nav-help", helpHover).hover(helpHover);
-  $("#nav-nmode").off("hover", "#nav-nmode", nmodeHover).hover(nmodeHover);
   $(document).off("click", document, clickout).click(clickout);
 
   return (
@@ -107,31 +48,102 @@ const NavRight = ({
       className='nav-rightoverlay'
       style={{ display: showRightOverlay ? "flex" : "none" }}
     >
+      {/* LOGGED IN */}
+      <div className='nav-c' style={{ padding: "8px 8px 8px 0" }}>
+        <div className='nav-q'>
+          <div className='nav-section'>
+            <MyStuff />
+            <span className='nav-p'>My Stuff</span>
+          </div>
+
+          <div className='nav-o'>
+            <span>Online Status</span>
+          </div>
+
+          <a className='nav-o' href={`/u/${authstate.name}`}>
+            <span>Profile</span>
+          </a>
+
+          <div className='nav-o'>
+            <span>Create Avatar</span>
+          </div>
+
+          <div className='nav-o' style={{ marginBottom: "12px" }}>
+            <span>User Settings</span>
+          </div>
+
+          <div className='nav-div' style={{ margin: 0 }} />
+        </div>
+
+        <div className='nav-q'>
+          <div className='nav-section'>
+            <ViewOptions />
+            <span className='nav-p'>View Options</span>
+          </div>
+
+          <div className='nav-o'>
+            <span>Mod Mode</span>
+          </div>
+
+          <div className='nav-o'>
+            <span>Dark Mode</span>
+          </div>
+        </div>
+      </div>
+
       {/*NOT LOGGED IN */}
       {!authstate?.id && (
         <div className='nav-c'>
           <a className='nav-opt' id='nav-nmode'>
-            {!isNmodeHovered ? <NmodeNotHovered /> : <NmodeHovered />}
+            <div className='nav-d2'>
+              <NmodeNotHovered />
+            </div>
+            <div className='nav-d1'>
+              <NmodeHovered />
+            </div>
             <span className='nav-opttext'>Dark Mode</span>
           </a>
 
           <a className='nav-opt' id='nav-help'>
-            {!isHelpHovered ? <HelpNoHover /> : <HelpHovered />}
+            <div className='nav-d2'>
+              <HelpNoHover />
+            </div>
+            <div className='nav-d1'>
+              <HelpHovered />
+            </div>
             <span className='nav-opttext'>Help Center</span>
           </a>
 
           <a className='nav-opt' id='nav-more'>
-            {!isMoreHovered ? <MoreNotHovered /> : <MoreHovered />}
+            <div className='nav-d2'>
+              <MoreNotHovered />
+            </div>
+            <div className='nav-d1'>
+              <MoreHovered />
+            </div>
             <span className='nav-opttext'>More</span>
           </a>
 
           <a className='nav-opt' id='nav-terms'>
-            {!isTermsHovered ? <TermsNotHovered /> : <TermsHovered />}
+            <div className='nav-d2'>
+              <TermsNotHovered />
+            </div>
+
+            <div className='nav-d1'>
+              <TermsHovered />
+            </div>
+
             <span className='nav-opttext'>Terms & Policies</span>
           </a>
 
           <a className='nav-opt' role='button' id='nav-ad'>
-            {!isAdHovered ? <AdNoHover /> : <AdHovered />}
+            <div className='nav-d2'>
+              <AdNoHover />
+            </div>
+
+            <div className='nav-d1'>
+              <AdHovered />
+            </div>
             <span className='nav-opttext'>Advertise on Reddit</span>
           </a>
 
@@ -146,7 +158,13 @@ const NavRight = ({
             id='nav-logout'
             href='/login'
           >
-            {!isHoveredAuth ? <AuthIconNoHover /> : <AuthIconHovered />}
+            <div className='nav-d1'>
+              <AuthIconHovered />
+            </div>
+            <div className='nav-d2'>
+              <AuthIconNoHover />
+            </div>
+
             <span className='nav-opttext'>Log In / Sign Up</span>
           </a>
         </div>
