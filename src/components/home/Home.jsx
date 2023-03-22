@@ -17,6 +17,7 @@ import {
 import { setScp } from "../../store/scp/scpConditional";
 import { setOverlayState } from "../../store/postoverlays/shareOverlay";
 import { setThreeState } from "../../store/postoverlays/threeDotOverlay";
+import { dispatchSetAOS } from "../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 
 import ClipSvg from "./homesvgs/ClipSvg";
 import DefaultPfp from "./homesvgs/DefaultPfp";
@@ -63,6 +64,11 @@ const Home = () => {
   }
 
   function handleUpvote(post) {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: post.id,
       userid: authState.id,
@@ -71,6 +77,11 @@ const Home = () => {
   }
 
   function handleDownvote(post) {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "vote" }));
+      return;
+    }
+
     const info = {
       postid: post.id,
       userid: authState.id,
@@ -116,47 +127,9 @@ const Home = () => {
 
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
   //we will close the overlay
+
   useEffect(() => {
-    $(document)
-      .off()
-      .click(function (event) {
-        let run = true;
-        let run2 = true;
-        var $target = $(event.target);
-
-        //prevents run if the element clicked is another share button
-        const l = document.getElementsByClassName("post-share");
-        const m = document.getElementsByClassName("threedot");
-        Array.prototype.forEach.call(l, function (r) {
-          if ($target.closest(r).length) {
-            run = false;
-            return false;
-          }
-        });
-
-        Array.prototype.forEach.call(m, function (r) {
-          if ($target.closest(r).length) {
-            run2 = false;
-            return false;
-          }
-        });
-
-        if (
-          !$target.closest("#tdot-overlay").length &&
-          $("#tdot-overlay").is(":visible") &&
-          run2
-        ) {
-          dispatch(setThreeState({ display: false }));
-        }
-
-        if (
-          !$target.closest("#share-overlay").length &&
-          $("#share-overlay").is(":visible") &&
-          run
-        ) {
-          dispatch(setOverlayState({ display: false }));
-        }
-      });
+    $(document).off("click", document, clickout).click(clickout);
   }, []);
 
   //resize handling
@@ -178,6 +151,45 @@ const Home = () => {
     }
 
     setScrollpos(window.scrollY);
+  }, []);
+
+  const clickout = useCallback(() => {
+    let run = true;
+    let run2 = true;
+    var $target = $(event.target);
+
+    //prevents run if the element clicked is another share button
+    const l = document.getElementsByClassName("post-share");
+    const m = document.getElementsByClassName("threedot");
+    Array.prototype.forEach.call(l, function (r) {
+      if ($target.closest(r).length) {
+        run = false;
+        return false;
+      }
+    });
+
+    Array.prototype.forEach.call(m, function (r) {
+      if ($target.closest(r).length) {
+        run2 = false;
+        return false;
+      }
+    });
+
+    if (
+      !$target.closest("#tdot-overlay").length &&
+      $("#tdot-overlay").is(":visible") &&
+      run2
+    ) {
+      dispatch(setThreeState({ display: false }));
+    }
+
+    if (
+      !$target.closest("#share-overlay").length &&
+      $("#share-overlay").is(":visible") &&
+      run
+    ) {
+      dispatch(setOverlayState({ display: false }));
+    }
   }, []);
 
   useEffect(() => {

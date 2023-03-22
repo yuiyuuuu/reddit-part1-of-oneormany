@@ -13,19 +13,15 @@ import PlusSvgIcon from "./navsvgs/PlusSvgIcon";
 import AdvertiseIconSvg from "./navsvgs/AdvertiseIconSvg";
 import DownArrowPfp from "./navsvgs/DownArrowPfp";
 import NotLoggedInPfp from "./navsvgs/NotLoggedInPfp";
-import LogoutIcon from "./navsvgs/rightoverlay/LogoutIcon";
 import DownArrowCommunities from "./navsvgs/DownArrowCommunities";
 import RedditIcon from "./navsvgs/RedditIcon";
 import RedditName from "./navsvgs/RedditName";
 import SearchIconSvg from "./navsvgs/SearchIconSvg";
-import LogoutIcon2 from "./navsvgs/rightoverlay/LogoutIcon2";
 
-import { logout } from "../../store/auth";
+import NavRight from "./popups/NavRight";
 
 const Nav = () => {
   const location = useLocation();
-  const params = useParams();
-  const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const communityStylingState = useSelector((state) => state.communityStyling);
   const selectedPost = useSelector((state) => state.selectedPost);
@@ -215,35 +211,13 @@ const Nav = () => {
           </div>
         </div>
       )}
-      <div
-        className='nav-rightoverlay'
-        style={{ display: showRightOverlay ? "flex" : "none" }}
-      >
-        <div style={{ width: "100%", height: "100%", padding: "8px 0px" }}>
-          {/* LOGGED IN */}
-          <button
-            className='nav-logout nav-rightoverlayhover'
-            style={{ display: showWhenLoggedIn("flex") }}
-          >
-            <LogoutIcon />
-            <span className='nav-logouttext' onClick={() => dispatch(logout())}>
-              Logout
-            </span>
-          </button>
 
-          {/*NOT LOGGED IN */}
-
-          <a
-            className='nav-logout nav-rightoverlayhover'
-            role='button'
-            style={{ display: showWhenNoLogin("flex") }}
-            href='/login'
-          >
-            <LogoutIcon2 />
-            <span className='nav-logouttext'>Log In / Sign Up</span>
-          </a>
-        </div>
-      </div>
+      <NavRight
+        showWhenLoggedIn={showWhenLoggedIn}
+        showWhenNoLogin={showWhenNoLogin}
+        showRightOverlay={showRightOverlay}
+        setShowRightOverlay={setShowRightOverlay}
+      />
       <div
         className='nav-communitiesoverlay'
         style={{ display: showCommunitiesOverlay ? "block" : "none" }}

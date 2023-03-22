@@ -475,48 +475,46 @@ const SingleCommunityPost = () => {
     }
   }, [window.location.href]);
 
-  useEffect(() => {
-    $(document)
-      .off()
-      .click(function (event) {
-        let run = true;
-        let run2 = true;
-        var $target = $(event.target);
+  const clickout = useCallback(() => {
+    let run = true;
+    let run2 = true;
+    var $target = $(event.target);
 
-        //prevents run if the element clicked is another share button
-        const l = document.getElementsByClassName("post-share");
-        const m = document.getElementsByClassName("threedot");
-        Array.prototype.forEach.call(l, function (r) {
-          if ($target.closest(r).length) {
-            run = false;
-            return false;
-          }
-        });
+    //prevents run if the element clicked is another share button
+    const l = document.getElementsByClassName("post-share");
+    const m = document.getElementsByClassName("threedot");
+    Array.prototype.forEach.call(l, function (r) {
+      if ($target.closest(r).length) {
+        run = false;
+        return false;
+      }
+    });
 
-        Array.prototype.forEach.call(m, function (r) {
-          if ($target.closest(r).length) {
-            run2 = false;
-            return false;
-          }
-        });
+    Array.prototype.forEach.call(m, function (r) {
+      if ($target.closest(r).length) {
+        run2 = false;
+        return false;
+      }
+    });
 
-        if (
-          !$target.closest("#tdot-overlay").length &&
-          $("#tdot-overlay").is(":visible") &&
-          run2
-        ) {
-          dispatch(setThreeStateSCP({ display: false }));
-        }
+    if (
+      !$target.closest("#tdot-overlay").length &&
+      $("#tdot-overlay").is(":visible") &&
+      run2
+    ) {
+      dispatch(setThreeStateSCP({ display: false }));
+    }
 
-        if (
-          !$target.closest("#share-overlay").length &&
-          $("#share-overlay").is(":visible") &&
-          run
-        ) {
-          dispatch(setOverlayStateSCP({ display: false }));
-        }
-      });
+    if (
+      !$target.closest("#share-overlay").length &&
+      $("#share-overlay").is(":visible") &&
+      run
+    ) {
+      dispatch(setOverlayStateSCP({ display: false }));
+    }
   }, []);
+
+  $(document).off("click", document, clickout).click(clickout);
 
   const resizeShare = useCallback(() => {
     dispatch(setOverlayStateSCP({ display: false }));

@@ -198,88 +198,48 @@ const SingleCommunity = () => {
     };
   }, []);
 
-  //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
-  //we will close the overlay
-  // useEffect(() => {
-  //   // $(document).off().click(function (event) {
-  //   //   console.log("ran");
-  //   //   let run = true;
-  //   //   let run2 = true;
-  //   //   var $target = $(event.target);
-  //   //   //prevents run if the element clicked is another share button
-  //   //   const l = document.getElementsByClassName("post-share");
-  //   //   const m = document.getElementsByClassName("threedot");
-  //   //   Array.prototype.forEach.call(l, function (r) {
-  //   //     if ($target.closest(r).length) {
-  //   //       run = false;
-  //   //       return false;
-  //   //     }
-  //   //   });
-  //   //   Array.prototype.forEach.call(m, function (r) {
-  //   //     if ($target.closest(r).length) {
-  //   //       run2 = false;
-  //   //       return false;
-  //   //     }
-  //   //   });
-  //   //   if (
-  //   //     !$target.closest("#tdot-overlay").length &&
-  //   //     $("#tdot-overlay").is(":visible") &&
-  //   //     run2
-  //   //   ) {
-  //   //     dispatch(setThreeState({ display: false }));
-  //   //   }
-  //   //   if (
-  //   //     !$target.closest("#share-overlay").length &&
-  //   //     $("#share-overlay").is(":visible") &&
-  //   //     run
-  //   //   ) {
-  //   //     dispatch(setOverlayState({ display: false }));
-  //   //   }
-  //   // });
-  // }, []);
+  const closeOverlay = useCallback(() => {
+    let run = true;
+    let run2 = true;
+    var $target = $(event.target);
 
-  $(document)
-    .off()
-    .click(function (event) {
-      console.log("ran");
-
-      let run = true;
-      let run2 = true;
-      var $target = $(event.target);
-
-      //prevents run if the element clicked is another share button
-      const l = document.getElementsByClassName("post-share");
-      const m = document.getElementsByClassName("threedot");
-      Array.prototype.forEach.call(l, function (r) {
-        if ($target.closest(r).length) {
-          run = false;
-          return false;
-        }
-      });
-
-      Array.prototype.forEach.call(m, function (r) {
-        if ($target.closest(r).length) {
-          run2 = false;
-          return false;
-        }
-      });
-
-      if (
-        !$target.closest("#tdot-overlay").length &&
-        $("#tdot-overlay").is(":visible") &&
-        run2
-      ) {
-        dispatch(setThreeState({ display: false }));
-      }
-
-      if (
-        !$target.closest("#share-overlay").length &&
-        $("#share-overlay").is(":visible") &&
-        run
-      ) {
-        dispatch(setOverlayState({ display: false }));
+    //prevents run if the element clicked is another share button
+    const l = document.getElementsByClassName("post-share");
+    const m = document.getElementsByClassName("threedot");
+    Array.prototype.forEach.call(l, function (r) {
+      if ($target.closest(r).length) {
+        run = false;
+        return false;
       }
     });
+
+    Array.prototype.forEach.call(m, function (r) {
+      if ($target.closest(r).length) {
+        run2 = false;
+        return false;
+      }
+    });
+
+    if (
+      !$target.closest("#tdot-overlay").length &&
+      $("#tdot-overlay").is(":visible") &&
+      run2
+    ) {
+      dispatch(setThreeState({ display: false }));
+    }
+
+    if (
+      !$target.closest("#share-overlay").length &&
+      $("#share-overlay").is(":visible") &&
+      run
+    ) {
+      dispatch(setOverlayState({ display: false }));
+    }
+  }, []);
+
+  //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
+  //we will close the overlay
+  $(document).off("click", document, closeOverlay).click(closeOverlay);
 
   useEffect(() => {
     const id = params.id;

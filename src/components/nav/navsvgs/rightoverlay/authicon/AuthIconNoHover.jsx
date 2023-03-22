@@ -1,6 +1,6 @@
 import React from "react";
 
-const LogoutIcon2 = () => {
+const AuthIconNoHover = () => {
   return (
     <svg
       width='20'
@@ -35,4 +35,4 @@ const LogoutIcon2 = () => {
   );
 };
 
-export default LogoutIcon2;
+export default AuthIconNoHover;

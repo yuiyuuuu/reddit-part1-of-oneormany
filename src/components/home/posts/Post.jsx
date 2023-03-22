@@ -259,7 +259,15 @@ const Post = ({
               <DownVoteSvg id={post.id} />
             </div>
           </div>
-          <div className='posts-comment' onClick={(e) => e.stopPropagation()}>
+          <div
+            className='posts-comment'
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(setScp(scp || null));
+              dispatch(setSelectedPost(post));
+              navigate(`/r/${post.community.name}/comments/${post.id}`);
+            }}
+          >
             <CommentSvg />
             <span className='span-comment'>
               {post.comments.length} Comments

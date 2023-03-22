@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   dispatchPushNewComments,
@@ -10,6 +10,8 @@ import {
 } from "../../../../store/comments/comments";
 import { dispatchClearNewCommentState } from "../../../../store/comments/newComments";
 
+import $ from "jquery";
+
 const SortCommentsListPopup = ({
   selectedSort,
   setSelectedSort,
@@ -18,6 +20,20 @@ const SortCommentsListPopup = ({
 }) => {
   const dispatch = useDispatch();
   const newCommentState = useSelector((state) => state.newComments);
+
+  const clickout = useCallback(() => {
+    var $target = $(event.target);
+
+    if (
+      !$target.closest(".scl-parent").length &&
+      $(".scl-parent").is(":visible") &&
+      !$target.closest(".sc-sortby").length
+    ) {
+      setShowCommentSortOverlay(false);
+    }
+  }, []);
+
+  $(document).off("click", document, clickout).click(clickout);
 
   return (
     <div>
