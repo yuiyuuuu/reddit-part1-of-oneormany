@@ -904,7 +904,7 @@ const SingleCommunityPost = () => {
           setShowCommentSortOverlay={setShowCommentSortOverlay}
         />
 
-        <ShareOverlaySCP />
+        <ShareOverlaySCP set={setOverlayStateSCP} />
         <ThreeDotOverlaySCP />
       </div>
     </div>
