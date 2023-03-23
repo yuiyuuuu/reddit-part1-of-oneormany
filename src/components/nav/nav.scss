@@ -280,6 +280,9 @@
   background-color: white;
   border-radius: 4px;
   border: 1px solid #edeff1;
+
+  max-height: 80%;
+  overflow-y: scroll;
 }
 
 .nav-opt {
@@ -288,6 +291,7 @@
   flex-direction: row;
   align-items: center;
   height: 40px;
+  position: relative;
 
   &:hover {
     background-color: #0079d3;
@@ -299,6 +303,14 @@
 
     & > .nav-d2 {
       display: none;
+    }
+
+    & > .nav-caret::before {
+      background-color: white;
+    }
+
+    & > .nav-caret::after {
+      background-color: white;
     }
   }
 }
@@ -365,5 +377,101 @@
 }
 
 .nav-q {
+  margin-bottom: 12px;
+}
+
+.nav-mri {
+  margin-left: 12px;
+}
+
+.nav-oe {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0 20px;
+  margin: 2.5px 0;
+  position: relative;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.nav-mrit {
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-p2 {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 300;
+}
+
+.nav-cr {
+  padding: 12px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #878a8c;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.nav-caret {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 30px;
+  display: flex;
+  align-items: center;
+  transition: 0.5s all ease;
+
+  &::before {
+    content: "";
+    width: 8px;
+    height: 1px;
+    background-color: black;
+    transform: rotate(45deg);
+    margin-right: -2.8px;
+  }
+
+  &::after {
+    content: "";
+    width: 8px;
+    height: 1px;
+    background-color: black;
+    transform: rotate(-45deg);
+  }
+}
+
+.nav-childoptionparent {
+  margin: 0 20px 12px 52px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #edeff1;
+}
+
+.nav-oep {
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.nav-m {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #edeff1;
   margin-bottom: 12px;
 }

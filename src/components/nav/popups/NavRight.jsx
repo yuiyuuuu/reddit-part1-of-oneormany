@@ -19,6 +19,18 @@ import NmodeNotHovered from "../navsvgs/rightoverlay/nightmode/NmodeNotHovered";
 import NmodeHovered from "../navsvgs/rightoverlay/nightmode/NmodeHovered";
 import MyStuff from "../navsvgs/rightoverlay/loggedin/MyStuff";
 import ViewOptions from "../navsvgs/rightoverlay/loggedin/ViewOptions";
+import CreateCommunityIconSvg from "../navsvgs/rightoverlay/loggedin/CreateCommunityIconSvg";
+import Advertise from "../navsvgs/rightoverlay/loggedin/Advertise";
+import CoinsIconSvg from "../navsvgs/CoinsIconSvg";
+import PremiumIconSvg from "../navsvgs/rightoverlay/loggedin/PremiumIconSvg";
+import ExploreIconSvg from "../navsvgs/rightoverlay/loggedin/ExploreIconSvg";
+import HelpIcon from "../navsvgs/rightoverlay/loggedin/HelpIcon";
+import MoreIcon from "../navsvgs/rightoverlay/loggedin/MoreIconSvg";
+import Terms from "../navsvgs/rightoverlay/loggedin/Terms";
+import LogoutIconSvg from "../navsvgs/rightoverlay/loggedin/LogoutIconSvg";
+import NavChildSections from "./NavChildSections";
+import NavMapOE from "./NavMapOE";
+import { more, terms } from "./sectionobj";
 
 const NavRight = ({
   showWhenLoggedIn,
@@ -29,6 +41,17 @@ const NavRight = ({
   const dispatch = useDispatch();
 
   const authstate = useSelector((state) => state.auth);
+
+  const [exploreActive, setExploreActive] = useState(false);
+  const [moreActive, setMoreActive] = useState(false);
+  const [termsActive, setTermsActive] = useState(false);
+
+  function handleLogout() {
+    dispatch(logout());
+    setExploreActive(false);
+    setMoreActive(false);
+    setTermsActive(false);
+  }
 
   const clickout = useCallback(() => {
     var $target = $(event.target);
@@ -49,47 +72,130 @@ const NavRight = ({
       style={{ display: showRightOverlay ? "flex" : "none" }}
     >
       {/* LOGGED IN */}
-      <div className='nav-c' style={{ padding: "8px 8px 8px 0" }}>
-        <div className='nav-q'>
-          <div className='nav-section'>
-            <MyStuff />
-            <span className='nav-p'>My Stuff</span>
+      {authstate?.id && (
+        <div className='nav-c' style={{ padding: "8px 8px 8px 0" }}>
+          <div className='nav-q'>
+            <div className='nav-section'>
+              <MyStuff />
+              <span className='nav-p'>My Stuff</span>
+            </div>
+
+            <div className='nav-o'>
+              <span>Online Status</span>
+            </div>
+
+            <a className='nav-o' href={`/u/${authstate.name}`}>
+              <span>Profile</span>
+            </a>
+
+            <div className='nav-o'>
+              <span>Create Avatar</span>
+            </div>
+
+            <div className='nav-o' style={{ marginBottom: "12px" }}>
+              <span>User Settings</span>
+            </div>
+
+            <div className='nav-div' style={{ margin: 0 }} />
           </div>
 
-          <div className='nav-o'>
-            <span>Online Status</span>
+          <div className='nav-q'>
+            <div className='nav-section'>
+              <ViewOptions />
+              <span className='nav-p'>View Options</span>
+            </div>
+
+            <div className='nav-o'>
+              <span>Mod Mode</span>
+            </div>
+
+            <div className='nav-o' style={{ marginBottom: "12px" }}>
+              <span>Dark Mode</span>
+            </div>
+
+            <div className='nav-div' style={{ margin: 0 }} />
           </div>
 
-          <a className='nav-o' href={`/u/${authstate.name}`}>
-            <span>Profile</span>
-          </a>
-
-          <div className='nav-o'>
-            <span>Create Avatar</span>
+          <div className='nav-oe'>
+            <CreateCommunityIconSvg />
+            <span className='nav-mri'>Create a Community</span>
           </div>
 
-          <div className='nav-o' style={{ marginBottom: "12px" }}>
-            <span>User Settings</span>
+          <div className='nav-oe'>
+            <Advertise />
+            <span className='nav-mri'>Advertise on Reddit</span>
           </div>
 
-          <div className='nav-div' style={{ margin: 0 }} />
+          <div className='nav-oe'>
+            <CoinsIconSvg />
+            <div className='nav-mrit'>
+              <span>Coins</span>
+              <span className='nav-p2'>0 Coins</span>
+            </div>
+          </div>
+
+          <div className='nav-oe'>
+            <PremiumIconSvg />
+            <span className='nav-mri'>Premium</span>
+          </div>
+
+          <div
+            className='nav-oe'
+            onClick={() => setExploreActive((prev) => !prev)}
+          >
+            <ExploreIconSvg />
+            <span className='nav-mri'>Explore</span>
+            <div
+              className='nav-caret'
+              id='nav-explorecaret'
+              style={{ transform: exploreActive && "rotate(-180deg)" }}
+            />
+          </div>
+
+          {exploreActive && <NavChildSections />}
+
+          <div className='nav-oe'>
+            <HelpIcon />
+            <span className='nav-mri'>Help Center</span>
+          </div>
+
+          <div
+            className='nav-oe'
+            onClick={() => setMoreActive((prev) => !prev)}
+          >
+            <MoreIcon />
+            <span className='nav-mri'>More</span>
+
+            <div
+              className='nav-caret'
+              style={{ transform: moreActive && "rotate(-180deg)" }}
+            />
+          </div>
+
+          {moreActive && <NavMapOE item={more} />}
+
+          <div
+            className='nav-oe'
+            onClick={() => setTermsActive((prev) => !prev)}
+          >
+            <Terms />
+            <span className='nav-mri'>Terms and Policies</span>
+            <div
+              className='nav-caret'
+              style={{ transform: termsActive && "rotate(-180deg)" }}
+            />
+          </div>
+
+          {termsActive && <NavMapOE item={terms} />}
+
+          <div className='nav-oe' onClick={() => handleLogout()}>
+            <LogoutIconSvg />
+            <span className='nav-mri'>Log Out</span>
+          </div>
+
+          <div className='nav-cr'>© 2023 Reddit, Inc. All rights reserved</div>
         </div>
-
-        <div className='nav-q'>
-          <div className='nav-section'>
-            <ViewOptions />
-            <span className='nav-p'>View Options</span>
-          </div>
-
-          <div className='nav-o'>
-            <span>Mod Mode</span>
-          </div>
-
-          <div className='nav-o'>
-            <span>Dark Mode</span>
-          </div>
-        </div>
-      </div>
+      )}
 
       {/*NOT LOGGED IN */}
       {!authstate?.id && (
@@ -114,7 +220,11 @@ const NavRight = ({
             <span className='nav-opttext'>Help Center</span>
           </a>
 
-          <a className='nav-opt' id='nav-more'>
+          <a
+            className='nav-opt'
+            id='nav-more'
+            onClick={() => setMoreActive((prev) => !prev)}
+          >
             <div className='nav-d2'>
               <MoreNotHovered />
             </div>
@@ -122,9 +232,19 @@ const NavRight = ({
               <MoreHovered />
             </div>
             <span className='nav-opttext'>More</span>
+            <div
+              className='nav-caret'
+              style={{ transform: moreActive && "rotate(-180deg)" }}
+            />
           </a>
 
-          <a className='nav-opt' id='nav-terms'>
+          {moreActive && <NavMapOE item={more} auth={authstate} />}
+
+          <a
+            className='nav-opt'
+            id='nav-terms'
+            onClick={() => setTermsActive((prev) => !prev)}
+          >
             <div className='nav-d2'>
               <TermsNotHovered />
             </div>
@@ -134,7 +254,13 @@ const NavRight = ({
             </div>
 
             <span className='nav-opttext'>Terms & Policies</span>
+            <div
+              className='nav-caret'
+              style={{ transform: termsActive && "rotate(-180deg)" }}
+            />
           </a>
+
+          {termsActive && <NavMapOE item={terms} auth={authstate} />}
 
           <a className='nav-opt' role='button' id='nav-ad'>
             <div className='nav-d2'>
