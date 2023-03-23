@@ -433,7 +433,7 @@
   right: 18px;
   display: flex;
   align-items: center;
-  transition: 0.5s all ease;
+  transition: 0.3s all ease;
 
   &::before {
     content: "";
@@ -464,6 +464,7 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  display: flex;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);

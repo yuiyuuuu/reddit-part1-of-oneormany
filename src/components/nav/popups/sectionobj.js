@@ -31,7 +31,7 @@ const explore = [
   },
 
   {
-    name: "Business, Economics, ...",
+    name: "Business, Economics, and Finance",
     children: [
       "GameStop",
       "Moderna",
@@ -62,16 +62,60 @@ const explore = [
   {
     name: "Television",
     children: [
-      "The Real Housewives ...",
+      "The Real Housewives of Atlanta",
       "The Bachelor",
       "Sister Wives",
       "90 Day Fiance",
       "Wife Swap",
-      "The Amazing Race Au ... ",
+      "The Amazing Race Australia",
       "Married at First Sight",
-      "The Real Housewives ... ",
+      "The Real Housewives of Dallas",
       "My 600-lb Life",
-      "Last Week Tonight wit ... ",
+      "Last Week Tonight with John Oliver",
+    ],
+  },
+
+  {
+    name: "Celebrity",
+    children: [
+      "Kim Kardashian",
+      "Doja Cat",
+      "Iggy Azalea",
+      "Anya Taylor-Joy",
+      "Jamie Lee Curtis",
+      "Natalie Portman",
+      "Henry Cavill",
+    ],
+  },
+
+  {
+    name: "More Topics",
+    children: [
+      "Animals and Pets",
+      "Anime",
+      "Art",
+      "Cars and Motor Vehicles",
+      "Crafts and DIY",
+      "Culture, Race, and Ethnicity",
+      "Ethics and Philosophy",
+      "Fashion",
+      "Food and Drink",
+      "History",
+      "Hobbies",
+      "Law",
+      "Learning and Education",
+      "Military",
+      "Movies",
+      "Music",
+      "Place",
+      "Podcasts and Streamers",
+      "Programming",
+      "Reading, Writing, and Literature",
+      "Religion and Spirituality",
+      "Science",
+      "Tabletop Games",
+      "Technology",
+      "Travel",
     ],
   },
 ];

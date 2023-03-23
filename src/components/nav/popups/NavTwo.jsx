@@ -9,7 +9,7 @@ const NavTwo = ({ item }) => {
     <div>
       <div onClick={() => setActive((prev) => !prev)} className='nav-oe'>
         <span className='nav-mri nav-h' style={{ marginLeft: "32px" }}>
-          {item.name}
+          {item.name.length > 18 ? item.name.slice(0, 18) + "..." : item.name}
         </span>
 
         <div
