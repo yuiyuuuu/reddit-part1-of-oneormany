@@ -366,10 +366,10 @@
   flex-direction: row;
   align-items: center;
   cursor: pointer;
-  width: 100%;
   font-size: 15px;
   font-weight: 500;
   padding: 0 16px 0 52px;
+  position: relative;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
@@ -430,7 +430,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 30px;
+  right: 18px;
   display: flex;
   align-items: center;
   transition: 0.5s all ease;
@@ -474,4 +474,32 @@
   padding-bottom: 12px;
   border-bottom: 1px solid #edeff1;
   margin-bottom: 12px;
+}
+
+.nav-pill {
+  width: 37.5px;
+  border-radius: 100px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 18px;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+}
+
+.nav-ball {
+  width: 19.5px;
+  height: 19.5px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.nav-h {
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
 }

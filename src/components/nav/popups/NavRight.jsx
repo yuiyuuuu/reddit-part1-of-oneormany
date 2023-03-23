@@ -2,8 +2,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { logout } from "../../../store/auth";
+import { dispatchSetAOL } from "../../../globalcomponents/authoverlaylogin/authOverlayLoginStates";
 
 import $ from "jquery";
+
+import { more, terms } from "./sectionobj";
 
 import AuthIconNoHover from "../navsvgs/rightoverlay/authicon/AuthIconNoHover";
 import AuthIconHovered from "../navsvgs/rightoverlay/authicon/AuthIconHovered";
@@ -30,7 +33,7 @@ import Terms from "../navsvgs/rightoverlay/loggedin/Terms";
 import LogoutIconSvg from "../navsvgs/rightoverlay/loggedin/LogoutIconSvg";
 import NavChildSections from "./NavChildSections";
 import NavMapOE from "./NavMapOE";
-import { more, terms } from "./sectionobj";
+import NavSwitch from "./NavSwitch";
 
 const NavRight = ({
   showWhenLoggedIn,
@@ -45,6 +48,11 @@ const NavRight = ({
   const [exploreActive, setExploreActive] = useState(false);
   const [moreActive, setMoreActive] = useState(false);
   const [termsActive, setTermsActive] = useState(false);
+
+  //testing, will add api, set these conditions when they are in db and api setup
+  const [darkMode, setDarkMode] = useState(false);
+  const [onlineStatus, setOnlineStatus] = useState(false);
+  const [modMode, setModMode] = useState(false);
 
   function handleLogout() {
     dispatch(logout());
@@ -82,6 +90,11 @@ const NavRight = ({
 
             <div className='nav-o'>
               <span>Online Status</span>
+
+              <NavSwitch
+                condition={onlineStatus}
+                setCondition={setOnlineStatus}
+              />
             </div>
 
             <a className='nav-o' href={`/u/${authstate.name}`}>
@@ -107,10 +120,13 @@ const NavRight = ({
 
             <div className='nav-o'>
               <span>Mod Mode</span>
+
+              <NavSwitch condition={modMode} setCondition={setModMode} />
             </div>
 
             <div className='nav-o' style={{ marginBottom: "12px" }}>
               <span>Dark Mode</span>
+              <NavSwitch condition={darkMode} setCondition={setDarkMode} />
             </div>
 
             <div className='nav-div' style={{ margin: 0 }} />
@@ -208,6 +224,7 @@ const NavRight = ({
               <NmodeHovered />
             </div>
             <span className='nav-opttext'>Dark Mode</span>
+            <NavSwitch condition={darkMode} setCondition={setDarkMode} />
           </a>
 
           <a className='nav-opt' id='nav-help'>
@@ -282,7 +299,10 @@ const NavRight = ({
               display: showWhenNoLogin("flex"),
             }}
             id='nav-logout'
-            href='/login'
+            onClick={() => {
+              dispatch(dispatchSetAOL({ display: true, which: "" }));
+              setShowRightOverlay(false);
+            }}
           >
             <div className='nav-d1'>
               <AuthIconHovered />
@@ -300,14 +320,3 @@ const NavRight = ({
 };
 
 export default NavRight;
-
-/**      
-<button
-className='nav-logout nav-rightoverlayhover'
-style={{ display: showWhenLoggedIn("flex") }}
->
-<LogoutIcon />
-<span className='nav-logouttext' onClick={() => dispatch(logout())}>
-  Logout
-</span>
-</button> */

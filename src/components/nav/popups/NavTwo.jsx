@@ -8,7 +8,7 @@ const NavTwo = ({ item }) => {
   return (
     <div>
       <div onClick={() => setActive((prev) => !prev)} className='nav-oe'>
-        <span className='nav-mri' style={{ marginLeft: "32px" }}>
+        <span className='nav-mri nav-h' style={{ marginLeft: "32px" }}>
           {item.name}
         </span>
 
