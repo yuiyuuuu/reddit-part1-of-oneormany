@@ -6,7 +6,8 @@ export const dispatchSetLeftNavState = (state) => ({
 });
 
 //display = false = no display
-export default function (state = false, action) {
+//set true for now for testing, will change to false later
+export default function (state = true, action) {
   switch (action.type) {
     case SET_LEFTNAV_STATE:
       return action.state;

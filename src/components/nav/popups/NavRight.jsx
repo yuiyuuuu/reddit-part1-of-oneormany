@@ -88,13 +88,13 @@ const NavRight = ({
               <span className='nav-p'>My Stuff</span>
             </div>
 
-            <div className='nav-o'>
+            <div
+              className='nav-o'
+              onClick={() => setOnlineStatus((prev) => !prev)}
+            >
               <span>Online Status</span>
 
-              <NavSwitch
-                condition={onlineStatus}
-                setCondition={setOnlineStatus}
-              />
+              <NavSwitch condition={onlineStatus} />
             </div>
 
             <a className='nav-o' href={`/u/${authstate.name}`}>
@@ -118,15 +118,19 @@ const NavRight = ({
               <span className='nav-p'>View Options</span>
             </div>
 
-            <div className='nav-o'>
+            <div className='nav-o' onClick={() => setModMode((prev) => !prev)}>
               <span>Mod Mode</span>
 
-              <NavSwitch condition={modMode} setCondition={setModMode} />
+              <NavSwitch condition={modMode} />
             </div>
 
-            <div className='nav-o' style={{ marginBottom: "12px" }}>
+            <div
+              className='nav-o'
+              style={{ marginBottom: "12px" }}
+              onClick={() => setDarkMode((prev) => !prev)}
+            >
               <span>Dark Mode</span>
-              <NavSwitch condition={darkMode} setCondition={setDarkMode} />
+              <NavSwitch condition={darkMode} />
             </div>
 
             <div className='nav-div' style={{ margin: 0 }} />
@@ -216,7 +220,11 @@ const NavRight = ({
       {/*NOT LOGGED IN */}
       {!authstate?.id && (
         <div className='nav-c'>
-          <a className='nav-opt' id='nav-nmode'>
+          <a
+            className='nav-opt'
+            id='nav-nmode'
+            onClick={() => setDarkMode((prev) => !prev)}
+          >
             <div className='nav-d2'>
               <NmodeNotHovered />
             </div>
@@ -224,7 +232,7 @@ const NavRight = ({
               <NmodeHovered />
             </div>
             <span className='nav-opttext'>Dark Mode</span>
-            <NavSwitch condition={darkMode} setCondition={setDarkMode} />
+            <NavSwitch condition={darkMode} />
           </a>
 
           <a className='nav-opt' id='nav-help'>

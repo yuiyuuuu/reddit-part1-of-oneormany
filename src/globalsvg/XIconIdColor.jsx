@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-const XIconIdColor = ({ color, size, id }) => {
+const XIconIdColor = ({ color, size, id, f, v, dis }) => {
   const dispatch = useDispatch();
   return (
     <svg
@@ -14,6 +14,7 @@ const XIconIdColor = ({ color, size, id }) => {
         cursor: "pointer",
       }}
       id={`x-${id}`}
+      onClick={() => (f && dis ? dispatch(f(v)) : f(v))}
     >
       <polygon
         fill='inherit'

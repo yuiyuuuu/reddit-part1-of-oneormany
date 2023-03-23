@@ -14,6 +14,7 @@ const DefaultCommunitiesIcon = ({ fillcolor, height, community }) => {
         background: "white",
         boxSizing: "border-box",
         marginRight: "4px",
+        display: "flex",
       }}
       id={`comdefaulticon-${community?.id}`}
     >

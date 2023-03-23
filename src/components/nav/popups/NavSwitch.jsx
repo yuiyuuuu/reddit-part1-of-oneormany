@@ -1,11 +1,10 @@
 import React from "react";
 
-const NavSwitch = ({ condition, setCondition }) => {
+const NavSwitch = ({ condition }) => {
   return (
     <div
       className='nav-pill'
       style={{ background: condition ? "#24a0ed" : "rgba(26,26,27,0.1)" }}
-      onClick={() => setCondition((prev) => !prev)}
     >
       <div
         className='nav-ball'

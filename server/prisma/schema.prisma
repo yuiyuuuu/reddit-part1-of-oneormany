@@ -47,7 +47,7 @@ model Community{
 //owner and moderators
   owner User? @relation("owner", fields:[ownerId], references: [id])
   ownerId String?
-  moderators String []
+  moderators User [] @relation("moderator")
 
   //banner stuff
   bannerColor String?
@@ -59,6 +59,9 @@ model Community{
   themeBaseColor String @default("33A8FF")
   themeHighlightColor String @default("0079D3")
   themeBodyColor String @default("DAE0E6")
+
+  //favorited by
+  favoriteUsers User[] @relation("favorite")//many to many example
 }
 
 enum BannerSize{
@@ -85,6 +88,8 @@ model User {
   communities Community[]
   posts Post[] 
   communityOwner Community[] @relation("owner")
+  moderatorCommunities Community [] @relation("moderator")
+  favoriteCommunities Community[] @relation("favorite") //many to many example
 }
 
 model Comment {

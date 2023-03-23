@@ -35,6 +35,7 @@ const Home = () => {
   const posts = useSelector((state) => state.posts);
   const authState = useSelector((state) => state.auth);
   const selectedPost = useSelector((state) => state.selectedPost);
+  const lnState = useSelector((state) => state.lnState);
 
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
   const [scrollPos, setScrollpos] = useState(0);
@@ -248,7 +249,7 @@ const Home = () => {
   return (
     <div>
       <div className='heightholder' />
-      <div className='parent-home'>
+      <div className='parent-home' style={{ paddingLeft: lnState && "270px" }}>
         <div className='inner-home'>
           <div className='home-feed'>
             <div

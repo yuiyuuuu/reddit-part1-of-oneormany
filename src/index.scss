@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300&display=swap");
 
 * {
-  // background-color: #dae0e6;
   margin: 0;
 }
 
@@ -28,6 +27,7 @@ input {
   color: #1c1c1c;
   outline: none;
   border: none;
+  font-family: verdana;
 }
 
 pre {

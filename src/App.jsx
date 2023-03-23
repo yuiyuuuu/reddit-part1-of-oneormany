@@ -24,6 +24,8 @@ import SingleCommunityPostNotOverlay from "./components/communities/SingleCommun
 import SingleCommunityPost from "./components/communities/SingleCommunityPost/SingleCommunityPost";
 import { setScrollPosition } from "./store/global/scrollPosition";
 import Alert from "./globalcomponents/alerts/Alert";
+import LeftNavigation from "./globalcomponents/LeftNavigation/LeftNavigation";
+import { dispatchSetLeftNavState } from "./globalcomponents/LeftNavigation/leftnavigationstates";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +43,7 @@ function App() {
   const scp = useSelector((state) => state.scp);
   const selectedPost = useSelector((state) => state.selectedPost);
   const alertsQueue = useSelector((state) => state.alerts);
+  const lnState = useSelector((state) => state.lnState);
 
   //single community post -- that way the overlay will pop up where the user last was
   let Component = routeObject[scp];
@@ -51,6 +54,20 @@ function App() {
 
   const scroll = useCallback(() => {
     dispatch(setScrollPosition());
+  }, []);
+
+  useEffect(() => {
+    const item = window.localStorage.getItem("lnstate");
+
+    if (item === null) {
+      //if item is null, it means user is first time in this browser, so we will set it to true
+      //if it is false, then we do nothing since original state is false anyways
+      dispatch(dispatchSetLeftNavState(true));
+    }
+
+    if (item) {
+      dispatch(dispatchSetLeftNavState(true));
+    }
   }, []);
 
   useEffect(() => {
@@ -96,6 +113,8 @@ function App() {
       {selectedPost?.id ? scp ? <SingleCommunityPost /> : "" : ""}
 
       {alertsQueue.length !== 0 && <Alert />}
+
+      {lnState && <LeftNavigation lnState={lnState} />}
       <Routes>
         <Route exact path='/submit' element={<Submit />} />
         <Route exact path='/submit/:type' element={<Submit />} />

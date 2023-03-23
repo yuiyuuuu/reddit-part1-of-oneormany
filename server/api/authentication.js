@@ -42,6 +42,17 @@ router.post("/signup", async (req, res, next) => {
         name: username,
         password: encrypt,
       },
+      include: {
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        posts: true,
+        comments: true,
+        communityOwner: true,
+        moderatorCommunities: true,
+      },
     });
 
     res.send({
@@ -62,6 +73,17 @@ router.post("/login", async (req, res, next) => {
         mode: "insensitive", //username not case sensitive
         equals: username,
       },
+    },
+    include: {
+      communities: {
+        include: {
+          users: true,
+        },
+      },
+      posts: true,
+      comments: true,
+      communityOwner: true,
+      moderatorCommunities: true,
     },
   });
 
@@ -102,6 +124,9 @@ router.get("/getlocaldata", async (req, res, next) => {
           },
         },
         posts: true,
+        comments: true,
+        communityOwner: true,
+        moderatorCommunities: true,
       },
     });
 
