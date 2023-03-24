@@ -277,6 +277,7 @@ const SingleCommunity = () => {
 
   useEffect(() => {
     if (loading) return;
+    if (!$(".communities-backgroundimage")) return;
 
     const mainbot = document
       .querySelector(".communities-mainbot")
@@ -373,14 +374,16 @@ const SingleCommunity = () => {
           }}
         />
         <div style={{ width: "100%", backgroundColor: "white" }}>
-          <img
-            className='communities-backgroundimage'
-            style={{
-              backgroundImage:
-                communityState.image &&
-                `url(data:image/png;base64,${communityState.image})`,
-            }}
-          />
+          {communityState?.image && (
+            <img
+              className='communities-backgroundimage'
+              style={{
+                backgroundImage:
+                  communityState.image &&
+                  `url(data:image/png;base64,${communityState.image})`,
+              }}
+            />
+          )}
           <div style={{ width: "100%" }}>
             <div className='communities-namecontainer'>
               <div className='communities-nameicon'>
