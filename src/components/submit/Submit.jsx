@@ -30,7 +30,10 @@ const Submit = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const location = useLocation();
+
   const authState = useSelector((state) => state.auth);
+  const lnState = useSelector((state) => state.lnState);
+
   const [selected, setSelected] = useState("post");
 
   //count for path image
@@ -254,7 +257,10 @@ const Submit = () => {
   }
 
   return (
-    <div className='submit-container'>
+    <div
+      className='submit-container'
+      style={{ boxSizing: "border-box", paddingLeft: "270px" }}
+    >
       <div className='submit-heightholder' />
       <div className='submit-inner1'>
         <div className='submit-inner'>

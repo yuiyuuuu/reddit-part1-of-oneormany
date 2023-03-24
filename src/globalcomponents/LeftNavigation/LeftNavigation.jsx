@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { dispatchSetLeftNavState } from "./leftnavigationstates";
 
@@ -9,14 +9,26 @@ import XIconIdColor from "../../globalsvg/XIconIdColor";
 import ModQueue from "./svg/ModQueue";
 import ModMail from "./svg/ModMail";
 import DefaultCommunityIcon from "../../components/communities/communitiessvg/DefaultCommunitiesIcon";
-import YourCommunities from "./svg/YourCommunities";
+import YourCommunities from "./smallcomponents/YourCommunities";
+import Feeds from "./smallcomponents/Feeds";
+import Other from "./smallcomponents/Other";
 
 const LeftNavigation = ({ lnState }) => {
+  const dispatch = useDispatch();
+
   const authState = useSelector((state) => state.auth);
 
   const [inputValue, setInputValue] = useState("");
 
-  console.log(authState);
+  function sortAlphabetically(a, b) {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) {
+      return -1;
+    }
+    if (a.name.toLowerCase() > b.name.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
 
   return (
     <div>
@@ -35,16 +47,16 @@ const LeftNavigation = ({ lnState }) => {
           />
         </div>
 
-        <div className='ln-input'>
-          <input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder='Filter'
-            className='ln-in'
-          />
-        </div>
+        <div className='ln-inner'>
+          <div className='ln-input'>
+            <input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder='Filter'
+              className='ln-in'
+            />
+          </div>
 
-        <div>
           <div className='ln-subtitle'>MODERATING</div>
           <a className='ln-sub' href='/r/mod/about/modqueue'>
             <ModQueue />
@@ -63,6 +75,7 @@ const LeftNavigation = ({ lnState }) => {
 
           {authState?.moderatorCommunities
             ?.concat(authState?.communityOwner)
+            .sort(sortAlphabetically)
             .map((community) => (
               <a className='ln-sub' href={`/r/${community.name}`}>
                 <div className='ln-communityicon'>
@@ -82,9 +95,16 @@ const LeftNavigation = ({ lnState }) => {
                 <span className='ln-des'>r/{community.name}</span>
               </a>
             ))}
-        </div>
 
-        <YourCommunities />
+          <YourCommunities
+            auth={authState}
+            sortAlphabetically={sortAlphabetically}
+          />
+
+          <Feeds />
+
+          <Other auth={authState} />
+        </div>
       </div>
     </div>
   );

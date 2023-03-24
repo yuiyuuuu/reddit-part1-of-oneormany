@@ -1,10 +1,15 @@
-import { Route, Routes, BrowserRouter } from "react-router-dom";
 import React, { useEffect, useCallback, useState } from "react";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
 import { getLocalData } from "./store/auth";
 import { handleSet } from "./store/global/screenProperties";
+import { setScrollPosition } from "./store/global/scrollPosition";
+import { dispatchSetLeftNavState } from "./globalcomponents/LeftNavigation/leftnavigationstates";
 
 import "./index.scss";
+
+import $ from "jquery";
 
 import Home from "./components/home/Home";
 import Submit from "./components/submit/Submit";
@@ -20,12 +25,9 @@ import AuthOverlaySignup from "./globalcomponents/authoverlaysignup/AuthOverlayS
 import AuthOverlayLogin from "./globalcomponents/authoverlaylogin/AuthOverlayLogin";
 
 import routeObject from "./routeObject";
-import SingleCommunityPostNotOverlay from "./components/communities/SingleCommunityPost/SingleCommunityPostNotOverlay/SingleCommunityPostNotOverlay";
 import SingleCommunityPost from "./components/communities/SingleCommunityPost/SingleCommunityPost";
-import { setScrollPosition } from "./store/global/scrollPosition";
 import Alert from "./globalcomponents/alerts/Alert";
 import LeftNavigation from "./globalcomponents/LeftNavigation/LeftNavigation";
-import { dispatchSetLeftNavState } from "./globalcomponents/LeftNavigation/leftnavigationstates";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,6 +57,16 @@ function App() {
   const scroll = useCallback(() => {
     dispatch(setScrollPosition());
   }, []);
+
+  const lnStateResize = useCallback(() => {
+    if (window.innerWidth < 1251) {
+      dispatch(dispatchSetLeftNavState(false));
+    }
+
+    console.log("1");
+  }, []);
+
+  $(window).off("resize", window, lnStateResize).resize(lnStateResize);
 
   useEffect(() => {
     const item = window.localStorage.getItem("lnstate");

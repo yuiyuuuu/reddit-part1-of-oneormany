@@ -4,15 +4,19 @@
   position: fixed;
   top: 48px;
   left: 0;
-  max-height: calc(100% - 48px);
-  overflow-y: scroll;
-  overflow-x: hidden;
+  height: calc(100% - 48px);
 }
 
 .ln-x {
   display: flex;
   padding: 16px 20px 0;
   justify-content: end;
+}
+
+.ln-inner {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: calc(100% - 36px);
 }
 
 .ln-in {
@@ -106,4 +110,9 @@
     left: 50%;
     transform: translate(-50%, -50%) rotate(90deg);
   }
+}
+
+.ln-pfp {
+  width: 20px;
+  height: 20px;
 }
