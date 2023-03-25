@@ -18,6 +18,7 @@ import RedditIcon from "./navsvgs/RedditIcon";
 import RedditName from "./navsvgs/RedditName";
 import SearchIconSvg from "./navsvgs/SearchIconSvg";
 import NavRight from "./popups/NavRight";
+import LeftNavigationOverlay from "../../globalcomponents/LeftNavigation/LeftNavigationOverlay";
 
 const Nav = () => {
   const location = useLocation();
@@ -28,7 +29,7 @@ const Nav = () => {
   const lnState = useSelector((state) => state.lnState);
 
   const [showRightOverlay, setShowRightOverlay] = useState(false);
-  const [showCommunitiesOverlay, setShowCommunitiesOverlay] = useState(false);
+  const [showLeftNavOverlay, setShowLeftNavOverlay] = useState(false);
 
   const [show, setShow] = useState(true);
 
@@ -72,6 +73,10 @@ const Nav = () => {
     textFocusChangeBGColor();
   }, []);
 
+  useEffect(() => {
+    setShowLeftNavOverlay(false);
+  }, [window.location.href]);
+
   return (
     <div
       className='nav-parent'
@@ -106,7 +111,7 @@ const Nav = () => {
           className='nav-2-communities'
           onClick={() => {
             if (!lnState) {
-              setShowCommunitiesOverlay((prev) => !prev);
+              setShowLeftNavOverlay((prev) => !prev);
             }
           }}
         >
@@ -166,7 +171,7 @@ const Nav = () => {
             <div
               className='userprofile-nav'
               onClick={() => {
-                setShowCommunitiesOverlay(false);
+                setShowLeftNavOverlay(false);
                 setShowRightOverlay((prev) => !prev);
               }}
             >
@@ -202,7 +207,7 @@ const Nav = () => {
             className='userprofile-nav'
             style={{ marginLeft: "8px" }}
             onClick={() => {
-              setShowCommunitiesOverlay(false);
+              setShowLeftNavOverlay(false);
               setShowRightOverlay((prev) => !prev);
             }}
           >
@@ -223,12 +228,11 @@ const Nav = () => {
         showRightOverlay={showRightOverlay}
         setShowRightOverlay={setShowRightOverlay}
       />
-      <div
-        className='nav-communitiesoverlay'
-        style={{ display: showCommunitiesOverlay ? "block" : "none" }}
-      >
-        <div className='communitiesoverlay-section'>Feeds</div>
-      </div>
+
+      <LeftNavigationOverlay
+        display={showLeftNavOverlay}
+        setDisplay={setShowLeftNavOverlay}
+      />
     </div>
   );
 };
