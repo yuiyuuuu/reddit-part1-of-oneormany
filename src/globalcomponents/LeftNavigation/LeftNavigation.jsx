@@ -273,6 +273,8 @@ const LeftNavigation = ({ lnState }) => {
             auth={authState}
             sortAlphabetically={sortAlphabetically}
             inputValue={inputValue}
+            favoriteIds={favoriteIds}
+            handleFavoriteCommunity={handleFavoriteCommunity}
           />
 
           <Feeds inputValue={inputValue} />

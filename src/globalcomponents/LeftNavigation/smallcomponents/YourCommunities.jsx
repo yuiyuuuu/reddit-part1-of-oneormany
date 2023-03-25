@@ -1,12 +1,21 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 import { toggleCreateCommunity } from "../../../store/nav-createcommunity";
 
 import DefaultCommunityIcon from "../../../components/communities/communitiessvg/DefaultCommunitiesIcon";
+import StarSvg from "../svg/StarSvg";
 
-const YourCommunities = ({ auth, sortAlphabetically, inputValue }) => {
+const YourCommunities = ({
+  auth,
+  sortAlphabetically,
+  inputValue,
+  favoriteIds,
+  handleFavoriteCommunity,
+}) => {
   const dispatch = useDispatch();
+  const nav = useNavigate();
 
   function showYourCommunities() {
     if (inputValue.length < 1) return {};
@@ -56,7 +65,7 @@ const YourCommunities = ({ auth, sortAlphabetically, inputValue }) => {
       </div>
 
       {auth.communities?.sort(sortAlphabetically).map((community) => (
-        <a
+        <div
           className='ln-sub'
           href={`/r/${community.name}`}
           style={{
@@ -66,6 +75,7 @@ const YourCommunities = ({ auth, sortAlphabetically, inputValue }) => {
                 !showYourCommunities()[community?.name] &&
                 "none",
           }}
+          onClick={() => nav(`/r/${community.name}`)}
         >
           <div className='ln-communityicon'>
             {community?.iconImage ? (
@@ -82,7 +92,20 @@ const YourCommunities = ({ auth, sortAlphabetically, inputValue }) => {
             )}
           </div>
           <span className='ln-des'>r/{community.name}</span>
-        </a>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFavoriteCommunity(community.id);
+            }}
+            className='ln-star'
+          >
+            <StarSvg
+              color={favoriteIds.includes(community?.id) ? "#0079d3" : ""}
+              stroke={favoriteIds.includes(community?.id) ? true : false}
+              idv={community.id}
+            />
+          </div>
+        </div>
       ))}
     </div>
   );
