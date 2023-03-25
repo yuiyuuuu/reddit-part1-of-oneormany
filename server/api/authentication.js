@@ -52,6 +52,7 @@ router.post("/signup", async (req, res, next) => {
         comments: true,
         communityOwner: true,
         moderatorCommunities: true,
+        favoriteCommunities: true,
       },
     });
 
@@ -84,6 +85,7 @@ router.post("/login", async (req, res, next) => {
       comments: true,
       communityOwner: true,
       moderatorCommunities: true,
+      favoriteCommunities: true,
     },
   });
 
@@ -127,12 +129,79 @@ router.get("/getlocaldata", async (req, res, next) => {
         comments: true,
         communityOwner: true,
         moderatorCommunities: true,
+        favoriteCommunities: true,
       },
     });
 
     res.send(user);
   } catch (error) {
     res.send({});
+    next(error);
+  }
+});
+
+router.put("/favorite/add", async (req, res, next) => {
+  try {
+    const final = await prisma.user.update({
+      where: {
+        id: req.body.userid,
+      },
+
+      data: {
+        favoriteCommunities: {
+          connect: [{ id: req.body.communityid }],
+        },
+      },
+
+      include: {
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        posts: true,
+        comments: true,
+        communityOwner: true,
+        moderatorCommunities: true,
+        favoriteCommunities: true,
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/favorite/remove", async (req, res, next) => {
+  try {
+    const final = await prisma.user.update({
+      where: {
+        id: req.body.userid,
+      },
+
+      data: {
+        favoriteCommunities: {
+          disconnect: [{ id: req.body.communityid }],
+        },
+      },
+
+      include: {
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        posts: true,
+        comments: true,
+        communityOwner: true,
+        moderatorCommunities: true,
+        favoriteCommunities: true,
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
     next(error);
   }
 });

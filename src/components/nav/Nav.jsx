@@ -17,14 +17,15 @@ import DownArrowCommunities from "./navsvgs/DownArrowCommunities";
 import RedditIcon from "./navsvgs/RedditIcon";
 import RedditName from "./navsvgs/RedditName";
 import SearchIconSvg from "./navsvgs/SearchIconSvg";
-
 import NavRight from "./popups/NavRight";
 
 const Nav = () => {
   const location = useLocation();
+
   const authState = useSelector((state) => state.auth);
   const communityStylingState = useSelector((state) => state.communityStyling);
   const selectedPost = useSelector((state) => state.selectedPost);
+  const lnState = useSelector((state) => state.lnState);
 
   const [showRightOverlay, setShowRightOverlay] = useState(false);
   const [showCommunitiesOverlay, setShowCommunitiesOverlay] = useState(false);
@@ -104,11 +105,15 @@ const Nav = () => {
         <div
           className='nav-2-communities'
           onClick={() => {
-            setShowRightOverlay(false);
-            setShowCommunitiesOverlay((prev) => !prev);
+            if (!lnState) {
+              setShowCommunitiesOverlay((prev) => !prev);
+            }
           }}
         >
-          <button className='nav-2-button'>
+          <button
+            className='nav-2-button'
+            style={{ pointerEvents: lnState && "none" }}
+          >
             <span className='community-nav'>Placeholder community</span>
             <DownArrowCommunities />
           </button>

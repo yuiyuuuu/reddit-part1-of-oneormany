@@ -70,11 +70,16 @@ function App() {
 
   useEffect(() => {
     const item = window.localStorage.getItem("lnstate");
+    if (window.innerWidth < 1251) {
+      dispatch(dispatchSetLeftNavState(false));
+      return;
+    }
 
     if (item === null) {
       //if item is null, it means user is first time in this browser, so we will set it to true
       //if it is false, then we do nothing since original state is false anyways
       dispatch(dispatchSetLeftNavState(true));
+      return;
     }
 
     if (item) {

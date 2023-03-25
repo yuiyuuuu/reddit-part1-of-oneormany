@@ -7,7 +7,10 @@ export const dispatchSetLeftNavState = (state) => ({
 
 //display = false = no display
 //set true for now for testing, will change to false later
-export default function (state = true, action) {
+export default function (
+  state = window.innerWidth > 1251 ? true : false,
+  action
+) {
   switch (action.type) {
     case SET_LEFTNAV_STATE:
       return action.state;

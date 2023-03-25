@@ -259,7 +259,7 @@ const Submit = () => {
   return (
     <div
       className='submit-container'
-      style={{ boxSizing: "border-box", paddingLeft: "270px" }}
+      style={{ boxSizing: "border-box", paddingLeft: lnState && "270px" }}
     >
       <div className='submit-heightholder' />
       <div className='submit-inner1'>

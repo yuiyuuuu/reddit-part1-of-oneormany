@@ -7,6 +7,9 @@ import {
 const AUTH = "AUTH";
 const ADD_COMMUNITY = "ADD_COMMUNITY";
 
+const ADD_COMMUNITY_FAVORITE_AUTH = "ADD_COMMUNITY_FAVORITE_AUTH";
+const REMOVE_COMMUNITY_FAVORITE_AUTH = "ADD_COMMUNITY_FAVORITE_AUTH";
+
 const setAuth = (auth) => ({
   type: AUTH,
   auth,
@@ -14,6 +17,16 @@ const setAuth = (auth) => ({
 
 const addACommunity = (user) => ({
   type: ADD_COMMUNITY,
+  user,
+});
+
+const dispatchAddFavoriteCommunity = (user) => ({
+  type: ADD_COMMUNITY_FAVORITE_AUTH,
+  user,
+});
+
+const dispatchRemoveFavoriteCommunity = (user) => ({
+  type: REMOVE_COMMUNITY_FAVORITE_AUTH,
   user,
 });
 
@@ -88,11 +101,37 @@ export function addCommunity(info) {
   };
 }
 
+export function addCommunityToFavorite(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("/authentication/favorite/add", obj);
+      dispatch(dispatchAddFavoriteCommunity(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function removeCommunityToFavorite(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("/authentication/favorite/remove", obj);
+      dispatch(dispatchRemoveFavoriteCommunity(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case AUTH:
       return action.auth;
     case ADD_COMMUNITY:
+      return action.user;
+    case ADD_COMMUNITY_FAVORITE_AUTH:
+      return action.user;
+    case REMOVE_COMMUNITY_FAVORITE_AUTH:
       return action.user;
     default:
       return state;

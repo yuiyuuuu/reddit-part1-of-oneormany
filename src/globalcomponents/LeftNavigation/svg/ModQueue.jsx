@@ -1,6 +1,6 @@
 import React from "react";
 
-const ModQueue = () => {
+const ModQueue = ({ idv }) => {
   return (
     <svg
       width='20'
@@ -10,10 +10,10 @@ const ModQueue = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='19' height='19' fill='url(#patternmodqueueln0)' />
+      <rect width='19' height='19' fill={`url(#patternmodqueueln0-${idv})`} />
       <defs>
         <pattern
-          id='patternmodqueueln0'
+          id={`patternmodqueueln0-${idv}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'
