@@ -10,12 +10,14 @@ function check() {
   const item = window.localStorage.getItem("lnstate") === "true";
 
   if (window.innerWidth < 1251) {
+    window.localStorage.setItem("lnstate", false);
     return false;
   }
 
   //if item is null, it means user is first time in this browser, so we will set it to true
   //if it is false, then we do nothing since original state is false anyways
   if (item == null) {
+    window.localStorage.setItem("lnstate", true);
     return true;
   }
 
