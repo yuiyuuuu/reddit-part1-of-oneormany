@@ -7,6 +7,7 @@ import {
   handleCommunityDownvote,
   handleCommunityRemoveDownvote,
   handleCommunityRemoveUpvote,
+  handleCommunityUpvote,
   joinCommunity,
   leaveCommunity,
 } from "../../store/posts-individualcommunity";
@@ -32,6 +33,7 @@ import ShareOverlay from "../home/overlays/ShareOverlay";
 import Post from "../home/posts/Post";
 import Communities404 from "./Communities404";
 import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
+import { setNavLocation } from "../../store/nav/navLocation";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();
@@ -164,10 +166,6 @@ const SingleCommunity = () => {
     }
   }, [communityState]);
 
-  // $(window).on("load", () => {
-  //   $(".hide").css("display", "none");
-  // });
-
   $(document).ready(() => {
     $(".hide").css("display", "none");
   });
@@ -186,6 +184,18 @@ const SingleCommunity = () => {
       );
     }
   }, [userIds]);
+
+  //set nav path
+  useEffect(() => {
+    if (!communityState?.id) return;
+
+    dispatch(
+      setNavLocation({
+        name: "r/" + communityState?.name,
+        community: communityState,
+      })
+    );
+  }, [communityState]);
 
   useEffect(() => {
     window.addEventListener("resize", resizeShare);
@@ -353,7 +363,7 @@ const SingleCommunity = () => {
         className='communities-main'
         style={{
           marginLeft: communityStylingState && "284px",
-          paddingLeft: lnState && "270px",
+          paddingLeft: !communityStylingState && lnState && "270px",
         }}
       >
         <div

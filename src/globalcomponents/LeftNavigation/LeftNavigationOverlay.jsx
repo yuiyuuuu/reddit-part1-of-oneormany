@@ -221,7 +221,7 @@ const LeftNavigationOverlay = ({ display, setDisplay }) => {
                 inputValue.length > 0 && !showModerating()?.modqueue && "none",
             }}
           >
-            <ModQueue idv='modqueue' />
+            <ModQueue idv='modqueue2' />
             <span className='ln-des'>Mod Queue</span>
           </a>
 
@@ -232,7 +232,7 @@ const LeftNavigationOverlay = ({ display, setDisplay }) => {
                 inputValue.length > 0 && !showModerating()?.modmail && "none",
             }}
           >
-            <ModMail />
+            <ModMail idv={"modmail2"} />
             <span className='ln-des'>Modmail</span>
           </div>
 
@@ -244,7 +244,7 @@ const LeftNavigationOverlay = ({ display, setDisplay }) => {
                 inputValue.length > 0 && !showModerating()?.slashmod && "none",
             }}
           >
-            <ModQueue idv='slashmod' />
+            <ModQueue idv='slashmod2' />
             <span className='ln-des'>r/Mod</span>
           </a>
 
@@ -300,11 +300,16 @@ const LeftNavigationOverlay = ({ display, setDisplay }) => {
             inputValue={inputValue}
             favoriteIds={favoriteIds}
             handleFavoriteCommunity={handleFavoriteCommunity}
+            identify={"overlay"}
           />
 
-          <Feeds inputValue={inputValue} />
+          <Feeds inputValue={inputValue} identify={"overlay"} />
 
-          <Other auth={authState} inputValue={inputValue} />
+          <Other
+            auth={authState}
+            inputValue={inputValue}
+            identify={"overlay"}
+          />
         </div>
       </div>
     </div>

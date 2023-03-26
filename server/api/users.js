@@ -28,8 +28,6 @@ router.get("/find/:name", async (req, res, next) => {
       },
     });
 
-    console.log("user", req.params.name);
-
     if (!user) {
       res.send("available");
     } else {

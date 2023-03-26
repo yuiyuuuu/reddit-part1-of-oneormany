@@ -1,6 +1,6 @@
 import React from "react";
 
-const DownArrowPfp = () => {
+const DownArrowPfp = ({ idv }) => {
   return (
     <svg
       width='512'
@@ -11,10 +11,10 @@ const DownArrowPfp = () => {
       xmlnsXlink='http://www.w3.org/1999/xlink'
       className='downarrow2'
     >
-      <rect width='512' height='512' fill='url(#pattern0)' />
+      <rect width='512' height='512' fill={`url(#pattern0${idv})`} />
       <defs>
         <pattern
-          id='pattern0'
+          id={`pattern0${idv}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

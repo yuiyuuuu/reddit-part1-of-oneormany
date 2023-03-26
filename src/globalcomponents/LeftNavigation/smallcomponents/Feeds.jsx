@@ -4,7 +4,7 @@ import HomeIcon from "../svg/HomeIcon";
 import PopularIcon from "../svg/PopularIcon";
 import AllIcon from "../svg/AllIcon";
 
-const Feeds = ({ inputValue }) => {
+const Feeds = ({ inputValue, identify }) => {
   function showFeeds() {
     if (inputValue.length < 1) return {};
 
@@ -43,7 +43,7 @@ const Feeds = ({ inputValue }) => {
           display: inputValue.length > 0 && !showFeeds()?.home && "none",
         }}
       >
-        <HomeIcon />
+        <HomeIcon idv={identify} />
         <span className='ln-des'>Home</span>
       </div>
 
@@ -54,7 +54,7 @@ const Feeds = ({ inputValue }) => {
           display: inputValue.length > 0 && !showFeeds()?.popular && "none",
         }}
       >
-        <PopularIcon />
+        <PopularIcon idv={identify} />
         <span className='ln-des'>Popular</span>
       </div>
 
@@ -65,7 +65,7 @@ const Feeds = ({ inputValue }) => {
           display: inputValue.length > 0 && !showFeeds()?.all && "none",
         }}
       >
-        <AllIcon />
+        <AllIcon idv={identify} />
         <span className='ln-des'>All</span>
       </div>
     </div>

@@ -18,6 +18,7 @@ import { setScp } from "../../store/scp/scpConditional";
 import { setOverlayState } from "../../store/postoverlays/shareOverlay";
 import { setThreeState } from "../../store/postoverlays/threeDotOverlay";
 import { dispatchSetAOS } from "../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
+import { setNavLocation } from "../../store/nav/navLocation";
 
 import ClipSvg from "./homesvgs/ClipSvg";
 import DefaultPfp from "./homesvgs/DefaultPfp";
@@ -32,6 +33,7 @@ import TOS from "./TOS";
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const posts = useSelector((state) => state.posts);
   const authState = useSelector((state) => state.auth);
   const selectedPost = useSelector((state) => state.selectedPost);
@@ -40,7 +42,6 @@ const Home = () => {
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
   const [scrollPos, setScrollpos] = useState(0);
 
-  // const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   function joinNewCommunity(communityid) {
@@ -113,6 +114,11 @@ const Home = () => {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
+
+  //set location for nav
+  useEffect(() => {
+    dispatch(setNavLocation({ name: "Home", image: "home" }));
+  }, []);
 
   useEffect(() => {
     dispatch(fetchPosts());

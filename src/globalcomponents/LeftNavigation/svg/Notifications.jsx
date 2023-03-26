@@ -1,6 +1,6 @@
 import React from "react";
 
-const Notifications = () => {
+const Notifications = ({ idv }) => {
   return (
     <svg
       width='20'
@@ -10,10 +10,14 @@ const Notifications = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='20' height='20' fill='url(#patternnotificationsln0)' />
+      <rect
+        width='20'
+        height='20'
+        fill={`url(#patternnotificationsln0-${idv})`}
+      />
       <defs>
         <pattern
-          id='patternnotificationsln0'
+          id={`patternnotificationsln0-${idv}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

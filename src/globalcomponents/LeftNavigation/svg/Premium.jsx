@@ -1,6 +1,6 @@
 import React from "react";
 
-const Premium = () => {
+const Premium = ({ idv }) => {
   return (
     <svg
       width='20'
@@ -10,10 +10,10 @@ const Premium = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='20' height='20' fill='url(#patternpremiumln0)' />
+      <rect width='20' height='20' fill={`url(#patternpremiumln0-${idv})`} />
       <defs>
         <pattern
-          id='patternpremiumln0'
+          id={`patternpremiumln0-${idv}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

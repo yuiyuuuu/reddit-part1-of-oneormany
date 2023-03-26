@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+
+import { dispatchSetLeftNavState } from "../../globalcomponents/LeftNavigation/leftnavigationstates";
+
 import "./nav.scss";
 
 import $ from "jquery";
+
+import { locations } from "../../store/nav/locationsobj";
 
 import PopularIcon from "./navsvgs/PopularIcon";
 import CoinsIconSvg from "./navsvgs/CoinsIconSvg";
@@ -19,14 +24,21 @@ import RedditName from "./navsvgs/RedditName";
 import SearchIconSvg from "./navsvgs/SearchIconSvg";
 import NavRight from "./popups/NavRight";
 import LeftNavigationOverlay from "../../globalcomponents/LeftNavigation/LeftNavigationOverlay";
+import DefaultCommunitiesIcon from "../communities/communitiessvg/DefaultCommunitiesIcon";
+import ToggleLeftNavSvg from "./navsvgs/ToggleLeftNavSvg";
 
 const Nav = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const authState = useSelector((state) => state.auth);
   const communityStylingState = useSelector((state) => state.communityStyling);
   const selectedPost = useSelector((state) => state.selectedPost);
   const lnState = useSelector((state) => state.lnState);
+  const navLocation = useSelector((state) => state.navLocation);
+
+  let Component = locations[navLocation?.image];
+  const [rerender, setRerender] = useState(1);
 
   const [showRightOverlay, setShowRightOverlay] = useState(false);
   const [showLeftNavOverlay, setShowLeftNavOverlay] = useState(false);
@@ -114,13 +126,48 @@ const Nav = () => {
               setShowLeftNavOverlay((prev) => !prev);
             }
           }}
+          style={{
+            border: showLeftNavOverlay && "#edeff1 1px solid",
+            pointerEvents: lnState && "none",
+          }}
         >
-          <button
-            className='nav-2-button'
-            style={{ pointerEvents: lnState && "none" }}
-          >
-            <span className='community-nav'>Placeholder community</span>
-            <DownArrowCommunities />
+          <button className='nav-2-button'>
+            {Component && (
+              <div className='nav-ic'>
+                <Component />
+              </div>
+            )}
+
+            {navLocation?.community && (
+              <div className='nav-ic'>
+                {navLocation.community?.iconImage ? (
+                  <img
+                    className='nav-cmimg'
+                    src={`data:image/png;base64,${navLocation.community?.iconImage}`}
+                  />
+                ) : (
+                  <DefaultCommunitiesIcon
+                    fillcolor={`#${navLocation.community.themeBaseColor}`}
+                    height={20}
+                    community={navLocation.community}
+                  />
+                )}
+              </div>
+            )}
+            <span className='community-nav'>{navLocation?.name}</span>
+            <span
+              className='nav-togleft'
+              style={{ display: (lnState || !showLeftNavOverlay) && "none" }}
+              onClick={() => {
+                dispatch(dispatchSetLeftNavState(true));
+                window.localStorage.setItem("lnstate", true);
+              }}
+            >
+              <ToggleLeftNavSvg />
+            </span>
+            <span style={{ display: lnState && "none" }}>
+              <DownArrowCommunities />
+            </span>
           </button>
         </div>
 
@@ -134,6 +181,7 @@ const Nav = () => {
           </div>
         </div>
       </div>
+
       {authState?.id || window.localStorage.getItem("token") ? (
         <div className='nav-inner2'>
           <div className='nav-twoicons'>
@@ -188,7 +236,7 @@ const Nav = () => {
                 <div className='profile-karma desc-nav'>Karma</div>
               </div>
 
-              <DownArrowPfp />
+              <DownArrowPfp idv={2} />
 
               <div className='overlay-hover-profile' />
             </div>
@@ -215,7 +263,7 @@ const Nav = () => {
               <NotLoggedInPfp />
             </div>
 
-            <DownArrowPfp />
+            <DownArrowPfp idv={1} />
 
             <div className='overlay-hover-profile' />
           </div>

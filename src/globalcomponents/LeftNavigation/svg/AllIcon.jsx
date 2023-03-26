@@ -1,6 +1,6 @@
 import React from "react";
 
-const AllIcon = () => {
+const AllIcon = ({ idv }) => {
   return (
     <svg
       width='20'
@@ -10,10 +10,10 @@ const AllIcon = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='20' height='20' fill='url(#patternalliconln0)' />
+      <rect width='20' height='20' fill={`url(#patternalliconln0-${idv})`} />
       <defs>
         <pattern
-          id='patternalliconln0'
+          id={`patternalliconln0-${idv}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'

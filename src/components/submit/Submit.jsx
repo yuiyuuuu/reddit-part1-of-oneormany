@@ -24,6 +24,7 @@ import LinkText from "./submit-components/LinkText";
 import PollText from "./submit-components/PollText";
 import SearchIcon from "./submitsvgs/SearchIcon";
 import SubmitRight from "./SubmitRight";
+import { setNavLocation } from "../../store/nav/navLocation";
 
 const Submit = () => {
   const history = useNavigate();
@@ -138,6 +139,10 @@ const Submit = () => {
   useEffect(() => {
     findCommunity2(textInput);
   }, [textInput]);
+
+  useEffect(() => {
+    dispatch(setNavLocation({ name: "Create Post", image: "submit" }));
+  }, []);
 
   useEffect(() => {
     switch (params.type) {

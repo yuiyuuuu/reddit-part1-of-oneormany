@@ -8,7 +8,7 @@ import Notifications from "../svg/Notifications";
 import Avatar from "../svg/Avatar";
 import Premium from "../svg/Premium";
 
-const Other = ({ auth, inputValue }) => {
+const Other = ({ auth, inputValue, identify }) => {
   const nav = useNavigate();
 
   function showOthers() {
@@ -103,7 +103,7 @@ const Other = ({ auth, inputValue }) => {
             inputValue.length > 0 && !showOthers()?.notifications && "none",
         }}
       >
-        <Notifications />
+        <Notifications idv={identify} />
         <span className='ln-des'>Notifications</span>
       </div>
 
@@ -127,7 +127,7 @@ const Other = ({ auth, inputValue }) => {
           display: inputValue.length > 0 && !showOthers()?.coins && "none",
         }}
       >
-        <CoinSvg />
+        <CoinSvg idv={identify} />
         <span className='ln-des'>Coins</span>
       </div>
 
@@ -137,7 +137,7 @@ const Other = ({ auth, inputValue }) => {
           display: inputValue.length > 0 && !showOthers()?.premium && "none",
         }}
       >
-        <Premium />
+        <Premium idv={identify} />
         <span className='ln-des'>Premium</span>
       </div>
 
@@ -147,7 +147,7 @@ const Other = ({ auth, inputValue }) => {
           display: inputValue.length > 0 && !showOthers()?.avatar && "none",
         }}
       >
-        <Avatar />
+        <Avatar idv={identify} />
         <span className='ln-des'>Avatar</span>
       </div>
     </div>

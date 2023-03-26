@@ -31,7 +31,6 @@ import LeftNavigation from "./globalcomponents/LeftNavigation/LeftNavigation";
 
 function App() {
   const dispatch = useDispatch();
-  // const [Component, setComponent] = useState(Home);
   const [componentUpdate, setComponentUpdate] = useState(0);
 
   const createOverlayState = useSelector((state) => state.navToggleCreate);
@@ -62,30 +61,9 @@ function App() {
     if (window.innerWidth < 1251) {
       dispatch(dispatchSetLeftNavState(false));
     }
-
-    console.log("1");
   }, []);
 
   $(window).off("resize", window, lnStateResize).resize(lnStateResize);
-
-  useEffect(() => {
-    const item = window.localStorage.getItem("lnstate");
-    if (window.innerWidth < 1251) {
-      dispatch(dispatchSetLeftNavState(false));
-      return;
-    }
-
-    if (item === null) {
-      //if item is null, it means user is first time in this browser, so we will set it to true
-      //if it is false, then we do nothing since original state is false anyways
-      dispatch(dispatchSetLeftNavState(true));
-      return;
-    }
-
-    if (item) {
-      dispatch(dispatchSetLeftNavState(true));
-    }
-  }, []);
 
   useEffect(() => {
     Component = routeObject[scp];

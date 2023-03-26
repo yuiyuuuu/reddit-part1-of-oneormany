@@ -94,16 +94,16 @@ const LeftNavigation = ({ lnState }) => {
     setFavoriteIds(result);
   }, [authState?.favoriteCommunities]);
 
-  console.log(favoriteIds);
-  console.log(authState);
-
   return (
     <div>
       <div
         className='ln-parent'
         style={{ display: (!lnState || !authState?.id) && "none" }}
       >
-        <div className='ln-x'>
+        <div
+          className='ln-x'
+          onClick={() => window.localStorage.setItem("lnstate", false)}
+        >
           <XIconIdColor
             f={dispatchSetLeftNavState}
             v={false}
@@ -207,7 +207,7 @@ const LeftNavigation = ({ lnState }) => {
                 inputValue.length > 0 && !showModerating()?.modmail && "none",
             }}
           >
-            <ModMail />
+            <ModMail idv={"modmail"} />
             <span className='ln-des'>Modmail</span>
           </div>
 
@@ -275,11 +275,16 @@ const LeftNavigation = ({ lnState }) => {
             inputValue={inputValue}
             favoriteIds={favoriteIds}
             handleFavoriteCommunity={handleFavoriteCommunity}
+            identify={"notoverlay"}
           />
 
-          <Feeds inputValue={inputValue} />
+          <Feeds inputValue={inputValue} identify={"notoverlay"} />
 
-          <Other auth={authState} inputValue={inputValue} />
+          <Other
+            auth={authState}
+            inputValue={inputValue}
+            identify={"notoverlay"}
+          />
         </div>
       </div>
     </div>

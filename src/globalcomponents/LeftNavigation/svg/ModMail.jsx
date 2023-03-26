@@ -1,6 +1,6 @@
 import React from "react";
 
-const ModMail = () => {
+const ModMail = ({ idv }) => {
   return (
     <svg
       width='20'
@@ -10,10 +10,10 @@ const ModMail = () => {
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
     >
-      <rect width='19' height='19' fill='url(#patternmodmailln0)' />
+      <rect width='19' height='19' fill={`url(#patternmodmailln0-${idv})`} />
       <defs>
         <pattern
-          id='patternmodmailln0'
+          id={`patternmodmailln0-${idv}`}
           patternContentUnits='objectBoundingBox'
           width='1'
           height='1'
