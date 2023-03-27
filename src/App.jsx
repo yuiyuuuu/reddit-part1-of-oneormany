@@ -82,12 +82,36 @@ function App() {
   }, []);
 
   useEffect(() => {
-    dispatch(getLocalData());
+    //need to hide the left nl copmponent until we run the auth function, or else the component will show when we dont want it to
+    dispatch(getLocalData()).then(() => $(".hide").css("display", "none"));
 
     //scrollpos
     window.addEventListener("scroll", scroll);
 
     return () => window.removeEventListener("scroll", scroll);
+  }, []);
+
+  useEffect(() => {
+    //need to change to boolean, localstorage can only store strings
+    const item = window.localStorage.getItem("lnstate") === "true";
+
+    if (window.innerWidth < 1251) {
+      window.localStorage.setItem("lnstate", false);
+      return dispatch(dispatchSetLeftNavState(false));
+    }
+
+    //if item is null, it means user is first time in this browser, so we will set it to true
+    //if it is false, then we do nothing since original state is false anyways
+    if (item == null) {
+      window.localStorage.setItem("lnstate", true);
+      return dispatch(dispatchSetLeftNavState(true));
+    }
+
+    if (item == false) {
+      return dispatch(dispatchSetLeftNavState(false));
+    }
+
+    return dispatch(dispatchSetLeftNavState(true));
   }, []);
 
   return (
@@ -114,6 +138,9 @@ function App() {
       {lnState && <LeftNavigation lnState={lnState} />}
 
       {!authState?.id && <LeftNavNL />}
+
+      <div className='hide reason:auth/leftnavnl' />
+
       <Routes>
         <Route exact path='/submit' element={<Submit />} />
         <Route exact path='/submit/:type' element={<Submit />} />

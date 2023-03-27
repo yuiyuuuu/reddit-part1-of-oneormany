@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import "./lnnl.scss";
 
@@ -9,8 +10,10 @@ import PopularIcon from "../svg/PopularIcon";
 import LeftNavUpperMap from "./LeftNavUpperMap";
 
 const LeftNavNL = () => {
+  const authState = useSelector((state) => state.auth);
+
   return (
-    <div className='lnnl-parent'>
+    <div className='lnnl-parent' style={{ display: authState?.id && "none" }}>
       <div className='lnnl-inner'>
         <div className='ln-subtitle'>Feeds</div>
         <div className='ln-sub'>

@@ -255,7 +255,10 @@ const Home = () => {
   return (
     <div>
       <div className='heightholder' />
-      <div className='parent-home' style={{ paddingLeft: lnState && "270px" }}>
+      <div
+        className='parent-home'
+        style={{ paddingLeft: (lnState || !authState?.id) && "270px" }}
+      >
         <div className='inner-home'>
           <div className='home-feed'>
             <div
