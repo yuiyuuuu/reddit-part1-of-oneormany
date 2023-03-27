@@ -28,11 +28,13 @@ import routeObject from "./routeObject";
 import SingleCommunityPost from "./components/communities/SingleCommunityPost/SingleCommunityPost";
 import Alert from "./globalcomponents/alerts/Alert";
 import LeftNavigation from "./globalcomponents/LeftNavigation/LeftNavigation";
+import LeftNavNL from "./globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/LeftNavNL";
 
 function App() {
   const dispatch = useDispatch();
   const [componentUpdate, setComponentUpdate] = useState(0);
 
+  const authState = useSelector((state) => state.auth);
   const createOverlayState = useSelector((state) => state.navToggleCreate);
   const discardState = useSelector((state) => state.discardChanges);
   const authOverlaySignupState = useSelector(
@@ -110,6 +112,8 @@ function App() {
       {alertsQueue.length !== 0 && <Alert />}
 
       {lnState && <LeftNavigation lnState={lnState} />}
+
+      {!authState?.id && <LeftNavNL />}
       <Routes>
         <Route exact path='/submit' element={<Submit />} />
         <Route exact path='/submit/:type' element={<Submit />} />

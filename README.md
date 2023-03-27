@@ -24,6 +24,18 @@ Below is a non-exhaustive list of technologies used throughout the project.
 |   SCSS    |   Prisma   |      axios      |          |
 |           | bcrypt/JWT |                 |          |
 
+## Copyright and Monetization
+
+This application is solely for my educational purposes only. No monetization on this app.
+
+Every piece of code, from frontend to backend was written by me, or copied from a public online source. Anything on the app that has "© 2023 Reddit Inc" or similar is for cloning purpose and not affilated with or developed by Reddit.
+
+The Reddit logo is used in this application for cloning purposes only, and not used in any other way or for any other purposes.
+
+The application's frontend is an attempt to make a replica of Reddit's frontend and for my educational purposes only.
+
+This application is deployed to heroku in order to have a live demo of my technical skills for others(recruiters, collegues, etc)
+
 ## Setup :rocket:
 
 ```

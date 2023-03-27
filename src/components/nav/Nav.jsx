@@ -122,16 +122,23 @@ const Nav = () => {
         <div
           className='nav-2-communities'
           onClick={() => {
+            if (!authState?.id) return;
+
             if (!lnState) {
               setShowLeftNavOverlay((prev) => !prev);
             }
           }}
           style={{
             border: showLeftNavOverlay && "#edeff1 1px solid",
-            pointerEvents: lnState && "none",
+            pointerEvents: !authState?.id || (lnState && "none"),
+            opacity: !authState?.id && 0,
+            cursor: !authState?.id && "auto",
           }}
         >
-          <button className='nav-2-button'>
+          <button
+            className='nav-2-button'
+            style={{ cursor: !authState?.id && "auto" }}
+          >
             {Component && (
               <div className='nav-ic'>
                 <Component />

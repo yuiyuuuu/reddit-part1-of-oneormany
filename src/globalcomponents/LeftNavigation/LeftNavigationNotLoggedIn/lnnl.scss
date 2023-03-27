@@ -1,0 +1,62 @@
+.lnnl-parent {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 270px;
+  background-color: white;
+  height: calc(100% - 48px);
+}
+
+.lnnl-inner {
+  max-height: calc(100% - 192px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.lnnl-bot {
+  padding: 35px 24px 40px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+}
+
+.lnnl-i {
+  font-size: 14px;
+  padding: 4px 24px 22px 0;
+}
+
+.lnnl-f {
+  width: 100%;
+}
+
+.lnnl-line {
+  height: 1px;
+  width: 222px;
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.lnnl-right {
+  right: 20px !important;
+}
+
+.lnnl-mapparent {
+  margin: 0 20px 12px 52px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #edeff1;
+}
+
+.lnnl-mapchild {
+  font-size: 14px;
+
+  padding: 8px 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}

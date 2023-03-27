@@ -1,6 +1,15 @@
+import GamingSvg from "./svg/GamingSvg";
+import SportsSvg from "./svg/SportsSvg";
+import BusinessSvg from "./svg/BusinessSvg";
+import CryptoSvg from "./svg/CryptoSvg";
+import CelebritySvg from "./svg/CelebritySvg";
+import TelevisionSvg from "./svg/TelevisionSvg";
+import OthersSvg from "./svg/OthersSvg";
+
 const explore = [
   {
     name: "Gaming",
+    svg: GamingSvg,
     children: [
       "Valheim",
       "Genshin Impact",
@@ -16,6 +25,7 @@ const explore = [
   },
   {
     name: "Sports",
+    svg: SportsSvg,
     children: [
       "NFL",
       "NBA",
@@ -32,6 +42,7 @@ const explore = [
 
   {
     name: "Business, Economics, and Finance",
+    svg: BusinessSvg,
     children: [
       "GameStop",
       "Moderna",
@@ -48,6 +59,7 @@ const explore = [
 
   {
     name: "Crypto",
+    svg: CryptoSvg,
     children: [
       "Cardano",
       "Dogecoin",
@@ -61,6 +73,7 @@ const explore = [
 
   {
     name: "Television",
+    svg: TelevisionSvg,
     children: [
       "The Real Housewives of Atlanta",
       "The Bachelor",
@@ -77,6 +90,7 @@ const explore = [
 
   {
     name: "Celebrity",
+    svg: CelebritySvg,
     children: [
       "Kim Kardashian",
       "Doja Cat",
@@ -90,6 +104,7 @@ const explore = [
 
   {
     name: "More Topics",
+    svg: OthersSvg,
     children: [
       "Animals and Pets",
       "Anime",
