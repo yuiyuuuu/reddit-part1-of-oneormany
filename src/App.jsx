@@ -23,6 +23,7 @@ import MainTools from "./components/communities/ModeratorTools/MainTools";
 import DiscardChanges from "./discardChanges/DiscardChanges";
 import AuthOverlaySignup from "./globalcomponents/authoverlaysignup/AuthOverlaySignup";
 import AuthOverlayLogin from "./globalcomponents/authoverlaylogin/AuthOverlayLogin";
+import UserMain from "./components/users/UserMain";
 
 import routeObject from "./routeObject";
 import SingleCommunityPost from "./components/communities/SingleCommunityPost/SingleCommunityPost";
@@ -156,15 +157,16 @@ function App() {
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
         <Route exact path='/r/:id' element={<SingleCommunity />} />
-
         <Route exact path='/r/:id/comments/:postid' element={<Component />} />
         <Route
           exact
           path='/r/:id/comments/:postid/comment/:commentid'
           element={<Component />}
         />
-
         <Route exact path='/404' element={<Communities404 />} />
+        <Route exact path='/user/:userid' element={<UserMain />} />
+        <Route exact path='/user/:userid/:section' element={<UserMain />} />
+
         <Route exact path='/' element={<Home />} />
         <Route exact path='/r/:id/about/:section' element={<MainTools />} />
       </Routes>

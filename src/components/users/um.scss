@@ -1,0 +1,39 @@
+.um-parent {
+  margin-top: 48px;
+}
+
+.um-nav {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 40px;
+  justify-content: center;
+}
+
+.um-sectionchild {
+  padding: 0 8px;
+  margin: 0 5px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #1a1a1b;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid transparent;
+}
+
+.um-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.um-right {
+  margin-left: 24px;
+  width: 312px;
+}

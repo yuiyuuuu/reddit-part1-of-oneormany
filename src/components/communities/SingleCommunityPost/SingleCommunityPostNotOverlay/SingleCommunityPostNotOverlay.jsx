@@ -65,6 +65,7 @@ const SingleCommunityPostNotOverlay = () => {
   const scp = useSelector((state) => state.scp);
   const shareOverlayState = useSelector((state) => state.shareOverlay);
   const lnState = useSelector((state) => state.lnState);
+  const lnnlState = useSelector((state) => state.lnnl);
 
   const [themeBaseColorRgba, setThemeBaseColorRgba] = useState("");
 
@@ -419,7 +420,10 @@ const SingleCommunityPostNotOverlay = () => {
       <div className='heightholder'></div>
       <div
         className='scpno-parent'
-        style={{ boxSizing: "border-box", paddingLeft: lnState && "270px" }}
+        style={{
+          boxSizing: "border-box",
+          paddingLeft: (lnnlState || lnState) && "270px",
+        }}
       >
         <div
           style={{

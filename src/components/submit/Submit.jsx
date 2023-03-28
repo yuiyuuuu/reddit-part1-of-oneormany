@@ -34,6 +34,7 @@ const Submit = () => {
 
   const authState = useSelector((state) => state.auth);
   const lnState = useSelector((state) => state.lnState);
+  const lnnlState = useSelector((state) => state.lnnl);
 
   const [selected, setSelected] = useState("post");
 
@@ -264,7 +265,10 @@ const Submit = () => {
   return (
     <div
       className='submit-container'
-      style={{ boxSizing: "border-box", paddingLeft: lnState && "270px" }}
+      style={{
+        boxSizing: "border-box",
+        paddingLeft: (lnnlState || lnState) && "270px",
+      }}
     >
       <div className='submit-heightholder' />
       <div className='submit-inner1'>

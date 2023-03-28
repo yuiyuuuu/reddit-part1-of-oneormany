@@ -1,0 +1,48 @@
+.unf-parent {
+  height: calc(100vh - 48px);
+  margin-top: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.unf-img {
+  height: 128px;
+  width: 128px;
+}
+
+.unf-i {
+  margin: 32px 0 20px 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.unf-o {
+  margin-bottom: 32px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.unf-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.unf-but {
+  margin-top: 12px;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+.unf-q {
+  padding: 36px 0;
+  width: 476px;
+  margin: 0 auto;
+  font-size: 12px;
+  font-weight: 500;
+  color: #878a8c;
+  text-align: center;
+}

@@ -62,6 +62,7 @@ export function authenticate(username, password) {
         return data;
       }
       window.localStorage.setItem("token", data.jwt);
+      window.localStorage.removeItem("nlrecent"); //remove not logged in user recent communities
       dispatch(setAuth(data.user));
       return "successful";
     } catch (error) {

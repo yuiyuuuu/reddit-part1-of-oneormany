@@ -38,3 +38,34 @@ router.get("/find/:name", async (req, res, next) => {
     return "error";
   }
 });
+
+router.get("/:name", async (req, res, next) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        name: {
+          equals: req.params.name,
+          mode: "insensitive",
+        },
+      },
+
+      include: {
+        posts: true,
+        comments: true,
+        communities: true,
+        communityOwner: true,
+        moderatorCommunities: true,
+        favoriteCommunities: true,
+      },
+    });
+
+    if (!user) {
+      res.send("does not exist");
+    }
+
+    res.send(user);
+  } catch (error) {
+    next(error);
+    return "error";
+  }
+});

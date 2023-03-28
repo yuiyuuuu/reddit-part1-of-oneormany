@@ -125,7 +125,15 @@ const Post = ({
 
         window.localStorage.setItem(
           "nlrecent",
-          JSON.stringify([...c, post?.community])
+          JSON.stringify([
+            ...c,
+            {
+              name: post.community.name,
+              iconImage: post.community.iconImage,
+              id: post.community.id,
+              themeBaseColor: post.community.themeBaseColor,
+            },
+          ])
         );
       }
     }

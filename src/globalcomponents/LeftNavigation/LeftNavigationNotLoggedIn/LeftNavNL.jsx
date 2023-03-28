@@ -13,7 +13,7 @@ import { dispatchSetLnnl } from "./lnnlStates";
 import HomeIcon from "../svg/HomeIcon";
 import PopularIcon from "../svg/PopularIcon";
 import LeftNavUpperMap from "./LeftNavUpperMap";
-import DefaultCommunityIcon from "../../../components/communities/communitiessvg/DefaultCommunitiesIcon";
+import DefaultCommunityIconLNNL from "../svg/DefaultCommunitiesIconLNNL";
 
 const LeftNavNL = () => {
   const dispatch = useDispatch();
@@ -102,7 +102,7 @@ const LeftNavNL = () => {
                   src={`data:image/png;base64,${community?.iconImage}`}
                 />
               ) : (
-                <DefaultCommunityIcon
+                <DefaultCommunityIconLNNL
                   fillcolor={"#" + community.themeBaseColor}
                   height={20}
                   community={community}
