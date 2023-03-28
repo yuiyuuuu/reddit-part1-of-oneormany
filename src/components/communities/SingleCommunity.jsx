@@ -45,6 +45,7 @@ const SingleCommunity = () => {
   const communityStylingState = useSelector((state) => state.communityStyling);
   const iconImageState = useSelector((state) => state.iconImage);
   const lnState = useSelector((state) => state.lnState);
+  const lnnlState = useSelector((state) => state.lnnl);
 
   //scroll position
   const [scrollPos, setScrollpos] = useState(0);
@@ -363,7 +364,8 @@ const SingleCommunity = () => {
         className='communities-main'
         style={{
           marginLeft: communityStylingState && "284px",
-          paddingLeft: !communityStylingState && lnState && "270px",
+          paddingLeft:
+            !communityStylingState && (lnState || lnnlState) && "270px",
         }}
       >
         <div

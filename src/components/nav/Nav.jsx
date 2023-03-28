@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -73,6 +73,13 @@ const Nav = () => {
       });
     });
   }
+
+  const resize = useCallback(() => {
+    setShowRightOverlay(false);
+    setShowLeftNavOverlay(false);
+  }, []);
+
+  $(window).off("resize", window, resize).resize(resize);
 
   useEffect(() => {
     const v = document

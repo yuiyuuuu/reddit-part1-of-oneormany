@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import "./lnnl.scss";
+import $ from "jquery";
 
 import { explore } from "../../../components/nav/popups/sectionobj";
 
 import { dispatchSetAOS } from "../../authoverlaysignup/authOverlaySignupStates";
+import { dispatchSetLnnl } from "./lnnlStates";
 
 import HomeIcon from "../svg/HomeIcon";
 import PopularIcon from "../svg/PopularIcon";
@@ -16,10 +18,41 @@ import DefaultCommunityIcon from "../../../components/communities/communitiessvg
 const LeftNavNL = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
+  const loc = useLocation();
 
   const authState = useSelector((state) => state.auth);
+  const show = useSelector((state) => state.lnnl);
 
   const [recent, setRecent] = useState([]);
+
+  const resize = useCallback(() => {
+    if (authState.id) {
+      dispatch(dispatchSetLnnl(false));
+      return;
+    }
+
+    if (window.innerWidth > 1250) {
+      dispatch(dispatchSetLnnl(true));
+    } else {
+      dispatch(dispatchSetLnnl(false));
+    }
+  }, []);
+
+  $(window).off("resize", window, resize).resize(resize);
+
+  useEffect(() => {
+    //initial set
+    if (authState.id) {
+      dispatch(dispatchSetLnnl(false));
+      return;
+    }
+
+    if (window.innerWidth > 1250) {
+      dispatch(dispatchSetLnnl(true));
+    } else {
+      dispatch(dispatchSetLnnl(false));
+    }
+  }, [authState]);
 
   useEffect(() => {
     const v = JSON.parse(window.localStorage.getItem("nlrecent"));
@@ -30,10 +63,20 @@ const LeftNavNL = () => {
   }, [window.localStorage.getItem("nlrecent")]);
 
   return (
-    <div className='lnnl-parent' style={{ display: authState?.id && "none" }}>
+    <div
+      className='lnnl-parent'
+      style={{
+        display:
+          (authState?.id ||
+            !show ||
+            loc.pathname === "/signup" ||
+            loc.pathname === "/login") &&
+          "none",
+      }}
+    >
       <div className='lnnl-inner'>
         <div className='ln-subtitle'>Feeds</div>
-        <div className='ln-sub'>
+        <div className='ln-sub' onClick={() => nav("/")}>
           <HomeIcon idv='notloggedin' />
           <span className='ln-des'>Home</span>
         </div>

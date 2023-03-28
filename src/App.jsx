@@ -88,8 +88,8 @@ function App() {
     dispatch(getLocalData()).then(() => {
       $(".hide").css("display", "none");
 
-      //remove the hide element from the dom
-      $("#reason-auth-leftnavnl").remove();
+      // //remove the hide element from the dom
+      // $("#reason-auth-leftnavnl").remove();
     });
 
     //scrollpos

@@ -31,6 +31,7 @@ import searchQueryComment from "./comments/searchQuery";
 import alerts from "./alerts/alerts";
 import lnState from "../globalcomponents/LeftNavigation/leftnavigationstates";
 import navLocation from "./nav/navLocation";
+import lnnl from "../globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
 
 const reducer = combineReducers({
   auth,
@@ -61,6 +62,7 @@ const reducer = combineReducers({
   alerts,
   lnState,
   navLocation,
+  lnnl,
 }); //reducers here
 
 let middleware = "";
