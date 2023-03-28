@@ -48,6 +48,8 @@ function App() {
   const alertsQueue = useSelector((state) => state.alerts);
   const lnState = useSelector((state) => state.lnState);
 
+  const v = useSelector((state) => state.postsindividualcommunity);
+
   //single community post -- that way the overlay will pop up where the user last was
   let Component = routeObject[scp];
 
@@ -83,7 +85,12 @@ function App() {
 
   useEffect(() => {
     //need to hide the left nl copmponent until we run the auth function, or else the component will show when we dont want it to
-    dispatch(getLocalData()).then(() => $(".hide").css("display", "none"));
+    dispatch(getLocalData()).then(() => {
+      $(".hide").css("display", "none");
+
+      //remove the hide element from the dom
+      $("#reason-auth-leftnavnl").remove();
+    });
 
     //scrollpos
     window.addEventListener("scroll", scroll);
@@ -139,7 +146,7 @@ function App() {
 
       {!authState?.id && <LeftNavNL />}
 
-      <div className='hide reason:auth/leftnavnl' />
+      <div className='hide' id='reason-auth-leftnavnl' />
 
       <Routes>
         <Route exact path='/submit' element={<Submit />} />

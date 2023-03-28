@@ -1,16 +1,33 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 import "./lnnl.scss";
 
 import { explore } from "../../../components/nav/popups/sectionobj";
 
+import { dispatchSetAOS } from "../../authoverlaysignup/authOverlaySignupStates";
+
 import HomeIcon from "../svg/HomeIcon";
 import PopularIcon from "../svg/PopularIcon";
 import LeftNavUpperMap from "./LeftNavUpperMap";
+import DefaultCommunityIcon from "../../../components/communities/communitiessvg/DefaultCommunitiesIcon";
 
 const LeftNavNL = () => {
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+
   const authState = useSelector((state) => state.auth);
+
+  const [recent, setRecent] = useState([]);
+
+  useEffect(() => {
+    const v = JSON.parse(window.localStorage.getItem("nlrecent"));
+
+    if (!v?.length) return;
+
+    setRecent(v.reverse());
+  }, [window.localStorage.getItem("nlrecent")]);
 
   return (
     <div className='lnnl-parent' style={{ display: authState?.id && "none" }}>
@@ -26,7 +43,32 @@ const LeftNavNL = () => {
           <span className='ln-des'>Popular</span>
         </div>
 
-        <div className='ln-subtitle'>Recent</div>
+        <div
+          className='ln-subtitle'
+          style={{ display: recent.length < 1 && "none" }}
+        >
+          Recent
+        </div>
+
+        {recent.map((community) => (
+          <div className='ln-sub' onClick={() => nav(`/r/${community.name}`)}>
+            <div className='ln-communityicon'>
+              {community?.iconImage ? (
+                <img
+                  className='ln-img'
+                  src={`data:image/png;base64,${community?.iconImage}`}
+                />
+              ) : (
+                <DefaultCommunityIcon
+                  fillcolor={"#" + community.themeBaseColor}
+                  height={20}
+                  community={community}
+                />
+              )}
+            </div>
+            <span className='ln-des'>r/{community.name}</span>
+          </div>
+        ))}
 
         <div className='ln-subtitle'>Topics</div>
 
@@ -41,7 +83,12 @@ const LeftNavNL = () => {
           part in conversations.
         </div>
 
-        <button className='bluebutton-button lnnl-f'>Join Reddit</button>
+        <button
+          className='bluebutton-button lnnl-f'
+          onClick={() => dispatch(dispatchSetAOS({ display: true, which: "" }))}
+        >
+          Join Reddit
+        </button>
 
         <div className='lnnl-line' />
       </div>
