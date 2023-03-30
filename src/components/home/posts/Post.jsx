@@ -183,7 +183,7 @@ const Post = ({
           className='posts-upvote post-votebut'
           onClick={(e) => {
             e.stopPropagation();
-            if (post.upvotes.includes(authState?.id)) {
+            if (post.upvotes?.includes(authState?.id)) {
               handleRemoveUpvote(post);
               return;
             }
@@ -195,9 +195,9 @@ const Post = ({
         <div
           className='posts-votecount'
           style={{
-            color: post?.upvotes.includes(authState?.id)
+            color: post?.upvotes?.includes(authState?.id)
               ? "red"
-              : post?.downvotes.includes(authState?.id)
+              : post?.downvotes?.includes(authState?.id)
               ? "#7193ff"
               : "",
           }}
@@ -208,7 +208,7 @@ const Post = ({
           className='posts-downvote post-votebut'
           onClick={(e) => {
             e.stopPropagation();
-            if (post.downvotes.includes(authState.id)) {
+            if (post.downvotes?.includes(authState.id)) {
               handleRemoveDownvote(post);
               return;
             }

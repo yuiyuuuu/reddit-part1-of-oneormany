@@ -125,7 +125,11 @@ router.get("/getlocaldata", async (req, res, next) => {
             users: true,
           },
         },
-        posts: true,
+        posts: {
+          include: {
+            user: true,
+          },
+        },
         comments: true,
         communityOwner: true,
         moderatorCommunities: true,
@@ -192,7 +196,21 @@ router.put("/favorite/remove", async (req, res, next) => {
             users: true,
           },
         },
-        posts: true,
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
         comments: true,
         communityOwner: true,
         moderatorCommunities: true,

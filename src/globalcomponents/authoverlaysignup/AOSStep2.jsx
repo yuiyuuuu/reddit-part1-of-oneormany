@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./aos.scss";
 import { useDispatch } from "react-redux";
-import { dispatchSetAOS } from "./authOverlaySignupStates";
+
+import gsap from "gsap";
 import $ from "jquery";
+import { makeGetRequest } from "../../requests/helperFunction";
+
+import { signup } from "../../store/auth";
+import { dispatchSetLnnl } from "../LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
+import { dispatchSetAOS } from "./authOverlaySignupStates";
 
 import XIconNoFunction from "../../globalsvg/XIconNoFunction";
 import LeftArrowAOS from "./svgs/LeftArrowAOS";
@@ -11,11 +17,8 @@ import RerollIconAOS from "./svgs/RerollIconAOS";
 import { randomIntFromInterval } from "../../requests/randomNumber";
 
 import { adjectives, nouns, dashes } from "../../components/auth/words";
-import { makeGetRequest } from "../../requests/helperFunction";
 
-import gsap from "gsap";
 import PasswordMeter from "../passwordMeter/PasswordMeter";
-import { signup } from "../../store/auth";
 
 const AOSStep2 = ({
   username,
@@ -113,6 +116,7 @@ const AOSStep2 = ({
 
     const sub = dispatch(signup(obj)).then((res) => {
       if (res?.auth.id || res === "successful") {
+        dispatch(dispatchSetLnnl(false));
         dispatch(dispatchSetAOS({ display: false, which: "" }));
       }
     });

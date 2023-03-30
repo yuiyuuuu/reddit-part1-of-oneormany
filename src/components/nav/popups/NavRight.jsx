@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { logout } from "../../../store/auth";
 import { dispatchSetAOL } from "../../../globalcomponents/authoverlaylogin/authOverlayLoginStates";
+import { dispatchSetLnnl } from "../../../globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
 
 import $ from "jquery";
 
@@ -56,6 +57,8 @@ const NavRight = ({
 
   function handleLogout() {
     dispatch(logout());
+    dispatch(dispatchSetLnnl(true));
+
     setExploreActive(false);
     setMoreActive(false);
     setTermsActive(false);
@@ -97,7 +100,7 @@ const NavRight = ({
               <NavSwitch condition={onlineStatus} />
             </div>
 
-            <a className='nav-o' href={`/u/${authstate.name}`}>
+            <a className='nav-o' href={`/user/${authstate.name}`}>
               <span>Profile</span>
             </a>
 

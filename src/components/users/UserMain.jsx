@@ -9,7 +9,7 @@ import { setSelectedUser } from "../../store/users/users";
 import { usersections } from "./usersections";
 
 import UserNotFound from "./notfound/UserNotFound";
-import Overview from "./sections/Overview";
+import Overview from "./sections/overview/Overview";
 import UserHistory from "./sections/UserHistory";
 import UserComments from "./sections/UserComments";
 import UserGivenAwards from "./sections/UserGivenAwards";
@@ -50,8 +50,6 @@ const UserMain = () => {
       setSelectedSection(section.toLowerCase());
     }
   }, [ready, window.location.href]);
-
-  console.log(usersections[0].toLowerCase());
 
   if (selectedUser === "does not exist") {
     return <UserNotFound />;

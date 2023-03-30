@@ -30,6 +30,7 @@ import SingleCommunityPost from "./components/communities/SingleCommunityPost/Si
 import Alert from "./globalcomponents/alerts/Alert";
 import LeftNavigation from "./globalcomponents/LeftNavigation/LeftNavigation";
 import LeftNavNL from "./globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/LeftNavNL";
+import { dispatchSetLnnl } from "./globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
 
 function App() {
   const dispatch = useDispatch();
@@ -86,11 +87,17 @@ function App() {
 
   useEffect(() => {
     //need to hide the left nl copmponent until we run the auth function, or else the component will show when we dont want it to
-    dispatch(getLocalData()).then(() => {
+    dispatch(getLocalData()).then((res) => {
       $(".hide").css("display", "none");
 
       // //remove the hide element from the dom
       // $("#reason-auth-leftnavnl").remove();
+
+      if (!res?.id) {
+        dispatch(dispatchSetLnnl(true));
+      } else {
+        dispatch(dispatchSetLnnl(false));
+      }
     });
 
     //scrollpos

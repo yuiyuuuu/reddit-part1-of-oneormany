@@ -50,8 +50,29 @@ router.get("/:name", async (req, res, next) => {
       },
 
       include: {
-        posts: true,
-        comments: true,
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+        comments: {
+          include: {
+            post: true,
+            children: true,
+            parent: true,
+            user: true,
+          },
+        },
         communities: true,
         communityOwner: true,
         moderatorCommunities: true,

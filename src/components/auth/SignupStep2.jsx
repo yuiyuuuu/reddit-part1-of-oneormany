@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import { signup } from "../../store/auth";
 import { makeGetRequest } from "../../requests/helperFunction";
+import { dispatchSetLnnl } from "../../globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
+
 import gsap from "gsap";
 import "./auth.scss";
+import $ from "jquery";
 
 import ReloadIcon from "./ReloadIcon";
-
-import $ from "jquery";
 import PasswordMeter from "../../globalcomponents/passwordMeter/PasswordMeter";
 
 const SignupStep2 = ({
@@ -63,6 +65,8 @@ const SignupStep2 = ({
     };
     const res = dispatch(signup(object)).then((resp) => {
       if (resp?.auth?.id) {
+        dispatch(dispatchSetLnnl(false));
+
         history("/");
       }
     });

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./auth.scss";
-
-import $ from "jquery";
-import { useDispatch, useSelector } from "react-redux";
-import auth, { authenticate } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import "./auth.scss";
+import $ from "jquery";
+
+import auth, { authenticate } from "../../store/auth";
+import { dispatchSetLnnl } from "../../globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -30,7 +32,12 @@ const Login = () => {
 
     //if wrong password, set input to red and show the error message, else redirect to home
     const data = dispatch(authenticate(username, password)).then((res) => {
-      res === "wrongpassword" ? wrongPasswordResponse() : history("/");
+      res === "wrongpassword"
+        ? wrongPasswordResponse()
+        : () => {
+            dispatch(dispatchSetLnnl(false));
+            history("/");
+          };
     });
   }
 

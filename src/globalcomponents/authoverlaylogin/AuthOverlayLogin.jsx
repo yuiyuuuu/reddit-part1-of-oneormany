@@ -12,6 +12,7 @@ import $ from "jquery";
 import { dispatchSetAOL } from "./authOverlayLoginStates";
 import { dispatchSetAOS } from "../authoverlaysignup/authOverlaySignupStates";
 import { authenticate } from "../../store/auth";
+import { dispatchSetLnnl } from "../LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
 
 const AuthOverlayLogin = ({ state }) => {
   const dispatch = useDispatch();
@@ -50,9 +51,12 @@ const AuthOverlayLogin = ({ state }) => {
     $("#aos-email").css("border", "");
 
     dispatch(authenticate(emailOrUsername, password)).then((res) => {
-      res === "wrongpassword" || res === "notfound"
-        ? wrongPasswordResponse()
-        : dispatch(dispatchSetAOL({ display: false, which: "" }));
+      if (res === "wrongpassword" || res === "notfound") {
+        wrongPasswordResponse();
+      } else {
+        dispatch(dispatchSetLnnl(false));
+        handleClose();
+      }
     });
   }
 

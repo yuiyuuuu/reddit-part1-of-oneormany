@@ -43,6 +43,7 @@ export function getLocalData() {
         });
 
         dispatch(setAuth(user));
+        return user;
       }
     } catch (error) {
       console.log(error);
