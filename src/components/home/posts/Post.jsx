@@ -29,6 +29,8 @@ const Post = ({
   handleRemoveDownvote,
   handleRemoveUpvote,
   scp,
+  m,
+  fromOverview,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,6 +50,7 @@ const Post = ({
       const v = document
         .getElementById(`share-${post.id}`)
         .getBoundingClientRect();
+
       dispatch(
         setOverlayState({
           left: v.left,
@@ -177,8 +180,16 @@ const Post = ({
         dispatch(setSelectedPost(post));
         navigate(`/r/${post.community.name}/comments/${post.id}`);
       }}
+      style={{
+        marginBottom: fromOverview && 0,
+        borderRadius: m && "4px 4px 0 0",
+        border: fromOverview && "1px solid transparent",
+      }}
     >
-      <div className='posts-vote post-voteleft'>
+      <div
+        className='posts-vote post-voteleft'
+        style={{ backgroundColor: fromOverview && "white" }}
+      >
         <div
           className='posts-upvote post-votebut'
           onClick={(e) => {
