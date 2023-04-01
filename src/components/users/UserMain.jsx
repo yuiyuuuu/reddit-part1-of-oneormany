@@ -19,6 +19,7 @@ import UserReceivedAwards from "./sections/UserReceviedAwards";
 import UserSaved from "./sections/UserSaved";
 import UserUpvoted from "./sections/UserUpvoted";
 import UserDownvoted from "./sections/UserDownvoted";
+import UserRight from "./UserRight/UserRight";
 
 const UserMain = () => {
   const params = useParams();
@@ -37,7 +38,7 @@ const UserMain = () => {
     const name = params.userid;
 
     dispatch(setSelectedUser(name)).then(() => setReady(true));
-  }, []);
+  }, [window.location.href]);
 
   useEffect(() => {
     if (!ready) return;
@@ -96,7 +97,7 @@ const UserMain = () => {
             {selectedSection === "awards given" && <UserGivenAwards />}
           </div>
 
-          <div className='um-right'>{selectedUser?.name}</div>
+          <UserRight />
         </div>
       </div>
     </div>

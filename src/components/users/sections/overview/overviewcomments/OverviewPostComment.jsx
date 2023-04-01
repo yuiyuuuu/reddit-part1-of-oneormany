@@ -4,7 +4,7 @@ import OverviewPostCommentList from "./OverviewPostCommentList";
 import "./ov.scss";
 import { useNavigate } from "react-router";
 
-const OverviewPostComment = ({ object, top, post, level }) => {
+const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
   const nav = useNavigate();
 
   return (
@@ -13,6 +13,7 @@ const OverviewPostComment = ({ object, top, post, level }) => {
       style={{
         borderTop: top && "2px solid #edeff1",
         paddingBottom: top && "8px",
+        margin: !top && "0 0 0 8px",
       }}
     >
       <div className='ov-c'>
@@ -20,8 +21,9 @@ const OverviewPostComment = ({ object, top, post, level }) => {
         <div
           className='ov-inner'
           style={{
-            backgroundColor:
-              object.data.user.id === post.user.id && "rgba(0,121,211,.05)",
+            backgroundColor: !idEquals
+              ? object.data.user.id === post.user.id && "rgba(0,121,211,.05)"
+              : object.data.user.id === idEquals && "rgba(0,121,211,.05)",
           }}
         >
           <div className='ov-row'>
@@ -42,7 +44,12 @@ const OverviewPostComment = ({ object, top, post, level }) => {
             </div>
 
             <div className='ov-vote'>
-              {object.data.upvotes.length - object.data.downvotes.length} point
+              {object.data.upvotes.length - object.data.downvotes.length}{" "}
+              {Math.abs(
+                object.data.upvotes.length - object.data.downvotes.length
+              ) > 1
+                ? "points"
+                : "point"}
             </div>
 
             <div className='ov-dot'>•</div>
@@ -51,10 +58,19 @@ const OverviewPostComment = ({ object, top, post, level }) => {
           </div>
           <span className='ov-message'>{object.data.message}</span>
 
-          <div className='ov-reply'>
-            <div className='ov-re'>Reply</div>
-            <div className='ov-re'>Share</div>
-          </div>
+          {!idEquals
+            ? object.data.user.id === post.user.id && (
+                <div className='ov-reply'>
+                  <div className='ov-re'>Reply</div>
+                  <div className='ov-re'>Share</div>
+                </div>
+              )
+            : object.data.user.id === idEquals && (
+                <div className='ov-reply'>
+                  <div className='ov-re'>Reply</div>
+                  <div className='ov-re'>Share</div>
+                </div>
+              )}
         </div>
       </div>
 
@@ -64,6 +80,7 @@ const OverviewPostComment = ({ object, top, post, level }) => {
           object={object.children}
           post={post}
           level={level + 1}
+          idEquals={idEquals}
         />
       )}
     </div>

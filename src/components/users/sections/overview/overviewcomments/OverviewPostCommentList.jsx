@@ -3,7 +3,7 @@ import OverviewPostComment from "./OverviewPostComment";
 
 import $ from "jquery";
 
-const OverviewPostCommentList = ({ top, object, post, level }) => {
+const OverviewPostCommentList = ({ top, object, post, level, idEquals }) => {
   useEffect(() => {
     if (top) {
       $(`#ov-${object.data.id}`).hover(
@@ -24,7 +24,13 @@ const OverviewPostCommentList = ({ top, object, post, level }) => {
         id={`ov-${object.data.id}`}
         style={{ border: !top && "none" }}
       >
-        <OverviewPostComment object={object} top={top} post={post} level={0} />
+        <OverviewPostComment
+          object={object}
+          top={top}
+          post={post}
+          level={0}
+          idEquals={idEquals}
+        />
       </div>
 
       {level > 0 && (

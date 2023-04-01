@@ -7,9 +7,11 @@ import OverviewMap from "./OverviewMap";
 const Overview = () => {
   const userState = useSelector((state) => state.selectedUser);
 
-  const [mapResults, setMapResults] = useState([]);
+  const [mapResults, setMapResults] = useState({});
 
   useEffect(() => {
+    setMapResults({});
+
     if (!userState?.id) return;
 
     const group = {};
@@ -27,7 +29,6 @@ const Overview = () => {
     setMapResults(group);
   }, [userState]);
 
-  console.log(mapResults);
   return (
     <div>
       <div className='overview-parent'>

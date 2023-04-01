@@ -27,9 +27,18 @@ const OverviewPost = ({ item }) => {
   }, [item]);
 
   useEffect(() => {
+    //some important notes
+    //used is to handle an edge case where there are two comments, one being a child of the other
+    //if we get the child comment first, it will automatically find the parent and make the object, which is correct
+    //the issue comes after, where the parent comment also gets put into an array, creating a duplicate
+    //not sure if there are any bugs with this but so far looks good
+
+    setResult([]);
     const comments = item.filter((v) => v.type === "comment");
     const allComments = item.filter((v) => v.type === "post")[0].data.comments;
     const final = [];
+
+    const used = [];
 
     function chainOntoObject(obj, chain) {
       while (obj.children) {
@@ -47,10 +56,14 @@ const OverviewPost = ({ item }) => {
         let grouping = {};
 
         function group(selected) {
+          if (used.includes(selected.data?.id)) return "falsed";
+
           grouping = {
             data: selected.data,
             children: grouping?.data ? grouping : null,
           };
+
+          used.push(selected.data?.id);
 
           const map = final.map((v) => v.top);
 
@@ -152,6 +165,7 @@ const OverviewPost = ({ item }) => {
         handleRemoveUpvote={handleRemoveUpvote}
         m={hasComments}
         fromOverview={true}
+        scp='user'
       />
 
       <div className='overview-postcomment'>
@@ -162,6 +176,27 @@ const OverviewPost = ({ item }) => {
             post={item.find((v) => v.type === "post").data}
           />
         ))}
+      </div>
+
+      <div
+        className='overview-showmore'
+        style={{
+          display: result.length < howMany + 1 && "none",
+        }}
+        onClick={() =>
+          setHowMany((prev) => {
+            const len = result.length;
+            if (len - (howMany + 3) < 0) {
+              return prev + (len - howMany);
+            }
+
+            return prev + 3;
+          })
+        }
+      >
+        <div className='overview-zx'>
+          <div className='overview-z'>Load more comments</div>
+        </div>
       </div>
     </div>
   );
