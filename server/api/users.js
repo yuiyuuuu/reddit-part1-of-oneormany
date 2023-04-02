@@ -87,10 +87,26 @@ router.get("/:name", async (req, res, next) => {
             user: true,
           },
         },
-        communities: true,
-        communityOwner: true,
-        moderatorCommunities: true,
-        favoriteCommunities: true,
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
       },
     });
 
@@ -102,5 +118,168 @@ router.get("/:name", async (req, res, next) => {
   } catch (error) {
     next(error);
     return "error";
+  }
+});
+
+router.put("/join/community", async (req, res, next) => {
+  try {
+    await prisma.user.update({
+      where: {
+        id: req.body.userid,
+      },
+      data: {
+        communities: {
+          connect: [{ id: req.body.communityid }],
+        },
+      },
+    });
+
+    const final = await prisma.user.findUnique({
+      where: {
+        id: req.body.selected,
+      },
+      include: {
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                comments: {
+                  include: {
+                    user: true,
+                  },
+                },
+                community: {
+                  include: {
+                    users: true,
+                  },
+                },
+              },
+            },
+            children: true,
+            parent: true,
+            user: true,
+          },
+        },
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/leave/community", async (req, res, next) => {
+  try {
+    const final = await prisma.user.update({
+      where: {
+        id: req.body.userid,
+      },
+      data: {
+        communities: {
+          disconnect: [{ id: req.body.communityid }],
+        },
+      },
+
+      include: {
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                comments: {
+                  include: {
+                    user: true,
+                  },
+                },
+                community: {
+                  include: {
+                    users: true,
+                  },
+                },
+              },
+            },
+            children: true,
+            parent: true,
+            user: true,
+          },
+        },
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
+      },
+    });
+
+    res.send(final);
+  } catch (error) {
+    next(error);
   }
 });

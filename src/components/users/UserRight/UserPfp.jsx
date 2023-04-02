@@ -1,9 +1,11 @@
 import React from "react";
 
+import DefaultPfp from "../svg/DefaultPfp";
+
 const UserPfp = ({ selectedUser }) => {
   return (
     <div className='ur-pfp'>
-      <div></div>
+      <DefaultPfp size={"80px"} background={"#d7dfe2"} fill={"white"} />
     </div>
   );
 };

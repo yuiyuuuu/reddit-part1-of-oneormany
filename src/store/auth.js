@@ -135,6 +135,7 @@ export default function (state = {}, action) {
       return action.user;
     case REMOVE_COMMUNITY_FAVORITE_AUTH:
       return action.user;
+
     default:
       return state;
   }

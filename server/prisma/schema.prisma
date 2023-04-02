@@ -90,6 +90,7 @@ model User {
   communityOwner Community[] @relation("owner")
   moderatorCommunities Community [] @relation("moderator")
   favoriteCommunities Community[] @relation("favorite") //many to many example
+  createdAt DateTime @default(now()) @db.Timestamp
 }
 
 model Comment {

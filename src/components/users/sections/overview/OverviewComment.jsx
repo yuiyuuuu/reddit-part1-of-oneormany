@@ -180,7 +180,7 @@ const OverviewComment = ({ item }) => {
                 navigate(`/r/${item[0].data.post.community.name}`);
               }}
             >
-              {item[0].data.post.community.name}
+              r/{item[0].data.post.community.name}
             </div>
             <div className='dot-posts'>•</div>
             Posted by &nbsp;

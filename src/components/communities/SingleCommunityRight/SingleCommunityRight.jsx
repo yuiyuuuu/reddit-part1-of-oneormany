@@ -4,15 +4,16 @@ import "./right.scss";
 
 import $ from "jquery";
 
+import { lightOrDark } from "../../../requests/lightOrDark";
+import { setBodyBrightness } from "../../../store/bodyBrightness";
+import { changeDescription } from "../../../store/posts-individualcommunity";
+
 import ModToolsIconSvg from "../communitiessvg/ModToolsIconSvg";
 import ModToolsIconWhite from "../communitiessvg/ModToolsIconWhite";
 import ThreeDotComRightSvg from "../communitiessvg/ThreeDotComRightSvg";
 import ThreeDotRightWhite from "../communitiessvg/ThreeDotRightWhite";
 import CreatedAtInformation from "../../submit/cominfo/CreatedAtInformation";
-import { changeDescription } from "../../../store/posts-individualcommunity";
 import PenEditSvg from "../communitiessvg/PenEditSvg";
-import { lightOrDark } from "../../../requests/lightOrDark";
-import { setBodyBrightness } from "../../../store/bodyBrightness";
 import Moderators from "./Moderators";
 
 const SingleCommunityRight = ({ communityState }) => {
