@@ -53,6 +53,8 @@ router.post("/signup", async (req, res, next) => {
         communityOwner: true,
         moderatorCommunities: true,
         favoriteCommunities: true,
+        followedBy: true,
+        following: true,
       },
     });
 
@@ -86,6 +88,8 @@ router.post("/login", async (req, res, next) => {
       communityOwner: true,
       moderatorCommunities: true,
       favoriteCommunities: true,
+      followedBy: true,
+      following: true,
     },
   });
 
@@ -134,6 +138,8 @@ router.get("/getlocaldata", async (req, res, next) => {
         communityOwner: true,
         moderatorCommunities: true,
         favoriteCommunities: true,
+        followedBy: true,
+        following: true,
       },
     });
 
@@ -168,6 +174,8 @@ router.put("/favorite/add", async (req, res, next) => {
         communityOwner: true,
         moderatorCommunities: true,
         favoriteCommunities: true,
+        followedBy: true,
+        following: true,
       },
     });
 
@@ -215,6 +223,8 @@ router.put("/favorite/remove", async (req, res, next) => {
         communityOwner: true,
         moderatorCommunities: true,
         favoriteCommunities: true,
+        followedBy: true,
+        following: true,
       },
     });
 

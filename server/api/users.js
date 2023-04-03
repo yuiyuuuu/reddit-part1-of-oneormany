@@ -107,6 +107,8 @@ router.get("/:name", async (req, res, next) => {
             users: true,
           },
         },
+        followedBy: true,
+        following: true,
       },
     });
 
@@ -279,6 +281,192 @@ router.put("/leave/community", async (req, res, next) => {
     });
 
     res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/follow", async (req, res, next) => {
+  try {
+    const userFollowing = await prisma.user.update({
+      where: {
+        id: req.body.userFollowing,
+      },
+      data: {
+        following: {
+          connect: [{ id: req.body.userFollowed }],
+        },
+      },
+
+      include: {
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                comments: {
+                  include: {
+                    user: true,
+                  },
+                },
+                community: {
+                  include: {
+                    users: true,
+                  },
+                },
+              },
+            },
+            children: true,
+            parent: true,
+            user: true,
+          },
+        },
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        followedBy: true,
+        following: true,
+      },
+    });
+
+    //update the user being followed, but we wont need to send
+    await prisma.user.update({
+      where: {
+        id: req.body.userFollowed,
+      },
+      data: {
+        followedBy: {
+          connect: [{ id: req.body.userFollowing }],
+        },
+      },
+    });
+
+    res.send(userFollowing);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/unfollow", async (req, res, next) => {
+  try {
+    const userFollowing = await prisma.user.update({
+      where: {
+        id: req.body.userFollowing,
+      },
+      data: {
+        following: {
+          disconnect: [{ id: req.body.userFollowed }],
+        },
+      },
+
+      include: {
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                comments: {
+                  include: {
+                    user: true,
+                  },
+                },
+                community: {
+                  include: {
+                    users: true,
+                  },
+                },
+              },
+            },
+            children: true,
+            parent: true,
+            user: true,
+          },
+        },
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        followedBy: true,
+        following: true,
+      },
+    });
+
+    //update the user being followed, but we wont need to send
+    await prisma.user.update({
+      where: {
+        id: req.body.userFollowed,
+      },
+      data: {
+        followedBy: {
+          disconnect: [{ id: req.body.userFollowing }],
+        },
+      },
+    });
+
+    res.send(userFollowing);
   } catch (error) {
     next(error);
   }

@@ -40,20 +40,6 @@ const LeftNavNL = () => {
 
   $(window).off("resize", window, resize).resize(resize);
 
-  // useEffect(() => {
-  //   //initial set
-  //   if (authState.id) {
-  //     dispatch(dispatchSetLnnl(false));
-  //     return;
-  //   }
-
-  //   if (window.innerWidth > 1250) {
-  //     dispatch(dispatchSetLnnl(true));
-  //   } else {
-  //     dispatch(dispatchSetLnnl(false));
-  //   }
-  // }, [authState]);
-
   useEffect(() => {
     const v = JSON.parse(window.localStorage.getItem("nlrecent"));
 

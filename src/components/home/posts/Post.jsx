@@ -256,7 +256,7 @@ const Post = ({
             Post by
           </div>
           <a
-            href=''
+            href={`/user/${post?.user?.name}`}
             className='post-topdesc user-anchor'
             style={{ marginRight: "3px" }}
             onClick={(e) => e.stopPropagation()}

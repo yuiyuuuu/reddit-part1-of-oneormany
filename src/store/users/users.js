@@ -63,6 +63,7 @@ export default function (state = {}, action) {
 
     case LEAVE_COMMUNITY_AUTHSTATE:
       return action.user;
+
     default:
       return state;
   }

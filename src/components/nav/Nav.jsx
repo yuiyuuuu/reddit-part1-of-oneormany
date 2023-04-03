@@ -26,6 +26,7 @@ import NavRight from "./popups/NavRight";
 import LeftNavigationOverlay from "../../globalcomponents/LeftNavigation/LeftNavigationOverlay";
 import DefaultCommunitiesIcon from "../communities/communitiessvg/DefaultCommunitiesIcon";
 import ToggleLeftNavSvg from "./navsvgs/ToggleLeftNavSvg";
+import DefaultPfp from "../users/svg/DefaultPfp";
 
 const Nav = () => {
   const location = useLocation();
@@ -168,6 +169,24 @@ const Nav = () => {
                 )}
               </div>
             )}
+
+            {navLocation?.user && (
+              <div className='nav-ic'>
+                {navLocation.user?.image ? (
+                  <img
+                    className='nav-cmimg'
+                    src={`data:image/png;base64,${navLocation.user?.image}`}
+                  />
+                ) : (
+                  <DefaultPfp
+                    size={"20px"}
+                    background={"#d7dfe2"}
+                    fill={"white"}
+                  />
+                )}
+              </div>
+            )}
+
             <span className='community-nav'>{navLocation?.name}</span>
             <span
               className='nav-togleft'

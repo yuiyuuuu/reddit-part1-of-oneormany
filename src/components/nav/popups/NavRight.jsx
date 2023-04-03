@@ -62,6 +62,10 @@ const NavRight = ({
     setExploreActive(false);
     setMoreActive(false);
     setTermsActive(false);
+
+    if (window.innerWidth < 1251) {
+      dispatch(dispatchSetLnnl(false));
+    }
   }
 
   const clickout = useCallback(() => {

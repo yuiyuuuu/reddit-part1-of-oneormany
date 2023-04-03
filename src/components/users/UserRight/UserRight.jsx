@@ -1,9 +1,14 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+
+import { followUser, unfollowUser } from "../../../store/auth";
+import { addAlert } from "../../../globalcomponents/alerts/addAlertsFunctions";
 
 import "./ur.scss";
 
 import { monthNoAbbr } from "../../submit/cominfo/monthobj";
+import { otherprofiles, myprofile } from "./moreOptions";
 
 import UserPfp from "./UserPfp";
 import KarmaIcon from "../svg/KarmaIcon";
@@ -11,10 +16,35 @@ import CakeDayIcon from "../svg/CakeDayIcon";
 import ModeratorCommunities from "./ModeratorCommunities";
 
 const UserRight = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const selectedUser = useSelector((state) => state.selectedUser);
   const authState = useSelector((state) => state.auth);
 
-  console.log(selectedUser);
+  const [showMoreOptions, setMoreOptions] = useState(false);
+
+  function handleFollowUser() {
+    const obj = {
+      userFollowing: authState.id,
+      userFollowed: selectedUser.id,
+    };
+
+    dispatch(followUser(obj)).then(() => {
+      addAlert(`Successfully followed ${selectedUser.name}`, dispatch);
+    });
+  }
+
+  function handleUnfollowUser() {
+    const obj = {
+      userFollowing: authState.id,
+      userFollowed: selectedUser.id,
+    };
+
+    dispatch(unfollowUser(obj)).then(() => {
+      addAlert(`Successfully unfollowed ${selectedUser.name}`, dispatch);
+    });
+  }
 
   return (
     <div>
@@ -69,8 +99,68 @@ const UserRight = () => {
             )}
 
             {selectedUser?.id === authState?.id && (
-              <div className='ur-newpost bluebutton-button'>New Post</div>
+              <div
+                className='ur-newpost bluebutton-button'
+                onClick={() => navigate("/submit")} //change this later to /submit/user when done
+              >
+                New Post
+              </div>
             )}
+
+            {selectedUser?.id !== authState?.id ? (
+              !authState?.following
+                ?.map((v) => v.id)
+                ?.includes(selectedUser?.id) ? (
+                <div style={{ paddingTop: "10px" }}>
+                  <div
+                    className='ur-newpost bluebutton-button'
+                    onClick={() => handleFollowUser()}
+                    style={{ marginTop: 0 }}
+                  >
+                    Follow
+                  </div>
+                </div>
+              ) : (
+                <div style={{ paddingTop: "10px" }}>
+                  <div
+                    className='ur-newpost blueborder-button'
+                    onClick={() => handleUnfollowUser()}
+                    style={{ marginTop: 0 }}
+                  >
+                    Unfollow
+                  </div>
+                </div>
+              )
+            ) : (
+              ""
+            )}
+
+            {showMoreOptions ? (
+              authState?.id === selectedUser?.id ? (
+                <div className='ur-optpar'>
+                  {myprofile.map((item) => (
+                    <span className='ur-opt hover1c1cbg'>{item}</span>
+                  ))}
+                </div>
+              ) : (
+                <div className='ur-optpar'>
+                  {otherprofiles.map((item) => (
+                    <span className='ur-opt hover1c1cbg'>{item}</span>
+                  ))}
+                </div>
+              )
+            ) : (
+              ""
+            )}
+
+            <div
+              className='ur-moreoptions'
+              onClick={() => setMoreOptions((prev) => !prev)}
+            >
+              <div className='ur-morech hover1c1cbg'>
+                {showMoreOptions ? "Fewer Options" : "More Options"}
+              </div>
+            </div>
           </div>
         </div>
 

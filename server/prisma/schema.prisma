@@ -91,6 +91,10 @@ model User {
   moderatorCommunities Community [] @relation("moderator")
   favoriteCommunities Community[] @relation("favorite") //many to many example
   createdAt DateTime @default(now()) @db.Timestamp
+  
+  followedBy    User[]  @relation("Follower")
+  following  User[] @relation("Follower")
+  parentId  String?
 }
 
 model Comment {

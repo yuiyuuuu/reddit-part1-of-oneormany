@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router";
 import "./um.scss";
 
 import { setSelectedUser } from "../../store/users/users";
+import { setNavLocation } from "../../store/nav/navLocation";
 
 import { usersections } from "./usersections";
 
@@ -51,6 +52,12 @@ const UserMain = () => {
       setSelectedSection(section.toLowerCase());
     }
   }, [ready, window.location.href]);
+
+  useEffect(() => {
+    dispatch(
+      setNavLocation({ name: `u/${selectedUser?.name}`, user: selectedUser })
+    );
+  }, [selectedUser]);
 
   if (selectedUser === "does not exist") {
     return <UserNotFound />;

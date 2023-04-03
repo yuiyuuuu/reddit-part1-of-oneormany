@@ -120,6 +120,7 @@
   margin-left: 4px;
   font-size: 12px;
   color: #7c7c7c;
+  margin-top: 2px;
 }
 
 .ur-addsocial {
@@ -212,4 +213,37 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ur-moreoptions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.ur-morech {
+  padding: 4px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0079d3;
+  position: relative;
+  cursor: pointer;
+}
+
+.ur-optpar {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ur-opt {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  position: relative;
+  color: #0079d3;
+  cursor: pointer;
+  width: fit-content;
 }

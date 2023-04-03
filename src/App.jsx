@@ -94,7 +94,11 @@ function App() {
       // $("#reason-auth-leftnavnl").remove();
 
       if (!res?.id) {
-        dispatch(dispatchSetLnnl(true));
+        if (window.innerWidth < 1251) {
+          dispatch(dispatchSetLnnl(false));
+        } else {
+          dispatch(dispatchSetLnnl(true));
+        }
       } else {
         dispatch(dispatchSetLnnl(false));
       }
@@ -112,6 +116,7 @@ function App() {
 
     if (window.innerWidth < 1251) {
       window.localStorage.setItem("lnstate", false);
+      dispatch(dispatchSetLnnl(false)); //only effects users not logged in
       return dispatch(dispatchSetLeftNavState(false));
     }
 
