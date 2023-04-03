@@ -15,7 +15,7 @@ import UserHistory from "./sections/UserHistory";
 import UserComments from "./sections/UserComments";
 import UserGivenAwards from "./sections/UserGivenAwards";
 import UserHidden from "./sections/UserHidden";
-import UserPosts from "./sections/UserPosts";
+import UserPosts from "./sections/userposts/UserPosts";
 import UserReceivedAwards from "./sections/UserReceviedAwards";
 import UserSaved from "./sections/UserSaved";
 import UserUpvoted from "./sections/UserUpvoted";
@@ -91,7 +91,10 @@ const UserMain = () => {
         </div>
 
         <div className='um-main'>
-          <div className='um-body'>
+          <div
+            className='um-body'
+            style={{ width: selectedSection === "posts" && "100%" }}
+          >
             {selectedSection === "overview" && <Overview />}
             {selectedSection === "posts" && <UserPosts />}
             {selectedSection === "comments" && <UserComments />}

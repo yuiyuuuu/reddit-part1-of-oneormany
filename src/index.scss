@@ -150,6 +150,13 @@ img {
   text-decoration: underline;
 }
 
+.hoverunderline {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .hover1c1cbg {
   &:hover::before {
     opacity: 0.08;

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 
 import { followUser, unfollowUser } from "../../../store/auth";
 import { addAlert } from "../../../globalcomponents/alerts/addAlertsFunctions";
+import { dispatchSetAOS } from "../../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 
 import "./ur.scss";
 
@@ -25,6 +26,11 @@ const UserRight = () => {
   const [showMoreOptions, setMoreOptions] = useState(false);
 
   function handleFollowUser() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "" }));
+      return;
+    }
+
     const obj = {
       userFollowing: authState.id,
       userFollowed: selectedUser.id,

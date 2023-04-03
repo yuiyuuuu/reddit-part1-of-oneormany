@@ -1,0 +1,60 @@
+.up-parent {
+  width: 100%;
+}
+
+.up-mapright {
+  display: flex;
+  background-color: white;
+  align-items: center;
+  position: relative;
+  padding: 8px 8px 0;
+}
+
+.up-wh {
+  height: 72px;
+  width: 96px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(28, 28, 28, 0.03);
+  border-radius: 4px;
+}
+
+.up-mapparent {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: white;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid #898989;
+  }
+}
+
+.up-postinfo {
+  height: 100%;
+  margin-left: 8px;
+}
+
+.up-title {
+  font-weight: 500;
+  font-size: 16px;
+  color: rgb(176, 176, 176);
+}
+
+.up-f {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 12px;
+  color: #878a89;
+  padding-top: 2px;
+}
+
+.up-fc {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1c1c1c;
+}
