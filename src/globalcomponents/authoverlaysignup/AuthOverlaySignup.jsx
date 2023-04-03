@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./aos.scss";
 import { useDispatch } from "react-redux";
 import { dispatchSetAOS } from "./authOverlaySignupStates";
@@ -93,6 +93,23 @@ const AuthOverlaySignup = ({ state }) => {
       $(label).removeClass("movetopleft2");
     });
   }
+
+  const enterListener = useCallback((e) => {
+    if (e.key === "Enter") {
+      if (!isValidEmail($("#aos-email").val())) {
+        setInvalidEmailError(true);
+        return;
+      }
+
+      setStep(2);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", enterListener);
+
+    return () => document.removeEventListener("keydown", enterListener);
+  }, []);
 
   useEffect(() => {
     if ($("#aos-email").val()?.length > 0) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "../authoverlaysignup/aos.scss";
 import "./aol.scss";
 import { useDispatch } from "react-redux";
@@ -50,7 +50,11 @@ const AuthOverlayLogin = ({ state }) => {
     $("#aos-password").css("border", "");
     $("#aos-email").css("border", "");
 
-    dispatch(authenticate(emailOrUsername, password)).then((res) => {
+    console.log("rannnn");
+
+    dispatch(
+      authenticate($("#aos-email").val(), $("#aos-password").val())
+    ).then((res) => {
       if (res === "wrongpassword" || res === "notfound") {
         wrongPasswordResponse();
       } else {
@@ -65,6 +69,18 @@ const AuthOverlayLogin = ({ state }) => {
     $("#aos-password").css("border", "1px solid red");
     $("#aos-email").css("border", "1px solid red");
   }
+
+  const enterListener = useCallback((e) => {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", enterListener);
+
+    return () => document.removeEventListener("keydown", enterListener);
+  }, []);
 
   useEffect(() => {
     //this one is for username/email
