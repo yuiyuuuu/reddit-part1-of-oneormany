@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { votesUsers } from "../../../../store/users/users";
 
 import Post from "../../../home/posts/Post";
 import OverviewPostCommentList from "./overviewcomments/OverviewPostCommentList";
 
 const OverviewPost = ({ item }) => {
+  const dispatch = useDispatch();
+
   const selectedUser = useSelector((state) => state.selectedUser);
+  const authState = useSelector((state) => state.auth);
 
   const [result, setResult] = useState([]);
 
@@ -13,12 +18,41 @@ const OverviewPost = ({ item }) => {
 
   const [hasComments, setHasComments] = useState(false);
 
-  function handleUpvote() {}
-  function handleDownvote() {}
+  function handleUpvote() {
+    const obj = {
+      userid: authState.id,
+      postid: item.find((v) => v.type === "post").data.id,
+    };
 
-  function handleRemoveUpvote() {}
+    dispatch(votesUsers(obj, "up"));
+  }
 
-  function handleRemoveDownvote() {}
+  function handleDownvote() {
+    const obj = {
+      userid: authState.id,
+      postid: item.find((v) => v.type === "post").data.id,
+    };
+
+    dispatch(votesUsers(obj, "down"));
+  }
+
+  function handleRemoveUpvote() {
+    const obj = {
+      userid: authState.id,
+      postid: item.find((v) => v.type === "post").data.id,
+    };
+
+    dispatch(votesUsers(obj, "up-remove"));
+  }
+
+  function handleRemoveDownvote() {
+    const obj = {
+      userid: authState.id,
+      postid: item.find((v) => v.type === "post").data.id,
+    };
+
+    dispatch(votesUsers(obj, "down-remove"));
+  }
 
   useEffect(() => {
     if (item.filter((v) => v.type === "comment").length > 0) {
@@ -166,6 +200,7 @@ const OverviewPost = ({ item }) => {
         m={hasComments}
         fromOverview={true}
         scp='user'
+        authState={authState}
       />
 
       <div className='overview-postcomment'>

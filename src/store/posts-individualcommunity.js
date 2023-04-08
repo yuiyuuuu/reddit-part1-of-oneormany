@@ -194,7 +194,11 @@ export function changeBanner(body) {
 export function handleCommunityUpvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/upvote", obj);
+      const data = await makePutRequest("communities/vote", {
+        ...obj,
+        which: "up",
+      });
+
       dispatch(dispatchUpvoteCommunity(data));
       return data;
     } catch (error) {
@@ -206,7 +210,10 @@ export function handleCommunityUpvote(obj) {
 export function handleCommunityDownvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/downvote", obj);
+      const data = await makePutRequest("communities/vote", {
+        ...obj,
+        which: "down",
+      });
       dispatch(dispatchDownvoteCommunity(data));
       return data;
     } catch (error) {
@@ -218,7 +225,10 @@ export function handleCommunityDownvote(obj) {
 export function handleCommunityRemoveUpvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/upvote/remove", obj);
+      const data = await makePutRequest("communities/vote", {
+        ...obj,
+        which: "up-remove",
+      });
       dispatch(dispatchRemoveUpvoteCommunity(data));
       return data;
     } catch (error) {
@@ -230,7 +240,10 @@ export function handleCommunityRemoveUpvote(obj) {
 export function handleCommunityRemoveDownvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/downvote/remove", obj);
+      const data = await makePutRequest("communities/vote", {
+        ...obj,
+        which: "down-remove",
+      });
       dispatch(dispatchRemoveDownvoteCommunity(data));
       return data;
     } catch (error) {

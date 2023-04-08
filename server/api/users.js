@@ -63,6 +63,8 @@ router.get("/:name", async (req, res, next) => {
                 user: true,
               },
             },
+            downvotes: true,
+            upvotes: true,
           },
         },
         comments: {
@@ -154,6 +156,8 @@ router.put("/join/community", async (req, res, next) => {
                 user: true,
               },
             },
+            downvotes: true,
+            upvotes: true,
           },
         },
         comments: {
@@ -233,6 +237,8 @@ router.put("/leave/community", async (req, res, next) => {
                 user: true,
               },
             },
+            downvotes: true,
+            upvotes: true,
           },
         },
         comments: {
@@ -312,6 +318,8 @@ router.put("/follow", async (req, res, next) => {
                 user: true,
               },
             },
+            downvotes: true,
+            upvotes: true,
           },
         },
         comments: {
@@ -405,6 +413,9 @@ router.put("/unfollow", async (req, res, next) => {
                 user: true,
               },
             },
+
+            downvotes: true,
+            upvotes: true,
           },
         },
         comments: {
@@ -474,14 +485,6 @@ router.put("/unfollow", async (req, res, next) => {
 
 router.put("/vote", async (req, res, next) => {
   try {
-    // const user = await prisma.user.findUnique({
-    //   where: {
-    //     id: req.body.userid,
-    //   },
-    // });
-
-    //lisdufjlksdvlkjsdg
-
     const which = req.body.which;
 
     if (which === "up") {
@@ -490,11 +493,123 @@ router.put("/vote", async (req, res, next) => {
           id: req.body.postid,
         },
         data: {
-          upvotes: [...new Set([...post.upvotes, req.body.userid])],
-          downvotes: post.downvotes.filter((i) => i !== req.body.userid),
+          upvotes: {
+            connect: [{ id: req.body.userid }],
+          },
+          downvotes: {
+            disconnect: [{ id: req.body.userid }],
+          },
+        },
+      });
+    } else if (which === "down") {
+      await prisma.post.update({
+        where: {
+          id: req.body.postid,
+        },
+        data: {
+          downvotes: {
+            connect: [{ id: req.body.userid }],
+          },
+          upvotes: {
+            disconnect: [{ id: req.body.userid }],
+          },
+        },
+      });
+    } else if (which === "down-remove") {
+      await prisma.post.update({
+        where: {
+          id: req.body.postid,
+        },
+        data: {
+          downvotes: {
+            disconnect: [{ id: req.body.userid }],
+          },
+        },
+      });
+    } else {
+      await prisma.post.update({
+        where: {
+          id: req.body.postid,
+        },
+        data: {
+          upvotes: {
+            disconnect: [{ id: req.body.userid }],
+          },
         },
       });
     }
+
+    const final = await prisma.user.findUnique({
+      where: {
+        id: req.body.userid,
+      },
+      include: {
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                comments: {
+                  include: {
+                    user: true,
+                  },
+                },
+                community: {
+                  include: {
+                    users: true,
+                  },
+                },
+              },
+            },
+            children: true,
+            parent: true,
+            user: true,
+          },
+        },
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        followedBy: true,
+        following: true,
+      },
+    });
+
+    res.send(final);
   } catch (error) {
     next(error);
   }

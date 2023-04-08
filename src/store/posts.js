@@ -7,8 +7,7 @@ import {
 const FETCH_POSTS = "FETCH_POSTS";
 const ADD_UPVOTE = "ADD_UPVOTE";
 const ADD_DOWNVOTE = "ADD_DOWNVOTE";
-const REMOVE_POST = "REMOVE_POST"; // NOT DELETE POST
-const REMOVE_POST2 = "REMOVE_POST2";
+const REMOVE_POST = "REMOVE_POST";
 
 const REMOVE_UPVOTE = "REMOVE_UPVOTE";
 const REMOVE_DOWNVOTE = "REMOVE_DOWNVOTE";
@@ -34,21 +33,18 @@ const addDownvote = (post) => ({
 
 const hremoveUpvote = (post) => ({
   type: REMOVE_UPVOTE,
-  post,
+  post: post.final,
+  userdata: post.userdata,
 });
 
 const hremoveDownvote = (post) => ({
   type: REMOVE_DOWNVOTE,
-  post,
+  post: post.final,
+  userdata: post.userdata,
 });
 
 const removePost = (post) => ({
   type: REMOVE_POST,
-  post,
-});
-
-const removePost2 = (post) => ({
-  type: REMOVE_POST2,
   post,
 });
 
@@ -87,7 +83,7 @@ export function fetchSpecificCommunityPosts(id) {
 export function upvote(info) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("posts/upvote", info);
+      const data = await makePutRequest("posts/vote", { ...info, which: "up" });
       dispatch(removePost(data));
       dispatch(addUpvote(data));
     } catch (error) {
@@ -99,7 +95,10 @@ export function upvote(info) {
 export function downvote(info) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("posts/downvote", info);
+      const data = await makePutRequest("posts/vote", {
+        ...info,
+        which: "down",
+      });
 
       dispatch(removePost(data));
       dispatch(addDownvote(data));
@@ -112,8 +111,11 @@ export function downvote(info) {
 export function removeUpvote(info) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("posts/upvote/remove", info);
-      dispatch(removePost2(data));
+      const data = await makePutRequest("posts/vote", {
+        ...info,
+        which: "up-remove",
+      });
+      dispatch(removePost(data));
       dispatch(hremoveUpvote(data));
     } catch (error) {
       console.log(error);
@@ -124,8 +126,11 @@ export function removeUpvote(info) {
 export function removeDownvote(info) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("posts/downvote/remove", info);
-      dispatch(removePost2(data));
+      const data = await makePutRequest("posts/vote", {
+        ...info,
+        which: "down-remove",
+      });
+      dispatch(removePost(data));
       dispatch(hremoveDownvote(data));
     } catch (error) {
       console.log(error);
@@ -177,8 +182,6 @@ export default function (state = [], action) {
     case REMOVE_POST:
       return state.filter((post) => post.id !== action.post.final.id);
 
-    case REMOVE_POST2:
-      return state.filter((post) => post.id !== action.post.id);
     case CLEAR_POSTSTATE:
       return [];
     default:

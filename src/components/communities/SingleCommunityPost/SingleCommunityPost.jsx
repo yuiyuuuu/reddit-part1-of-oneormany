@@ -546,7 +546,11 @@ const SingleCommunityPost = () => {
                 <div
                   className='posts-upvote post-votebut'
                   onClick={() => {
-                    if (selectedPost.upvotes.includes(authState?.id)) {
+                    if (
+                      selectedPost.upvotes
+                        ?.map((v) => v.id)
+                        ?.includes(authState?.id)
+                    ) {
                       handleRemoveUpvote();
                       return;
                     }
@@ -578,7 +582,11 @@ const SingleCommunityPost = () => {
                 <div
                   className='posts-upvote post-votebut'
                   onClick={() => {
-                    if (selectedPost.downvotes?.includes(authState?.id)) {
+                    if (
+                      selectedPost.downvotes
+                        ?.map((v) => v.id)
+                        .includes(authState?.id)
+                    ) {
                       handleRemoveDownvote();
                       return;
                     }
@@ -624,7 +632,11 @@ const SingleCommunityPost = () => {
                   <div
                     className='posts-upvote post-votebut'
                     onClick={() => {
-                      if (selectedPost.upvotes.includes(authState?.id)) {
+                      if (
+                        selectedPost.upvotes
+                          ?.map((v) => v.id)
+                          ?.includes(authState?.id)
+                      ) {
                         handleRemoveUpvote();
                         return;
                       }
@@ -642,7 +654,9 @@ const SingleCommunityPost = () => {
                   <div
                     className='scp-num'
                     style={{
-                      color: selectedPost?.upvotes.includes(authState?.id)
+                      color: selectedPost?.upvotes
+                        ?.map((v) => v.id)
+                        ?.includes(authState?.id)
                         ? "red"
                         : selectedPost?.downvotes.includes(authState?.id)
                         ? "#7193ff"

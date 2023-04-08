@@ -15,7 +15,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         stroke-width='4.5'
         className='upvote-svg-stroke'
         style={{
-          stroke: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          stroke: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <path
@@ -23,7 +25,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         className='upvote-svg-stroke'
         stroke-width='4.5'
         style={{
-          stroke: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          stroke: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <path
@@ -31,7 +35,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         className='upvote-svg-stroke'
         stroke-width='4.5'
         style={{
-          stroke: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          stroke: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <rect
@@ -42,7 +48,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         transform='rotate(-44.553 46.8893 7.70947)'
         className='upvote-svg-fill'
         style={{
-          fill: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          fill: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <path
@@ -50,7 +58,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         className='upvote-svg-stroke'
         stroke-width='4.5'
         style={{
-          stroke: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          stroke: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <rect
@@ -61,7 +71,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         transform='rotate(-1.10056 4 51.0262)'
         className='upvote-svg-fill'
         style={{
-          fill: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          fill: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <path
@@ -69,7 +81,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         className='upvote-svg-stroke'
         stroke-width='4.5'
         style={{
-          stroke: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          stroke: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <path
@@ -77,7 +91,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         className='upvote-svg-stroke'
         stroke-width='4.5'
         style={{
-          stroke: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          stroke: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <path
@@ -85,7 +101,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         className='upvote-svg-stroke'
         stroke-width='4.5'
         style={{
-          stroke: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          stroke: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <rect
@@ -96,7 +114,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         transform='rotate(-1.10056 93 51.0262)'
         className='upvote-svg-fill'
         style={{
-          fill: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          fill: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <rect
@@ -107,7 +127,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         transform='rotate(0.0570343 29.7596 91.9998)'
         className='upvote-svg-fill'
         style={{
-          fill: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          fill: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <rect
@@ -118,14 +140,18 @@ const DownVoteSvg = ({ id, authState, post }) => {
         transform='rotate(0.0570343 66.0032 92)'
         className='upvote-svg-fill'
         style={{
-          fill: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          fill: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
       <path
         d='M49 12L88.8372 51.75H9.16283L49 12Z'
         className={`fill-red-${id}`}
         style={{
-          fill: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "none",
+          fill: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "none",
         }}
       />
       <rect
@@ -135,7 +161,9 @@ const DownVoteSvg = ({ id, authState, post }) => {
         height='40'
         className={`fill-red-${id}`}
         style={{
-          fill: post?.downvotes?.includes(authState?.id) ? "#7193ff" : "",
+          fill: post?.downvotes?.map((v) => v.id).includes(authState?.id)
+            ? "#7193ff"
+            : "",
         }}
       />
     </svg>

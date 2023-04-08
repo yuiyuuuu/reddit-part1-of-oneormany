@@ -15,8 +15,8 @@ model Post {
   title    String
   body     String?
   comments Comment[]
-  upvotes String[]
-  downvotes String[]
+  upvotes User[] @relation("upvotes-posts")
+  downvotes User[] @relation("downvotes-posts")
   community Community @relation(fields:[communityId], references: [id], onDelete: Cascade)
   communityId String
   user User @relation(fields:[userId], references: [id], onDelete: Cascade) 
@@ -91,10 +91,17 @@ model User {
   moderatorCommunities Community [] @relation("moderator")
   favoriteCommunities Community[] @relation("favorite") //many to many example
   createdAt DateTime @default(now()) @db.Timestamp
-  
   followedBy    User[]  @relation("Follower")
   following  User[] @relation("Follower")
   parentId  String?
+
+  //posts
+  upvotes Post [] @relation("upvotes-posts")
+  downvotes Post [] @relation("downvotes-posts")
+
+  //comments
+    upvotesComment Comment [] @relation("upvotes-comment")
+  downvotesComment Comment [] @relation("downvotes-comment")
 }
 
 model Comment {
@@ -109,8 +116,8 @@ model Comment {
   parent    Comment?  @relation("ParentChild", fields: [parentId], references: [id], onDelete: Cascade)
   children  Comment[] @relation("ParentChild")
   parentId  String?
-  upvotes String []
-  downvotes String []
+  upvotes User [] @relation("upvotes-comment")
+  downvotes User [] @relation("downvotes-comment")
   image String? @db.VarChar(1048576)
 }
 

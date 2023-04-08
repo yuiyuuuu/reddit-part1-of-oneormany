@@ -195,7 +195,7 @@ const Post = ({
           className='posts-upvote post-votebut'
           onClick={(e) => {
             e.stopPropagation();
-            if (post.upvotes?.includes(authState?.id)) {
+            if (post.upvotes?.map((v) => v.id)?.includes(authState?.id)) {
               handleRemoveUpvote(post);
               return;
             }
@@ -214,13 +214,13 @@ const Post = ({
               : "",
           }}
         >
-          {post.upvotes.length - post.downvotes.length}
+          {post.upvotes?.length - post.downvotes?.length}
         </div>
         <div
           className='posts-downvote post-votebut'
           onClick={(e) => {
             e.stopPropagation();
-            if (post.downvotes?.includes(authState.id)) {
+            if (post.downvotes?.map((v) => v.id)?.includes(authState.id)) {
               handleRemoveDownvote(post);
               return;
             }
@@ -262,23 +262,23 @@ const Post = ({
             style={{ marginRight: "3px" }}
             onClick={(e) => e.stopPropagation()}
           >
-            {post.user.name}
+            {post.user?.name}
           </a>
           <div className='post-topdesc'>5 hours ago</div>
         </div>
 
         <div className='container-titleanddesc'>
-          <div className='posttitle-container'>{post.title}</div>
+          <div className='posttitle-container'>{post?.title}</div>
           {post.body !== "" && (
             <div className='postdesc-container' id={`${post.id}-title`}>
-              <pre>{post.body}</pre>
+              <pre>{post?.body}</pre>
             </div>
           )}
 
           {post.image && (
             <div className='center' style={{ width: "100%" }}>
               <img
-                src={`data:image/png;base64,${post.image}`}
+                src={`data:image/png;base64,${post?.image}`}
                 className='posts-mainimage'
               />
             </div>
@@ -318,7 +318,7 @@ const Post = ({
           >
             <CommentSvg />
             <span className='span-comment'>
-              {post.comments.length} Comments
+              {post.comments?.length} Comments
             </span>
           </div>
 

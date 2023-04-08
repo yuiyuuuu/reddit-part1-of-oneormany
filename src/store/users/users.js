@@ -4,6 +4,8 @@ import { makeGetRequest, makePutRequest } from "../../requests/helperFunction";
 const JOIN_COMMUNITY_AUTHSTATE = "JOIN_COMMUNITY_AUTHSTATE";
 const LEAVE_COMMUNITY_AUTHSTATE = "LEAVE_COMMUNITY_AUTHSTATE";
 
+const UPVOTE_USERS = "UPVOTES_USERS";
+
 const dispatchSetSelectedUser = (user) => ({
   type: SET_SELECTED_USER,
   user,
@@ -16,6 +18,11 @@ const dispatchJoinCommunityAuth = (user) => ({
 
 const dispatchLeaveCommunityAuth = (user) => ({
   type: LEAVE_COMMUNITY_AUTHSTATE,
+  user,
+});
+
+const dispatchUpvoteUsersPage = (user) => ({
+  type: UPVOTE_USERS,
   user,
 });
 
@@ -53,6 +60,20 @@ export function leaveCommunityAuth(obj) {
   };
 }
 
+export function votesUsers(obj, which) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("/users/vote", {
+        ...obj,
+        which: which,
+      });
+      dispatch(dispatchUpvoteUsersPage(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case SET_SELECTED_USER:
@@ -62,6 +83,9 @@ export default function (state = {}, action) {
       return action.user;
 
     case LEAVE_COMMUNITY_AUTHSTATE:
+      return action.user;
+
+    case UPVOTE_USERS:
       return action.user;
 
     default:

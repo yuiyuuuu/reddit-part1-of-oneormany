@@ -61,9 +61,13 @@ export function handleAddComment(obj) {
 export function handleSelectedPostUpvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/upvote", obj);
+      const data = await makePutRequest("communities/vote", {
+        ...obj,
+        which: "up",
+      });
+
       dispatch(dispatchUpvoteSelectedPost(data));
-      console.log(data);
+
       return data;
     } catch (error) {
       console.log(error);
@@ -74,8 +78,13 @@ export function handleSelectedPostUpvote(obj) {
 export function handleSelectedPostDownvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/downvote", obj);
+      const data = await makePutRequest("communities/vote", {
+        ...obj,
+        which: "down",
+      });
+
       dispatch(dispatchDownvoteSelectedPost(data));
+
       return data;
     } catch (error) {
       console.log(error);
@@ -86,7 +95,10 @@ export function handleSelectedPostDownvote(obj) {
 export function handleSelectedPostRemoveUpvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/upvote/remove", obj);
+      const data = await makePutRequest("communities/vote", {
+        ...obj,
+        which: "up-remove",
+      });
       dispatch(dispatchRemoveUpvoteSelectedPost(data));
       return data;
     } catch (error) {
@@ -98,7 +110,11 @@ export function handleSelectedPostRemoveUpvote(obj) {
 export function handleSelectedPostRemoveDownvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/downvote/remove", obj);
+      const data = await makePutRequest("communities/vote", {
+        ...obj,
+        which: "down-remove",
+      });
+
       dispatch(dispatchRemoveDownvoteSelectedPost(data));
       return data;
     } catch (error) {

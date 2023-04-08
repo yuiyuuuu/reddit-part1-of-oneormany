@@ -125,8 +125,12 @@ async function seed() {
     data: {
       title: "First Post",
       body: "Was it a whisper or was it the wind? He wasn't quite sure. He thought he heard a voice but at this moment all he could hear was the wind rustling the leaves of the trees all around him. He stopped and listened more intently to see if he could hear the voice again. Nothing but the wind rustling the leaves could be heard. He was about to continue his walk when he felt a hand on his shoulder, and he quickly turned to see who it was. There was nobody there, but he heard the voice again.",
-      upvotes: [jack.id],
-      downvotes: [rachel.id],
+      upvotes: {
+        connect: [{ id: jack.id }],
+      },
+      downvotes: {
+        connect: [{ id: rachel.id }],
+      },
       communityId: community1.id,
       userId: jack.id,
     },
@@ -165,7 +169,14 @@ async function seed() {
         userId: rachel.id,
         postId: post1.id,
         message: "I am a root comment - upvoted",
-        upvotes: [user4.id, user5.id, user6.id, user3.id],
+        upvotes: {
+          connect: [
+            { id: user4.id },
+            { id: user5.id },
+            { id: user6.id },
+            { id: user3.id },
+          ],
+        },
       },
     });
 
@@ -175,7 +186,14 @@ async function seed() {
         userId: rachel.id,
         postId: post1.id,
         message: "I am a root comment -  downvoted",
-        downvotes: [user4.id, user5.id, user6.id, user3.id],
+        downvotes: {
+          connect: [
+            { id: user4.id },
+            { id: user5.id },
+            { id: user6.id },
+            { id: user3.id },
+          ],
+        },
       },
     });
 
@@ -231,8 +249,8 @@ async function seed() {
       postId: post1.id,
       parentId: null,
       message: "controversial comment",
-      downvotes: [user4.id, user5.id, user6.id, user3.id],
-      upvotes: [user10.id, user9.id, user8.id, user7.id, jack.id, rachel.id],
+      // downvotes: [user4.id, user5.id, user6.id, user3.id],
+      // upvotes: [user10.id, user9.id, user8.id, user7.id, jack.id, rachel.id],
     },
   });
 }

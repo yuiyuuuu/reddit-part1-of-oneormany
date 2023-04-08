@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 
 import { setScp } from "../../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
+import { votesUsers } from "../../../../store/users/users";
 
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -21,6 +22,42 @@ const UserPostMap = ({ post, i, length, selectedUser }) => {
   const authState = useSelector((state) => state.auth);
 
   const [showPostDetails, setShowPostDetails] = useState(false);
+
+  function handleUpvote() {
+    const obj = {
+      userid: authState.id,
+      postid: post.id,
+    };
+
+    dispatch(votesUsers(obj, "up"));
+  }
+
+  function handleDownvote() {
+    const obj = {
+      userid: authState.id,
+      postid: post.id,
+    };
+
+    dispatch(votesUsers(obj, "down"));
+  }
+
+  function handleRemoveUpvote() {
+    const obj = {
+      userid: authState.id,
+      postid: post.id,
+    };
+
+    dispatch(votesUsers(obj, "up-remove"));
+  }
+
+  function handleRemoveDownvote() {
+    const obj = {
+      userid: authState.id,
+      postid: post.id,
+    };
+
+    dispatch(votesUsers(obj, "down-remove"));
+  }
 
   return (
     <div
@@ -47,7 +84,7 @@ const UserPostMap = ({ post, i, length, selectedUser }) => {
             className='posts-upvote post-votebut'
             onClick={(e) => {
               e.stopPropagation();
-              if (post.upvotes?.includes(authState?.id)) {
+              if (post.upvotes?.map((v) => v.id)?.includes(authState?.id)) {
                 handleRemoveUpvote(post);
                 return;
               }
@@ -72,7 +109,7 @@ const UserPostMap = ({ post, i, length, selectedUser }) => {
             className='posts-downvote post-votebut'
             onClick={(e) => {
               e.stopPropagation();
-              if (post.downvotes?.includes(authState.id)) {
+              if (post.downvotes?.map((v) => v.id)?.includes(authState.id)) {
                 handleRemoveDownvote(post);
                 return;
               }

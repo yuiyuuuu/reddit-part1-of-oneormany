@@ -26,6 +26,8 @@ router.get("/single/:id", async (req, res, next) => {
                 users: true,
               },
             },
+            upvotes: true,
+            downvotes: true,
           },
         },
         users: {
@@ -72,15 +74,6 @@ router.get("/", async (req, res, next) => {
 
 router.put("/join", async (req, res, next) => {
   try {
-    // const user = await prisma.user.findUnique({
-    //   where: {
-    //     id: req.body.userid,
-    //   },
-    //   include: {
-    //     communities: true,
-    //   },
-    // });
-
     await prisma.user.update({
       where: {
         id: req.body.userid,
@@ -118,6 +111,8 @@ router.put("/join", async (req, res, next) => {
                 users: true,
               },
             },
+            upvotes: true,
+            downvotes: true,
           },
         },
         users: {
@@ -173,6 +168,8 @@ router.put("/leave", async (req, res, next) => {
                 users: true,
               },
             },
+            upvotes: true,
+            downvotes: true,
           },
         },
         users: {
@@ -227,6 +224,9 @@ router.put("/stylingchange", async (req, res, next) => {
               },
             },
           },
+
+          upvotes: true,
+          downvotes: true,
         },
         users: {
           select: {
@@ -302,6 +302,8 @@ router.put("/description", async (req, res, next) => {
                 users: true,
               },
             },
+            upvotes: true,
+            downvotes: true,
           },
         },
         users: {
@@ -350,6 +352,8 @@ router.put("/iconimage", async (req, res, next) => {
                 users: true,
               },
             },
+            upvotes: true,
+            downvotes: true,
           },
         },
         users: {
@@ -417,23 +421,66 @@ router.put("/banner", async (req, res, next) => {
   }
 });
 
-router.put("/upvote", async (req, res, next) => {
+router.put("/vote", async (req, res, next) => {
   try {
-    //find post
-    const post = await prisma.post.findUnique({
-      where: {
-        id: req.body.postid,
-      },
-    });
+    const which = req.body.which;
+
+    if (which === "up") {
+      await prisma.post.update({
+        where: {
+          id: req.body.postid,
+        },
+        data: {
+          upvotes: {
+            connect: [{ id: req.body.userid }],
+          },
+          downvotes: {
+            disconnect: [{ id: req.body.userid }],
+          },
+        },
+      });
+    } else if (which === "down") {
+      await prisma.post.update({
+        where: {
+          id: req.body.postid,
+        },
+        data: {
+          downvotes: {
+            connect: [{ id: req.body.userid }],
+          },
+          upvotes: {
+            disconnect: [{ id: req.body.userid }],
+          },
+        },
+      });
+    } else if (which === "down-remove") {
+      await prisma.post.update({
+        where: {
+          id: req.body.postid,
+        },
+        data: {
+          downvotes: {
+            disconnect: [{ id: req.body.userid }],
+          },
+        },
+      });
+    } else {
+      await prisma.post.update({
+        where: {
+          id: req.body.postid,
+        },
+        data: {
+          upvotes: {
+            disconnect: [{ id: req.body.userid }],
+          },
+        },
+      });
+    }
 
     //add the user to the upvotes and make sure there are no duplicates
-    const final = await prisma.post.update({
+    const final = await prisma.post.findUnique({
       where: {
         id: req.body.postid,
-      },
-      data: {
-        upvotes: [...new Set([...post.upvotes, req.body.userid])],
-        downvotes: post.downvotes.filter((i) => i !== req.body.userid),
       },
       include: {
         user: true,
@@ -450,6 +497,8 @@ router.put("/upvote", async (req, res, next) => {
             id: "asc",
           },
         },
+        downvotes: true,
+        upvotes: true,
       },
     });
 
@@ -459,127 +508,7 @@ router.put("/upvote", async (req, res, next) => {
   }
 });
 
-router.put("/downvote", async (req, res, next) => {
-  try {
-    //find post
-    const post = await prisma.post.findUnique({
-      where: {
-        id: req.body.postid,
-      },
-    });
-
-    //add the user to the upvotes and make sure there are no duplicates
-    const final = await prisma.post.update({
-      where: {
-        id: req.body.postid,
-      },
-      data: {
-        upvotes: post.upvotes.filter((i) => i !== req.body.userid),
-        downvotes: [...new Set([...post.upvotes, req.body.userid])],
-      },
-      include: {
-        user: true,
-        community: {
-          include: {
-            users: true,
-          },
-        },
-        comments: {
-          include: {
-            user: true,
-          },
-          orderBy: {
-            id: "asc",
-          },
-        },
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/upvote/remove", async (req, res, next) => {
-  try {
-    const post = await prisma.post.findUnique({
-      where: {
-        id: req.body.postid,
-      },
-    });
-
-    const final = await prisma.post.update({
-      where: {
-        id: req.body.postid,
-      },
-      data: {
-        upvotes: post.upvotes.filter((i) => i !== req.body.userid),
-      },
-      include: {
-        user: true,
-        community: {
-          include: {
-            users: true,
-          },
-        },
-        comments: {
-          include: {
-            user: true,
-          },
-          orderBy: {
-            id: "asc",
-          },
-        },
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/downvote/remove", async (req, res, next) => {
-  try {
-    const post = await prisma.post.findUnique({
-      where: {
-        id: req.body.postid,
-      },
-    });
-
-    const final = await prisma.post.update({
-      where: {
-        id: req.body.postid,
-      },
-      data: {
-        downvotes: post.upvotes.filter((i) => i !== req.body.userid),
-      },
-      include: {
-        user: true,
-        community: {
-          include: {
-            users: true,
-          },
-        },
-        comments: {
-          include: {
-            user: true,
-          },
-          orderBy: {
-            id: "asc",
-          },
-        },
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/comment/upvote", async (req, res, next) => {
+router.put("/comment/vote", async (req, res, next) => {
   try {
     const comment = await prisma.comment.findUnique({
       where: {
@@ -602,125 +531,6 @@ router.put("/comment/upvote", async (req, res, next) => {
     });
 
     res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/comment/downvote", async (req, res, next) => {
-  try {
-    const comment = await prisma.comment.findUnique({
-      where: {
-        id: req.body.commentid,
-      },
-    });
-
-    const final = await prisma.comment.update({
-      where: {
-        id: req.body.commentid,
-      },
-      data: {
-        downvotes: [...new Set([...comment.downvotes, req.body.userid])],
-        upvotes: comment.upvotes.filter((i) => i !== req.body.userid),
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/comment/upvote/remove", async (req, res, next) => {
-  try {
-    const comment = await prisma.comment.findUnique({
-      where: {
-        id: req.body.commentid,
-      },
-    });
-
-    const final = await prisma.comment.update({
-      where: {
-        id: req.body.commentid,
-      },
-      data: {
-        upvotes: comment.upvotes.filter((i) => i !== req.body.userid),
-      },
-
-      include: {
-        user: true,
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/comment/downvote/remove", async (req, res, next) => {
-  try {
-    const comment = await prisma.comment.findUnique({
-      where: {
-        id: req.body.commentid,
-      },
-    });
-
-    const final = await prisma.comment.update({
-      where: {
-        id: req.body.commentid,
-      },
-      data: {
-        downvotes: comment.downvotes.filter((i) => i !== req.body.userid),
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.post("/comment/add", async (req, res, next) => {
-  try {
-    const comment = await prisma.comment.create({
-      data: {
-        userId: req.body.userId,
-        postId: req.body.postId,
-        parentId: req.body.parentId,
-        message: req.body.message,
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    const post = await prisma.post.findUnique({
-      where: {
-        id: req.body.postId,
-      },
-      include: {
-        user: true,
-        community: {
-          include: {
-            users: true,
-          },
-        },
-        comments: {
-          include: {
-            user: true,
-          },
-        },
-      },
-    });
-
-    res.send({ post: post, comment: comment });
   } catch (error) {
     next(error);
   }
@@ -729,7 +539,7 @@ router.post("/comment/add", async (req, res, next) => {
 //NEW COMMENTS
 //these functions return the comment rather than the post
 
-router.put("/comment/upvote/new", async (req, res, next) => {
+router.put("/comment/vote/new", async (req, res, next) => {
   try {
     const comment = await prisma.comment.findUnique({
       where: {
@@ -743,85 +553,6 @@ router.put("/comment/upvote/new", async (req, res, next) => {
       },
       data: {
         upvotes: [...new Set([...comment.upvotes, req.body.userid])],
-        downvotes: comment.downvotes.filter((i) => i !== req.body.userid),
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/comment/downvote/new", async (req, res, next) => {
-  try {
-    const comment = await prisma.comment.findUnique({
-      where: {
-        id: req.body.commentid,
-      },
-    });
-
-    const final = await prisma.comment.update({
-      where: {
-        id: req.body.commentid,
-      },
-      data: {
-        downvotes: [...new Set([...comment.downvotes, req.body.userid])],
-        upvotes: comment.upvotes.filter((i) => i !== req.body.userid),
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/comment/upvote/remove/new", async (req, res, next) => {
-  try {
-    const comment = await prisma.comment.findUnique({
-      where: {
-        id: req.body.commentid,
-      },
-    });
-
-    const final = await prisma.comment.update({
-      where: {
-        id: req.body.commentid,
-      },
-      data: {
-        upvotes: comment.upvotes.filter((i) => i !== req.body.userid),
-      },
-      include: {
-        user: true,
-      },
-    });
-
-    res.send(final);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/comment/downvote/remove/new", async (req, res, next) => {
-  try {
-    const comment = await prisma.comment.findUnique({
-      where: {
-        id: req.body.commentid,
-      },
-    });
-
-    const final = await prisma.comment.update({
-      where: {
-        id: req.body.commentid,
-      },
-      data: {
         downvotes: comment.downvotes.filter((i) => i !== req.body.userid),
       },
       include: {

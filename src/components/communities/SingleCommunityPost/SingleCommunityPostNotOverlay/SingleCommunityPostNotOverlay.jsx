@@ -497,7 +497,11 @@ const SingleCommunityPostNotOverlay = () => {
                 <div
                   className='posts-upvote post-votebut'
                   onClick={() => {
-                    if (selectedPost?.upvotes?.includes(authState?.id)) {
+                    if (
+                      selectedPost?.upvotes
+                        ?.map((v) => v.id)
+                        ?.includes(authState?.id)
+                    ) {
                       handleRemoveUpvote();
                       return;
                     }
@@ -530,7 +534,11 @@ const SingleCommunityPostNotOverlay = () => {
                 <div
                   className='posts-upvote post-votebut'
                   onClick={() => {
-                    if (selectedPost.downvotes?.includes(authState?.id)) {
+                    if (
+                      selectedPost.downvotes
+                        ?.map((v) => v.id)
+                        ?.includes(authState?.id)
+                    ) {
                       handleRemoveDownvote();
                       return;
                     }
