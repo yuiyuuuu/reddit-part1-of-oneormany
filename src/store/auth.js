@@ -13,6 +13,11 @@ const REMOVE_COMMUNITY_FAVORITE_AUTH = "ADD_COMMUNITY_FAVORITE_AUTH";
 const FOLLOW_USER_USERS = "FOLLOW_USER_USERS";
 const UNFOLLOW_USER_USERS = "UNFOLLOW_USER_USERS";
 
+const UPVOTE_AUTH_POST = "UPVOTE_AUTH_POST";
+const DOWNVOTE_AUTH_POST = "DOWNVOTE_AUTH_POST";
+const UPVOTE_AUTH_POST_remove = "UPVOTE_AUTH_POST_remove";
+const DOWNVOTE_AUTH_POST_remove = "DOWNVOTE_AUTH_POST_remove";
+
 const setAuth = (auth) => ({
   type: AUTH,
   auth,
@@ -40,6 +45,26 @@ const dispatchFollowUser = (user) => ({
 
 const dispatchUnfollowUser = (user) => ({
   type: FOLLOW_USER_USERS,
+  user,
+});
+
+const dispatchUpvoteAuth = (user) => ({
+  type: UPVOTE_AUTH_POST,
+  user,
+});
+
+const dispatchDownvoteAuth = (user) => ({
+  type: DOWNVOTE_AUTH_POST,
+  user,
+});
+
+const dispatchUpvoteAuthRemove = (user) => ({
+  type: UPVOTE_AUTH_POST,
+  user,
+});
+
+const dispatchDownvoteAuthRemove = (user) => ({
+  type: DOWNVOTE_AUTH_POST,
   user,
 });
 
@@ -159,6 +184,14 @@ export function unfollowUser(object) {
     }
   };
 }
+
+export function upvoteAuth() {}
+
+export function downvoteAuth() {}
+
+export function upvoteAuthRemove() {}
+
+export function downvoteAuthRemove() {}
 
 export default function (state = {}, action) {
   switch (action.type) {

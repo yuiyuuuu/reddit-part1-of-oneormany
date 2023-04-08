@@ -112,11 +112,18 @@ const AuthOverlaySignup = ({ state }) => {
   }, []);
 
   useEffect(() => {
+    if (step === 2) {
+      document.removeEventListener("keydown", enterListener);
+    }
+  }, [step]);
+
+  useEffect(() => {
     if ($("#aos-email").val()?.length > 0) {
       $(".aos-emaillabel").addClass("movetopleft2");
     }
     inputAnimation("#aos-email", ".aos-emaillabel");
   }, [step]);
+
   return (
     <div style={{ display: !state.display && "none" }}>
       {step === 1 ? (

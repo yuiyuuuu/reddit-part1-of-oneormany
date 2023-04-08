@@ -581,7 +581,10 @@ const SingleCommunityPostNotOverlay = () => {
                 <div className='scp-y'>
                   <span>Posted by </span>
                   <span className='scp-yp'>
-                    <a href='' style={{ color: "rgb(120, 124, 126)" }}>
+                    <a
+                      href={`/user/${selectedPost?.user?.name}`}
+                      style={{ color: "rgb(120, 124, 126)" }}
+                    >
                       u/{selectedPost?.user?.name}
                     </a>
                   </span>

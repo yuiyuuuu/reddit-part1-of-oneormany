@@ -28,6 +28,8 @@ import { dispatchAddCommentNew } from "../../../store/comments/newComments";
 import { setCommentIdFind } from "../../../store/comments/commentIdFind";
 import { setScp } from "../../../store/scp/scpConditional";
 import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
+import { setOverlayStateSCP } from "../../../store/postoverlays/shareOverlayScp";
+import { setThreeStateSCP } from "../../../store/postoverlays/threeDotoverlaySCP";
 
 import $ from "jquery";
 
@@ -53,8 +55,6 @@ import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
 import CommentSearch from "./comments/searchcomponent/CommentSearch";
 import ShareOverlaySCP from "./overlay/ShareOverlaySCP";
 import ThreeDotOverlaySCP from "./overlay/ThreeDotOverlaySCP";
-import { setOverlayStateSCP } from "../../../store/postoverlays/shareOverlayScp";
-import { setThreeStateSCP } from "../../../store/postoverlays/threeDotoverlaySCP";
 
 const SingleCommunityPost = () => {
   const params = useParams();
@@ -708,7 +708,10 @@ const SingleCommunityPost = () => {
                   <div className='scp-y'>
                     <span>Posted by </span>
                     <span className='scp-yp'>
-                      <a href='' style={{ color: "rgb(120, 124, 126)" }}>
+                      <a
+                        href={`/user/${selectedPost?.user?.name}`}
+                        style={{ color: "rgb(120, 124, 126)" }}
+                      >
                         u/{selectedPost?.user?.name}
                       </a>
                     </span>
@@ -727,7 +730,7 @@ const SingleCommunityPost = () => {
                   style={{ userSelect: "none" }}
                 >
                   <div className='scp-comment scp-selectionaligncenter'>
-                    <CommentSvg />
+                    <CommentSvg id={selectedPost?.id} />
                     <span>{selectedPost?.comments.length}</span>
                   </div>
 
@@ -743,28 +746,28 @@ const SingleCommunityPost = () => {
                       );
                     }}
                   >
-                    <ShareSvg />
+                    <ShareSvg id={selectedPost?.id} />
                     <span>Share</span>
                   </div>
 
                   <div className='scp-modoptions'>
                     <div className='scp-modrow'>
-                      <ApproveSvg />
+                      <ApproveSvg id={selectedPost?.id} />
                       <span className='scp-m'>Approve</span>
                     </div>
 
                     <div className='scp-modrow'>
-                      <RemoveSvg />
+                      <RemoveSvg id={selectedPost?.id} />
                       <span className='scp-m'>Remove</span>
                     </div>
 
                     <div className='scp-modrow'>
-                      <SpamSvg />
+                      <SpamSvg id={selectedPost?.id} />
                       <span className='scp-m'>Spam</span>
                     </div>
 
                     <div className='scp-modrow'>
-                      <ShieldSvg />
+                      <ShieldSvg id={selectedPost?.id} />
                     </div>
 
                     <div
@@ -780,7 +783,7 @@ const SingleCommunityPost = () => {
                         );
                       }}
                     >
-                      <ThreeDot />
+                      <ThreeDot idv={selectedPost?.id} />
                     </div>
                   </div>
                 </div>

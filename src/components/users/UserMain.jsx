@@ -69,7 +69,13 @@ const UserMain = () => {
         style={{ paddingLeft: (lnState || lnnlState) && "270px" }}
         className='um-parent'
       >
-        <div className='um-nav'>
+        <div
+          className='um-nav'
+          style={{
+            justifyContent: selectedSection === "overview" && "center",
+            paddingLeft: selectedSection === "overview" && 0,
+          }}
+        >
           {usersections.map((section) => (
             <div
               className='um-sectionchild'

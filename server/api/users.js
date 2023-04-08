@@ -471,3 +471,31 @@ router.put("/unfollow", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/vote", async (req, res, next) => {
+  try {
+    // const user = await prisma.user.findUnique({
+    //   where: {
+    //     id: req.body.userid,
+    //   },
+    // });
+
+    //lisdufjlksdvlkjsdg
+
+    const which = req.body.which;
+
+    if (which === "up") {
+      await prisma.post.update({
+        where: {
+          id: req.body.postid,
+        },
+        data: {
+          upvotes: [...new Set([...post.upvotes, req.body.userid])],
+          downvotes: post.downvotes.filter((i) => i !== req.body.userid),
+        },
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});

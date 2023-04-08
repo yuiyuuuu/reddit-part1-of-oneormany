@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./aos.scss";
 import { useDispatch } from "react-redux";
 
@@ -102,6 +102,8 @@ const AOSStep2 = ({
   }
 
   function handleSubmit() {
+    console.log(!validPassword || !validUsername);
+
     if (!validPassword || !validUsername) return;
     setWeakpass(false);
     if (passStrength < 1) {

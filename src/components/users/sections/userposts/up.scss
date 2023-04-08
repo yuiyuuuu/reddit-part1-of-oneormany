@@ -21,16 +21,29 @@
 }
 
 .up-mapparent {
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+
+  &:hover::before {
+    border: 1px solid #898989;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.up-lin {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  background-color: white;
-  border: 1px solid transparent;
-  cursor: pointer;
-
-  &:hover {
-    border: 1px solid #898989;
-  }
 }
 
 .up-postinfo {
@@ -57,4 +70,69 @@
   font-size: 12px;
   font-weight: 500;
   color: #1c1c1c;
+}
+
+.up-botrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.up-expand {
+  height: 36px;
+  width: 36px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+
+  &:hover {
+    background-color: rgba(26, 26, 27, 0.1);
+  }
+}
+
+.up-divide {
+  height: 16px;
+  width: 1px;
+  background-color: #edeff1;
+}
+
+.up-sd {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 2px;
+  padding: 8px;
+  margin-right: 4px;
+  border-radius: 2px;
+}
+
+.up-hov {
+  &:hover {
+    background-color: rgba(26, 26, 27, 0.1);
+  }
+}
+
+.up-2 {
+  padding: 4px !important;
+}
+
+.up-te {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #878a89 !important;
+}
+
+.up-details {
+  display: flex;
+  padding: 5px 16px 5px 8px;
+}
+
+.up-preimg {
+  height: 72px;
+  width: 96px;
+  background-size: cover;
+  background-position: center;
 }

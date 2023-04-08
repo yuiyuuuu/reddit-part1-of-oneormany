@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import { setScp } from "../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../store/scp/selectedPost";
 import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
@@ -30,7 +31,7 @@ const Post = ({
   handleRemoveUpvote,
   scp,
   m,
-  fromOverview,
+  fromOverview, //edge case
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

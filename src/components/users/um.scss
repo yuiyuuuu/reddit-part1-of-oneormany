@@ -1,5 +1,6 @@
 .um-parent {
   margin-top: 48px;
+  overflow: hidden;
 }
 
 .users-topfilter {
@@ -15,7 +16,7 @@
   flex-direction: row;
   align-items: center;
   height: 40px;
-  justify-content: center;
+  padding-left: 18px;
 }
 
 .um-sectionchild {

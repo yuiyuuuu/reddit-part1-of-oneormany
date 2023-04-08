@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
@@ -8,12 +8,19 @@ import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import TextOnlyPost from "./svg/TextOnlyPost";
+import ExpandSvg from "./svg/ExpandSvg";
+import UserPostModOptions from "./UserPostModOptions";
+import CommentSvg from "../../../home/posts/postssvgs/CommentSvg";
+import ShareSvg from "../../../home/posts/postssvgs/ShareSvg";
+import CollapseSvg from "./svg/CollapseSvg";
 
-const UserPostMap = ({ post, i, length }) => {
+const UserPostMap = ({ post, i, length, selectedUser }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const authState = useSelector((state) => state.auth);
+
+  const [showPostDetails, setShowPostDetails] = useState(false);
 
   return (
     <div
@@ -28,71 +35,132 @@ const UserPostMap = ({ post, i, length }) => {
         navigate(`/r/${post?.community?.name}/comments/${post?.id}`);
       }}
     >
-      <div
-        className='posts-vote post-voteleft'
-        style={{
-          borderRadius: i === 0 ? "4px 0 0 0" : i === length - 1 && "0 0 0 4px",
-        }}
-      >
+      <div className='up-lin'>
         <div
-          className='posts-upvote post-votebut'
-          onClick={(e) => {
-            e.stopPropagation();
-            if (post.upvotes?.includes(authState?.id)) {
-              handleRemoveUpvote(post);
-              return;
-            }
-            handleUpvote(post);
-          }}
-        >
-          <UpVoteSvg id={post.id} post={post} authState={authState} />
-        </div>
-        <div
-          className='posts-votecount'
+          className='posts-vote post-voteleft'
           style={{
-            color: post?.upvotes?.includes(authState?.id)
-              ? "red"
-              : post?.downvotes?.includes(authState?.id)
-              ? "#7193ff"
-              : "",
+            borderRadius:
+              i === 0 ? "4px 0 0 0" : i === length - 1 && "0 0 0 4px",
           }}
         >
-          {post.upvotes.length - post.downvotes.length}
+          <div
+            className='posts-upvote post-votebut'
+            onClick={(e) => {
+              e.stopPropagation();
+              if (post.upvotes?.includes(authState?.id)) {
+                handleRemoveUpvote(post);
+                return;
+              }
+              handleUpvote(post);
+            }}
+          >
+            <UpVoteSvg id={post.id} post={post} authState={authState} />
+          </div>
+          <div
+            className='posts-votecount'
+            style={{
+              color: post?.upvotes?.includes(authState?.id)
+                ? "red"
+                : post?.downvotes?.includes(authState?.id)
+                ? "#7193ff"
+                : "",
+            }}
+          >
+            {post.upvotes.length - post.downvotes.length}
+          </div>
+          <div
+            className='posts-downvote post-votebut'
+            onClick={(e) => {
+              e.stopPropagation();
+              if (post.downvotes?.includes(authState.id)) {
+                handleRemoveDownvote(post);
+                return;
+              }
+              handleDownvote(post);
+            }}
+          >
+            <DownVoteSvg id={post.id} post={post} authState={authState} />
+          </div>
         </div>
-        <div
-          className='posts-downvote post-votebut'
-          onClick={(e) => {
-            e.stopPropagation();
-            if (post.downvotes?.includes(authState.id)) {
-              handleRemoveDownvote(post);
-              return;
-            }
-            handleDownvote(post);
-          }}
-        >
-          <DownVoteSvg id={post.id} post={post} authState={authState} />
-        </div>
-      </div>
 
-      <div className='up-mapright'>
-        <div className='up-wh'>
-          <TextOnlyPost />
-        </div>
+        <div style={{ maxWidth: "calc(100% - 48px)" }}>
+          <div className='up-mapright'>
+            {post?.image ? (
+              <div
+                className='up-preimg'
+                style={{
+                  backgroundImage: `url(data:image/png;base64,${post?.image})`,
+                }}
+              />
+            ) : (
+              <div className='up-wh'>
+                <TextOnlyPost />
+              </div>
+            )}
 
-        <div className='up-postinfo'>
-          <div className='up-title'>{post?.title}</div>
-          <div className='up-f'>
-            <div
-              className='up-fc hoverunderline'
-              onClick={() => {
-                window.location.href = `/r/${post?.community?.name}`;
-              }}
-            >
-              r/{post?.community?.name}
+            <div className='up-postinfo'>
+              <div className='up-title'>{post?.title}</div>
+              <div className='up-f'>
+                <div
+                  className='up-fc hoverunderline'
+                  onClick={() => {
+                    window.location.href = `/r/${post?.community?.name}`;
+                  }}
+                >
+                  r/{post?.community?.name}
+                </div>
+                <div className='dot-posts'>•</div>
+                <span>Posted by u/{post?.user?.name}</span>&nbsp;
+                <span>1 day ago</span>
+              </div>
+
+              <div className='up-botrow'>
+                <div
+                  className='up-expand'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowPostDetails((prev) => !prev);
+                  }}
+                >
+                  {showPostDetails ? (
+                    <CollapseSvg id={post?.id} />
+                  ) : (
+                    <ExpandSvg id={post?.id} />
+                  )}
+                </div>
+
+                <div className='up-divide' />
+
+                <div className='up-sd up-2 up-hov'>
+                  <CommentSvg id={post?.id} />
+                  <span className='up-te'>0</span>
+                </div>
+
+                <div className='up-sd up-hov'>
+                  <ShareSvg id={post?.id} />
+                  <span className='up-te'>Share</span>
+                </div>
+
+                {authState?.id === selectedUser?.id && (
+                  <UserPostModOptions post={post} />
+                )}
+              </div>
             </div>
-            <div className='dot-posts'>•</div>
-            <span>Posted by u/{post?.user?.name}</span>&nbsp;
-            <span>1 day ago</span>
+          </div>
+          <div
+            className='up-details'
+            style={{
+              display: !showPostDetails && "none",
+              justifyContent: post?.image && "center",
+            }}
+          >
+            {post?.body && <pre>{post?.body}</pre>}
+            {post?.image && (
+              <img
+                className='up-detimg'
+                src={`data:image/png;base64,${post?.image}`}
+              />
+            )}
           </div>
         </div>
       </div>
