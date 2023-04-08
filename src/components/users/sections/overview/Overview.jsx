@@ -3,11 +3,19 @@ import { useSelector } from "react-redux";
 
 import "./overview.scss";
 import OverviewMap from "./OverviewMap";
+import NewGray from "../../svg/nav/NewGray";
+import NewBlue from "../../svg/nav/NewBlue";
+import HotGray from "../../svg/nav/HotGray";
+import HotBlue from "../../svg/nav/HotBlue";
+import TopGray from "../../svg/nav/TopGray";
+import TopBlue from "../../svg/nav/TopBlue";
 
 const Overview = () => {
   const userState = useSelector((state) => state.selectedUser);
 
   const [mapResults, setMapResults] = useState({});
+
+  const [selectedFilter, setSelectedFilter] = useState("new");
 
   useEffect(() => {
     setMapResults({});
@@ -32,7 +40,37 @@ const Overview = () => {
   return (
     <div>
       <div className='overview-parent'>
-        <div className='users-topfilter'>add here later</div>
+        <div className='users-topfilter'>
+          <div className='usernav-fil' onClick={() => setSelectedFilter("new")}>
+            {selectedFilter === "new" ? <NewBlue /> : <NewGray />}
+            <div
+              className='usernav-f'
+              style={{ color: selectedFilter === "new" && "#0079d3" }}
+            >
+              New
+            </div>
+          </div>
+
+          <div className='usernav-fil' onClick={() => setSelectedFilter("hot")}>
+            {selectedFilter === "hot" ? <HotBlue /> : <HotGray />}
+            <div
+              className='usernav-f'
+              style={{ color: selectedFilter === "hot" && "#0079d3" }}
+            >
+              Hot
+            </div>
+          </div>
+
+          <div className='usernav-fil' onClick={() => setSelectedFilter("top")}>
+            {selectedFilter === "top" ? <TopBlue /> : <TopGray />}
+            <div
+              className='usernav-f'
+              style={{ color: selectedFilter === "top" && "#0079d3" }}
+            >
+              Top
+            </div>
+          </div>
+        </div>
 
         <div className='overview-posts'>
           {Object.values(mapResults).map((item) => (

@@ -7,6 +7,32 @@
   background-color: white;
   border-radius: 4px;
   margin-bottom: 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.usernav-fil {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 6px 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-right: 8px;
+
+  &:hover {
+    background: rgba(28, 28, 28, 0.08);
+  }
+}
+
+.usernav-f {
+  font-size: 14px;
+  color: #87898a;
+  font-weight: 500;
+  margin-left: 8px;
 }
 
 .um-nav {

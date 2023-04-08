@@ -64,7 +64,11 @@ const UserPostMap = ({ post, i, length, selectedUser }) => {
       className='up-mapparent'
       style={{
         borderRadius:
-          i === 0 ? "4px 4px 0 0" : i === length - 1 && "0 0 4px 4px",
+          i === 0 && i === length - 1
+            ? "4px"
+            : i === 0
+            ? "4px 4px 0 0"
+            : i === length - 1 && "0 0 4px 4px",
       }}
       onClick={() => {
         dispatch(setScp("user"));
