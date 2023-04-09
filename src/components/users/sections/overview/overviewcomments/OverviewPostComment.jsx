@@ -44,9 +44,9 @@ const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
             </div>
 
             <div className='ov-vote'>
-              {object.data.upvotes.length - object.data.downvotes.length}{" "}
+              {object.data.upvotes?.length - object.data.downvotes?.length}{" "}
               {Math.abs(
-                object.data.upvotes.length - object.data.downvotes.length
+                object.data.upvotes?.length - object.data.downvotes?.length
               ) > 1
                 ? "points"
                 : "point"}
@@ -56,7 +56,7 @@ const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
 
             <div className='ov-time'>1 day ago</div>
           </div>
-          <span className='ov-message'>{object.data.message}</span>
+          <span className='ov-message'>{object.data?.message}</span>
 
           {!idEquals
             ? object.data.user.id === post.user.id && (
