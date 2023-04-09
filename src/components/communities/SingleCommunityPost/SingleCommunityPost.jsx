@@ -575,8 +575,8 @@ const SingleCommunityPost = () => {
                       : "",
                   }}
                 >
-                  {selectedPost?.upvotes.length -
-                    selectedPost?.downvotes.length}
+                  {selectedPost?.upvotes?.length -
+                    selectedPost?.downvotes?.length}
                 </div>
 
                 <div
@@ -664,8 +664,8 @@ const SingleCommunityPost = () => {
                       margin: "4px 0",
                     }}
                   >
-                    {selectedPost?.upvotes.length -
-                      selectedPost?.downvotes.length}
+                    {selectedPost?.upvotes?.length -
+                      selectedPost?.downvotes?.length}
                   </div>
 
                   <div
@@ -745,7 +745,7 @@ const SingleCommunityPost = () => {
                 >
                   <div className='scp-comment scp-selectionaligncenter'>
                     <CommentSvg id={selectedPost?.id} />
-                    <span>{selectedPost?.comments.length}</span>
+                    <span>{selectedPost?.comments?.length}</span>
                   </div>
 
                   <div
@@ -887,7 +887,7 @@ const SingleCommunityPost = () => {
                   }
                 />
               ) : (
-                selectedPost?.comments.length && (
+                selectedPost?.comments?.length && (
                   <div className='comment-mla'>
                     <CommentsList
                       comments={selectedPost?.comments}

@@ -124,6 +124,12 @@ export const setNotFoundComment = () => ({
 export const dispatchSortComments = (comments, sorttype) => {
   return (dispatch) => {
     if (!comments.length) return;
+
+    if (!sorttype) {
+      sorttype = "best";
+      window.localStorage.setItem("commentsort", "Best");
+    }
+
     sorttype.toLowerCase() == "best" && dispatch(dispatchSortBest());
     sorttype.toLowerCase() == "top" && dispatch(dispatchSortTop());
     sorttype.toLowerCase() == "new" && dispatch(dispatchSortNew());

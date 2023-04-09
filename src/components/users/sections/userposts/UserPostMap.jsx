@@ -107,7 +107,7 @@ const UserPostMap = ({ post, i, length, selectedUser }) => {
                 : "",
             }}
           >
-            {post.upvotes.length - post.downvotes.length}
+            {post.upvotes?.length - post.downvotes?.length}
           </div>
           <div
             className='posts-downvote post-votebut'

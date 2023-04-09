@@ -113,13 +113,13 @@ const Comment = ({
     };
 
     if (newComment) {
-      if (comment.upvotes.includes(authState.id)) {
+      if (comment.upvotes?.includes(authState.id)) {
         dispatch(handleRemoveNewCommentUpvote(obj));
       } else {
         dispatch(handleNewCommentUpvote(obj));
       }
     } else {
-      if (comment.upvotes.includes(authState.id)) {
+      if (comment.upvotes?.includes(authState.id)) {
         dispatch(handleRemoveCommentUpvote(obj, comment.parentId));
       } else {
         dispatch(handleCommentUpvote(obj, comment.parentId));
@@ -140,13 +140,13 @@ const Comment = ({
     };
 
     if (newComment) {
-      if (comment.downvotes.includes(authState.id)) {
+      if (comment.downvotes?.includes(authState.id)) {
         dispatch(handleRemoveNewCommentDownvote(obj));
       } else {
         dispatch(handleNewCommentDownvote(obj));
       }
     } else {
-      if (comment.downvotes.includes(authState.id)) {
+      if (comment.downvotes?.includes(authState.id)) {
         dispatch(handleRemoveCommentDownvote(obj, comment.parentId));
       } else {
         dispatch(handleCommentDownvote(obj, comment.parentId));
@@ -303,7 +303,7 @@ const Comment = ({
             <img
               src={
                 comment.user?.photo
-                  ? `data:image/png;base64,${comment?.user.photo}`
+                  ? `data:image/png;base64,${comment?.user?.photo}`
                   : "/assets/defaultpfp.png"
               }
               className='comment-pfp'
@@ -351,14 +351,14 @@ const Comment = ({
                 <div
                   className='comment-votecount'
                   style={{
-                    color: comment?.upvotes.includes(authState?.id)
+                    color: comment?.upvotes?.includes(authState?.id)
                       ? "red"
-                      : comment?.downvotes.includes(authState?.id)
+                      : comment?.downvotes?.includes(authState?.id)
                       ? "#7193ff"
                       : "",
                   }}
                 >
-                  {comment.upvotes.length - comment.downvotes.length}
+                  {comment.upvotes?.length - comment.downvotes?.length}
                 </div>
                 <div
                   className='comment-voteicon comment-hover'

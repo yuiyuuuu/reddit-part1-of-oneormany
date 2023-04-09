@@ -16,13 +16,13 @@ function sorting(a, b) {
 
 function sortCommentsByTop(a, b) {
   if (
-    a.upvotes.length - a.downvotes.length >
-    b.upvotes.length - b.downvotes.length
+    a.upvotes?.length - a.downvotes?.length >
+    b.upvotes?.length - b.downvotes?.length
   ) {
     return -1;
   } else if (
-    a.upvotes.length - a.downvotes.length <
-    b.upvotes.length - b.downvotes.length
+    a.upvotes?.length - a.downvotes?.length <
+    b.upvotes?.length - b.downvotes?.length
   ) {
     return 1;
   } else {
@@ -40,13 +40,13 @@ function sortCommentsByBest(a, b) {}
 
 function sortCommentsByControversial(a, b) {
   if (
-    a.upvotes.length + a.downvotes.length >
-    b.upvotes.length + b.downvotes.length
+    a.upvotes?.length + a.downvotes?.length >
+    b.upvotes?.length + b.downvotes?.length
   ) {
     return -1;
   } else if (
-    a.upvotes.length + a.downvotes.length <
-    b.upvotes.length + b.downvotes.length
+    a.upvotes?.length + a.downvotes?.length <
+    b.upvotes?.length + b.downvotes?.length
   ) {
     return 1;
   } else {
@@ -56,9 +56,9 @@ function sortCommentsByControversial(a, b) {
 
 function sortByPercentage(a, b) {
   const percentageUpvotesA =
-    a.upvotes.length / (a.upvotes.length + a.downvotes.length) || 0;
+    a.upvotes?.length / (a.upvotes?.length + a.downvotes?.length) || 0;
   const percentageUpvotesB =
-    b.upvotes.length / (b.upvotes.length + b.downvotes.length) || 0;
+    b.upvotes?.length / (b.upvotes?.length + b.downvotes?.length) || 0;
 
   if (percentageUpvotesA > percentageUpvotesB) {
     return -1;
