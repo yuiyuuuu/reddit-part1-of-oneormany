@@ -113,13 +113,13 @@ const Comment = ({
     };
 
     if (newComment) {
-      if (comment.upvotes?.includes(authState.id)) {
+      if (comment.upvotes?.map((v) => v.id)?.includes(authState.id)) {
         dispatch(handleRemoveNewCommentUpvote(obj));
       } else {
         dispatch(handleNewCommentUpvote(obj));
       }
     } else {
-      if (comment.upvotes?.includes(authState.id)) {
+      if (comment.upvotes?.map((v) => v.id)?.includes(authState.id)) {
         dispatch(handleRemoveCommentUpvote(obj, comment.parentId));
       } else {
         dispatch(handleCommentUpvote(obj, comment.parentId));
@@ -140,13 +140,13 @@ const Comment = ({
     };
 
     if (newComment) {
-      if (comment.downvotes?.includes(authState.id)) {
+      if (comment.downvotes?.map((v) => v.id)?.includes(authState.id)) {
         dispatch(handleRemoveNewCommentDownvote(obj));
       } else {
         dispatch(handleNewCommentDownvote(obj));
       }
     } else {
-      if (comment.downvotes?.includes(authState.id)) {
+      if (comment.downvotes?.map((v) => v.id)?.includes(authState.id)) {
         dispatch(handleRemoveCommentDownvote(obj, comment.parentId));
       } else {
         dispatch(handleCommentDownvote(obj, comment.parentId));

@@ -12,7 +12,7 @@ import { usersections } from "./usersections";
 import UserNotFound from "./notfound/UserNotFound";
 import Overview from "./sections/overview/Overview";
 import UserHistory from "./sections/UserHistory";
-import UserComments from "./sections/UserComments";
+import UserComments from "./sections/usercomments/UserComments";
 import UserGivenAwards from "./sections/UserGivenAwards";
 import UserHidden from "./sections/UserHidden";
 import UserPosts from "./sections/userposts/UserPosts";
@@ -99,7 +99,11 @@ const UserMain = () => {
         <div className='um-main'>
           <div
             className='um-body'
-            style={{ width: selectedSection === "posts" && "100%" }}
+            style={{
+              width:
+                selectedSection === "posts" ||
+                (selectedSection === "comments" && "100%"),
+            }}
           >
             {selectedSection === "overview" && <Overview />}
             {selectedSection === "posts" && <UserPosts />}

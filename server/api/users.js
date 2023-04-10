@@ -87,6 +87,8 @@ router.get("/:name", async (req, res, next) => {
             children: true,
             parent: true,
             user: true,
+            upvotes: true,
+            downvotes: true,
           },
         },
         communities: {

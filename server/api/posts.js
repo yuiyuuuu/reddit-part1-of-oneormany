@@ -17,6 +17,8 @@ router.get("/", async (req, res, next) => {
         comments: {
           include: {
             user: true,
+            downvotes: true,
+            upvotes: true,
           },
         },
         upvotes: true,
@@ -43,6 +45,8 @@ router.get("/community/:id", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                downvotes: true,
+                upvotes: true,
               },
             },
             community: {
@@ -74,6 +78,8 @@ router.post("/", async (req, res, next) => {
         comments: {
           include: {
             user: true,
+            upvotes: true,
+            downvotes: true,
           },
         },
         community: {
@@ -154,6 +160,7 @@ router.put("/vote", async (req, res, next) => {
       where: {
         id: req.body.postid,
       },
+
       include: {
         user: true,
         community: {
@@ -164,6 +171,8 @@ router.put("/vote", async (req, res, next) => {
         comments: {
           include: {
             user: true,
+            upvotes: true,
+            downvotes: true,
           },
         },
 

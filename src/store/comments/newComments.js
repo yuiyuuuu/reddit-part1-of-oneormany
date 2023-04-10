@@ -41,7 +41,10 @@ export const dispatchClearNewCommentState = () => ({
 export function handleNewCommentUpvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("/communities/comment/upvote/new", obj);
+      const data = await makePutRequest("/communities/comment/vote/new", {
+        ...obj,
+        which: "up",
+      });
       dispatch(dispatchUpvoteComment(data));
     } catch (error) {
       console.log(error);
@@ -52,10 +55,10 @@ export function handleNewCommentUpvote(obj) {
 export function handleNewCommentDownvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest(
-        "/communities/comment/downvote/new",
-        obj
-      );
+      const data = await makePutRequest("/communities/comment/vote/new", {
+        ...obj,
+        which: "down",
+      });
       dispatch(dispatchDownvoteComment(data));
     } catch (error) {
       console.log(error);
@@ -66,10 +69,10 @@ export function handleNewCommentDownvote(obj) {
 export function handleRemoveNewCommentUpvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest(
-        "/communities/comment/upvote/remove/new",
-        obj
-      );
+      const data = await makePutRequest("/communities/comment/vote/new", {
+        ...obj,
+        which: "up-remove",
+      });
       dispatch(dispatchRemoveUpvoteComment(data));
     } catch (error) {
       console.log(error);
@@ -80,10 +83,10 @@ export function handleRemoveNewCommentUpvote(obj) {
 export function handleRemoveNewCommentDownvote(obj) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest(
-        "/communities/comment/downvote/remove/new",
-        obj
-      );
+      const data = await makePutRequest("/communities/comment/vote/new", {
+        ...obj,
+        which: "down-remove",
+      });
       dispatch(dispatchRemoveDownvoteComment(data));
     } catch (error) {
       console.log(error);

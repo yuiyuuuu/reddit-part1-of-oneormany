@@ -671,7 +671,11 @@ const SingleCommunityPost = () => {
                   <div
                     className='posts-upvote post-votebut'
                     onClick={() => {
-                      if (selectedPost.downvotes?.includes(authState?.id)) {
+                      if (
+                        selectedPost.downvotes
+                          ?.map((v) => v.id)
+                          ?.includes(authState?.id)
+                      ) {
                         handleRemoveDownvote();
                         return;
                       }

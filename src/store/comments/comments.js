@@ -142,7 +142,10 @@ export const dispatchSortComments = (comments, sorttype) => {
 export function handleCommentUpvote(obj, parentid) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/comment/upvote", obj);
+      const data = await makePutRequest("communities/comment/vote", {
+        ...obj,
+        which: "up",
+      });
       dispatch(dispatchUpvoteComment(data, parentid));
     } catch (error) {
       console.log(error);
@@ -153,7 +156,10 @@ export function handleCommentUpvote(obj, parentid) {
 export function handleCommentDownvote(obj, parentid) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest("communities/comment/downvote", obj);
+      const data = await makePutRequest("communities/comment/vote", {
+        ...obj,
+        which: "down",
+      });
       dispatch(dispatchDownvoteComment(data, parentid));
     } catch (error) {
       console.log(error);
@@ -164,10 +170,10 @@ export function handleCommentDownvote(obj, parentid) {
 export function handleRemoveCommentUpvote(obj, parentid) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest(
-        "/communities/comment/upvote/remove",
-        obj
-      );
+      const data = await makePutRequest("/communities/comment/vote", {
+        ...obj,
+        which: "up-remove",
+      });
       dispatch(dispatchRemoveUpvoteComment(data, parentid));
     } catch (error) {
       console.log(error);
@@ -178,10 +184,10 @@ export function handleRemoveCommentUpvote(obj, parentid) {
 export function handleRemoveCommentDownvote(obj, parentid) {
   return async (dispatch) => {
     try {
-      const data = await makePutRequest(
-        "communities/comment/downvote/remove",
-        obj
-      );
+      const data = await makePutRequest("communities/comment/vote", {
+        ...obj,
+        which: "down-remove",
+      });
       dispatch(dispatchRemoveDownvoteComment(data, parentid));
     } catch (error) {
       console.log(error);
