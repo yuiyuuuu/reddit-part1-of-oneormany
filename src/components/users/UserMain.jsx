@@ -30,12 +30,14 @@ const UserMain = () => {
   const selectedUser = useSelector((state) => state.selectedUser);
   const lnState = useSelector((state) => state.lnState);
   const lnnlState = useSelector((state) => state.lnnl);
+  const selectedPost = useSelector((state) => state.selectedPost);
 
   const [ready, setReady] = useState(false);
 
   const [selectedSection, setSelectedSection] = useState(params.section);
 
   useEffect(() => {
+    if (selectedPost?.id) return;
     const name = params.userid;
 
     dispatch(setSelectedUser(name)).then(() => setReady(true));
@@ -101,8 +103,9 @@ const UserMain = () => {
             className='um-body'
             style={{
               width:
-                selectedSection === "posts" ||
-                (selectedSection === "comments" && "100%"),
+                (selectedSection === "posts" ||
+                  selectedSection === "comments") &&
+                "100%",
             }}
           >
             {selectedSection === "overview" && <Overview />}

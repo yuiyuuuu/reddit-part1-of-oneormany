@@ -7,6 +7,7 @@ import { setSelectedPost } from "../../../store/scp/selectedPost";
 import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
 import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
 import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
+import { handleRecent } from "../../../requests/handleRecent";
 
 import "./post.scss";
 
@@ -108,41 +109,6 @@ const Post = ({
     dispatch(setOverlayState({ display: false }));
   }
 
-  function handleRecent() {
-    if (!authState?.id) {
-      const prev = JSON.parse(window.localStorage.getItem("nlrecent"));
-
-      if (prev?.length !== 0 && !prev?.length) {
-        window.localStorage.setItem("nlrecent", JSON.stringify([]));
-      }
-
-      const find = JSON.parse(window.localStorage.getItem("nlrecent")).find(
-        (v) => v?.id === post.community.id
-      );
-
-      if (!find) {
-        const c = JSON.parse(window.localStorage.getItem("nlrecent"));
-
-        if (c.length === 3) {
-          c.shift();
-        }
-
-        window.localStorage.setItem(
-          "nlrecent",
-          JSON.stringify([
-            ...c,
-            {
-              name: post.community.name,
-              iconImage: post.community.iconImage,
-              id: post.community.id,
-              themeBaseColor: post.community.themeBaseColor,
-            },
-          ])
-        );
-      }
-    }
-  }
-
   useEffect(() => {
     //function to prevent event bubbling
     $(document).ready((e) => {
@@ -176,7 +142,7 @@ const Post = ({
       className='single-postcontainer'
       id={`single-container${post.id}`}
       onClick={(e) => {
-        handleRecent();
+        handleRecent(authState, post);
         dispatch(setScp(scp || null));
         dispatch(setSelectedPost(post));
         navigate(`/r/${post.community.name}/comments/${post.id}`);

@@ -61,6 +61,8 @@ router.get("/:name", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                downvotes: true,
+                upvotes: true,
               },
             },
             downvotes: true,
@@ -75,6 +77,8 @@ router.get("/:name", async (req, res, next) => {
                 comments: {
                   include: {
                     user: true,
+                    downvotes: true,
+                    upvotes: true,
                   },
                 },
                 community: {
@@ -82,6 +86,8 @@ router.get("/:name", async (req, res, next) => {
                     users: true,
                   },
                 },
+                downvotes: true,
+                upvotes: true,
               },
             },
             children: true,

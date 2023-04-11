@@ -36,6 +36,8 @@ The application's frontend is an attempt to make a replica of Reddit's frontend 
 
 This application is deployed to heroku in order to have a live demo of my technical skills for others(recruiters, collegues, etc)
 
+This application was built through reverse engineering, only using information that were publicly available. No source code of Reddit was found or used during development.
+
 ## Setup :rocket:
 
 ```

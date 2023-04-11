@@ -9,6 +9,7 @@ import HotGray from "../../svg/nav/HotGray";
 import HotBlue from "../../svg/nav/HotBlue";
 import TopGray from "../../svg/nav/TopGray";
 import TopBlue from "../../svg/nav/TopBlue";
+import NoPosts from "../userposts/NoPosts";
 
 const Overview = () => {
   const userState = useSelector((state) => state.selectedUser);
@@ -36,6 +37,16 @@ const Overview = () => {
 
     setMapResults(group);
   }, [userState]);
+
+  if (!userState?.id) return "loading";
+
+  if (!userState?.posts?.length) {
+    return (
+      <div style={{ width: "640px" }}>
+        <NoPosts selected={userState} what={"post"} />;
+      </div>
+    );
+  }
 
   return (
     <div>

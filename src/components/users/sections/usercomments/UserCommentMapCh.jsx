@@ -1,10 +1,17 @@
 import React from "react";
-import ThreeDot from "../../../communities/SingleCommunityPost/scpsvgs/ThreeDot";
 
-const UserCommentMapCh = ({ item, first, post, auth }) => {
+import RemoveSvg from "../../../communities/SingleCommunityPost/scpsvgs/RemoveSvg";
+import SpamSvg from "../../../communities/SingleCommunityPost/scpsvgs/SpamSvg";
+import ThreeDot from "../../../communities/SingleCommunityPost/scpsvgs/ThreeDot";
+import LockSvg from "./svg/LockSvg";
+
+const UserCommentMapCh = ({ item, first, post, auth, last }) => {
   return (
     <div className='ucmapch-parent'>
-      <div className='ucmapch-inner' style={{ paddingTop: first && "10px" }}>
+      <div
+        className='ucmapch-inner'
+        style={{ paddingTop: first && "10px", borderBottom: last && "none" }}
+      >
         <div className='ucmapch-dotted' />
         {item?.parentId && <div className='ucmapch-dotted' />}
         <div className='ucmapch-right'>
@@ -40,9 +47,18 @@ const UserCommentMapCh = ({ item, first, post, auth }) => {
 
             {auth?.id === item?.user?.id && (
               <div className='ucmapch-t'>
-                <div className='ucmapch-chp ucmapch-grhov'>Remove</div>
-                <div className='ucmapch-chp ucmapch-grhov'>Spam</div>
-                <div className='ucmapch-chp ucmapch-grhov'>Lock</div>
+                <div className='ucmapch-chp ucmapch-grhov'>
+                  <RemoveSvg id={item?.id} />
+                  <span className='ucmapch-q'>Remove</span>
+                </div>
+                <div className='ucmapch-chp ucmapch-grhov'>
+                  <SpamSvg id={item?.id} />
+                  <span className='ucmapch-q'>Spam</span>
+                </div>
+                <div className='ucmapch-chp ucmapch-grhov'>
+                  <LockSvg idv={item?.id} />
+                  <span className='ucmapch-q'>Lock</span>
+                </div>
               </div>
             )}
           </div>

@@ -136,3 +136,48 @@
   background-size: cover;
   background-position: center;
 }
+
+.nop-parent {
+  position: relative;
+  width: 100%;
+  background-color: #e6eaee;
+}
+
+.nop-ch {
+  height: 90px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 0.5px solid #ccc;
+
+  &:hover {
+    border: #898989 0.5px solid;
+  }
+}
+
+.nop-vote {
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nop-place {
+  width: 16px;
+  height: 16px;
+}
+
+.nop-nf {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 250px;
+
+  font-size: 18px;
+  font-weight: 500;
+  color: #1c1c1c;
+  line-height: 22px;
+
+  width: 100%;
+  text-align: center;
+}

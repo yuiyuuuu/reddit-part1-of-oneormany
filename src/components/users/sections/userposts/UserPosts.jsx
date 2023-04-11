@@ -10,11 +10,18 @@ import HotGray from "../../svg/nav/HotGray";
 import HotBlue from "../../svg/nav/HotBlue";
 import TopGray from "../../svg/nav/TopGray";
 import TopBlue from "../../svg/nav/TopBlue";
+import NoPosts from "./NoPosts";
 
 const UserPosts = () => {
   const selectedUser = useSelector((state) => state.selectedUser);
 
   const [selectedFilter, setSelectedFilter] = useState("new");
+
+  if (!selectedUser?.id) return "loading";
+
+  if (!selectedUser?.posts?.length) {
+    return <NoPosts selected={selectedUser} what={"post"} />;
+  }
 
   return (
     <div className='up-parent'>
