@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import "./uc.scss";
 
 import UserCommentsMap from "./UserCommentsMap";
+import NoPosts from "../userposts/NoPosts";
 
 const UserComments = () => {
   const selectedUser = useSelector((state) => state.selectedUser);
@@ -23,12 +24,16 @@ const UserComments = () => {
     setCommentGroup(group);
   }, [selectedUser]);
 
-  console.log(commentGroup);
+  if (!selectedUser?.id) return "loading";
+
+  if (!selectedUser?.comments?.length) {
+    return <NoPosts what={"comment"} selected={selectedUser} />;
+  }
 
   return (
     <div className='uc-parent'>
       {Object.values(commentGroup).map((item) => (
-        <UserCommentsMap item={item} />
+        <UserCommentsMap item={item} selectedUser={selectedUser} />
       ))}
     </div>
   );

@@ -30,6 +30,7 @@ import { setScp } from "../../../store/scp/scpConditional";
 import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
 import { setOverlayStateSCP } from "../../../store/postoverlays/shareOverlayScp";
 import { setThreeStateSCP } from "../../../store/postoverlays/threeDotoverlaySCP";
+import { makePutRequest } from "../../../requests/helperFunction";
 
 import $ from "jquery";
 
@@ -534,6 +535,13 @@ const SingleCommunityPost = () => {
     };
   }, []);
 
+  useEffect(() => {
+    makePutRequest("/users/history", {
+      userid: authState?.id,
+      postid: selectedPost?.id,
+    });
+  }, []);
+
   return (
     <div
       style={{ display: (!selectedPost?.id || scpState === null) && "none" }}
@@ -739,9 +747,17 @@ const SingleCommunityPost = () => {
 
                 <div className='scp-title2'>{selectedPost?.title}</div>
 
-                <div className='scp-desc'>
-                  <pre>{selectedPost?.body}</pre>
-                </div>
+                {selectedPost?.image && (
+                  <div className='scp-mnimg'>
+                    <img src={`data:image/png;base64,${selectedPost?.image}`} />
+                  </div>
+                )}
+
+                {selectedPost?.body && (
+                  <div className='scp-desc'>
+                    <pre>{selectedPost?.body}</pre>
+                  </div>
+                )}
 
                 <div
                   className='scp-selectionrow'

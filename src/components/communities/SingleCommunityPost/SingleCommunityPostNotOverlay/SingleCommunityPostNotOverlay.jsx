@@ -21,6 +21,7 @@ import {
   handleSelectedPostRemoveDownvote,
   handleSelectedPostRemoveUpvote,
 } from "../../../../store/scp/selectedPost";
+import { makePutRequest } from "../../../../requests/helperFunction";
 
 import "./scpno.scss";
 
@@ -411,6 +412,13 @@ const SingleCommunityPostNotOverlay = () => {
     }
   }, [window.location.href, selectedPost?.comments, scp]);
 
+  useEffect(() => {
+    makePutRequest("/users/history", {
+      userid: authState?.id,
+      postid: selectedPost?.id,
+    });
+  }, []);
+
   if (commentNotFound) {
     return <NothingHere />;
   }
@@ -602,9 +610,20 @@ const SingleCommunityPostNotOverlay = () => {
 
               <div className='scp-title2'>{selectedPost?.title}</div>
 
-              <div className='scp-desc'>
-                <pre>{selectedPost?.body}</pre>
-              </div>
+              {selectedPost?.image && (
+                <div className='scp-mnimg'>
+                  <img
+                    src={`data:image/png;base64,${selectedPost?.image}`}
+                    className='scp-podpsf'
+                  />
+                </div>
+              )}
+
+              {selectedPost?.body && (
+                <div className='scp-desc'>
+                  <pre>{selectedPost?.body}</pre>
+                </div>
+              )}
 
               <div className='scp-selectionrow' style={{ userSelect: "none" }}>
                 <div className='scp-comment scp-selectionaligncenter'>

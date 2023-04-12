@@ -40,7 +40,7 @@ const Overview = () => {
 
   if (!userState?.id) return "loading";
 
-  if (!userState?.posts?.length) {
+  if (!userState?.posts?.length && !userState?.comments?.length) {
     return (
       <div style={{ width: "640px" }}>
         <NoPosts selected={userState} what={"post"} />;

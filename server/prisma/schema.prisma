@@ -23,6 +23,10 @@ model Post {
   userId String
   image String? @db.VarChar(1048576)
   createdAt DateTime @default(now()) @db.Timestamp
+  
+  //history
+  historyUser User[] @relation("history")
+
 }
 
 model Community{
@@ -62,6 +66,7 @@ model Community{
 
   //favorited by
   favoriteUsers User[] @relation("favorite")//many to many example
+
 }
 
 enum BannerSize{
@@ -102,6 +107,9 @@ model User {
   //comments
     upvotesComment Comment [] @relation("upvotes-comment")
   downvotesComment Comment [] @relation("downvotes-comment")
+
+  //history
+  history Post[] @relation("history")
 }
 
 model Comment {

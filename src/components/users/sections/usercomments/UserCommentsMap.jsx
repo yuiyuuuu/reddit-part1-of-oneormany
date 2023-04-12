@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,12 +10,17 @@ import { sorting } from "../../../../requests/sortingfunction";
 import CommentIconOverview from "../overview/svg/CommentIconOverview";
 import UserCommentMapCh from "./UserCommentMapCh";
 
-const UserCommentsMap = ({ item }) => {
+const UserCommentsMap = ({ item, selectedUser }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const post = item.find((v) => v.type);
+  const [post, setPost] = useState({});
+
   const authState = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    setPost(item.find((v) => v.type));
+  }, [window.location.href]);
 
   return (
     <div className='uc-mapparent'>
@@ -29,14 +34,23 @@ const UserCommentsMap = ({ item }) => {
         }}
       >
         <CommentIconOverview idv={post?.id} />
-        <div className='ucf12fw300 uc0079d3 uchoverun'>
-          {item[0]?.user?.name}
+        <div
+          className='ucf12fw300 uc0079d3 uchoverun'
+          onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `/user/${selectedUser?.name}`;
+          }}
+        >
+          {selectedUser?.name}
         </div>
         &nbsp; commented on {post?.title}&nbsp;
         <div className='dot-posts'>•</div>
         <div
           className='uc-com uchoverun'
-          onClick={() => (window.location.href = `/r/${post?.community?.name}`)}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `/r/${post?.community?.name}`;
+          }}
         >
           r/{post?.community?.name}
         </div>
@@ -44,7 +58,10 @@ const UserCommentsMap = ({ item }) => {
         Posted by &nbsp;
         <span
           className='uchoverun'
-          onClick={() => (window.location.href = `/user/${post?.user?.name}`)}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `/user/${post?.user?.name}`;
+          }}
         >
           u/{post?.user?.name}
         </span>

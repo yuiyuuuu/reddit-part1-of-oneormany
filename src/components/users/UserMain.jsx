@@ -11,7 +11,7 @@ import { usersections } from "./usersections";
 
 import UserNotFound from "./notfound/UserNotFound";
 import Overview from "./sections/overview/Overview";
-import UserHistory from "./sections/UserHistory";
+import UserHistory from "./sections/userhistory/UserHistory";
 import UserComments from "./sections/usercomments/UserComments";
 import UserGivenAwards from "./sections/UserGivenAwards";
 import UserHidden from "./sections/UserHidden";
@@ -104,7 +104,8 @@ const UserMain = () => {
             style={{
               width:
                 (selectedSection === "posts" ||
-                  selectedSection === "comments") &&
+                  selectedSection === "comments" ||
+                  selectedSection === "history") &&
                 "100%",
             }}
           >

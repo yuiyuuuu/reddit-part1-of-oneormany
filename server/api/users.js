@@ -119,6 +119,23 @@ router.get("/:name", async (req, res, next) => {
         },
         followedBy: true,
         following: true,
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
       },
     });
 
@@ -210,6 +227,23 @@ router.put("/join/community", async (req, res, next) => {
             users: true,
           },
         },
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
       },
     });
 
@@ -289,6 +323,23 @@ router.put("/leave/community", async (req, res, next) => {
         favoriteCommunities: {
           include: {
             users: true,
+          },
+        },
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
           },
         },
       },
@@ -374,6 +425,23 @@ router.put("/follow", async (req, res, next) => {
         },
         followedBy: true,
         following: true,
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
       },
     });
 
@@ -470,6 +538,23 @@ router.put("/unfollow", async (req, res, next) => {
         },
         followedBy: true,
         following: true,
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
       },
     });
 
@@ -614,10 +699,44 @@ router.put("/vote", async (req, res, next) => {
         },
         followedBy: true,
         following: true,
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
       },
     });
 
     res.send(final);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/history", async (req, res, next) => {
+  try {
+    await prisma.user.update({
+      where: {
+        id: req.body.userid,
+      },
+      data: {
+        history: {
+          connect: [{ id: req.body.postid }],
+        },
+      },
+    });
   } catch (error) {
     next(error);
   }

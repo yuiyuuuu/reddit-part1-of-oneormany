@@ -5,6 +5,7 @@ import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 const match = {
   post: "posted",
   comment: "commented",
+  view: "viewed",
 };
 
 const NoPosts = ({ selected, what }) => {

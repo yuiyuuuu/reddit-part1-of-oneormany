@@ -124,7 +124,7 @@ const UserPostMap = ({ post, i, length, selectedUser }) => {
           </div>
         </div>
 
-        <div style={{ maxWidth: "calc(100% - 48px)" }}>
+        <div style={{ maxWidth: "calc(100% - 48px)", width: "100%" }}>
           <div className='up-mapright'>
             {post?.image ? (
               <div
@@ -195,7 +195,9 @@ const UserPostMap = ({ post, i, length, selectedUser }) => {
               justifyContent: post?.image && "center",
             }}
           >
-            {post?.body && <pre>{post?.body}</pre>}
+            {post?.body && (
+              <pre style={{ lineHeight: "20px" }}>{post?.body}</pre>
+            )}
             {post?.image && (
               <img
                 className='up-detimg'
