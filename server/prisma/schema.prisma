@@ -27,6 +27,9 @@ model Post {
   //history
   historyUser User[] @relation("history")
 
+  //saved users
+  savedUsers User[] @relation("savedPosts")
+
 }
 
 model Community{
@@ -110,6 +113,10 @@ model User {
 
   //history
   history Post[] @relation("history")
+
+  //saved
+  savedPosts Post[] @relation("savedPosts")
+  savedComments Comment[] @relation("savedComments")
 }
 
 model Comment {
@@ -127,6 +134,9 @@ model Comment {
   upvotes User [] @relation("upvotes-comment")
   downvotes User [] @relation("downvotes-comment")
   image String? @db.VarChar(1048576)
+
+  //saved
+  savedUsers User[] @relation("savedComments")
 }
 
 // model Like {

@@ -36,6 +36,8 @@ function App() {
   const dispatch = useDispatch();
   const [componentUpdate, setComponentUpdate] = useState(0);
 
+  const [ready, setReady] = useState(false);
+
   const authState = useSelector((state) => state.auth);
   const createOverlayState = useSelector((state) => state.navToggleCreate);
   const discardState = useSelector((state) => state.discardChanges);
@@ -88,6 +90,7 @@ function App() {
   useEffect(() => {
     //need to hide the left nl copmponent until we run the auth function, or else the component will show when we dont want it to
     dispatch(getLocalData()).then((res) => {
+      setReady(true);
       $(".hide").css("display", "none");
 
       // //remove the hide element from the dom
@@ -157,7 +160,7 @@ function App() {
 
       {lnState && <LeftNavigation lnState={lnState} />}
 
-      {!authState?.id && <LeftNavNL />}
+      {!authState?.id && ready && <LeftNavNL />}
 
       <div className='hide' id='reason-auth-leftnavnl' />
 

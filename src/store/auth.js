@@ -18,6 +18,8 @@ const DOWNVOTE_AUTH_POST = "DOWNVOTE_AUTH_POST";
 const UPVOTE_AUTH_POST_remove = "UPVOTE_AUTH_POST_remove";
 const DOWNVOTE_AUTH_POST_remove = "DOWNVOTE_AUTH_POST_remove";
 
+const SAVED_STUFF_CHANGE = "SAVED_STUFF_CHANGE";
+
 const setAuth = (auth) => ({
   type: AUTH,
   auth,
@@ -45,6 +47,11 @@ const dispatchFollowUser = (user) => ({
 
 const dispatchUnfollowUser = (user) => ({
   type: FOLLOW_USER_USERS,
+  user,
+});
+
+const dispatchSavedStuffChange = (user) => ({
+  type: SAVED_STUFF_CHANGE,
   user,
 });
 
@@ -185,6 +192,18 @@ export function unfollowUser(object) {
   };
 }
 
+export function changeSaved(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("/users/savedstuff", obj);
+
+      dispatch(dispatchSavedStuffChange(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function upvoteAuth() {}
 
 export function downvoteAuth() {}
@@ -208,6 +227,9 @@ export default function (state = {}, action) {
       return action.user;
 
     case UNFOLLOW_USER_USERS:
+      return action.user;
+
+    case SAVED_STUFF_CHANGE:
       return action.user;
 
     default:

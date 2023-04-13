@@ -136,6 +136,27 @@ router.get("/:name", async (req, res, next) => {
             downvotes: true,
           },
         },
+        savedComments: true,
+        savedPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
       },
     });
 
@@ -737,6 +758,177 @@ router.put("/history", async (req, res, next) => {
         },
       },
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/savedstuff", async (req, res, next) => {
+  try {
+    const which = req.body.addOrRemove;
+    const postorcomment = req.body.which;
+
+    if (postorcomment === "post") {
+      if (which === "add") {
+        await prisma.user.update({
+          where: {
+            id: req.body.userid,
+          },
+          data: {
+            savedPosts: {
+              connect: [{ id: req.body.postid }],
+            },
+          },
+        });
+      } else {
+        await prisma.user.update({
+          where: {
+            id: req.body.userid,
+          },
+          data: {
+            savedPosts: {
+              disconnect: [{ id: req.body.postid }],
+            },
+          },
+        });
+      }
+    } else {
+      if (which === "add") {
+        await prisma.user.update({
+          where: {
+            id: req.body.userid,
+          },
+          data: {
+            savedComments: {
+              connect: [{ id: req.body.postid }],
+            },
+          },
+        });
+      } else {
+        await prisma.user.update({
+          where: {
+            id: req.body.userid,
+          },
+          data: {
+            savedComments: {
+              disconnect: [{ id: req.body.postid }],
+            },
+          },
+        });
+      }
+    }
+
+    const find = await prisma.user.findUnique({
+      where: {
+        id: req.body.userid,
+      },
+      include: {
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                comments: {
+                  include: {
+                    user: true,
+                  },
+                },
+                community: {
+                  include: {
+                    users: true,
+                  },
+                },
+              },
+            },
+            children: true,
+            parent: true,
+            user: true,
+          },
+        },
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        followedBy: true,
+        following: true,
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
+        downvotes: true,
+        upvotes: true,
+        savedComments: true,
+        savedPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+      },
+    });
+
+    res.send(find);
   } catch (error) {
     next(error);
   }

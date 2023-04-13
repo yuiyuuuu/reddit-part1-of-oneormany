@@ -8,6 +8,7 @@ import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
 import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
 import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
 import { handleRecent } from "../../../requests/handleRecent";
+import { handleSaved } from "../../../requests/handleSavedPosts";
 
 import "./post.scss";
 
@@ -21,6 +22,7 @@ import UpVoteSvg from "./postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
 import DefaultCommunitiesIcon from "../../communities/communitiessvg/DefaultCommunitiesIcon";
+import UnsaveSvg from "./postssvgs/UnsaveSvg";
 
 //all posts
 const Post = ({
@@ -314,13 +316,45 @@ const Post = ({
             <span className='span-comment'>Share</span>
           </div>
 
-          <div
-            className='posts-comment post-save'
-            onClick={(e) => e.stopPropagation()}
-          >
-            <SaveSvg />
-            <span className='span-comment'>Save</span>
-          </div>
+          {authState?.savedPosts?.map((v) => v.id).includes(post?.id) ? (
+            <div
+              className='posts-comment post-save'
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSaved(
+                  authState?.savedPosts.map((v) => v.id).includes(post.id)
+                    ? "remove"
+                    : "add",
+                  "post",
+                  post?.id,
+                  authState?.id,
+                  dispatch
+                );
+              }}
+            >
+              <UnsaveSvg idv={post?.id} />
+              <span className='span-comment'>Unsave</span>
+            </div>
+          ) : (
+            <div
+              className='posts-comment post-save'
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSaved(
+                  authState?.savedPosts.map((v) => v.id).includes(post.id)
+                    ? "remove"
+                    : "add",
+                  "post",
+                  post?.id,
+                  authState?.id,
+                  dispatch
+                );
+              }}
+            >
+              <SaveSvg />
+              <span className='span-comment'>Save</span>
+            </div>
+          )}
 
           <div
             className='threedot'

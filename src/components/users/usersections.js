@@ -11,4 +11,6 @@ const usersections = [
   "AWARDS GIVEN",
 ];
 
-export { usersections };
+const usersectionsNL = ["OVERVIEW", "POSTS", "COMMENTS", "AWARDS RECEIVED"];
+
+export { usersections, usersectionsNL };

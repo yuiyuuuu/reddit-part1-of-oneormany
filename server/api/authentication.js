@@ -55,6 +55,8 @@ router.post("/signup", async (req, res, next) => {
         favoriteCommunities: true,
         followedBy: true,
         following: true,
+        savedComments: true,
+        savedPosts: true,
       },
     });
 
@@ -90,6 +92,8 @@ router.post("/login", async (req, res, next) => {
       favoriteCommunities: true,
       followedBy: true,
       following: true,
+      savedComments: true,
+      savedPosts: true,
     },
   });
 
@@ -152,6 +156,8 @@ router.get("/getlocaldata", async (req, res, next) => {
         favoriteCommunities: true,
         followedBy: true,
         following: true,
+        savedComments: true,
+        savedPosts: true,
       },
     });
 
@@ -204,6 +210,8 @@ router.put("/favorite/add", async (req, res, next) => {
         favoriteCommunities: true,
         followedBy: true,
         following: true,
+        savedComments: true,
+        savedPosts: true,
       },
     });
 
@@ -255,6 +263,8 @@ router.put("/favorite/remove", async (req, res, next) => {
         favoriteCommunities: true,
         followedBy: true,
         following: true,
+        savedComments: true,
+        savedPosts: true,
       },
     });
 

@@ -15,7 +15,7 @@ import CommentSvg from "../../../home/posts/postssvgs/CommentSvg";
 import ShareSvg from "../../../home/posts/postssvgs/ShareSvg";
 import CollapseSvg from "./svg/CollapseSvg";
 
-const UserPostMap = ({ post, i, length, selectedUser }) => {
+const UserPostMap = ({ post, i, length, selectedUser, usersaved }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -63,12 +63,14 @@ const UserPostMap = ({ post, i, length, selectedUser }) => {
     <div
       className='up-mapparent'
       style={{
-        borderRadius:
-          i === 0 && i === length - 1
-            ? "4px"
-            : i === 0
-            ? "4px 4px 0 0"
-            : i === length - 1 && "0 0 4px 4px",
+        borderRadius: usersaved
+          ? "4px"
+          : i === 0 && i === length - 1
+          ? "4px"
+          : i === 0
+          ? "4px 4px 0 0"
+          : i === length - 1 && "0 0 4px 4px",
+        marginTop: usersaved && "5px",
       }}
       onClick={() => {
         dispatch(setScp("user"));

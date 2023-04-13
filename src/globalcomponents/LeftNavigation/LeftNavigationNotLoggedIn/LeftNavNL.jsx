@@ -36,7 +36,7 @@ const LeftNavNL = () => {
     } else {
       dispatch(dispatchSetLnnl(false));
     }
-  }, []);
+  }, [authState]);
 
   $(window).off("resize", window, resize).resize(resize);
 

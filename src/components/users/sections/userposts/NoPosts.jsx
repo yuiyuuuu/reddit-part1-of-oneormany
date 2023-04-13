@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 
@@ -6,9 +7,12 @@ const match = {
   post: "posted",
   comment: "commented",
   view: "viewed",
+  saved: "saved",
 };
 
 const NoPosts = ({ selected, what }) => {
+  const authState = useSelector((state) => state?.auth);
+
   return (
     <div className='nop-parent'>
       {Array(10)
@@ -25,7 +29,10 @@ const NoPosts = ({ selected, what }) => {
         ))}
 
       <div className='nop-nf'>
-        hmm... u/{selected?.name} hasn't {match[what]} anything
+        hmm... {what === "saved" && "looks like"}{" "}
+        {selected?.id === authState?.id ? "you" : `u/${selected?.name}`}{" "}
+        {selected?.id === authState?.id ? "haven't" : "hasn't"} {match[what]}{" "}
+        anything
       </div>
     </div>
   );

@@ -749,7 +749,10 @@ const SingleCommunityPost = () => {
 
                 {selectedPost?.image && (
                   <div className='scp-mnimg'>
-                    <img src={`data:image/png;base64,${selectedPost?.image}`} />
+                    <img
+                      src={`data:image/png;base64,${selectedPost?.image}`}
+                      className='scp-podpsf'
+                    />
                   </div>
                 )}
 

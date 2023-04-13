@@ -7,7 +7,7 @@ import "./um.scss";
 import { setSelectedUser } from "../../store/users/users";
 import { setNavLocation } from "../../store/nav/navLocation";
 
-import { usersections } from "./usersections";
+import { usersections, usersectionsNL } from "./usersections";
 
 import UserNotFound from "./notfound/UserNotFound";
 import Overview from "./sections/overview/Overview";
@@ -17,7 +17,7 @@ import UserGivenAwards from "./sections/UserGivenAwards";
 import UserHidden from "./sections/UserHidden";
 import UserPosts from "./sections/userposts/UserPosts";
 import UserReceivedAwards from "./sections/UserReceviedAwards";
-import UserSaved from "./sections/UserSaved";
+import UserSaved from "./sections/usersaved/UserSaved";
 import UserUpvoted from "./sections/UserUpvoted";
 import UserDownvoted from "./sections/UserDownvoted";
 import UserRight from "./UserRight/UserRight";
@@ -31,6 +31,7 @@ const UserMain = () => {
   const lnState = useSelector((state) => state.lnState);
   const lnnlState = useSelector((state) => state.lnnl);
   const selectedPost = useSelector((state) => state.selectedPost);
+  const authState = useSelector((state) => state.auth);
 
   const [ready, setReady] = useState(false);
 
@@ -78,24 +79,45 @@ const UserMain = () => {
             paddingLeft: selectedSection === "overview" && 0,
           }}
         >
-          {usersections.map((section) => (
-            <div
-              className='um-sectionchild'
-              onClick={() =>
-                section.toLowerCase() === "overview"
-                  ? nav(`/user/${selectedUser.name}`)
-                  : nav(`/user/${selectedUser.name}/${section.toLowerCase()}`)
-              }
-              style={{
-                color: section.toLowerCase() === selectedSection && "#0079d3",
-                borderBottom:
-                  section.toLowerCase() === selectedSection &&
-                  "2px solid #0079d3",
-              }}
-            >
-              {section}
-            </div>
-          ))}
+          {authState?.id === selectedUser?.id &&
+            usersections.map((section) => (
+              <div
+                className='um-sectionchild'
+                onClick={() =>
+                  section.toLowerCase() === "overview"
+                    ? nav(`/user/${selectedUser.name}`)
+                    : nav(`/user/${selectedUser.name}/${section.toLowerCase()}`)
+                }
+                style={{
+                  color: section.toLowerCase() === selectedSection && "#0079d3",
+                  borderBottom:
+                    section.toLowerCase() === selectedSection &&
+                    "2px solid #0079d3",
+                }}
+              >
+                {section}
+              </div>
+            ))}
+
+          {authState?.id !== selectedUser?.id &&
+            usersectionsNL.map((section) => (
+              <div
+                className='um-sectionchild'
+                onClick={() =>
+                  section.toLowerCase() === "overview"
+                    ? nav(`/user/${selectedUser.name}`)
+                    : nav(`/user/${selectedUser.name}/${section.toLowerCase()}`)
+                }
+                style={{
+                  color: section.toLowerCase() === selectedSection && "#0079d3",
+                  borderBottom:
+                    section.toLowerCase() === selectedSection &&
+                    "2px solid #0079d3",
+                }}
+              >
+                {section}
+              </div>
+            ))}
         </div>
 
         <div className='um-main'>
@@ -105,7 +127,8 @@ const UserMain = () => {
               width:
                 (selectedSection === "posts" ||
                   selectedSection === "comments" ||
-                  selectedSection === "history") &&
+                  selectedSection === "history" ||
+                  selectedSection === "saved") &&
                 "100%",
             }}
           >

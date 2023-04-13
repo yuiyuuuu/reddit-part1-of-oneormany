@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import "./uh.scss";
-
 import NoPosts from "../userposts/NoPosts";
 import UserPostMap from "../userposts/UserPostMap";
 import NoPermission from "../../NoPermission";
 
-const UserHistory = () => {
+import "./us.scss";
+
+const UserSaved = () => {
   const selectedUser = useSelector((state) => state.selectedUser);
   const authState = useSelector((state) => state.auth);
 
@@ -17,27 +17,25 @@ const UserHistory = () => {
     return <NoPermission />;
   }
 
-  if (!selectedUser?.history?.length) {
-    return <NoPosts what={"view"} selected={selectedUser} />;
+  if (!selectedUser?.savedPosts?.length) {
+    return <NoPosts what='saved' selected={selectedUser} />;
   }
 
   return (
-    <div className='uh-parent'>
-      {selectedUser?.history
+    <div className='us-parent'>
+      {selectedUser?.savedPosts
         ?.slice()
-        ?.reverse()
-        .map((item, i) => (
-          // <UserHistoryMap item={item} authState={authState} />
-
+        .reverse()
+        ?.map((item, i) => (
           <UserPostMap
             post={item}
             i={i}
-            length={selectedUser?.history?.length}
             selectedUser={selectedUser}
+            usersaved={true}
           />
         ))}
     </div>
   );
 };
 
-export default UserHistory;
+export default UserSaved;
