@@ -131,7 +131,9 @@ const UserMain = () => {
                   selectedSection === "comments" ||
                   selectedSection === "history" ||
                   selectedSection === "saved" ||
-                  selectedSection === "hidden") &&
+                  selectedSection === "hidden" ||
+                  selectedSection === "upvoted" ||
+                  selectedSection === "downvoted") &&
                 "100%",
             }}
           >

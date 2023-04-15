@@ -244,10 +244,9 @@ router.put("/stylingchange", async (req, res, next) => {
                 users: true,
               },
             },
+            upvotes: true,
+            downvotes: true,
           },
-
-          upvotes: true,
-          downvotes: true,
         },
         users: {
           select: {

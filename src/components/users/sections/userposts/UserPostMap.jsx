@@ -15,7 +15,7 @@ import CommentSvg from "../../../home/posts/postssvgs/CommentSvg";
 import ShareSvg from "../../../home/posts/postssvgs/ShareSvg";
 import CollapseSvg from "./svg/CollapseSvg";
 
-const UserPostMap = ({ post, i, length, selectedUser, usersaved }) => {
+const UserPostMap = ({ post, i, length, selectedUser, usersaved, scp }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -73,7 +73,7 @@ const UserPostMap = ({ post, i, length, selectedUser, usersaved }) => {
         marginTop: usersaved && "5px",
       }}
       onClick={() => {
-        dispatch(setScp("user"));
+        dispatch(setScp("userPosts"));
         dispatch(setSelectedPost(post));
         navigate(`/r/${post?.community?.name}/comments/${post?.id}`);
       }}
