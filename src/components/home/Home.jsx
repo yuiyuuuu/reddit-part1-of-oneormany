@@ -19,6 +19,8 @@ import { setOverlayState } from "../../store/postoverlays/shareOverlay";
 import { setThreeState } from "../../store/postoverlays/threeDotOverlay";
 import { dispatchSetAOS } from "../../globalcomponents/authoverlaysignup/authOverlaySignupStates";
 import { setNavLocation } from "../../store/nav/navLocation";
+import { addRemoveHiddenPosts } from "../../store/auth";
+import { dispatchSetAOL } from "../../globalcomponents/authoverlaylogin/authOverlayLoginStates";
 
 import ClipSvg from "./homesvgs/ClipSvg";
 import DefaultPfp from "./homesvgs/DefaultPfp";
@@ -39,9 +41,12 @@ const Home = () => {
   const selectedPost = useSelector((state) => state.selectedPost);
   const lnState = useSelector((state) => state.lnState);
   const lnnlState = useSelector((state) => state.lnnl);
+  const threeState = useSelector((state) => state.threeDotOverlay);
 
   const [selectedNewCommunity, setSelectedNewCommunity] = useState({});
   const [scrollPos, setScrollpos] = useState(0);
+
+  const [homePosts, setHomePosts] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -111,6 +116,23 @@ const Home = () => {
     dispatch(removeDownvote(info));
   }
 
+  function hideFunction() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOL({ display: true, which: "" }));
+      return;
+    }
+
+    const obj = {
+      userid: authState.id,
+      postid: threeState.id,
+      addOrRemove: "add",
+    };
+
+    dispatch(addRemoveHiddenPosts(obj)).then(() => {
+      dispatch(setThreeState({ display: false }));
+    });
+  }
+
   function randomIntFromInterval(min, max) {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -132,6 +154,22 @@ const Home = () => {
       dispatch(clearPostState()); //set posts to empty array
     };
   }, [window.location.href]);
+
+  useEffect(() => {
+    if (!posts?.length) return;
+    if (!authState?.hiddenPosts?.length) {
+      setHomePosts(posts);
+    }
+
+    const map = authState?.hiddenPosts?.map((t) => t.id);
+    console.log(map);
+
+    const f = posts.filter((v) => !map?.includes(v.id));
+
+    setHomePosts(f);
+  }, [authState, posts]);
+
+  console.log(authState);
 
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
   //we will close the overlay
@@ -287,7 +325,7 @@ const Home = () => {
               </div>
             </div>
             <div className='posts-container'>
-              {posts.map((item) => (
+              {homePosts?.map((item) => (
                 <Post
                   post={item}
                   authState={authState}
@@ -436,7 +474,7 @@ const Home = () => {
           </div>
           <ShareOverlay />
 
-          <ThreeDotOverlay />
+          <ThreeDotOverlay hideFunction={hideFunction} />
         </div>
       </div>
     </div>

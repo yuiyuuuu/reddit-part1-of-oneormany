@@ -15,10 +15,10 @@ const UNFOLLOW_USER_USERS = "UNFOLLOW_USER_USERS";
 
 const UPVOTE_AUTH_POST = "UPVOTE_AUTH_POST";
 const DOWNVOTE_AUTH_POST = "DOWNVOTE_AUTH_POST";
-const UPVOTE_AUTH_POST_remove = "UPVOTE_AUTH_POST_remove";
-const DOWNVOTE_AUTH_POST_remove = "DOWNVOTE_AUTH_POST_remove";
 
 const SAVED_STUFF_CHANGE = "SAVED_STUFF_CHANGE";
+
+const CHANGE_HIDDEN_POSTS = "CHANGE_HIDDEN_POSTS";
 
 const setAuth = (auth) => ({
   type: AUTH,
@@ -52,6 +52,11 @@ const dispatchUnfollowUser = (user) => ({
 
 const dispatchSavedStuffChange = (user) => ({
   type: SAVED_STUFF_CHANGE,
+  user,
+});
+
+const dispatchHiddenStuff = (user) => ({
+  type: CHANGE_HIDDEN_POSTS,
   user,
 });
 
@@ -204,6 +209,17 @@ export function changeSaved(obj) {
   };
 }
 
+export function addRemoveHiddenPosts(obj) {
+  return async (dispatch) => {
+    try {
+      const data = await makePutRequest("/users/hidden", obj);
+      dispatch(dispatchHiddenStuff(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function upvoteAuth() {}
 
 export function downvoteAuth() {}
@@ -230,6 +246,9 @@ export default function (state = {}, action) {
       return action.user;
 
     case SAVED_STUFF_CHANGE:
+      return action.user;
+
+    case CHANGE_HIDDEN_POSTS:
       return action.user;
 
     default:

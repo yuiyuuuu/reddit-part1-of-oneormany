@@ -8,6 +8,9 @@ const match = {
   comment: "commented",
   view: "viewed",
   saved: "saved",
+  hidden: "hidden",
+  upvoted: "upvoted",
+  downvoted: "downvoted",
 };
 
 const NoPosts = ({ selected, what }) => {
@@ -29,7 +32,7 @@ const NoPosts = ({ selected, what }) => {
         ))}
 
       <div className='nop-nf'>
-        hmm... {what === "saved" && "looks like"}{" "}
+        hmm... {(what === "saved" || what === "hidden") && "looks like"}{" "}
         {selected?.id === authState?.id ? "you" : `u/${selected?.name}`}{" "}
         {selected?.id === authState?.id ? "haven't" : "hasn't"} {match[what]}{" "}
         anything

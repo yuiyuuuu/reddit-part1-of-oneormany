@@ -125,6 +125,8 @@ router.get("/:name", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                upvotes: true,
+                downvotes: true,
               },
             },
             community: {
@@ -138,6 +140,66 @@ router.get("/:name", async (req, res, next) => {
         },
         savedComments: true,
         savedPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        hiddenPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        upvotes: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        downvotes: {
           include: {
             user: true,
             community: {
@@ -452,6 +514,8 @@ router.put("/follow", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                downvotes: true,
+                upvotes: true,
               },
             },
             community: {
@@ -737,6 +801,8 @@ router.put("/vote", async (req, res, next) => {
             downvotes: true,
           },
         },
+        downvotes: true,
+        upvotes: true,
       },
     });
 
@@ -925,6 +991,151 @@ router.put("/savedstuff", async (req, res, next) => {
             upvotes: true,
           },
         },
+      },
+    });
+
+    res.send(find);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/hidden", async (req, res, next) => {
+  try {
+    const which = req.body.addOrRemove;
+
+    if (which === "add") {
+      await prisma.user.update({
+        where: {
+          id: req.body.userid,
+        },
+        data: {
+          hiddenPosts: {
+            connect: [{ id: req.body.postid }],
+          },
+        },
+      });
+    } else {
+      await prisma.user.update({
+        where: {
+          id: req.body.userid,
+        },
+        data: {
+          hiddenPosts: {
+            disconnect: [{ id: req.body.postid }],
+          },
+        },
+      });
+    }
+
+    const find = await prisma.user.findUnique({
+      where: {
+        id: req.body.userid,
+      },
+      include: {
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                comments: {
+                  include: {
+                    user: true,
+                  },
+                },
+                community: {
+                  include: {
+                    users: true,
+                  },
+                },
+              },
+            },
+            children: true,
+            parent: true,
+            user: true,
+          },
+        },
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        followedBy: true,
+        following: true,
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
+        downvotes: true,
+        upvotes: true,
+        savedComments: true,
+        savedPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        hiddenPosts: true,
       },
     });
 

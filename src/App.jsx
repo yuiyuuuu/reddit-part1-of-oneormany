@@ -6,6 +6,7 @@ import { getLocalData } from "./store/auth";
 import { handleSet } from "./store/global/screenProperties";
 import { setScrollPosition } from "./store/global/scrollPosition";
 import { dispatchSetLeftNavState } from "./globalcomponents/LeftNavigation/leftnavigationstates";
+import { dispatchSetLnnl } from "./globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
 
 import "./index.scss";
 
@@ -24,13 +25,12 @@ import DiscardChanges from "./discardChanges/DiscardChanges";
 import AuthOverlaySignup from "./globalcomponents/authoverlaysignup/AuthOverlaySignup";
 import AuthOverlayLogin from "./globalcomponents/authoverlaylogin/AuthOverlayLogin";
 import UserMain from "./components/users/UserMain";
-
 import routeObject from "./routeObject";
 import SingleCommunityPost from "./components/communities/SingleCommunityPost/SingleCommunityPost";
 import Alert from "./globalcomponents/alerts/Alert";
 import LeftNavigation from "./globalcomponents/LeftNavigation/LeftNavigation";
 import LeftNavNL from "./globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/LeftNavNL";
-import { dispatchSetLnnl } from "./globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
+import UserFollowers from "./components/users/UserFollowers";
 
 function App() {
   const dispatch = useDispatch();
@@ -180,6 +180,12 @@ function App() {
         />
         <Route exact path='/404' element={<Communities404 />} />
         <Route exact path='/user/:userid' element={<UserMain />} />
+
+        <Route
+          exact
+          path='/user/:userid/followers'
+          element={<UserFollowers />}
+        />
         <Route exact path='/user/:userid/:section' element={<UserMain />} />
 
         <Route exact path='/' element={<Home />} />

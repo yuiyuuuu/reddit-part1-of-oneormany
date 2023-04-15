@@ -8,7 +8,7 @@ import HideSvg from "../posts/postssvgs/HideSvg";
 import SaveSvg2 from "../posts/postssvgs/SaveSvg2";
 import ReportSvg from "../posts/postssvgs/ReportSvg";
 
-const ThreeDotOverlay = () => {
+const ThreeDotOverlay = ({ hideFunction }) => {
   const threeState = useSelector((state) => state.threeDotOverlay);
   return (
     <div
@@ -40,7 +40,12 @@ const ThreeDotOverlay = () => {
         <span className='text-shareoverlay'>Save</span>
       </div>
 
-      <div className='shareoverlay-inner'>
+      <div
+        className='shareoverlay-inner'
+        onClick={() => {
+          hideFunction();
+        }}
+      >
         <HideSvg />
         <span className='text-shareoverlay'>Hide</span>
       </div>

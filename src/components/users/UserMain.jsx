@@ -14,12 +14,12 @@ import Overview from "./sections/overview/Overview";
 import UserHistory from "./sections/userhistory/UserHistory";
 import UserComments from "./sections/usercomments/UserComments";
 import UserGivenAwards from "./sections/UserGivenAwards";
-import UserHidden from "./sections/UserHidden";
+import UserHidden from "./sections/userhidden/UserHidden";
 import UserPosts from "./sections/userposts/UserPosts";
 import UserReceivedAwards from "./sections/UserReceviedAwards";
 import UserSaved from "./sections/usersaved/UserSaved";
-import UserUpvoted from "./sections/UserUpvoted";
-import UserDownvoted from "./sections/UserDownvoted";
+import UserUpvoted from "./sections/userupvoted/UserUpvoted";
+import UserDownvoted from "./sections/userdownvoted/UserDownvoted";
 import UserRight from "./UserRight/UserRight";
 
 const UserMain = () => {
@@ -128,7 +128,8 @@ const UserMain = () => {
                 (selectedSection === "posts" ||
                   selectedSection === "comments" ||
                   selectedSection === "history" ||
-                  selectedSection === "saved") &&
+                  selectedSection === "saved" ||
+                  selectedSection === "hidden") &&
                 "100%",
             }}
           >

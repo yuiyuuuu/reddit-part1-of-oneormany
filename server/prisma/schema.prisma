@@ -30,6 +30,9 @@ model Post {
   //saved users
   savedUsers User[] @relation("savedPosts")
 
+  //hidden users
+  hiddenUsers User[] @relation("hiddenPosts")
+
 }
 
 model Community{
@@ -117,6 +120,9 @@ model User {
   //saved
   savedPosts Post[] @relation("savedPosts")
   savedComments Comment[] @relation("savedComments")
+
+  //hidden posts
+  hiddenPosts Post[] @relation("hiddenPosts")
 }
 
 model Comment {

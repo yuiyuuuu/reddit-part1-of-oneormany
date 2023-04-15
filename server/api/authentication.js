@@ -57,6 +57,7 @@ router.post("/signup", async (req, res, next) => {
         following: true,
         savedComments: true,
         savedPosts: true,
+        hiddenPosts: true,
       },
     });
 
@@ -94,6 +95,7 @@ router.post("/login", async (req, res, next) => {
       following: true,
       savedComments: true,
       savedPosts: true,
+      hiddenPosts: true,
     },
   });
 
@@ -158,6 +160,7 @@ router.get("/getlocaldata", async (req, res, next) => {
         following: true,
         savedComments: true,
         savedPosts: true,
+        hiddenPosts: true,
       },
     });
 
@@ -265,6 +268,7 @@ router.put("/favorite/remove", async (req, res, next) => {
         following: true,
         savedComments: true,
         savedPosts: true,
+        hiddenPosts: true,
       },
     });
 
