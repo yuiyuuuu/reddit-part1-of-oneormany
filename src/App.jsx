@@ -30,7 +30,7 @@ import SingleCommunityPost from "./components/communities/SingleCommunityPost/Si
 import Alert from "./globalcomponents/alerts/Alert";
 import LeftNavigation from "./globalcomponents/LeftNavigation/LeftNavigation";
 import LeftNavNL from "./globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/LeftNavNL";
-import UserFollowers from "./components/users/UserFollowers";
+import UserFollowers from "./components/users/followers/UserFollowers";
 
 function App() {
   const dispatch = useDispatch();

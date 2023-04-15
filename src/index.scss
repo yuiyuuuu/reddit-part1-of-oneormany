@@ -71,6 +71,10 @@ img {
   border: 0;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -173,4 +177,12 @@ img {
     background-color: #1c1c1c;
     opacity: 0;
   }
+}
+
+.col-7c {
+  color: #7c7c7c;
+}
+
+.col-1c {
+  color: #1c1c1c;
 }
