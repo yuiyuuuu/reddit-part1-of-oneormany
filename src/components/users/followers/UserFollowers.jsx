@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 
@@ -14,6 +14,7 @@ import NoFollowers from "./NoFollowers";
 import SearchSvg from "./svg/SearchSvg";
 
 import "./ufol.scss";
+import NoPermission from "./NoPermission";
 
 const UserFollowers = () => {
   const params = useParams();
@@ -21,6 +22,15 @@ const UserFollowers = () => {
 
   const selectedUser = useSelector((state) => state.selectedUser);
   const authState = useSelector((state) => state.auth);
+  const lnState = useSelector((state) => state.lnState);
+  const lnnlState = useSelector((state) => state.lnnl);
+
+  const [ready, setReady] = useState(false);
+
+  const [query, setQuery] = useState("");
+
+  const [mapResult, setMapResult] = useState([]);
+  const [showResults, setShowResults] = useState(true);
 
   function handleFollowUser(selected) {
     if (!authState?.id) {
@@ -49,6 +59,15 @@ const UserFollowers = () => {
     });
   }
 
+  function queryUsers() {
+    setShowResults(true);
+    const followers = selectedUser?.followedBy;
+
+    const slice = followers.slice().filter((f) => f.name.includes(query));
+
+    setMapResult(slice);
+  }
+
   useEffect(() => {
     dispatch(
       setNavLocation({ name: `u/${selectedUser?.name}`, user: selectedUser })
@@ -58,13 +77,35 @@ const UserFollowers = () => {
   useEffect(() => {
     const name = params.userid;
 
-    dispatch(setSelectedUser(name));
+    dispatch(setSelectedUser(name)).then(() => {
+      setReady(true);
+    });
   }, [window.location.href]);
 
-  console.log(authState);
+  useEffect(() => {
+    if (!selectedUser?.followedBy?.length) return;
+
+    const followers = selectedUser?.followedBy;
+
+    if (!query.length) {
+      setMapResult(followers);
+      return;
+    }
+
+    queryUsers();
+  }, [query, selectedUser]);
+
+  if (!ready) return "loading";
+
+  if (selectedUser?.id !== authState?.id) {
+    return <NoPermission />;
+  }
 
   return (
-    <div className='uf-parent'>
+    <div
+      className='uf-parent'
+      style={{ paddingLeft: (lnState || lnnlState) && "270px" }}
+    >
       <div className='uf-top'>
         {selectedUser?.photo ? (
           <img
@@ -104,53 +145,96 @@ const UserFollowers = () => {
               </div>
 
               <div className='uf-inputp'>
-                <input placeholder='Search for a user' className='uf-input' />
-                <div className='uf-search'>
-                  <SearchSvg />
+                <input
+                  placeholder='Search for a user'
+                  className='uf-input'
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                <div className='uf-search' onClick={() => queryUsers()}>
+                  <SearchSvg size={"16px"} fill='white' />
                 </div>
               </div>
             </div>
 
             <div className='uf-bot'>
-              {selectedUser?.followedBy?.map((item, i) => (
-                <div
-                  className='uf-botch'
-                  style={{
-                    borderRadius:
-                      i === selectedUser?.followedBy?.length - 1 &&
-                      "0 0 4px 4px",
-                  }}
-                >
-                  <div className='uf-ro'>
-                    {item?.image ? (
-                      <img
-                        className='uf-chpfp'
-                        src={`url(data:image/png;base64,${item?.photo}`}
-                      />
-                    ) : (
-                      <img src='/assets/defaultpfp.png' className='uf-chpfp' />
-                    )}
-
-                    <div className='col-1c'>{item?.name}</div>
+              {query?.length > 0 && mapResult?.length > 0 && showResults && (
+                <div className='uf-botch uf-pla'>
+                  <div className='uf-pl'>
+                    {mapResult?.length} search results for{" "}
+                    <span style={{ color: "#0079d3" }}>'{query}'</span>
                   </div>
 
-                  {authState?.following?.map((v) => v.id)?.includes(item.id) ? (
-                    <div
-                      className='uf-follow uf-unfol'
-                      onClick={() => handleUnfollowUser(item)}
-                    >
-                      Following
-                    </div>
-                  ) : (
-                    <div
-                      className='uf-follow'
-                      onClick={() => handleFollowUser(item)}
-                    >
-                      Follow
-                    </div>
-                  )}
+                  <div
+                    className='uf-f14fw500c00 uf-unfol uf-sh'
+                    onClick={() => {
+                      setShowResults(false);
+                      setMapResult(selectedUser?.followedBy);
+                    }}
+                  >
+                    See all
+                  </div>
                 </div>
-              ))}
+              )}
+              {mapResult?.length > 0 ? (
+                mapResult?.map((item, i) => (
+                  <div
+                    className='uf-botch'
+                    style={{
+                      borderRadius:
+                        i === mapResult?.length - 1 && "0 0 4px 4px",
+                    }}
+                  >
+                    <div className='uf-ro'>
+                      {item?.image ? (
+                        <img
+                          className='uf-chpfp'
+                          src={`url(data:image/png;base64,${item?.photo}`}
+                        />
+                      ) : (
+                        <img
+                          src='/assets/defaultpfp.png'
+                          className='uf-chpfp'
+                        />
+                      )}
+
+                      <div className='col-1c'>{item?.name}</div>
+                    </div>
+
+                    {authState?.following
+                      ?.map((v) => v.id)
+                      ?.includes(item.id) ? (
+                      <div
+                        className='uf-follow uf-unfol'
+                        onClick={() => handleUnfollowUser(item)}
+                      >
+                        Following
+                      </div>
+                    ) : (
+                      <div
+                        className='uf-follow'
+                        onClick={() => handleFollowUser(item)}
+                      >
+                        Follow
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className='uf-nr'>
+                  <SearchSvg size={"30px"} fill='#878a8c' />
+                  <div className='uf-qe'>No results for u/{query}</div>
+                  <div
+                    className='uf-sh uf-f14fw500c00'
+                    onClick={() => {
+                      setShowResults(false);
+                      setMapResult(selectedUser?.followedBy);
+                    }}
+                  >
+                    See all
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

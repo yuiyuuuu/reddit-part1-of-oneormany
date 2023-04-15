@@ -15,6 +15,7 @@ import UserPfp from "./UserPfp";
 import KarmaIcon from "../svg/KarmaIcon";
 import CakeDayIcon from "../svg/CakeDayIcon";
 import ModeratorCommunities from "./ModeratorCommunities";
+import FollowersIcon from "../svg/FollowersIcon";
 
 const UserRight = () => {
   const navigate = useNavigate();
@@ -95,6 +96,29 @@ const UserRight = () => {
                   </div>
                 </div>
               </div>
+
+              {selectedUser?.followedBy?.length > 0 &&
+                authState?.id === selectedUser?.id && (
+                  <div
+                    className='ur-rowc pointer'
+                    onClick={() =>
+                      (window.location.href = `/user/${selectedUser?.name}/followers`)
+                    }
+                  >
+                    <div className='ur-ti'>Followers</div>
+                    <div
+                      className='ur-iconrow'
+                      style={{ position: "relative" }}
+                    >
+                      <FollowersIcon />
+                      <div className='ur-gr'>
+                        {selectedUser?.followedBy?.length}
+                      </div>
+
+                      <div className='ur-caret2' />
+                    </div>
+                  </div>
+                )}
             </div>
 
             {selectedUser?.id === authState?.id && (

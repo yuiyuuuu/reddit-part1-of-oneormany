@@ -33,6 +33,7 @@ import lnState from "../globalcomponents/LeftNavigation/leftnavigationstates";
 import navLocation from "./nav/navLocation";
 import lnnl from "../globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
 import selectedUser from "./users/users";
+import userReadyState from "../components/users/userReadyState";
 
 const reducer = combineReducers({
   auth,
@@ -65,6 +66,7 @@ const reducer = combineReducers({
   navLocation,
   lnnl,
   selectedUser,
+  userReadyState,
 }); //reducers here
 
 let middleware = "";

@@ -95,138 +95,43 @@ const LeftNavigation = ({ lnState }) => {
   }, [authState?.favoriteCommunities]);
 
   return (
-    <div>
+    <div
+      className='ln-parent'
+      style={{ display: (!lnState || !authState?.id) && "none" }}
+    >
       <div
-        className='ln-parent'
-        style={{ display: (!lnState || !authState?.id) && "none" }}
+        className='ln-x'
+        onClick={() => window.localStorage.setItem("lnstate", false)}
       >
-        <div
-          className='ln-x'
-          onClick={() => window.localStorage.setItem("lnstate", false)}
-        >
-          <XIconIdColor
-            f={dispatchSetLeftNavState}
-            v={false}
-            color={"#878a8c"}
-            size={20}
-            dis={true}
-            id='leftnav'
+        <XIconIdColor
+          f={dispatchSetLeftNavState}
+          v={false}
+          color={"#878a8c"}
+          size={20}
+          dis={true}
+          id='leftnav'
+        />
+      </div>
+
+      <div className='ln-inner'>
+        <div className='ln-input'>
+          <input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder='Filter'
+            className='ln-in'
           />
         </div>
 
-        <div className='ln-inner'>
-          <div className='ln-input'>
-            <input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder='Filter'
-              className='ln-in'
-            />
-          </div>
+        <div
+          style={{
+            display: authState?.favoriteCommunities?.length < 1 && "none",
+          }}
+        >
+          <div className='ln-subtitle'>FAVORITES</div>
 
-          <div
-            style={{
-              display: authState?.favoriteCommunities?.length < 1 && "none",
-            }}
-          >
-            <div className='ln-subtitle'>FAVORITES</div>
-
-            {authState?.favoriteCommunities?.length > 0 &&
-              authState?.favoriteCommunities?.map((community) => (
-                <div
-                  className='ln-sub'
-                  style={{
-                    display: !showModerating()
-                      ? "none"
-                      : inputValue.length > 0 &&
-                        !showModerating()[community?.name] &&
-                        "none",
-                  }}
-                  onClick={() => nav(`/r/${community.name}`)}
-                >
-                  <div className='ln-communityicon'>
-                    {community?.iconImage ? (
-                      <img
-                        className='ln-img'
-                        src={`data:image/png;base64,${community?.iconImage}`}
-                      />
-                    ) : (
-                      <DefaultCommunityIcon
-                        fillcolor={"#" + community.themeBaseColor}
-                        height={20}
-                        community={community}
-                      />
-                    )}
-                  </div>
-                  <span className='ln-des'>r/{community.name}</span>
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleFavoriteCommunity(community.id);
-                    }}
-                    className='ln-star'
-                  >
-                    <StarSvg
-                      color={
-                        favoriteIds.includes(community?.id) ? "#0079d3" : ""
-                      }
-                      stroke={
-                        favoriteIds.includes(community?.id) ? true : false
-                      }
-                      idv={community.id}
-                    />
-                  </div>
-                </div>
-              ))}
-          </div>
-
-          <div
-            className='ln-subtitle'
-            style={{
-              display: !showModerating() && inputValue.length > 0 && "none",
-            }}
-          >
-            MODERATING
-          </div>
-          <a
-            className='ln-sub'
-            href='/r/mod/about/modqueue'
-            style={{
-              display:
-                inputValue.length > 0 && !showModerating()?.modqueue && "none",
-            }}
-          >
-            <ModQueue idv='modqueue' />
-            <span className='ln-des'>Mod Queue</span>
-          </a>
-
-          <div
-            className='ln-sub'
-            style={{
-              display:
-                inputValue.length > 0 && !showModerating()?.modmail && "none",
-            }}
-          >
-            <ModMail idv={"modmail"} />
-            <span className='ln-des'>Modmail</span>
-          </div>
-
-          <a
-            className='ln-sub'
-            href='/r/mod'
-            style={{
-              display:
-                inputValue.length > 0 && !showModerating()?.slashmod && "none",
-            }}
-          >
-            <ModQueue idv='slashmod' />
-            <span className='ln-des'>r/Mod</span>
-          </a>
-
-          {authState?.moderatorCommunities
-            ?.concat(authState?.communityOwner)
-            .sort(sortAlphabetically)
-            .map((community) => (
+          {authState?.favoriteCommunities?.length > 0 &&
+            authState?.favoriteCommunities?.map((community) => (
               <div
                 className='ln-sub'
                 style={{
@@ -268,24 +173,113 @@ const LeftNavigation = ({ lnState }) => {
                 </div>
               </div>
             ))}
-
-          <YourCommunities
-            auth={authState}
-            sortAlphabetically={sortAlphabetically}
-            inputValue={inputValue}
-            favoriteIds={favoriteIds}
-            handleFavoriteCommunity={handleFavoriteCommunity}
-            identify={"notoverlay"}
-          />
-
-          <Feeds inputValue={inputValue} identify={"notoverlay"} />
-
-          <Other
-            auth={authState}
-            inputValue={inputValue}
-            identify={"notoverlay"}
-          />
         </div>
+
+        <div
+          className='ln-subtitle'
+          style={{
+            display: !showModerating() && inputValue.length > 0 && "none",
+          }}
+        >
+          MODERATING
+        </div>
+        <a
+          className='ln-sub'
+          href='/r/mod/about/modqueue'
+          style={{
+            display:
+              inputValue.length > 0 && !showModerating()?.modqueue && "none",
+          }}
+        >
+          <ModQueue idv='modqueue' />
+          <span className='ln-des'>Mod Queue</span>
+        </a>
+
+        <div
+          className='ln-sub'
+          style={{
+            display:
+              inputValue.length > 0 && !showModerating()?.modmail && "none",
+          }}
+        >
+          <ModMail idv={"modmail"} />
+          <span className='ln-des'>Modmail</span>
+        </div>
+
+        <a
+          className='ln-sub'
+          href='/r/mod'
+          style={{
+            display:
+              inputValue.length > 0 && !showModerating()?.slashmod && "none",
+          }}
+        >
+          <ModQueue idv='slashmod' />
+          <span className='ln-des'>r/Mod</span>
+        </a>
+
+        {authState?.moderatorCommunities
+          ?.concat(authState?.communityOwner)
+          .sort(sortAlphabetically)
+          .map((community) => (
+            <div
+              className='ln-sub'
+              style={{
+                display: !showModerating()
+                  ? "none"
+                  : inputValue.length > 0 &&
+                    !showModerating()[community?.name] &&
+                    "none",
+              }}
+              onClick={() => nav(`/r/${community.name}`)}
+            >
+              <div className='ln-communityicon'>
+                {community?.iconImage ? (
+                  <img
+                    className='ln-img'
+                    src={`data:image/png;base64,${community?.iconImage}`}
+                  />
+                ) : (
+                  <DefaultCommunityIcon
+                    fillcolor={"#" + community.themeBaseColor}
+                    height={20}
+                    community={community}
+                  />
+                )}
+              </div>
+              <span className='ln-des'>r/{community.name}</span>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFavoriteCommunity(community.id);
+                }}
+                className='ln-star'
+              >
+                <StarSvg
+                  color={favoriteIds.includes(community?.id) ? "#0079d3" : ""}
+                  stroke={favoriteIds.includes(community?.id) ? true : false}
+                  idv={community.id}
+                />
+              </div>
+            </div>
+          ))}
+
+        <YourCommunities
+          auth={authState}
+          sortAlphabetically={sortAlphabetically}
+          inputValue={inputValue}
+          favoriteIds={favoriteIds}
+          handleFavoriteCommunity={handleFavoriteCommunity}
+          identify={"notoverlay"}
+        />
+
+        <Feeds inputValue={inputValue} identify={"notoverlay"} />
+
+        <Other
+          auth={authState}
+          inputValue={inputValue}
+          identify={"notoverlay"}
+        />
       </div>
     </div>
   );

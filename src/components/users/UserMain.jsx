@@ -6,6 +6,7 @@ import "./um.scss";
 
 import { setSelectedUser } from "../../store/users/users";
 import { setNavLocation } from "../../store/nav/navLocation";
+import { dispatchSetReadyUser } from "./userReadyState";
 
 import { usersections, usersectionsNL } from "./usersections";
 
@@ -32,8 +33,7 @@ const UserMain = () => {
   const lnnlState = useSelector((state) => state.lnnl);
   const selectedPost = useSelector((state) => state.selectedPost);
   const authState = useSelector((state) => state.auth);
-
-  const [ready, setReady] = useState(false);
+  const userReadyState = useSelector((state) => state.userReadyState);
 
   const [selectedSection, setSelectedSection] = useState(params.section);
 
@@ -41,11 +41,13 @@ const UserMain = () => {
     if (selectedPost?.id) return;
     const name = params.userid;
 
-    dispatch(setSelectedUser(name)).then(() => setReady(true));
+    dispatch(setSelectedUser(name)).then(() =>
+      dispatch(dispatchSetReadyUser(true))
+    );
   }, [window.location.href]);
 
   useEffect(() => {
-    if (!ready) return;
+    if (!userReadyState) return;
 
     const section = params.section;
 
@@ -54,7 +56,7 @@ const UserMain = () => {
     } else {
       setSelectedSection(section.toLowerCase());
     }
-  }, [ready, window.location.href]);
+  }, [userReadyState, window.location.href]);
 
   useEffect(() => {
     dispatch(

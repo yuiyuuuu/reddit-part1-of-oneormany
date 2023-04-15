@@ -253,6 +253,24 @@ async function seed() {
       // upvotes: [user10.id, user9.id, user8.id, user7.id, jack.id, rachel.id],
     },
   });
+
+  //add followers
+  await prisma.user.update({
+    where: {
+      id: jack.id,
+    },
+    data: {
+      followedBy: {
+        connect: [
+          { id: user10.id },
+          { id: rachel.id },
+          { id: user7.id },
+          { id: user3.id },
+          { id: user5.id },
+        ],
+      },
+    },
+  });
 }
 
 try {
