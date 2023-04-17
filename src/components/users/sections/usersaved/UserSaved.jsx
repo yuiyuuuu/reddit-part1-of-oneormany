@@ -7,7 +7,7 @@ import NoPermission from "../../NoPermission";
 
 import "./us.scss";
 
-const UserSaved = () => {
+const UserSaved = ({ set, set2 }) => {
   const selectedUser = useSelector((state) => state.selectedUser);
   const authState = useSelector((state) => state.auth);
 
@@ -17,7 +17,11 @@ const UserSaved = () => {
     return <NoPermission />;
   }
 
-  if (!selectedUser?.savedPosts?.length) {
+  if (
+    !selectedUser?.savedPosts?.filter(
+      (c) => !authState?.hiddenPosts?.map((v) => v.id).includes(c.id)
+    )?.length
+  ) {
     return <NoPosts what='saved' selected={selectedUser} />;
   }
 
@@ -32,6 +36,8 @@ const UserSaved = () => {
             i={i}
             selectedUser={selectedUser}
             usersaved={true}
+            set={set}
+            set2={set2}
           />
         ))}
     </div>

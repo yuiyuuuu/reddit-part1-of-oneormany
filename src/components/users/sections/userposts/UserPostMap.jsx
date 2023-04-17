@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { setScp } from "../../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import { votesUsers } from "../../../../store/users/users";
+import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -15,7 +16,16 @@ import CommentSvg from "../../../home/posts/postssvgs/CommentSvg";
 import ShareSvg from "../../../home/posts/postssvgs/ShareSvg";
 import CollapseSvg from "./svg/CollapseSvg";
 
-const UserPostMap = ({ post, i, length, selectedUser, usersaved, scp }) => {
+const UserPostMap = ({
+  post,
+  i,
+  length,
+  selectedUser,
+  usersaved,
+  scp,
+  set,
+  set2,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -73,7 +83,7 @@ const UserPostMap = ({ post, i, length, selectedUser, usersaved, scp }) => {
         marginTop: usersaved && "5px",
       }}
       onClick={() => {
-        dispatch(setScp("userPosts"));
+        dispatch(setScp("user"));
         dispatch(setSelectedPost(post));
         navigate(`/r/${post?.community?.name}/comments/${post?.id}`);
       }}
@@ -179,13 +189,25 @@ const UserPostMap = ({ post, i, length, selectedUser, usersaved, scp }) => {
                   <span className='up-te'>0</span>
                 </div>
 
-                <div className='up-sd up-hov'>
+                <div
+                  className='up-sd up-hov up-share'
+                  id={`upshare-${post?.id}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    set(post?.id);
+                    dispatch(
+                      setLinkToCopy(
+                        `${window.location.host}/r/${post.community.name}/comments/${post.id}`
+                      )
+                    );
+                  }}
+                >
                   <ShareSvg id={post?.id} />
                   <span className='up-te'>Share</span>
                 </div>
 
                 {authState?.id === selectedUser?.id && (
-                  <UserPostModOptions post={post} />
+                  <UserPostModOptions post={post} set2={set2} />
                 )}
               </div>
             </div>

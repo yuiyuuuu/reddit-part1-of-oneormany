@@ -12,14 +12,19 @@ import TopGray from "../../svg/nav/TopGray";
 import TopBlue from "../../svg/nav/TopBlue";
 import NoPosts from "./NoPosts";
 
-const UserPosts = () => {
+const UserPosts = ({ set, set2 }) => {
+  const authState = useSelector((state) => state.auth);
   const selectedUser = useSelector((state) => state.selectedUser);
 
   const [selectedFilter, setSelectedFilter] = useState("new");
 
   if (!selectedUser?.id) return "loading";
 
-  if (!selectedUser?.posts?.length) {
+  if (
+    !selectedUser?.posts?.filter(
+      (c) => !authState?.hiddenPosts?.map((v) => v.id).includes(c.id)
+    )?.length
+  ) {
     return <NoPosts selected={selectedUser} what={"post"} />;
   }
 
@@ -58,14 +63,20 @@ const UserPosts = () => {
       </div>
 
       <div className='up-main'>
-        {selectedUser?.posts?.map((post, i) => (
-          <UserPostMap
-            post={post}
-            i={i}
-            length={selectedUser?.posts?.length}
-            selectedUser={selectedUser}
-          />
-        ))}
+        {selectedUser?.posts
+          ?.filter(
+            (c) => !authState?.hiddenPosts?.map((v) => v.id).includes(c.id)
+          )
+          ?.map((post, i) => (
+            <UserPostMap
+              post={post}
+              i={i}
+              length={selectedUser?.posts?.length}
+              selectedUser={selectedUser}
+              set={set}
+              set2={set2}
+            />
+          ))}
       </div>
     </div>
   );

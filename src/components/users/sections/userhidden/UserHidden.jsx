@@ -6,7 +6,7 @@ import NoPosts from "../userposts/NoPosts";
 
 import "./ush.scss";
 
-const UserHidden = () => {
+const UserHidden = ({ set, set2 }) => {
   const selectedUser = useSelector((state) => state.selectedUser);
 
   if (!selectedUser?.hiddenPosts?.length) {
@@ -21,6 +21,8 @@ const UserHidden = () => {
           i={i}
           selectedUser={selectedUser}
           length={selectedUser?.hiddenPosts?.length}
+          set={set}
+          set2={set2}
         />
       ))}
     </div>

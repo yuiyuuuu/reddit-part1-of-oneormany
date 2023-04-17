@@ -10,6 +10,7 @@ import ReportSvg from "../posts/postssvgs/ReportSvg";
 
 const ThreeDotOverlay = ({ hideFunction }) => {
   const threeState = useSelector((state) => state.threeDotOverlay);
+  const authState = useSelector((state) => state.auth);
   return (
     <div
       className='shareoverlay-container'
@@ -40,15 +41,27 @@ const ThreeDotOverlay = ({ hideFunction }) => {
         <span className='text-shareoverlay'>Save</span>
       </div>
 
-      <div
-        className='shareoverlay-inner'
-        onClick={() => {
-          hideFunction();
-        }}
-      >
-        <HideSvg />
-        <span className='text-shareoverlay'>Hide</span>
-      </div>
+      {authState?.hiddenPosts?.map((v) => v.id).includes(threeState.id) ? (
+        <div
+          className='shareoverlay-inner'
+          onClick={() => {
+            hideFunction();
+          }}
+        >
+          <HideSvg />
+          <span className='text-shareoverlay'>Unhide</span>
+        </div>
+      ) : (
+        <div
+          className='shareoverlay-inner'
+          onClick={() => {
+            hideFunction();
+          }}
+        >
+          <HideSvg />
+          <span className='text-shareoverlay'>Hide</span>
+        </div>
+      )}
       <div className='shareoverlay-inner'>
         <ReportSvg />
         <span className='text-shareoverlay'>Report</span>

@@ -991,6 +991,26 @@ router.put("/savedstuff", async (req, res, next) => {
             upvotes: true,
           },
         },
+        hiddenPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
       },
     });
 
@@ -1135,7 +1155,26 @@ router.put("/hidden", async (req, res, next) => {
             upvotes: true,
           },
         },
-        hiddenPosts: true,
+        hiddenPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
       },
     });
 

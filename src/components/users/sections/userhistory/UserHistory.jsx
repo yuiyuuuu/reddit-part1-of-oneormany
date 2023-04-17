@@ -7,7 +7,7 @@ import NoPosts from "../userposts/NoPosts";
 import UserPostMap from "../userposts/UserPostMap";
 import NoPermission from "../../NoPermission";
 
-const UserHistory = () => {
+const UserHistory = ({ set, set2 }) => {
   const selectedUser = useSelector((state) => state.selectedUser);
   const authState = useSelector((state) => state.auth);
 
@@ -17,7 +17,11 @@ const UserHistory = () => {
     return <NoPermission />;
   }
 
-  if (!selectedUser?.history?.length) {
+  if (
+    !selectedUser?.history?.filter(
+      (c) => !authState?.hiddenPosts?.map((v) => v.id).includes(c.id)
+    )?.length
+  ) {
     return <NoPosts what={"view"} selected={selectedUser} />;
   }
 
@@ -26,6 +30,9 @@ const UserHistory = () => {
       {selectedUser?.history
         ?.slice()
         ?.reverse()
+        ?.filter(
+          (c) => !authState?.hiddenPosts?.map((v) => v.id).includes(c.id)
+        )
         .map((item, i) => (
           // <UserHistoryMap item={item} authState={authState} />
 
@@ -34,6 +41,8 @@ const UserHistory = () => {
             i={i}
             length={selectedUser?.history?.length}
             selectedUser={selectedUser}
+            set={set}
+            set2={set2}
           />
         ))}
     </div>

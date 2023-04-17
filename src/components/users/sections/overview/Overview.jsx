@@ -13,6 +13,7 @@ import NoPosts from "../userposts/NoPosts";
 
 const Overview = () => {
   const userState = useSelector((state) => state.selectedUser);
+  const authState = useSelector((state) => state.auth);
 
   const [mapResults, setMapResults] = useState({});
 
@@ -22,25 +23,31 @@ const Overview = () => {
     setMapResults({});
 
     if (!userState?.id) return;
+    if (!authState?.id) return;
+
+    const hidden = authState?.hiddenPosts?.map((v) => v.id);
+    console.log(hidden, "auth");
 
     const group = {};
 
     userState?.posts.forEach((item) => {
+      if (hidden?.includes(item.id)) return;
       group[item?.id] ||= [];
       group[item?.id].push({ type: "post", data: item });
     });
 
     userState?.comments.forEach((item) => {
+      if (hidden?.includes(item.postId)) return;
       group[item?.postId] ||= [];
       group[item?.postId].push({ type: "comment", data: item });
     });
 
     setMapResults(group);
-  }, [userState]);
+  }, [userState, authState]);
 
   if (!userState?.id) return "loading";
 
-  if (!userState?.posts?.length && !userState?.comments?.length) {
+  if (!Object.values(mapResults).length) {
     return (
       <div style={{ width: "640px" }}>
         <NoPosts selected={userState} what={"post"} />;
@@ -85,7 +92,7 @@ const Overview = () => {
 
         <div className='overview-posts'>
           {Object.values(mapResults).map((item) => (
-            <OverviewMap item={item} />
+            <OverviewMap item={item} authState={authState} />
           ))}
         </div>
       </div>

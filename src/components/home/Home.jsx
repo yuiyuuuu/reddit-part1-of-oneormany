@@ -125,7 +125,11 @@ const Home = () => {
     const obj = {
       userid: authState.id,
       postid: threeState.id,
-      addOrRemove: "add",
+      addOrRemove: authState?.hiddenPosts
+        ?.map((v) => v.id)
+        .includes(threeState?.id)
+        ? "remove"
+        : "add",
     };
 
     dispatch(addRemoveHiddenPosts(obj)).then(() => {
