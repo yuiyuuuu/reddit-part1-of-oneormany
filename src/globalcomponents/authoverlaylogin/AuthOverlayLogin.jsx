@@ -50,8 +50,6 @@ const AuthOverlayLogin = ({ state }) => {
     $("#aos-password").css("border", "");
     $("#aos-email").css("border", "");
 
-    console.log("rannnn");
-
     dispatch(
       authenticate($("#aos-email").val(), $("#aos-password").val())
     ).then((res) => {

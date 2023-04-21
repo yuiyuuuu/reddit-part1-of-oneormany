@@ -22,6 +22,8 @@ import {
   handleSelectedPostRemoveUpvote,
 } from "../../../../store/scp/selectedPost";
 import { makePutRequest } from "../../../../requests/helperFunction";
+import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
+import { dispatchSetCommentSearchQuery } from "../../../../store/comments/searchQuery";
 
 import "./scpno.scss";
 
@@ -37,7 +39,6 @@ import RemoveSvg from "../scpsvgs/RemoveSvg";
 import SpamSvg from "../scpsvgs/SpamSvg";
 import ShieldSvg from "../scpsvgs/ShieldSvg";
 import ThreeDot from "../scpsvgs/ThreeDot";
-
 import TextStylesReply from "../comments/textstylescomponent/TextStylesReply";
 import SortCommentsMain from "../sortcomments/SortCommentsMain";
 import NoCommentsyet from "../nocomment/NoCommentsyet";
@@ -47,10 +48,8 @@ import ScpnoRight from "./ScpnoRight";
 import PlanetIcon from "./svg/PlanetIcon";
 import NothingHere from "../comments/NothingHere";
 import CommentSearch from "../comments/searchcomponent/CommentSearch";
-import { dispatchSetCommentSearchQuery } from "../../../../store/comments/searchQuery";
 import ShareOverlay from "../../../home/overlays/ShareOverlay";
 import ThreeDotOverlay from "../../../home/overlays/ThreeDotOverlay";
-import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 
 const SingleCommunityPostNotOverlay = () => {
   const dispatch = useDispatch();
@@ -73,6 +72,7 @@ const SingleCommunityPostNotOverlay = () => {
   const [commentInput, setCommentInput] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
   const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
+  const [firstCommentId, setFirstCommentId] = useState(null); //if the first comment of the list is not group[null]
 
   //error states
   const [commentNotFound, setCommentNotFound] = useState(false);
@@ -340,6 +340,12 @@ const SingleCommunityPostNotOverlay = () => {
     if (!commentid) return;
     if (!selectedPost?.comments) return;
 
+    let parentCommentsWithOgComment = { result: [], top: false };
+    const context =
+      new URLSearchParams(new URL(window.location.href).search).getAll(
+        "context"
+      )[0] || null;
+
     //find comment based off id
     const cur = selectedPost?.comments?.find((v) => v.id === commentid);
     if (!cur) {
@@ -348,9 +354,11 @@ const SingleCommunityPostNotOverlay = () => {
       return;
     }
 
-    const parentCommentsWithOgComment = dispatch(
-      setCommentIdFind(selectedPost?.comments, cur)
-    );
+    if (context > 0) {
+      parentCommentsWithOgComment = dispatch(
+        setCommentIdFind(selectedPost?.comments, cur, context)
+      );
+    }
 
     const childrenComments = [];
 
@@ -371,8 +379,29 @@ const SingleCommunityPostNotOverlay = () => {
 
     findChildrenComments(selectedPost?.comments, cur);
 
+    if (
+      !parentCommentsWithOgComment.top &&
+      parentCommentsWithOgComment?.result
+    ) {
+      setFirstCommentId(
+        parentCommentsWithOgComment?.result[
+          parentCommentsWithOgComment.result.length - 1
+        ]?.parentId
+      );
+    } else {
+      setFirstCommentId(null);
+    }
+
+    if (context == 0) {
+      setFirstCommentId(cur.parentId);
+    }
+
     dispatch(
-      setComments([...parentCommentsWithOgComment, ...childrenComments])
+      setComments([
+        ...parentCommentsWithOgComment.result,
+        cur,
+        ...childrenComments,
+      ])
     );
   }, [selectedPost?.comments, window.location.href]);
 
@@ -413,11 +442,13 @@ const SingleCommunityPostNotOverlay = () => {
   }, [window.location.href, selectedPost?.comments, scp]);
 
   useEffect(() => {
-    makePutRequest("/users/history", {
+    if (!selectedPost?.id || !authState?.id) return;
+
+    makePutRequest("users/history", {
       userid: authState?.id,
       postid: selectedPost?.id,
     });
-  }, []);
+  }, [authState, selectedPost]);
 
   if (commentNotFound) {
     return <NothingHere />;
@@ -751,7 +782,7 @@ const SingleCommunityPostNotOverlay = () => {
                 <div className='comment-mla'>
                   <CommentsList
                     comments={selectedPost?.comments}
-                    which={null}
+                    which={firstCommentId}
                     post={selectedPost}
                     top={true}
                     newComments={newCommentState}

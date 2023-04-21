@@ -26,7 +26,6 @@ const Overview = () => {
     if (!authState?.id) return;
 
     const hidden = authState?.hiddenPosts?.map((v) => v.id);
-    console.log(hidden, "auth");
 
     const group = {};
 

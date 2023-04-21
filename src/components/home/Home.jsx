@@ -166,14 +166,11 @@ const Home = () => {
     }
 
     const map = authState?.hiddenPosts?.map((t) => t.id);
-    console.log(map);
 
     const f = posts.filter((v) => !map?.includes(v.id));
 
     setHomePosts(f);
   }, [authState, posts]);
-
-  console.log(authState);
 
   //when shareoverlay or threedotoverlay is visible and user clicks elsewhere
   //we will close the overlay

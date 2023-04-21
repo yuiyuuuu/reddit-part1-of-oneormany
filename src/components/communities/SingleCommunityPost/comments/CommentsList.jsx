@@ -67,7 +67,7 @@ const CommentsList = ({
         <Comment
           comment={v}
           commentsMap={commentsState}
-          top={which === null ? true : false}
+          top={top}
           post={post}
           level={level || 0}
           idarr={idarr || []}

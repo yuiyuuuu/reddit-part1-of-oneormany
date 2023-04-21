@@ -102,8 +102,6 @@ const AOSStep2 = ({
   }
 
   function handleSubmit() {
-    console.log(!validPassword || !validUsername);
-
     if (!validPassword || !validUsername) return;
     setWeakpass(false);
     if (passStrength < 1) {

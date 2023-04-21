@@ -157,7 +157,7 @@ const Comment = ({
   function handleShareClick() {
     dispatch(
       setLinkToCopy(
-        `${window.location.host}/r/${post.community.name}/comments/${post.id}/comment/${comment.id}`
+        `${window.location.host}/r/${post.community.name}/comments/${post.id}/comment/${comment.id}/?context=3`
       )
     );
 
@@ -311,14 +311,14 @@ const Comment = ({
           </a>
 
           <div className='comment-right'>
-            <div className='comment-username' id={`username-${comment.id}`}>
+            <div className='comment-username' id={`username-${comment?.id}`}>
               <a href={`/user/${comment.user?.name}`} className='comment-u'>
                 {comment.user?.name}
               </a>
               <span
                 style={{
                   marginLeft: "4px",
-                  display: comment.user.id === post?.userId ? "" : "none",
+                  display: comment.user?.id === post?.userId ? "" : "none",
                   color: "#0079D3",
                 }}
               >

@@ -6,21 +6,33 @@ const dispatchSetCommentIdFind = (v) => ({
 });
 
 //find all parent comments, aka all comments above
-export function setCommentIdFind(commentState, commentToFind) {
+export function setCommentIdFind(commentState, commentToFind, context) {
   return (dispatch) => {
     let find = commentToFind;
-    const result = [commentToFind];
+    const result = [];
+    let top = false;
+    let count = 0;
 
     //finds all parent comments
     while (find) {
+      if (count >= Number(context)) {
+        break;
+      }
+
       const parentComment = commentState.find((v) => v.id == find?.parentId);
       if (!parentComment) break;
 
       result.push(parentComment);
 
       find = parentComment;
+
+      if (!parentComment?.parentId) {
+        top = true;
+      }
+
+      count += 1;
     }
-    return result;
+    return { result: result, top: top };
   };
 }
 

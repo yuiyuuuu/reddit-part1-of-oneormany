@@ -196,13 +196,18 @@ export function handleRemoveCommentDownvote(obj, parentid) {
 }
 
 export function setComments(comments) {
+  const isThereNullParent = comments.map((t) => t.parentId).includes(null);
   return (dispatch) => {
     const group = { new: [] };
-    comments.slice().forEach((v) => {
+    comments.slice().forEach((v, i) => {
       group[v?.parentId] ||= [];
       group[v?.parentId].push(v);
+      // if (!isThereNullParent && i === 0) {
+      //   group[v?.parentId].push("first");
+      // }
     });
 
+    console.log(group);
     dispatch(dispatchComments(group));
   };
 }

@@ -81,6 +81,7 @@ const SingleCommunityPost = () => {
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
+  const [firstCommentId, setFirstCommentId] = useState(null); //if the first comment of the list is not group[null]
 
   const [showCommentSortOverlay, setShowCommentSortOverlay] = useState(false);
   const [selectedSort, setSelectedSort] = useState("");
@@ -250,10 +251,6 @@ const SingleCommunityPost = () => {
     window.localStorage.setItem("commentsort", which);
   }
 
-  const scroll = useCallback(() => {
-    setScrollpos(window.scrollY);
-  }, []);
-
   function handleShareClick() {
     const scrollpos = $(".scp-parent").scrollTop();
     //if the one we clicked on was the same one as before, we set the display to none.
@@ -373,16 +370,29 @@ const SingleCommunityPost = () => {
 
   //if there is a selected comment we set comments with this function
   useEffect(() => {
-    const commentid = match?.params?.commentid;
+    const commentid = params.commentid;
     if (!commentid) return;
     if (!selectedPost?.comments) return;
 
+    let parentCommentsWithOgComment = { result: [], top: false };
+    const context =
+      new URLSearchParams(new URL(window.location.href).search).getAll(
+        "context"
+      )[0] || null;
+
     //find comment based off id
     const cur = selectedPost?.comments?.find((v) => v.id === commentid);
+    if (!cur) {
+      //if no comment found
+      setCommentNotFound(true);
+      return;
+    }
 
-    const parentCommentsWithOgComment = dispatch(
-      setCommentIdFind(selectedPost?.comments, cur)
-    );
+    if (context > 0) {
+      parentCommentsWithOgComment = dispatch(
+        setCommentIdFind(selectedPost?.comments, cur, context)
+      );
+    }
 
     const childrenComments = [];
 
@@ -403,8 +413,29 @@ const SingleCommunityPost = () => {
 
     findChildrenComments(selectedPost?.comments, cur);
 
+    if (
+      !parentCommentsWithOgComment.top &&
+      parentCommentsWithOgComment?.result
+    ) {
+      setFirstCommentId(
+        parentCommentsWithOgComment?.result[
+          parentCommentsWithOgComment.result.length - 1
+        ]?.parentId
+      );
+    } else {
+      setFirstCommentId(null);
+    }
+
+    if (context == 0) {
+      setFirstCommentId(cur.parentId);
+    }
+
     dispatch(
-      setComments([...parentCommentsWithOgComment, ...childrenComments])
+      setComments([
+        ...parentCommentsWithOgComment.result,
+        cur,
+        ...childrenComments,
+      ])
     );
   }, [selectedPost?.comments, window.location.href]);
 
@@ -536,7 +567,7 @@ const SingleCommunityPost = () => {
   }, []);
 
   useEffect(() => {
-    makePutRequest("/users/history", {
+    makePutRequest("users/history", {
       userid: authState?.id,
       postid: selectedPost?.id,
     });
@@ -914,7 +945,7 @@ const SingleCommunityPost = () => {
                   <div className='comment-mla'>
                     <CommentsList
                       comments={selectedPost?.comments}
-                      which={null}
+                      which={firstCommentId}
                       post={selectedPost}
                       top={true}
                       newComments={newCommentState}
