@@ -9,6 +9,7 @@ import { setOverlayState } from "../../../store/postoverlays/shareOverlay";
 import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
 import { handleRecent } from "../../../requests/handleRecent";
 import { handleSaved } from "../../../requests/handleSavedPosts";
+import { handleSetPrevHref } from "../../../store/users/prevHrefBeforeOverlay";
 
 import "./post.scss";
 
@@ -147,6 +148,7 @@ const Post = ({
         handleRecent(authState, post);
         dispatch(setScp(scp || null));
         dispatch(setSelectedPost(post));
+        dispatch(handleSetPrevHref(window.location.pathname));
         navigate(`/r/${post.community.name}/comments/${post.id}`);
       }}
       style={{

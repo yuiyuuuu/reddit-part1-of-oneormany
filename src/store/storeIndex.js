@@ -34,6 +34,7 @@ import navLocation from "./nav/navLocation";
 import lnnl from "../globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/lnnlStates";
 import selectedUser from "./users/users";
 import userReadyState from "../components/users/userReadyState";
+import prevHref from "./users/prevHrefBeforeOverlay";
 
 const reducer = combineReducers({
   auth,
@@ -67,6 +68,7 @@ const reducer = combineReducers({
   lnnl,
   selectedUser,
   userReadyState,
+  prevHref,
 }); //reducers here
 
 let middleware = "";

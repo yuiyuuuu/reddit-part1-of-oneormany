@@ -1,4 +1,10 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+
+import { setScp } from "../../../../store/scp/scpConditional";
+import { setSelectedPost } from "../../../../store/scp/selectedPost";
+import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
 
 import RemoveSvg from "../../../communities/SingleCommunityPost/scpsvgs/RemoveSvg";
 import SpamSvg from "../../../communities/SingleCommunityPost/scpsvgs/SpamSvg";
@@ -6,8 +12,21 @@ import ThreeDot from "../../../communities/SingleCommunityPost/scpsvgs/ThreeDot"
 import LockSvg from "./svg/LockSvg";
 
 const UserCommentMapCh = ({ item, first, post, auth, last }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
-    <div className='ucmapch-parent'>
+    <div
+      className='ucmapch-parent'
+      onClick={() => {
+        dispatch(setScp("user"));
+        dispatch(setSelectedPost(item.post));
+        dispatch(handleSetPrevHref(window.location.pathname));
+        navigate(
+          `/r/${item?.post?.community?.name}/comments/${item.post?.id}/comment/${item?.id}/?context=3`
+        );
+      }}
+    >
       <div
         className='ucmapch-inner'
         style={{ paddingTop: first && "10px", borderBottom: last && "none" }}

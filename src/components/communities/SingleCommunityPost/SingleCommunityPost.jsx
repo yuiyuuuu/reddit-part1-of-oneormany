@@ -31,6 +31,7 @@ import { setLinkToCopy } from "../../../store/shareoverlay/copyLink";
 import { setOverlayStateSCP } from "../../../store/postoverlays/shareOverlayScp";
 import { setThreeStateSCP } from "../../../store/postoverlays/threeDotoverlaySCP";
 import { makePutRequest } from "../../../requests/helperFunction";
+import { handleSetPrevHref } from "../../../store/users/prevHrefBeforeOverlay";
 
 import $ from "jquery";
 
@@ -78,6 +79,7 @@ const SingleCommunityPost = () => {
   const searchQuery = useSelector((state) => state.searchQueryComment);
   const shareOverlayState = useSelector((state) => state.shareOverlayScp);
   const threeState = useSelector((state) => state.threeDotOverlaySCP);
+  const prevHref = useSelector((state) => state.prevHref);
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
@@ -97,6 +99,12 @@ const SingleCommunityPost = () => {
   const scrollPos = useSelector((state) => state.scrollPosition);
 
   function handleCloseOverlay() {
+    if (prevHref) {
+      nav(prevHref);
+      dispatch(handleSetPrevHref(null));
+      return;
+    }
+
     if (scpState !== "scpno") {
       dispatch(setSelectedPost({}));
     } else {
@@ -124,6 +132,8 @@ const SingleCommunityPost = () => {
       nav(-1);
     }
   }
+
+  console.log(prevHref, "prev vv");
 
   //----------------HANDLING VOTES FUNCTIONS BELOW---------------------\\
 
@@ -370,7 +380,7 @@ const SingleCommunityPost = () => {
 
   //if there is a selected comment we set comments with this function
   useEffect(() => {
-    const commentid = params.commentid;
+    const commentid = match?.params?.commentid;
     if (!commentid) return;
     if (!selectedPost?.comments) return;
 

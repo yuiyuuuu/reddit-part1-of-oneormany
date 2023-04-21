@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 
 import { setScp } from "../../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
+import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
 
 import OverviewPostCommentList from "./overviewcomments/OverviewPostCommentList";
 
@@ -151,6 +152,8 @@ const OverviewComment = ({ item }) => {
           onClick={() => {
             dispatch(setScp("user"));
             dispatch(setSelectedPost(item[0].data.post));
+            dispatch(handleSetPrevHref(window.location.pathname));
+
             navigate(
               `/r/${item[0].data.post.community.name}/comments/${item[0].data.post.id}`
             );

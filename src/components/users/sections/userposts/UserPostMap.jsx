@@ -6,6 +6,7 @@ import { setScp } from "../../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import { votesUsers } from "../../../../store/users/users";
 import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
+import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
 
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -85,6 +86,7 @@ const UserPostMap = ({
       onClick={() => {
         dispatch(setScp("user"));
         dispatch(setSelectedPost(post));
+        dispatch(handleSetPrevHref(window.location.pathname));
         navigate(`/r/${post?.community?.name}/comments/${post?.id}`);
       }}
     >

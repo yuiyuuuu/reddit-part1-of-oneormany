@@ -46,7 +46,7 @@ const CommentSearch = ({ commentResults, selectedPost, query }) => {
               className='cs-result'
               onClick={() => {
                 nav(
-                  `/r/${selectedPost.community.name}/comments/${selectedPost.id}/comment/${comment.id}`,
+                  `/r/${selectedPost.community.name}/comments/${selectedPost.id}/comment/${comment.id}/?context=3`,
                   { state: { from: query } }
                 );
                 dispatch(setScp("scpno"));
