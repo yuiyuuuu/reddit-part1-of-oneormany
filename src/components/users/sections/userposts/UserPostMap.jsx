@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+
+import $ from "jquery";
 
 import { setScp } from "../../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import { votesUsers } from "../../../../store/users/users";
 import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
+import { makeGetRequest } from "../../../../requests/helperFunction";
+import { dispatchSetHcState } from "../../../../globalcomponents/hovercommunities/hovercommunitiesstate";
 
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -69,6 +73,30 @@ const UserPostMap = ({
 
     dispatch(votesUsers(obj, "down-remove"));
   }
+
+  useEffect(() => {
+    $(document).ready(() => {
+      $(`.community-hov-${post?.id}`).mouseover(async () => {
+        const coordinates = $(
+          `.community-hov-${post?.id}`
+        )[0].getBoundingClientRect();
+
+        const community = await makeGetRequest(
+          `communities/fetchbyid/${post?.community?.id}`
+        ).then((res) => {
+          dispatch(
+            dispatchSetHcState({
+              display: true,
+              top: coordinates.top + $(`.community-hov-${post?.id}`).height(),
+              left: coordinates.left,
+              community: res,
+              id: post?.id,
+            })
+          );
+        });
+      });
+    });
+  }, []);
 
   return (
     <div
@@ -157,7 +185,7 @@ const UserPostMap = ({
               <div className='up-title'>{post?.title}</div>
               <div className='up-f'>
                 <div
-                  className='up-fc hoverunderline'
+                  className={`up-fc hoverunderline community-hov-${post?.id}`}
                   onClick={() => {
                     window.location.href = `/r/${post?.community?.name}`;
                   }}

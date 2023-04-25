@@ -398,9 +398,13 @@ const SingleCommunityPost = () => {
       return;
     }
 
-    if (context > 0) {
+    if (context != 0) {
       parentCommentsWithOgComment = dispatch(
-        setCommentIdFind(selectedPost?.comments, cur, context)
+        setCommentIdFind(
+          selectedPost?.comments,
+          cur,
+          context == null ? Number.MAX_SAFE_INTEGER : context //null is equal to 0 when using >= or <= operator
+        )
       );
     }
 

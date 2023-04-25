@@ -1,0 +1,62 @@
+.hc-parent {
+  background-color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100000;
+  width: 380px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.hc-inner {
+  padding: 12px;
+}
+
+.hc-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.hc-imgcontainer {
+  margin-right: 8px;
+}
+
+.hc-icon {
+  height: 32px;
+  width: 32px;
+  border-radius: 100%;
+}
+
+.hc-comname {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1c1c1c;
+}
+
+.hc-mem {
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+}
+
+.hc-memcol {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1c1c1c;
+  width: 50%;
+}
+
+.hc-st {
+  font-size: 12px;
+  font-weight: 400;
+  color: #7c7c7c;
+}
+
+.hc-desc {
+  font-size: 12px;
+  color: #1c1c1c;
+  padding: 8px 0;
+  overflow-wrap: break-word;
+}

@@ -57,8 +57,22 @@ const UserCommentMapCh = ({ item, first, post, auth, last }) => {
           <pre style={{ padding: "2px 0" }}>{item?.message}</pre>
 
           <div className='ucmapch-bot'>
-            <div className='ucmapch-f12fw700c87 ucmapch-but'>Reply</div>
-            <div className='ucmapch-f12fw700c87 ucmapch-but'>Share</div>
+            <div
+              className='ucmapch-f12fw700c87 ucmapch-but'
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              Reply
+            </div>
+            <div
+              className='ucmapch-f12fw700c87 ucmapch-but'
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              Share
+            </div>
 
             <div className='ucmapch-three ucmapch-grhov'>
               <ThreeDot id={item?.id} />

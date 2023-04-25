@@ -15,20 +15,25 @@ export function setCommentIdFind(commentState, commentToFind, context) {
 
     //finds all parent comments
     while (find) {
-      if (count >= Number(context)) {
+      if (count >= context) {
         break;
       }
 
+      if (!commentToFind.parentId) {
+        return { result: [], top: true };
+      }
+
       const parentComment = commentState.find((v) => v.id == find?.parentId);
+
+      if (!parentComment?.parentId) {
+        top = true;
+      }
+
       if (!parentComment) break;
 
       result.push(parentComment);
 
       find = parentComment;
-
-      if (!parentComment?.parentId) {
-        top = true;
-      }
 
       count += 1;
     }

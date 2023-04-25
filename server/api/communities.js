@@ -3,6 +3,56 @@ const prisma = require("../prismaClient.js");
 
 module.exports = router;
 
+router.get("/fetchbyid/:id", async (req, res, next) => {
+  try {
+    const community = await prisma.community.findFirst({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        posts: {
+          include: {
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+              orderBy: {
+                id: "asc",
+              },
+            },
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
+        users: {
+          select: {
+            name: true,
+            id: true,
+            photo: true,
+            password: false,
+          },
+        },
+        owner: true,
+      },
+    });
+    if (!community) {
+      res.send("not found");
+    } else {
+      res.send(community);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/single/:id", async (req, res, next) => {
   try {
     const community = await prisma.community.findFirst({

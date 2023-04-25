@@ -147,6 +147,7 @@
 .ucmapch-but {
   margin: 4px;
   cursor: pointer;
+  transition: all 0.3s ease;
 
   &:hover {
     color: #1c1c1c;

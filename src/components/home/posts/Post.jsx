@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +10,7 @@ import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
 import { handleRecent } from "../../../requests/handleRecent";
 import { handleSaved } from "../../../requests/handleSavedPosts";
 import { handleSetPrevHref } from "../../../store/users/prevHrefBeforeOverlay";
+import { dispatchSetHcState } from "../../../globalcomponents/hovercommunities/hovercommunitiesstate";
 
 import "./post.scss";
 
@@ -24,6 +25,7 @@ import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
 import DefaultCommunitiesIcon from "../../communities/communitiessvg/DefaultCommunitiesIcon";
 import UnsaveSvg from "./postssvgs/UnsaveSvg";
+import { makeGetRequest } from "../../../requests/helperFunction";
 
 //all posts
 const Post = ({
@@ -41,6 +43,7 @@ const Post = ({
   const navigate = useNavigate();
   const shareOverlayState = useSelector((state) => state.shareOverlay);
   const threeState = useSelector((state) => state.threeDotOverlay);
+  const hcState = useSelector((state) => state.hcState);
 
   //share overlay set
   function set() {
@@ -111,6 +114,31 @@ const Post = ({
 
     dispatch(setOverlayState({ display: false }));
   }
+
+  useEffect(() => {
+    $(document).ready(() => {
+      $(`.community-hov-${post?.id}`).mouseover(async () => {
+        const coordinates = $(
+          `.community-hov-${post?.id}`
+        )[0].getBoundingClientRect();
+
+        const community = await makeGetRequest(
+          `communities/fetchbyid/${post?.community?.id}`
+        ).then((res) => {
+          console.log(res, "response");
+          dispatch(
+            dispatchSetHcState({
+              display: true,
+              top: coordinates.top + $(`.community-hov-${post?.id}`).height(),
+              left: coordinates.left,
+              community: res,
+              id: post?.id,
+            })
+          );
+        });
+      });
+    });
+  }, []);
 
   useEffect(() => {
     //function to prevent event bubbling
@@ -217,7 +245,7 @@ const Post = ({
           )}
           <a
             href={`/${post.community?.tag}`}
-            className='posts-communityname'
+            className={`posts-communityname community-hov-${post?.id}`}
             onClick={(e) => e.stopPropagation()}
           >
             {post.community?.tag}

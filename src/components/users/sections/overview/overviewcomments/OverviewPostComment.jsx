@@ -61,14 +61,42 @@ const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
           {!idEquals
             ? object.data.user.id === post.user.id && (
                 <div className='ov-reply'>
-                  <div className='ov-re'>Reply</div>
-                  <div className='ov-re'>Share</div>
+                  <div
+                    className='ov-re'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    Reply
+                  </div>
+                  <div
+                    className='ov-re'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    Share
+                  </div>
                 </div>
               )
             : object.data.user.id === idEquals && (
                 <div className='ov-reply'>
-                  <div className='ov-re'>Reply</div>
-                  <div className='ov-re'>Share</div>
+                  <div
+                    className='ov-re'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    Reply
+                  </div>
+                  <div
+                    className='ov-re'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    Share
+                  </div>
                 </div>
               )}
         </div>

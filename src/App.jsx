@@ -31,6 +31,8 @@ import Alert from "./globalcomponents/alerts/Alert";
 import LeftNavigation from "./globalcomponents/LeftNavigation/LeftNavigation";
 import LeftNavNL from "./globalcomponents/LeftNavigation/LeftNavigationNotLoggedIn/LeftNavNL";
 import UserFollowers from "./components/users/followers/UserFollowers";
+import { dispatchSetHcState } from "./globalcomponents/hovercommunities/hovercommunitiesstate";
+import HoverCommunities from "./globalcomponents/hovercommunities/HoverCommunities";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,6 +53,7 @@ function App() {
   const selectedPost = useSelector((state) => state.selectedPost);
   const alertsQueue = useSelector((state) => state.alerts);
   const lnState = useSelector((state) => state.lnState);
+  const hcState = useSelector((state) => state.hcState);
 
   const v = useSelector((state) => state.postsindividualcommunity);
 
@@ -140,6 +143,9 @@ function App() {
   return (
     <BrowserRouter>
       <Nav />
+
+      {hcState.display && <HoverCommunities />}
+      {/* <HoverCommunities /> */}
 
       {createOverlayState && (
         <CreateCommunityOverlay createOverlayState={createOverlayState} />
