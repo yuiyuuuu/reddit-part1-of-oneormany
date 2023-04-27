@@ -6,6 +6,14 @@ const HoverUsersMod = ({ huState }) => {
   console.log(huState?.user);
   return (
     <div className='hum-parent'>
+      {huState?.bannerPhoto && (
+        <div
+          className='hum-banner'
+          style={{
+            backgroundImage: `url(data:image/png;base64,${huState?.user?.bannerPhoto})`,
+          }}
+        />
+      )}
       <div className='hum-pfppar'>
         {huState?.user?.photo ? (
           <img
