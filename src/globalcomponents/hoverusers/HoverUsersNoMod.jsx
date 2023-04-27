@@ -1,9 +1,62 @@
-import React from "react";
-import DefaultPfp from "../../components/users/svg/DefaultPfp";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { intToAbbrv } from "../../requests/intToAbbrv";
+import { unfollowUser, followUser } from "../../store/auth";
+import { addAlert } from "../alerts/addAlertsFunctions";
+import { dispatchSetHuState } from "./hoverUserStates";
+
+import $ from "jquery";
+
+import DefaultPfp from "../../components/users/svg/DefaultPfp";
 
 const HoverUsersNoMod = ({ huState }) => {
+  const dispatch = useDispatch();
+
+  const authState = useSelector((state) => state.auth);
+
+  function handleFollowUser() {
+    if (!authState?.id) {
+      dispatch(dispatchSetAOS({ display: true, which: "" }));
+      return;
+    }
+
+    const obj = {
+      userFollowing: authState.id,
+      userFollowed: huState.user.id,
+    };
+
+    dispatch(followUser(obj)).then(() => {
+      addAlert(`Successfully followed ${huState?.user?.name}`, dispatch);
+      dispatch(dispatchSetHuState({ display: false }));
+    });
+  }
+
+  function handleUnfollowUser() {
+    const obj = {
+      userFollowing: authState.id,
+      userFollowed: huState.user.id,
+    };
+
+    dispatch(unfollowUser(obj)).then(() => {
+      addAlert(`Successfully unfollowed ${huState?.user?.name}`, dispatch);
+      dispatch(dispatchSetHuState({ display: false }));
+    });
+  }
+
+  useEffect(() => {
+    if (authState?.following?.map((v) => v.id).includes(huState?.user?.id)) {
+      $(".hun-uf").hover(
+        () => {
+          $(".hun-uf").html("Unfollow");
+        },
+        () => {
+          $(".hun-uf").html("Following");
+        }
+      );
+    }
+  }, [$(".hun-uf")]);
+
   return (
     <div className='hun-parent'>
       <div className='hun-toprow'>
@@ -44,6 +97,31 @@ const HoverUsersNoMod = ({ huState }) => {
           <div className='hun-p'>Comment Karma</div>
         </div>
       </div>
+
+      {authState?.id !== huState?.user?.id && (
+        <div>
+          <div className='blueborder-button' style={{ margin: "4px 0" }}>
+            Start Chat
+          </div>
+          {authState?.following
+            ?.map((v) => v.id)
+            .includes(huState?.user?.id) ? (
+            <div
+              className='blueborder-button hun-uf'
+              onClick={() => handleUnfollowUser()}
+            >
+              Following
+            </div>
+          ) : (
+            <div
+              className='bluebutton-button'
+              onClick={() => handleFollowUser()}
+            >
+              Follow
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -11,6 +11,8 @@ import { handleRecent } from "../../../requests/handleRecent";
 import { handleSaved } from "../../../requests/handleSavedPosts";
 import { handleSetPrevHref } from "../../../store/users/prevHrefBeforeOverlay";
 import { dispatchSetHcState } from "../../../globalcomponents/hovercommunities/hovercommunitiesstate";
+import { dispatchSetHuState } from "../../../globalcomponents/hoverusers/hoverUserStates";
+import { makeGetRequest } from "../../../requests/helperFunction";
 
 import "./post.scss";
 
@@ -25,7 +27,6 @@ import DownVoteSvg from "./postssvgs/arrowicons/DownVoteSvg";
 import SaveSvg from "./postssvgs/SaveSvg";
 import DefaultCommunitiesIcon from "../../communities/communitiessvg/DefaultCommunitiesIcon";
 import UnsaveSvg from "./postssvgs/UnsaveSvg";
-import { makeGetRequest } from "../../../requests/helperFunction";
 
 //all posts
 const Post = ({
@@ -168,6 +169,34 @@ const Post = ({
     }
   }, []);
 
+  console.log(post);
+
+  useEffect(() => {
+    $(document).ready(() => {
+      $(`.hov-user-${post?.id}`).mouseover(async () => {
+        const coordinates = $(
+          `.hov-user-${post?.id}`
+        )[0].getBoundingClientRect();
+
+        await makeGetRequest(`users/fetchbyid/${post?.user?.id}`).then(
+          (res) => {
+            console.log(res, "response");
+            dispatch(
+              dispatchSetHuState({
+                display: true,
+                top: coordinates.top + $(`.hov-user-${post?.id}`).height(),
+                left: coordinates.left,
+                community: post?.community,
+                user: res,
+                id: post.id,
+              })
+            );
+          }
+        );
+      });
+    });
+  }, []);
+
   return (
     <div
       className='single-postcontainer'
@@ -256,7 +285,7 @@ const Post = ({
           </div>
           <a
             href={`/user/${post?.user?.name}`}
-            className='post-topdesc user-anchor'
+            className={`post-topdesc user-anchor hov-user-${post?.id}`}
             style={{ marginRight: "3px" }}
             onClick={(e) => e.stopPropagation()}
           >

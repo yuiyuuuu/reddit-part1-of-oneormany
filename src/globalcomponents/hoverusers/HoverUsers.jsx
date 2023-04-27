@@ -46,8 +46,8 @@ const HoverUsers = () => {
       }}
     >
       {huState?.community?.moderators
-        .map((v) => v.id)
-        .includes(authState?.id) ||
+        ?.map((v) => v.id)
+        ?.includes(authState?.id) ||
       authState?.id === huState?.community?.owner?.id ? (
         <HoverUsersMod huState={huState} />
       ) : (

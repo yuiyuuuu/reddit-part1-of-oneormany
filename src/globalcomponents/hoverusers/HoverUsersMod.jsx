@@ -3,7 +3,6 @@ import React from "react";
 import DefaultPfp from "../../components/users/svg/DefaultPfp";
 
 const HoverUsersMod = ({ huState }) => {
-  console.log(huState?.user);
   return (
     <div className='hum-parent'>
       {huState?.bannerPhoto && (
