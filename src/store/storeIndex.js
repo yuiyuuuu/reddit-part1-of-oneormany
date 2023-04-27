@@ -36,6 +36,7 @@ import selectedUser from "./users/users";
 import userReadyState from "../components/users/userReadyState";
 import prevHref from "./users/prevHrefBeforeOverlay";
 import hcState from "../globalcomponents/hovercommunities/hovercommunitiesstate";
+import huState from "../globalcomponents/hoverusers/hoverUserStates";
 
 const reducer = combineReducers({
   auth,
@@ -71,6 +72,7 @@ const reducer = combineReducers({
   userReadyState,
   prevHref,
   hcState,
+  huState,
 }); //reducers here
 
 let middleware = "";

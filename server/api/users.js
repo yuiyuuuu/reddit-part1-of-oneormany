@@ -39,6 +39,198 @@ router.get("/find/:name", async (req, res, next) => {
   }
 });
 
+router.get("/fetchbyid/:id", async (req, res, next) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: req.params.id,
+      },
+
+      include: {
+        posts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+                moderators: true,
+                owner: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        comments: {
+          include: {
+            post: {
+              include: {
+                user: true,
+                comments: {
+                  include: {
+                    user: true,
+                    downvotes: true,
+                    upvotes: true,
+                  },
+                },
+                community: {
+                  include: {
+                    users: true,
+                  },
+                },
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+            children: true,
+            parent: true,
+            user: true,
+            upvotes: true,
+            downvotes: true,
+          },
+        },
+        communities: {
+          include: {
+            users: true,
+          },
+        },
+        communityOwner: {
+          include: {
+            users: true,
+          },
+        },
+        moderatorCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        favoriteCommunities: {
+          include: {
+            users: true,
+          },
+        },
+        followedBy: true,
+        following: true,
+        history: {
+          include: {
+            user: true,
+            comments: {
+              include: {
+                user: true,
+                upvotes: true,
+                downvotes: true,
+              },
+            },
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            upvotes: true,
+            downvotes: true,
+          },
+        },
+        savedComments: true,
+        savedPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        hiddenPosts: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        upvotes: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+        downvotes: {
+          include: {
+            user: true,
+            community: {
+              include: {
+                users: true,
+              },
+            },
+            comments: {
+              include: {
+                user: true,
+                downvotes: true,
+                upvotes: true,
+              },
+            },
+
+            downvotes: true,
+            upvotes: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      res.send("does not exist");
+    }
+
+    res.send(user);
+  } catch (error) {
+    next(error);
+    return "error";
+  }
+});
 router.get("/:name", async (req, res, next) => {
   try {
     const user = await prisma.user.findFirst({
@@ -56,6 +248,8 @@ router.get("/:name", async (req, res, next) => {
             community: {
               include: {
                 users: true,
+                moderators: true,
+                owner: true,
               },
             },
             comments: {
@@ -257,6 +451,8 @@ router.put("/join/community", async (req, res, next) => {
             community: {
               include: {
                 users: true,
+                moderators: true,
+                owner: true,
               },
             },
             comments: {
@@ -355,6 +551,8 @@ router.put("/leave/community", async (req, res, next) => {
             community: {
               include: {
                 users: true,
+                moderators: true,
+                owner: true,
               },
             },
             comments: {
@@ -453,6 +651,8 @@ router.put("/follow", async (req, res, next) => {
             community: {
               include: {
                 users: true,
+                moderators: true,
+                owner: true,
               },
             },
             comments: {
@@ -567,6 +767,8 @@ router.put("/unfollow", async (req, res, next) => {
             community: {
               include: {
                 users: true,
+                moderators: true,
+                owner: true,
               },
             },
             comments: {

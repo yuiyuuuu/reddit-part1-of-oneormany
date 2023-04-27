@@ -78,7 +78,14 @@ const UserRight = () => {
                 <div className='ur-ti'>Karma</div>
                 <div className='ur-iconrow'>
                   <KarmaIcon />
-                  <div className='ur-gr'>{selectedUser?.karma}</div>
+                  <div className='ur-gr'>
+                    {Intl.NumberFormat("en-US", {
+                      notation: "compact",
+                      maximumFractionDigits: 1,
+                    }).format(
+                      selectedUser?.postKarma + selectedUser?.commentKarma
+                    )}
+                  </div>
                 </div>
               </div>
               <div className='ur-rowc'>

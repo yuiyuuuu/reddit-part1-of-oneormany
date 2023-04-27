@@ -11,6 +11,7 @@ import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
 import { makeGetRequest } from "../../../../requests/helperFunction";
 import { dispatchSetHcState } from "../../../../globalcomponents/hovercommunities/hovercommunitiesstate";
+import { dispatchSetHuState } from "../../../../globalcomponents/hoverusers/hoverUserStates";
 
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -81,7 +82,7 @@ const UserPostMap = ({
           `.community-hov-${post?.id}`
         )[0].getBoundingClientRect();
 
-        const community = await makeGetRequest(
+        await makeGetRequest(
           `communities/fetchbyid/${post?.community?.id}`
         ).then((res) => {
           dispatch(
@@ -94,6 +95,31 @@ const UserPostMap = ({
             })
           );
         });
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    $(document).ready(() => {
+      $(`.hov-user-${post?.id}`).mouseover(async () => {
+        const coordinates = $(
+          `.hov-user-${post?.id}`
+        )[0].getBoundingClientRect();
+
+        await makeGetRequest(`users/fetchbyid/${post?.user?.id}`).then(
+          (res) => {
+            dispatch(
+              dispatchSetHuState({
+                display: true,
+                top: coordinates.top + $(`.hov-user-${post?.id}`).height(),
+                left: coordinates.left,
+                community: post?.community,
+                user: res,
+                id: post.id,
+              })
+            );
+          }
+        );
       });
     });
   }, []);
@@ -193,7 +219,19 @@ const UserPostMap = ({
                   r/{post?.community?.name}
                 </div>
                 <div className='dot-posts'>•</div>
-                <span>Posted by u/{post?.user?.name}</span>&nbsp;
+                <span>
+                  Posted by{" "}
+                  <span
+                    className={`hoverunderline hov-user-${post?.id}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.location.href = `/user/${post?.user?.name}`;
+                    }}
+                  >
+                    u/{post?.user?.name}
+                  </span>
+                </span>
+                &nbsp;
                 <span>1 day ago</span>
               </div>
 

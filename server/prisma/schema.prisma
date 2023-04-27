@@ -92,8 +92,10 @@ model User {
   id       String    @id @default(uuid())
   email    String    @unique
   password String
-  name     String  @unique  
-  karma Int @default(0)
+  name     String  @unique //username
+  displayName String?  //if this does not exist then display name is username
+  postKarma Int @default(0)
+  commentKarma Int @default(0)
   photo String?
   comments Comment[]
   communities Community[]

@@ -1,6 +1,6 @@
 import React from "react";
 
-const DefaultPfp = ({ size, background, fill }) => {
+const DefaultPfp = ({ size, background, fill, borderRadius }) => {
   return (
     <svg
       viewBox='0 0 320 320'
@@ -11,6 +11,7 @@ const DefaultPfp = ({ size, background, fill }) => {
         background: background,
         borderRadius: "4px",
         fill: fill,
+        borderRadius: borderRadius || 0,
       }}
     >
       <g fill='inherit'>
