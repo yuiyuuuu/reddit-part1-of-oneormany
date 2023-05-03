@@ -133,8 +133,6 @@ const SingleCommunityPost = () => {
     }
   }
 
-  console.log(prevHref, "prev vv");
-
   //----------------HANDLING VOTES FUNCTIONS BELOW---------------------\\
 
   function handleUpvote() {

@@ -169,8 +169,6 @@ const Post = ({
     }
   }, []);
 
-  console.log(post);
-
   useEffect(() => {
     $(document).ready(() => {
       $(`.hov-user-${post?.id}`).mouseover(async () => {
