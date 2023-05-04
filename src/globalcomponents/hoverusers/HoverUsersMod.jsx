@@ -1,6 +1,7 @@
 import React from "react";
 
 import DefaultPfp from "../../components/users/svg/DefaultPfp";
+import UserModSvg from "./svg/UserModSvg";
 
 const HoverUsersMod = ({ huState }) => {
   return (
@@ -83,9 +84,14 @@ const HoverUsersMod = ({ huState }) => {
       </div>
 
       <div>
-        <div className='hum-modopt'>User Mod Log</div>
+        <div className='hum-modopt'>
+          <UserModSvg />
+          <span className='hum-qp'>User Mod Log</span>
+        </div>
 
-        <div className='hum-modopt'>Add Note</div>
+        <div className='hum-modopt'>
+          <span className='hum-qp'>Add Note</span>
+        </div>
 
         <div className='hum-modopt' style={{ borderBottom: "none" }}>
           Send modmail

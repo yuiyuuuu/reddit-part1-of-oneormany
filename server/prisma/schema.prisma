@@ -97,7 +97,7 @@ model User {
   postKarma Int @default(0)
   commentKarma Int @default(0)
   photo String?
-  bannerPhoto String?
+  // bannerPhoto String?
   comments Comment[]
   communities Community[]
   posts Post[] 
