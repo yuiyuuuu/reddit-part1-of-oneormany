@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { timeConvert } from "../../../../../requests/timeConvert";
 import { setScp } from "../../../../../store/scp/scpConditional";
 import "./cs.scss";
 import NoResults from "./NoResults";
@@ -8,18 +9,6 @@ import NoResults from "./NoResults";
 const CommentSearch = ({ commentResults, selectedPost, query }) => {
   const dispatch = useDispatch();
   const nav = useNavigate();
-
-  // const [query, setQuery] = useState("");
-
-  // useEffect(() => {
-  //   //only want the query to refresh is the popup is not active
-  //   if (scp !== null) return;
-  //   const q = new URLSearchParams(new URL(window.location.href).search).getAll(
-  //     "q"
-  //   )[0];
-
-  //   setQuery(q);
-  // }, [window.location.href]);
 
   return (
     <div>
@@ -84,7 +73,7 @@ const CommentSearch = ({ commentResults, selectedPost, query }) => {
 
                 <span className='cs-d'> · </span>
 
-                <span className='cs-t'>1 day ago</span>
+                <span className='cs-t'>{timeConvert(comment?.createdAt)}</span>
               </div>
               <div className='cs-resultbot'>
                 <div className='cs-body'>{comment.message}</div>

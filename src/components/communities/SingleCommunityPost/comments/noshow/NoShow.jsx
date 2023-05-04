@@ -2,11 +2,14 @@ import React, { useEffect } from "react";
 import ToggleIcon from "../svgs/ToggleIcon";
 
 import "./noshow.scss";
-import $ from "jquery";
+
+import { timeConvert } from "../../../../../requests/timeConvert";
 
 import gsap from "gsap";
 
 const NoShow = ({ comment, post, func, display, idv, top }) => {
+  const time = timeConvert(comment?.createdAt);
+
   useEffect(() => {
     if (!display) {
       gsap.fromTo(
@@ -74,7 +77,7 @@ const NoShow = ({ comment, post, func, display, idv, top }) => {
 
             <div className='dot-posts'>•</div>
 
-            <div className='comment-time'>1 day ago</div>
+            <div className='comment-time'>{time}</div>
           </div>
         </div>
       </div>

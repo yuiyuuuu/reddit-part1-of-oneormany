@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +13,7 @@ import { handleSetPrevHref } from "../../../store/users/prevHrefBeforeOverlay";
 import { dispatchSetHcState } from "../../../globalcomponents/hovercommunities/hovercommunitiesstate";
 import { dispatchSetHuState } from "../../../globalcomponents/hoverusers/hoverUserStates";
 import { makeGetRequest } from "../../../requests/helperFunction";
+import { timeConvert } from "../../../requests/timeConvert";
 
 import "./post.scss";
 
@@ -45,6 +46,8 @@ const Post = ({
   const shareOverlayState = useSelector((state) => state.shareOverlay);
   const threeState = useSelector((state) => state.threeDotOverlay);
   const hcState = useSelector((state) => state.hcState);
+
+  const [time, setTime] = useState(timeConvert(post.createdAt));
 
   //share overlay set
   function set() {
@@ -289,7 +292,7 @@ const Post = ({
           >
             {post.user?.name}
           </a>
-          <div className='post-topdesc'>5 hours ago</div>
+          <div className='post-topdesc'>{time}</div>
         </div>
 
         <div className='container-titleanddesc'>

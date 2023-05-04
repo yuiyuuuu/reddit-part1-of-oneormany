@@ -24,6 +24,7 @@ import {
 import { makePutRequest } from "../../../../requests/helperFunction";
 import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 import { dispatchSetCommentSearchQuery } from "../../../../store/comments/searchQuery";
+import { timeConvert } from "../../../../requests/timeConvert";
 
 import "./scpno.scss";
 
@@ -66,6 +67,8 @@ const SingleCommunityPostNotOverlay = () => {
   const shareOverlayState = useSelector((state) => state.shareOverlay);
   const lnState = useSelector((state) => state.lnState);
   const lnnlState = useSelector((state) => state.lnnl);
+
+  const time = timeConvert(selectedPost?.createdAt);
 
   const [themeBaseColorRgba, setThemeBaseColorRgba] = useState("");
 
@@ -631,7 +634,7 @@ const SingleCommunityPostNotOverlay = () => {
 
                 <div className='scp-y'>
                   <span>Posted by </span>
-                  <span className='scp-yp'>
+                  <span className='scp-yp' style={{ marginRight: "4px" }}>
                     <a
                       href={`/user/${selectedPost?.user?.name}`}
                       style={{ color: "rgb(120, 124, 126)" }}
@@ -639,7 +642,7 @@ const SingleCommunityPostNotOverlay = () => {
                       u/{selectedPost?.user?.name}
                     </a>
                   </span>
-                  <span> 5 hours ago</span>
+                  <span>{time}</span>
                 </div>
               </div>
 

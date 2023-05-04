@@ -3,9 +3,12 @@ import OverviewPostCommentList from "./OverviewPostCommentList";
 
 import "./ov.scss";
 import { useNavigate } from "react-router";
+import { timeConvert } from "../../../../../requests/timeConvert";
 
 const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
   const nav = useNavigate();
+
+  const time = timeConvert(object?.data?.createdAt);
 
   return (
     <div
@@ -54,7 +57,7 @@ const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
 
             <div className='ov-dot'>•</div>
 
-            <div className='ov-time'>1 day ago</div>
+            <div className='ov-time'>{time}</div>
           </div>
           <span className='ov-message'>{object.data?.message}</span>
 

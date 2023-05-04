@@ -12,6 +12,7 @@ import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay
 import { makeGetRequest } from "../../../../requests/helperFunction";
 import { dispatchSetHcState } from "../../../../globalcomponents/hovercommunities/hovercommunitiesstate";
 import { dispatchSetHuState } from "../../../../globalcomponents/hoverusers/hoverUserStates";
+import { timeConvert } from "../../../../requests/timeConvert";
 
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -36,6 +37,8 @@ const UserPostMap = ({
   const navigate = useNavigate();
 
   const authState = useSelector((state) => state.auth);
+
+  const time = timeConvert(post?.createdAt);
 
   const [showPostDetails, setShowPostDetails] = useState(false);
 
@@ -232,7 +235,7 @@ const UserPostMap = ({
                   </span>
                 </span>
                 &nbsp;
-                <span>1 day ago</span>
+                <span>{time}</span>
               </div>
 
               <div className='up-botrow'>

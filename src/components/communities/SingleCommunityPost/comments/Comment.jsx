@@ -36,6 +36,7 @@ import { setOverlayState } from "../../../../store/postoverlays/shareOverlay";
 import { setThreeState } from "../../../../store/postoverlays/threeDotOverlay";
 import { setOverlayStateSCP } from "../../../../store/postoverlays/shareOverlayScp";
 import { setThreeStateSCP } from "../../../../store/postoverlays/threeDotoverlaySCP";
+import { timeConvert } from "../../../../requests/timeConvert";
 
 const Comment = ({
   comment,
@@ -59,6 +60,8 @@ const Comment = ({
   const match = useMatch({
     path: "/r/:id/comments/:postid/comment/:commentid",
   });
+
+  const time = timeConvert(comment?.createdAt);
 
   const [show, setShow] = useState(true);
   const [showReply, setShowReply] = useState(false);
@@ -327,7 +330,7 @@ const Comment = ({
 
               <div className='dot-posts'>•</div>
 
-              <div className='comment-time'>1 day ago</div>
+              <div className='comment-time'>{time}</div>
             </div>
 
             <div className='comment-body' style={{ display: !show && "none" }}>

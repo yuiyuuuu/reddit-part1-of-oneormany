@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { setScp } from "../../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
+import { timeConvert } from "../../../../requests/timeConvert";
 
 import RemoveSvg from "../../../communities/SingleCommunityPost/scpsvgs/RemoveSvg";
 import SpamSvg from "../../../communities/SingleCommunityPost/scpsvgs/SpamSvg";
@@ -14,6 +15,8 @@ import LockSvg from "./svg/LockSvg";
 const UserCommentMapCh = ({ item, first, post, auth, last }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const time = timeConvert(item?.createdAt);
 
   return (
     <div
@@ -51,7 +54,7 @@ const UserCommentMapCh = ({ item, first, post, auth, last }) => {
 
             <div className='dot-posts'>•</div>
 
-            <div className='ucmapch-f12fw300c7c'>12 days ago</div>
+            <div className='ucmapch-f12fw300c7c'>{time}</div>
           </div>
 
           <pre style={{ padding: "2px 0" }}>{item?.message}</pre>

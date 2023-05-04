@@ -32,8 +32,9 @@ import { setOverlayStateSCP } from "../../../store/postoverlays/shareOverlayScp"
 import { setThreeStateSCP } from "../../../store/postoverlays/threeDotoverlaySCP";
 import { makePutRequest } from "../../../requests/helperFunction";
 import { handleSetPrevHref } from "../../../store/users/prevHrefBeforeOverlay";
+import { timeConvert } from "../../../requests/timeConvert";
 
-import $ from "jquery";
+import $, { post } from "jquery";
 
 import UpVoteSvg from "../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -80,6 +81,9 @@ const SingleCommunityPost = () => {
   const shareOverlayState = useSelector((state) => state.shareOverlayScp);
   const threeState = useSelector((state) => state.threeDotOverlaySCP);
   const prevHref = useSelector((state) => state.prevHref);
+
+  const time = timeConvert(selectedPost?.createdAt);
+  console.log(new Date(selectedPost?.createdAt).getTime());
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
@@ -776,7 +780,7 @@ const SingleCommunityPost = () => {
 
                   <div className='scp-y'>
                     <span>Posted by </span>
-                    <span className='scp-yp'>
+                    <span className='scp-yp' style={{ marginRight: "4px" }}>
                       <a
                         href={`/user/${selectedPost?.user?.name}`}
                         style={{ color: "rgb(120, 124, 126)" }}
@@ -784,7 +788,7 @@ const SingleCommunityPost = () => {
                         u/{selectedPost?.user?.name}
                       </a>
                     </span>
-                    <span> 5 hours ago</span>
+                    <span>{time}</span>
                   </div>
                 </div>
 
