@@ -7,7 +7,7 @@ const OverviewMap = ({ item, authState }) => {
   if (
     authState?.hiddenPosts
       ?.map((v) => v.id)
-      .includes(item.find((v) => v.type === "post").data.id)
+      .includes(item.find((v) => v.type === "post")?.data?.id)
   ) {
     return;
   }

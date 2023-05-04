@@ -1,14 +1,31 @@
-import React from "react";
-import OverviewPostCommentList from "./OverviewPostCommentList";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 import "./ov.scss";
-import { useNavigate } from "react-router";
+
 import { timeConvert } from "../../../../../requests/timeConvert";
+import { hoverUserInit } from "../../../../../requests/hoverInformation/hoverUserInitFunction";
+
+import $ from "jquery";
+
+import OverviewPostCommentList from "./OverviewPostCommentList";
 
 const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
+  const dispatch = useDispatch();
   const nav = useNavigate();
 
   const time = timeConvert(object?.data?.createdAt);
+
+  useEffect(() => {
+    $(document).ready(() => {
+      hoverUserInit(
+        dispatch,
+        `.hov-user-${object?.data?.post?.user?.id}-ovcommentch`,
+        object?.data?.post
+      );
+    });
+  }, []);
 
   return (
     <div
@@ -32,7 +49,7 @@ const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
           <div className='ov-row'>
             <div
               onClick={() => nav(`/user/${object.data.user.name}`)}
-              className='ov-username'
+              className={`ov-username hov-user-${object?.data?.post?.user?.id}-ovcommentch`}
             >
               {object.data.user.name}
             </div>

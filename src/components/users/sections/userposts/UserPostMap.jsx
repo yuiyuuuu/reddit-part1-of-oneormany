@@ -9,10 +9,9 @@ import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import { votesUsers } from "../../../../store/users/users";
 import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
-import { makeGetRequest } from "../../../../requests/helperFunction";
-import { dispatchSetHcState } from "../../../../globalcomponents/hovercommunities/hovercommunitiesstate";
-import { dispatchSetHuState } from "../../../../globalcomponents/hoverusers/hoverUserStates";
 import { timeConvert } from "../../../../requests/timeConvert";
+import { hoverCommunitiesInitFunction } from "../../../../requests/hoverInformation/hoverCommunitiesInitFunction";
+import { hoverUserInit } from "../../../../requests/hoverInformation/hoverUserInitFunction";
 
 import UpVoteSvg from "../../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -80,50 +79,13 @@ const UserPostMap = ({
 
   useEffect(() => {
     $(document).ready(() => {
-      $(`.community-hov-${post?.id}`).mouseover(async () => {
-        const coordinates = $(
-          `.community-hov-${post?.id}`
-        )[0].getBoundingClientRect();
+      hoverCommunitiesInitFunction(
+        dispatch,
+        `.community-hov-${post?.id}`,
+        post
+      );
 
-        await makeGetRequest(
-          `communities/fetchbyid/${post?.community?.id}`
-        ).then((res) => {
-          dispatch(
-            dispatchSetHcState({
-              display: true,
-              top: coordinates.top + $(`.community-hov-${post?.id}`).height(),
-              left: coordinates.left,
-              community: res,
-              id: post?.id,
-            })
-          );
-        });
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    $(document).ready(() => {
-      $(`.hov-user-${post?.id}`).mouseover(async () => {
-        const coordinates = $(
-          `.hov-user-${post?.id}`
-        )[0].getBoundingClientRect();
-
-        await makeGetRequest(`users/fetchbyid/${post?.user?.id}`).then(
-          (res) => {
-            dispatch(
-              dispatchSetHuState({
-                display: true,
-                top: coordinates.top + $(`.hov-user-${post?.id}`).height(),
-                left: coordinates.left,
-                community: post?.community,
-                user: res,
-                id: post.id,
-              })
-            );
-          }
-        );
-      });
+      hoverUserInit(dispatch, `.hov-user-${post?.id}`, post);
     });
   }, []);
 

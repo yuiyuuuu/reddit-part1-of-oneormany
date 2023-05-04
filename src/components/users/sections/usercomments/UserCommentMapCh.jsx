@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
@@ -6,6 +6,7 @@ import { setScp } from "../../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
 import { timeConvert } from "../../../../requests/timeConvert";
+import { hoverUserInit } from "../../../../requests/hoverInformation/hoverUserInitFunction";
 
 import RemoveSvg from "../../../communities/SingleCommunityPost/scpsvgs/RemoveSvg";
 import SpamSvg from "../../../communities/SingleCommunityPost/scpsvgs/SpamSvg";
@@ -17,6 +18,10 @@ const UserCommentMapCh = ({ item, first, post, auth, last }) => {
   const navigate = useNavigate();
 
   const time = timeConvert(item?.createdAt);
+
+  useEffect(() => {
+    hoverUserInit(dispatch, `.hov-user-${item.id}-ucmch`, item.post);
+  }, []);
 
   return (
     <div
@@ -38,7 +43,9 @@ const UserCommentMapCh = ({ item, first, post, auth, last }) => {
         {item?.parentId && <div className='ucmapch-dotted' />}
         <div className='ucmapch-right'>
           <div className='ucmapch-top'>
-            <div className='ucmapch-f12fw300co1c1c1c uc-dechov'>
+            <div
+              className={`ucmapch-f12fw300co1c1c1c uc-dechov hov-user-${item.id}-ucmch`}
+            >
               {item?.user?.name}
             </div>
             {post?.user?.id === item?.user?.id && (

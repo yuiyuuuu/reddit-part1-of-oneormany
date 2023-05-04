@@ -83,7 +83,6 @@ const SingleCommunityPost = () => {
   const prevHref = useSelector((state) => state.prevHref);
 
   const time = timeConvert(selectedPost?.createdAt);
-  console.log(new Date(selectedPost?.createdAt).getTime());
 
   const [commentInput, setCommentInput] = useState("");
   const [commentImage, setCommentImage] = useState(null);
@@ -771,7 +770,9 @@ const SingleCommunityPost = () => {
                       )}
                     </div>
 
-                    <div className='scp-comanchor'>
+                    <div
+                      className={`scp-comanchor community-hov-${selectedPost?.id}-scp`}
+                    >
                       {selectedPost?.community?.tag}
                     </div>
                   </div>
@@ -780,7 +781,10 @@ const SingleCommunityPost = () => {
 
                   <div className='scp-y'>
                     <span>Posted by </span>
-                    <span className='scp-yp' style={{ marginRight: "4px" }}>
+                    <span
+                      className={`scp-yp hov-user-${selectedPost?.id}-scp`}
+                      style={{ marginRight: "4px" }}
+                    >
                       <a
                         href={`/user/${selectedPost?.user?.name}`}
                         style={{ color: "rgb(120, 124, 126)" }}

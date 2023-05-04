@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { dispatchSetHuState } from "./hoverUserStates";
-
-import $ from "jquery";
+import {
+  initUserHoverOut,
+  removeHoverUser,
+} from "../../requests/hoverInformation/hoverUserInitFunction";
 
 import HoverUsersMod from "./HoverUsersMod";
 import HoverUsersNoMod from "./HoverUsersNoMod";
@@ -17,22 +18,10 @@ const HoverUsers = () => {
   const huState = useSelector((state) => state.huState);
 
   useEffect(() => {
-    let timer = "";
-
-    $(`.hov-user-${huState?.id}, .hu-parent`)
-      .hover(function (e) {
-        if (timer) clearTimeout(timer);
-      })
-      .mouseleave(function (e) {
-        timer = setTimeout(function () {
-          dispatch(dispatchSetHuState({ display: false }));
-        }, 50);
-      });
-
+    initUserHoverOut(dispatch, huState?.class);
     return () => {
       //removes previous mouseleave event listeners
-      $(`.hov-user-${huState?.id}, .hu-parent`).off("mouseleave");
-      $(`.hov-user-${huState?.id}, .hu-parent`).off("hover");
+      removeHoverUser(huState?.class);
     };
   }, [huState]);
 

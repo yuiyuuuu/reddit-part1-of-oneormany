@@ -1,36 +1,24 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { dispatchSetHcState } from "./hovercommunitiesstate";
+import {
+  initCommunitiesHoverOut,
+  removeHoverCommunities,
+} from "../../requests/hoverInformation/hoverCommunitiesInitFunction";
 
 import DefaultCommunitiesIcon from "../../components/communities/communitiessvg/DefaultCommunitiesIcon";
-
-import $ from "jquery";
 
 import "./hc.scss";
 
 const HoverCommunities = () => {
   const dispatch = useDispatch();
-
   const hcState = useSelector((state) => state.hcState);
 
   useEffect(() => {
-    let timer = "";
-
-    $(`.community-hov-${hcState?.id}, .hc-parent`)
-      .hover(function (e) {
-        if (timer) clearTimeout(timer);
-      })
-      .mouseleave(function (e) {
-        timer = setTimeout(function () {
-          dispatch(dispatchSetHcState({ display: false }));
-        }, 50);
-      });
-
+    initCommunitiesHoverOut(dispatch, hcState?.class);
     return () => {
       //removes previous mouseleave event listeners
-      $(`.community-hov-${hcState?.id}, .hc-parent`).off("mouseleave");
-      $(`.community-hov-${hcState?.id}, .hc-parent`).off("hover");
+      removeHoverCommunities(hcState?.class);
     };
   }, [hcState]);
 

@@ -6,6 +6,8 @@ import { handleRecent } from "../../../../requests/handleRecent";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import { setScp } from "../../../../store/scp/scpConditional";
 import { sorting } from "../../../../requests/sortingfunction";
+import { hoverUserInit } from "../../../../requests/hoverInformation/hoverUserInitFunction";
+import { hoverCommunitiesInitFunction } from "../../../../requests/hoverInformation/hoverCommunitiesInitFunction";
 
 import CommentIconOverview from "../overview/svg/CommentIconOverview";
 import UserCommentMapCh from "./UserCommentMapCh";
@@ -22,6 +24,17 @@ const UserCommentsMap = ({ item, selectedUser }) => {
     setPost(item.find((v) => v.type));
   }, [window.location.href]);
 
+  useEffect(() => {
+    if (!post?.id) return;
+    hoverUserInit(dispatch, `.hov-user-${post.id}-ucmch`, post);
+    hoverUserInit(dispatch, `.hov-user-${post.id}-ucmch2`, post);
+    hoverCommunitiesInitFunction(
+      dispatch,
+      `.hov-communities-${post?.community?.id}-ucmch`,
+      post
+    );
+  }, [post]);
+
   return (
     <div className='uc-mapparent'>
       <div
@@ -35,7 +48,7 @@ const UserCommentsMap = ({ item, selectedUser }) => {
       >
         <CommentIconOverview idv={post?.id} />
         <div
-          className='ucf12fw300 uc0079d3 uchoverun'
+          className={`ucf12fw300 uc0079d3 uchoverun hov-user-${post.id}-ucmch`}
           onClick={(e) => {
             e.stopPropagation();
             window.location.href = `/user/${selectedUser?.name}`;
@@ -46,7 +59,7 @@ const UserCommentsMap = ({ item, selectedUser }) => {
         &nbsp; commented on {post?.title}&nbsp;
         <div className='dot-posts'>•</div>
         <div
-          className='uc-com uchoverun'
+          className={`uc-com uchoverun hov-communities-${post?.community?.id}-ucmch`}
           onClick={(e) => {
             e.stopPropagation();
             window.location.href = `/r/${post?.community?.name}`;
@@ -57,7 +70,7 @@ const UserCommentsMap = ({ item, selectedUser }) => {
         <div className='dot-posts'>•</div>
         Posted by &nbsp;
         <span
-          className='uchoverun'
+          className={`uchoverun hov-user-${post.id}-ucmch2`}
           onClick={(e) => {
             e.stopPropagation();
             window.location.href = `/user/${post?.user?.name}`;

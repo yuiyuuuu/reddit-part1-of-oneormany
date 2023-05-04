@@ -10,10 +10,9 @@ import { setThreeState } from "../../../store/postoverlays/threeDotOverlay";
 import { handleRecent } from "../../../requests/handleRecent";
 import { handleSaved } from "../../../requests/handleSavedPosts";
 import { handleSetPrevHref } from "../../../store/users/prevHrefBeforeOverlay";
-import { dispatchSetHcState } from "../../../globalcomponents/hovercommunities/hovercommunitiesstate";
-import { dispatchSetHuState } from "../../../globalcomponents/hoverusers/hoverUserStates";
-import { makeGetRequest } from "../../../requests/helperFunction";
 import { timeConvert } from "../../../requests/timeConvert";
+import { hoverCommunitiesInitFunction } from "../../../requests/hoverInformation/hoverCommunitiesInitFunction";
+import { hoverUserInit } from "../../../requests/hoverInformation/hoverUserInitFunction";
 
 import "./post.scss";
 
@@ -47,7 +46,7 @@ const Post = ({
   const threeState = useSelector((state) => state.threeDotOverlay);
   const hcState = useSelector((state) => state.hcState);
 
-  const [time, setTime] = useState(timeConvert(post.createdAt));
+  const time = timeConvert(post.createdAt);
 
   //share overlay set
   function set() {
@@ -120,31 +119,6 @@ const Post = ({
   }
 
   useEffect(() => {
-    $(document).ready(() => {
-      $(`.community-hov-${post?.id}`).mouseover(async () => {
-        const coordinates = $(
-          `.community-hov-${post?.id}`
-        )[0].getBoundingClientRect();
-
-        const community = await makeGetRequest(
-          `communities/fetchbyid/${post?.community?.id}`
-        ).then((res) => {
-          console.log(res, "response");
-          dispatch(
-            dispatchSetHcState({
-              display: true,
-              top: coordinates.top + $(`.community-hov-${post?.id}`).height(),
-              left: coordinates.left,
-              community: res,
-              id: post?.id,
-            })
-          );
-        });
-      });
-    });
-  }, []);
-
-  useEffect(() => {
     //function to prevent event bubbling
     $(document).ready((e) => {
       $(`#single-container${post.id}`).click(function () {
@@ -174,27 +148,13 @@ const Post = ({
 
   useEffect(() => {
     $(document).ready(() => {
-      $(`.hov-user-${post?.id}`).mouseover(async () => {
-        const coordinates = $(
-          `.hov-user-${post?.id}`
-        )[0].getBoundingClientRect();
+      hoverCommunitiesInitFunction(
+        dispatch,
+        `.community-hov-${post?.id}`,
+        post
+      );
 
-        await makeGetRequest(`users/fetchbyid/${post?.user?.id}`).then(
-          (res) => {
-            console.log(res, "response");
-            dispatch(
-              dispatchSetHuState({
-                display: true,
-                top: coordinates.top + $(`.hov-user-${post?.id}`).height(),
-                left: coordinates.left,
-                community: post?.community,
-                user: res,
-                id: post.id,
-              })
-            );
-          }
-        );
-      });
+      hoverUserInit(dispatch, `.hov-user-${post?.id}`, post);
     });
   }, []);
 

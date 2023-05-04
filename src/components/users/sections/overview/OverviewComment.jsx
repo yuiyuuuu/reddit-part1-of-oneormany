@@ -5,6 +5,10 @@ import { useNavigate } from "react-router";
 import { setScp } from "../../../../store/scp/scpConditional";
 import { setSelectedPost } from "../../../../store/scp/selectedPost";
 import { handleSetPrevHref } from "../../../../store/users/prevHrefBeforeOverlay";
+import { hoverUserInit } from "../../../../requests/hoverInformation/hoverUserInitFunction";
+import { hoverCommunitiesInitFunction } from "../../../../requests/hoverInformation/hoverCommunitiesInitFunction";
+
+import $ from "jquery";
 
 import OverviewPostCommentList from "./overviewcomments/OverviewPostCommentList";
 
@@ -144,6 +148,22 @@ const OverviewComment = ({ item }) => {
     }
   }, [selectedUser]);
 
+  useEffect(() => {
+    $(document).ready(() => {
+      hoverUserInit(
+        dispatch,
+        `.hov-user-${item[0]?.data?.post?.user?.id}-ovcomment`,
+        item[0].data.post
+      );
+
+      hoverCommunitiesInitFunction(
+        dispatch,
+        `.hov-community-${item[0]?.data?.id}-ovcomment`,
+        item[0].data.post
+      );
+    });
+  }, []);
+
   return (
     <div style={{ marginBottom: "10px" }}>
       <div className='overviewco-parent'>
@@ -177,18 +197,18 @@ const OverviewComment = ({ item }) => {
             </div>
             <div className='dot-posts'>•</div>
             <div
-              className='overviewco-com'
+              className={`overviewco-com hov-community-${item[0]?.data?.id}-ovcomment`}
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/r/${item[0].data.post.community.name}`);
               }}
             >
-              r/{item[0].data.post.community.name}
+              r/{item[0]?.data?.post.community.name}
             </div>
             <div className='dot-posts'>•</div>
             Posted by &nbsp;
             <div
-              className='overviewco-u'
+              className={`overviewco-u hov-user-${item[0]?.data?.post?.user?.id}-ovcomment`}
               onClick={(e) => {
                 e.stopPropagation();
                 window.location.href = `/user/${item[0].data.post.user.name}`;
