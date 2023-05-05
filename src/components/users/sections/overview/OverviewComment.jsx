@@ -156,6 +156,13 @@ const OverviewComment = ({ item }) => {
         item[0].data.post
       );
 
+      hoverUserInit(
+        dispatch,
+        `.hov-user-${item[0]?.data?.post?.user?.id}-ovcomment2`,
+        item[0].data.post,
+        item[0].data.user.id
+      );
+
       hoverCommunitiesInitFunction(
         dispatch,
         `.hov-community-${item[0]?.data?.id}-ovcomment`,
@@ -183,15 +190,15 @@ const OverviewComment = ({ item }) => {
 
           <div className='overviewco-postinner'>
             <div
-              className='overviewco-a'
+              className={`overviewco-a hov-user-${item[0]?.data?.post?.user?.id}-ovcomment2`}
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/user/${item[0].data.user.name}`);
               }}
             >
-              {item[0].data.user.name}&nbsp;
+              {item[0].data.user.name}
             </div>
-            commented on&nbsp;
+            &nbsp;commented on&nbsp;
             <div className='overviewco-posttitle'>
               {item[0].data.post.title}
             </div>

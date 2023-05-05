@@ -1,6 +1,7 @@
 import $ from "jquery";
 import { makeGetRequest } from "../helperFunction";
 import { dispatchSetHcState } from "../../globalcomponents/hovercommunities/hovercommunitiesstate";
+import { dispatchSetHuState } from "../../globalcomponents/hoverusers/hoverUserStates";
 
 export function hoverCommunitiesInitFunction(
   dispatch,
@@ -8,6 +9,9 @@ export function hoverCommunitiesInitFunction(
   postOrComment
 ) {
   $(userClass).mouseover(async () => {
+    //sometimes both user and community popup will show at the same time, this should prevent it
+    dispatch(dispatchSetHuState({ display: false }));
+
     const coordinates = $(userClass)[0].getBoundingClientRect();
 
     await makeGetRequest(
@@ -16,7 +20,7 @@ export function hoverCommunitiesInitFunction(
       dispatch(
         dispatchSetHcState({
           display: true,
-          top: coordinates.top + $(userClass).height(),
+          top: coordinates.top + $(userClass).height() + window.scrollY,
           left: coordinates.left,
           community: res,
           id: postOrComment?.id,
