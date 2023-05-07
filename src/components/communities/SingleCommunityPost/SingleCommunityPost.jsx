@@ -34,7 +34,7 @@ import { makePutRequest } from "../../../requests/helperFunction";
 import { handleSetPrevHref } from "../../../store/users/prevHrefBeforeOverlay";
 import { timeConvert } from "../../../requests/timeConvert";
 
-import $, { post } from "jquery";
+import $ from "jquery";
 
 import UpVoteSvg from "../../home/posts/postssvgs/arrowicons/UpVoteSvg";
 import DownVoteSvg from "../../home/posts/postssvgs/arrowicons/DownVoteSvg";
@@ -305,11 +305,12 @@ const SingleCommunityPost = () => {
         scroll: scrollpos,
       })
     );
+
     dispatch(setThreeStateSCP({ display: false }));
   }
 
   function handleTDotClick() {
-    const scrollpos = window.scrollY;
+    const scrollpos = $(".scp-parent").scrollTop();
 
     if (threeState.id === selectedPost.id && threeState.display) {
       dispatch(setThreeStateSCP({ display: false }));
@@ -317,8 +318,10 @@ const SingleCommunityPost = () => {
     }
 
     const v = document
-      .getElementById(`threedot-${selectedPost.id}`)
+      .getElementById(`threedot-${selectedPost?.id}`)
       .getBoundingClientRect();
+
+    console.log(v.top + v.height - 48 + scrollpos);
 
     dispatch(
       setThreeStateSCP({
@@ -995,8 +998,10 @@ const SingleCommunityPost = () => {
           setShowCommentSortOverlay={setShowCommentSortOverlay}
         />
 
-        <ShareOverlaySCP set={setOverlayStateSCP} />
-        <ThreeDotOverlaySCP />
+        {shareOverlayState?.display && (
+          <ShareOverlaySCP set={setOverlayStateSCP} />
+        )}
+        {threeState?.display && <ThreeDotOverlaySCP />}
       </div>
     </div>
   );
