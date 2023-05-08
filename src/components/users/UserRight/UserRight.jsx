@@ -17,12 +17,16 @@ import CakeDayIcon from "../svg/CakeDayIcon";
 import ModeratorCommunities from "./ModeratorCommunities";
 import FollowersIcon from "../svg/FollowersIcon";
 
+//asldkfjasdklffmjkldsj
+
 const UserRight = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const selectedUser = useSelector((state) => state.selectedUser);
   const authState = useSelector((state) => state.auth);
+
+  console.log(selectedUser);
 
   const [showMoreOptions, setMoreOptions] = useState(false);
 

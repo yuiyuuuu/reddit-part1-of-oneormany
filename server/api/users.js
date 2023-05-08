@@ -1,4 +1,7 @@
 const router = require("express").Router();
+const {
+  calculateKarma,
+} = require("../../src/requests/karma/karmaFunctions.js");
 const prisma = require("../prismaClient.js");
 
 module.exports = router;
@@ -867,6 +870,19 @@ router.put("/vote", async (req, res, next) => {
   try {
     const which = req.body.which;
 
+    const a = prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+      include: {
+        upvotes: true,
+        downvotes: true,
+      },
+    });
+
+    //we need this previous karma so we can subtract it later and find the difference
+    const previousKarma = await calculateKarma(a.upvotes.length);
+
     if (which === "up") {
       await prisma.post.update({
         where: {
@@ -879,6 +895,11 @@ router.put("/vote", async (req, res, next) => {
           downvotes: {
             disconnect: [{ id: req.body.userid }],
           },
+        },
+
+        include: {
+          user: true,
+          upvotes: true,
         },
       });
     } else if (which === "down") {
@@ -921,7 +942,7 @@ router.put("/vote", async (req, res, next) => {
 
     const final = await prisma.user.findUnique({
       where: {
-        id: req.body.userid,
+        id: req.body.userToSend,
       },
       include: {
         posts: {
@@ -1005,6 +1026,42 @@ router.put("/vote", async (req, res, next) => {
         },
         downvotes: true,
         upvotes: true,
+      },
+    });
+
+    //update karma
+
+    const findPost = await prisma.post.findUnique({
+      where: {
+        id: req.body.postid,
+      },
+      include: {
+        upvotes: true,
+        downvotes: true,
+        user: true,
+      },
+    });
+
+    const karmaDifference =
+      (await calculateKarma(
+        findPost.upvotes.length - findPost.downvotes.length
+      )) - previousKarma;
+
+    console.log(karmaDifference);
+    //find user so we can get karma, that way we can add on the difference
+    const postUser = await prisma.user.findUnique({
+      where: {
+        id: findPost.user.id,
+      },
+    });
+
+    //update the user by adding on the difference onto the total karma of the user
+    await prisma.user.update({
+      where: {
+        id: findPost.user.id,
+      },
+      data: {
+        postKarma: postUser.postKarma + karmaDifference,
       },
     });
 

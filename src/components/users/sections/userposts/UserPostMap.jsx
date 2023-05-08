@@ -45,6 +45,7 @@ const UserPostMap = ({
     const obj = {
       userid: authState.id,
       postid: post.id,
+      userToSend: selectedUser?.id,
     };
 
     dispatch(votesUsers(obj, "up"));
@@ -54,6 +55,7 @@ const UserPostMap = ({
     const obj = {
       userid: authState.id,
       postid: post.id,
+      userToSend: selectedUser?.id,
     };
 
     dispatch(votesUsers(obj, "down"));
@@ -63,6 +65,7 @@ const UserPostMap = ({
     const obj = {
       userid: authState.id,
       postid: post.id,
+      userToSend: selectedUser?.id,
     };
 
     dispatch(votesUsers(obj, "up-remove"));
@@ -72,6 +75,7 @@ const UserPostMap = ({
     const obj = {
       userid: authState.id,
       postid: post.id,
+      userToSend: selectedUser?.id,
     };
 
     dispatch(votesUsers(obj, "down-remove"));

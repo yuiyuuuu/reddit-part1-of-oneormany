@@ -321,8 +321,6 @@ const SingleCommunityPost = () => {
       .getElementById(`threedot-${selectedPost?.id}`)
       .getBoundingClientRect();
 
-    console.log(v.top + v.height - 48 + scrollpos);
-
     dispatch(
       setThreeStateSCP({
         display: true,
