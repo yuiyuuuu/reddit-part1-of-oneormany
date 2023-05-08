@@ -43,7 +43,7 @@ This application was built through reverse engineering, only using information t
 
 Below will be a list of functionalities and how each one works in my application.
 
-# Comments
+### Comments
 
 - All comments has a parentId. If a comment's parentId is null, it means it is a root comment.
 - Sort all comments for a post/query into an object. The keys will be parentIds and their respective values will the children comments.
@@ -51,9 +51,9 @@ Below will be a list of functionalities and how each one works in my application
 - This solution is very different than Reddit's and is branched from WedDevSimplified's nested comment Youtube video, but is still very different in almost every aspect.
 - Link to the video: https://www.youtube.com/watch?v=lyNetvEfvT0&t=2703s
 
-# Karma
+### Karma
 
-- (8.27 _ 103 _ votes) / (votes + 8.52 \* 103) is the function. Votes is the # of upvotes - # of downvotes
+- (8.27 \* 103 \* votes) / (votes + 8.52 \* 103) is the function. Votes is the # of upvotes - # of downvotes
 - When a user votes, subtract the previous amount of karma gained from the post/comment from the user's karma, then recalculate karma based on the vote (up, down, remove up, remove down) and then add that onto the user's karma.
 
 ## Setup :rocket:
