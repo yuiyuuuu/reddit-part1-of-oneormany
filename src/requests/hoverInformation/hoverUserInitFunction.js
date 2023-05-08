@@ -7,26 +7,32 @@ import { dispatchSetHcState } from "../../globalcomponents/hovercommunities/hove
 
 export function hoverUserInit(dispatch, userClass, postOrComment, userid) {
   $(userClass).mouseover(async () => {
-    //sometimes both user and community popup will show at the same time, this should prevent it
-    dispatch(dispatchSetHcState({ display: false }));
+    setTimeout(async () => {
+      //sometimes both user and community popup will show at the same time, this should prevent it
+      dispatch(dispatchSetHcState({ display: false }));
 
-    const coordinates = $(userClass)[0].getBoundingClientRect();
+      const coordinates = $(userClass)[0].getBoundingClientRect();
 
-    await makeGetRequest(
-      `users/fetchbyid/${userid ? userid : postOrComment?.user?.id}`
-    ).then((res) => {
-      dispatch(
-        dispatchSetHuState({
-          display: true,
-          top: coordinates.top + $(userClass).height() + window.scrollY,
-          left: coordinates.left,
-          community: postOrComment?.community,
-          user: res,
-          id: postOrComment.id,
-          class: userClass,
-        })
-      );
-    });
+      await makeGetRequest(
+        `users/fetchbyid/${userid ? userid : postOrComment?.user?.id}`
+      ).then((res) => {
+        const isHovered = $(userClass).is(":hover");
+
+        if (!isHovered) return;
+
+        dispatch(
+          dispatchSetHuState({
+            display: true,
+            top: coordinates.top + $(userClass).height() + window.scrollY,
+            left: coordinates.left,
+            community: postOrComment?.community,
+            user: res,
+            id: postOrComment.id,
+            class: userClass,
+          })
+        );
+      });
+    }, 500);
   });
 }
 

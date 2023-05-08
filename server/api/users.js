@@ -870,7 +870,7 @@ router.put("/vote", async (req, res, next) => {
   try {
     const which = req.body.which;
 
-    const a = prisma.post.findUnique({
+    const a = await prisma.post.findUnique({
       where: {
         id: req.body.postid,
       },
@@ -881,7 +881,9 @@ router.put("/vote", async (req, res, next) => {
     });
 
     //we need this previous karma so we can subtract it later and find the difference
-    const previousKarma = await calculateKarma(a.upvotes.length);
+    const previousKarma = await calculateKarma(
+      a.upvotes.length - a.downvotes.length
+    );
 
     if (which === "up") {
       await prisma.post.update({
@@ -1030,7 +1032,6 @@ router.put("/vote", async (req, res, next) => {
     });
 
     //update karma
-
     const findPost = await prisma.post.findUnique({
       where: {
         id: req.body.postid,
@@ -1042,12 +1043,10 @@ router.put("/vote", async (req, res, next) => {
       },
     });
 
-    const karmaDifference =
-      (await calculateKarma(
-        findPost.upvotes.length - findPost.downvotes.length
-      )) - previousKarma;
+    const currentKarma = await calculateKarma(
+      findPost.upvotes.length - findPost.downvotes.length
+    );
 
-    console.log(karmaDifference);
     //find user so we can get karma, that way we can add on the difference
     const postUser = await prisma.user.findUnique({
       where: {
@@ -1061,7 +1060,7 @@ router.put("/vote", async (req, res, next) => {
         id: findPost.user.id,
       },
       data: {
-        postKarma: postUser.postKarma + karmaDifference,
+        postKarma: postUser.postKarma - previousKarma + currentKarma,
       },
     });
 

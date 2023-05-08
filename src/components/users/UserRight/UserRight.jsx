@@ -26,8 +26,6 @@ const UserRight = () => {
   const selectedUser = useSelector((state) => state.selectedUser);
   const authState = useSelector((state) => state.auth);
 
-  console.log(selectedUser);
-
   const [showMoreOptions, setMoreOptions] = useState(false);
 
   function handleFollowUser() {
