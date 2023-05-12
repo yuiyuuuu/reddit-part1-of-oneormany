@@ -46,9 +46,9 @@ Below will be a list of functionalities and how each one works in my application
 ### Comments
 
 - All comments has a parentId. If a comment's parentId is null, it means it is a root comment.
-- Sort all comments for a post/query into an object. The keys will be parentIds and their respective values will the children comments.
+- Sort all comments for a post/query into an object. The keys will be parentIds and their respective values will be the children comments.
 - Recursively call the CommentList and Comment component. In the Comment component, we will check if the current comment's id is in the object. If it is, that means the comment has children comment(s), so we will call CommentList again.
-- This solution is very different than Reddit's and is branched from WedDevSimplified's nested comment Youtube video, but is still very different in almost every aspect.
+- This solution is very different than Reddit's and is branched from WedDevSimplified's nested comment Youtube video, but has the exact same functionality.
 - Link to the video: https://www.youtube.com/watch?v=lyNetvEfvT0&t=2703s
 
 ### Karma

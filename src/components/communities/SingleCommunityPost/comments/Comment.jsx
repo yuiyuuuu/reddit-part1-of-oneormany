@@ -37,6 +37,7 @@ import { setThreeState } from "../../../../store/postoverlays/threeDotOverlay";
 import { setOverlayStateSCP } from "../../../../store/postoverlays/shareOverlayScp";
 import { setThreeStateSCP } from "../../../../store/postoverlays/threeDotoverlaySCP";
 import { timeConvert } from "../../../../requests/timeConvert";
+import { hoverUserInit } from "../../../../requests/hoverInformation/hoverUserInitFunction";
 
 const Comment = ({
   comment,
@@ -275,6 +276,10 @@ const Comment = ({
       );
   }, [commentsMap]);
 
+  useEffect(() => {
+    hoverUserInit(dispatch, `.hover-users-${comment?.id}-comment`, comment);
+  }, []);
+
   return (
     <div>
       <div id={comment.id}>
@@ -315,7 +320,10 @@ const Comment = ({
 
           <div className='comment-right'>
             <div className='comment-username' id={`username-${comment?.id}`}>
-              <a href={`/user/${comment.user?.name}`} className='comment-u'>
+              <a
+                href={`/user/${comment.user?.name}`}
+                className={`comment-u hover-users-${comment?.id}-comment`}
+              >
                 {comment.user?.name}
               </a>
               <span

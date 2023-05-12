@@ -58,6 +58,8 @@ import SortCommentsListPopup from "./sortcomments/SortCommentsListPopup";
 import CommentSearch from "./comments/searchcomponent/CommentSearch";
 import ShareOverlaySCP from "./overlay/ShareOverlaySCP";
 import ThreeDotOverlaySCP from "./overlay/ThreeDotOverlaySCP";
+import { hoverUserInit } from "../../../requests/hoverInformation/hoverUserInitFunction";
+import { hoverCommunitiesInitFunction } from "../../../requests/hoverInformation/hoverCommunitiesInitFunction";
 
 const SingleCommunityPost = () => {
   const params = useParams();
@@ -583,10 +585,21 @@ const SingleCommunityPost = () => {
   }, []);
 
   useEffect(() => {
+    if (!selectedPost?.id || !authState?.id) return;
+
     makePutRequest("users/history", {
       userid: authState?.id,
       postid: selectedPost?.id,
     });
+  }, [authState, selectedPost]);
+
+  useEffect(() => {
+    hoverUserInit(dispatch, `.hov-user-${selectedPost?.id}-scp`, selectedPost);
+    hoverCommunitiesInitFunction(
+      dispatch,
+      `.community-hov-${selectedPost?.id}-scp`,
+      selectedPost
+    );
   }, []);
 
   return (
@@ -878,42 +891,51 @@ const SingleCommunityPost = () => {
                 </div>
 
                 <div className='scp-commentparent'>
-                  {!commentSearchActive && (
+                  {!commentSearchActive && authState?.id && (
                     <div style={{ marginBottom: "4px" }}>
                       Comment as{" "}
-                      <span className='scp-blue'>u/{authState?.name}</span>
+                      <span
+                        className='scp-blue'
+                        onClick={() =>
+                          (window.location.href = `/user/${authState?.name}`)
+                        }
+                      >
+                        u/{authState?.name}
+                      </span>
                     </div>
                   )}
 
-                  <div
-                    className='scp-inputparent'
-                    style={{ display: commentSearchActive && "none" }}
-                  >
-                    <textarea
-                      className='scp-input'
-                      placeholder='What are your thoughts?'
-                      onChange={(e) => setCommentInput(e.target.value)}
-                      value={commentInput}
-                    />
+                  {authState?.id && (
+                    <div
+                      className='scp-inputparent'
+                      style={{ display: commentSearchActive && "none" }}
+                    >
+                      <textarea
+                        className='scp-input'
+                        placeholder='What are your thoughts?'
+                        onChange={(e) => setCommentInput(e.target.value)}
+                        value={commentInput}
+                      />
 
-                    <div className='scp-inputstylebox' id={`tsc-main-co`}>
-                      <TextStylesReply idv='main' show={true} />
+                      <div className='scp-inputstylebox' id={`tsc-main-co`}>
+                        <TextStylesReply idv='main' show={true} />
 
-                      <div className='grow' />
+                        <div className='grow' />
 
-                      <button className='scp-markdown'>Markdown Mode</button>
-                      <button
-                        className='scp-commentbutton'
-                        style={{
-                          cursor: !commentInput.length && "not-allowed",
-                          filter: !commentInput.length && "grayscale(1)",
-                        }}
-                        onClick={() => handleCommentSubmit()}
-                      >
-                        Comment
-                      </button>
+                        <button className='scp-markdown'>Markdown Mode</button>
+                        <button
+                          className='scp-commentbutton'
+                          style={{
+                            cursor: !commentInput.length && "not-allowed",
+                            filter: !commentInput.length && "grayscale(1)",
+                          }}
+                          onClick={() => handleCommentSubmit()}
+                        >
+                          Comment
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <div className='scp-sortmain'>
                     <SortCommentsMain

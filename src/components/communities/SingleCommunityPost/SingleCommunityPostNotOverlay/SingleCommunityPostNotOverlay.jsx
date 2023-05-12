@@ -25,6 +25,8 @@ import { makePutRequest } from "../../../../requests/helperFunction";
 import { setLinkToCopy } from "../../../../store/shareoverlay/copyLink";
 import { dispatchSetCommentSearchQuery } from "../../../../store/comments/searchQuery";
 import { timeConvert } from "../../../../requests/timeConvert";
+import { hoverCommunitiesInitFunction } from "../../../../requests/hoverInformation/hoverCommunitiesInitFunction";
+import { hoverUserInit } from "../../../../requests/hoverInformation/hoverUserInitFunction";
 
 import "./scpno.scss";
 
@@ -457,6 +459,22 @@ const SingleCommunityPostNotOverlay = () => {
     });
   }, [authState, selectedPost]);
 
+  useEffect(() => {
+    if (!selectedPost?.id) return;
+
+    hoverUserInit(
+      dispatch,
+      `.hover-users-${selectedPost?.id}-scpno`,
+      selectedPost
+    );
+
+    hoverCommunitiesInitFunction(
+      dispatch,
+      `.hover-communities-${selectedPost?.community?.id}-scpno`,
+      selectedPost
+    );
+  }, [selectedPost]);
+
   if (commentNotFound) {
     return <NothingHere />;
   }
@@ -625,7 +643,9 @@ const SingleCommunityPostNotOverlay = () => {
                     )}
                   </div>
 
-                  <div className='scp-comanchor'>
+                  <div
+                    className={`scp-comanchor hover-communities-${selectedPost?.community?.id}-scpno`}
+                  >
                     {selectedPost?.community?.tag}
                   </div>
                 </div>
@@ -634,7 +654,10 @@ const SingleCommunityPostNotOverlay = () => {
 
                 <div className='scp-y'>
                   <span>Posted by </span>
-                  <span className='scp-yp' style={{ marginRight: "4px" }}>
+                  <span
+                    className={`scp-yp hover-users-${selectedPost?.id}-scpno`}
+                    style={{ marginRight: "4px" }}
+                  >
                     <a
                       href={`/user/${selectedPost?.user?.name}`}
                       style={{ color: "rgb(120, 124, 126)" }}
@@ -716,42 +739,44 @@ const SingleCommunityPostNotOverlay = () => {
               </div>
 
               <div className='scp-commentparent'>
-                {!commentSearchActive && (
+                {!commentSearchActive && authState?.id && (
                   <div style={{ marginBottom: "4px" }}>
                     Comment as{" "}
                     <span className='scp-blue'>u/{authState?.name}</span>
                   </div>
                 )}
 
-                <div
-                  className='scp-inputparent'
-                  style={{ display: commentSearchActive && "none" }}
-                >
-                  <textarea
-                    className='scp-input'
-                    placeholder='What are your thoughts?'
-                    onChange={(e) => setCommentInput(e.target.value)}
-                    value={commentInput}
-                  />
+                {authState?.id && (
+                  <div
+                    className='scp-inputparent'
+                    style={{ display: commentSearchActive && "none" }}
+                  >
+                    <textarea
+                      className='scp-input'
+                      placeholder='What are your thoughts?'
+                      onChange={(e) => setCommentInput(e.target.value)}
+                      value={commentInput}
+                    />
 
-                  <div className='scp-inputstylebox' id={`tsc-main-co`}>
-                    <TextStylesReply idv='main' show={true} />
+                    <div className='scp-inputstylebox' id={`tsc-main-co`}>
+                      <TextStylesReply idv='main' show={true} />
 
-                    <div className='grow' />
+                      <div className='grow' />
 
-                    <button className='scp-markdown'>Markdown Mode</button>
-                    <button
-                      className='scp-commentbutton'
-                      style={{
-                        cursor: !commentInput?.length && "not-allowed",
-                        filter: !commentInput?.length && "grayscale(1)",
-                      }}
-                      onClick={() => handleCommentSubmit()}
-                    >
-                      Comment
-                    </button>
+                      <button className='scp-markdown'>Markdown Mode</button>
+                      <button
+                        className='scp-commentbutton'
+                        style={{
+                          cursor: !commentInput?.length && "not-allowed",
+                          filter: !commentInput?.length && "grayscale(1)",
+                        }}
+                        onClick={() => handleCommentSubmit()}
+                      >
+                        Comment
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className='scp-sortmain'>
                   <SortCommentsMain
