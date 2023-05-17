@@ -19,6 +19,7 @@ import { setOverlayState } from "../../store/postoverlays/shareOverlay";
 import { clearPostState, fetchSpecificCommunityPosts } from "../../store/posts";
 import { toggleCommunityStyling } from "../../store/communitystyling";
 import { addAlert } from "../../globalcomponents/alerts/addAlertsFunctions";
+import { setNavLocation } from "../../store/nav/navLocation";
 
 import "./communities.scss";
 
@@ -33,7 +34,6 @@ import ShareOverlay from "../home/overlays/ShareOverlay";
 import Post from "../home/posts/Post";
 import Communities404 from "./Communities404";
 import SingleCommunityRight from "./SingleCommunityRight/SingleCommunityRight";
-import { setNavLocation } from "../../store/nav/navLocation";
 
 const SingleCommunity = () => {
   const navigate = useNavigate();

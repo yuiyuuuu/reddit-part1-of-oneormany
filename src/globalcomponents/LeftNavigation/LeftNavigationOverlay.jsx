@@ -125,6 +125,19 @@ const LeftNavigationOverlay = ({ display, setDisplay }) => {
     setFavoriteIds(result);
   }, [authState?.favoriteCommunities]);
 
+  useEffect(() => {
+    $(document).ready(() => {
+      $(".ln-in").focus();
+    });
+  }, []);
+
+  useEffect(() => {
+    const v = document
+      .getElementsByClassName("nav-2-communities")[0]
+      .getBoundingClientRect();
+    $(".nav-communitiesoverlay").css("left", v.left + "px");
+  }, []);
+
   return (
     <div>
       <div

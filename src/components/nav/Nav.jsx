@@ -83,13 +83,6 @@ const Nav = () => {
   $(window).off("resize", window, resize).resize(resize);
 
   useEffect(() => {
-    const v = document
-      .getElementsByClassName("nav-2-communities")[0]
-      .getBoundingClientRect();
-    $(".nav-communitiesoverlay").css("left", v.left + "px");
-  }, []);
-
-  useEffect(() => {
     textFocusChangeBGColor();
   }, []);
 
@@ -310,10 +303,12 @@ const Nav = () => {
         setShowRightOverlay={setShowRightOverlay}
       />
 
-      <LeftNavigationOverlay
-        display={showLeftNavOverlay}
-        setDisplay={setShowLeftNavOverlay}
-      />
+      {showLeftNavOverlay && (
+        <LeftNavigationOverlay
+          display={showLeftNavOverlay}
+          setDisplay={setShowLeftNavOverlay}
+        />
+      )}
     </div>
   );
 };

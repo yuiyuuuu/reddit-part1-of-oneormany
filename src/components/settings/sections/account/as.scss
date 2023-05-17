@@ -1,0 +1,48 @@
+.as-parent {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.as-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #1c1c1c;
+  padding: 40px 0;
+}
+
+.as-section {
+  padding-bottom: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #7c7c7c;
+  border-bottom: 1px solid #edeff1;
+  margin-bottom: 32px;
+}
+
+.as-inner {
+  max-width: 688px;
+}
+
+.as-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.as-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.as-sectbig {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1c1c1c;
+}
+
+.as-sectdesc {
+  font-size: 12px;
+  color: #7c7c7c;
+}

@@ -16,6 +16,7 @@ import KarmaIcon from "../svg/KarmaIcon";
 import CakeDayIcon from "../svg/CakeDayIcon";
 import ModeratorCommunities from "./ModeratorCommunities";
 import FollowersIcon from "../svg/FollowersIcon";
+import GearIcon from "./svg/GearIcon";
 
 //asldkfjasdklffmjkldsj
 
@@ -199,6 +200,13 @@ const UserRight = () => {
               <div className='ur-morech hover1c1cbg'>
                 {showMoreOptions ? "Fewer Options" : "More Options"}
               </div>
+            </div>
+
+            <div
+              className='ur-gear'
+              onClick={() => (window.location.href = `/settings/profile`)}
+            >
+              <GearIcon />
             </div>
           </div>
         </div>

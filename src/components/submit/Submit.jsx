@@ -6,6 +6,7 @@ import "./submit.scss";
 import { makePostRequest } from "../../requests/helperFunction";
 import { toggleCreateCommunity } from "../../store/nav-createcommunity";
 import { setScp } from "../../store/scp/scpConditional";
+import { setNavLocation } from "../../store/nav/navLocation";
 
 import $ from "jquery";
 
@@ -24,7 +25,6 @@ import LinkText from "./submit-components/LinkText";
 import PollText from "./submit-components/PollText";
 import SearchIcon from "./submitsvgs/SearchIcon";
 import SubmitRight from "./SubmitRight";
-import { setNavLocation } from "../../store/nav/navLocation";
 
 const Submit = () => {
   const history = useNavigate();

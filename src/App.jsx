@@ -33,6 +33,7 @@ import LeftNavNL from "./globalcomponents/LeftNavigation/LeftNavigationNotLogged
 import UserFollowers from "./components/users/followers/UserFollowers";
 import HoverCommunities from "./globalcomponents/hovercommunities/HoverCommunities";
 import HoverUsers from "./globalcomponents/hoverusers/HoverUsers";
+import SettingsMain from "./components/settings/SettingsMain";
 
 function App() {
   const dispatch = useDispatch();
@@ -197,6 +198,8 @@ function App() {
 
         <Route exact path='/' element={<Home />} />
         <Route exact path='/r/:id/about/:section' element={<MainTools />} />
+        <Route exact path='/settings/' element={<SettingsMain />} />
+        <Route exact path='/settings/:section' element={<SettingsMain />} />
       </Routes>
     </BrowserRouter>
   );

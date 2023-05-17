@@ -1,0 +1,41 @@
+.sm-main {
+  margin-top: 48px;
+  overflow: hidden;
+  background: white;
+  min-height: 100vh; //remove later
+}
+
+.sm-top {
+}
+
+.sm-set {
+  margin: 0 auto;
+  padding: 16px 20px;
+  font-size: 17px;
+  font-weight: 500;
+  max-width: 1200px;
+}
+
+.sm-sect {
+  padding: 15px 12px 12px;
+  cursor: pointer;
+  color: #7c7c7c;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 8px;
+  box-sizing: border-box;
+
+  &:hover {
+    color: #1c1c1c;
+  }
+}
+
+.sm-sectrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 20px;
+  margin: 0 auto;
+  border-bottom: 1px solid #edeff1;
+  max-width: 1200px;
+}

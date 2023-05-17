@@ -56,6 +56,11 @@ Below will be a list of functionalities and how each one works in my application
 - (8.27 \* 103 \* votes) / (votes + 8.52 \* 103) is the function. Votes is the # of upvotes - # of downvotes
 - When a user votes, subtract the previous amount of karma gained from the post/comment from the user's karma, then recalculate karma based on the vote (up, down, remove up, remove down) and then add that onto the user's karma.
 
+### Dynamically render a component for SCP
+
+- SCP stands for single community post. This component is an overlay used when a user clicks on a post. Usually, we can just set a state for the selected post when a user clicks and show SCP based on whether the selected post state has an ID. But on Reddit, the href also changes. In order to achieve this, we will need a way to render multiple components on one component.
+- First I stored all routes where a user can open the SCP component in an object. Then, I created a state that stores which value from the routes object we should retrieve. Lastly, in the <Routes> component, I created a component called <Component>, which will render a different component based on what object is retrieved from the routes object.
+
 ## Setup :rocket:
 
 ```
