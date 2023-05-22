@@ -13,6 +13,9 @@ export function hoverUserInit(dispatch, userClass, postOrComment, userid) {
 
       const coordinates = $(userClass)[0].getBoundingClientRect();
 
+      console.log(postOrComment);
+      console.log(userClass, "userclass");
+
       await makeGetRequest(
         `users/fetchbyid/${userid ? userid : postOrComment?.user?.id}`
       ).then((res) => {

@@ -21,8 +21,9 @@ const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
     $(document).ready(() => {
       hoverUserInit(
         dispatch,
-        `.hov-user-${object?.data?.post?.user?.id}-ovcommentch`,
-        object?.data?.post
+        `.hov-user-${object?.data?.id}-ovcommentch`,
+        object?.data?.post,
+        object?.data?.user?.id
       );
     });
   }, []);
@@ -48,8 +49,11 @@ const OverviewPostComment = ({ object, top, post, level, idEquals }) => {
         >
           <div className='ov-row'>
             <div
-              onClick={() => nav(`/user/${object.data.user.name}`)}
-              className={`ov-username hov-user-${object?.data?.post?.user?.id}-ovcommentch`}
+              onClick={(e) => {
+                e.stopPropagation();
+                nav(`/user/${object.data.user.name}`);
+              }}
+              className={`ov-username hov-user-${object?.data?.id}-ovcommentch`}
             >
               {object.data.user.name}
             </div>

@@ -7,7 +7,7 @@ Planned:</br>
 
 - Nested comment system -- done</br>
 - Most of reddit community and post features -- posts features mostly done, community moderators and settings still needs work</br>
-- View user profiles and have a karma system -- currently working on</br>
+- View user profiles and have a karma system -- done</br>
 - More once done</br>
 
 ## Deployed Project

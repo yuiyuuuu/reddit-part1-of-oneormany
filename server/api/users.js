@@ -65,6 +65,7 @@ router.get("/fetchbyid/:id", async (req, res, next) => {
                 user: true,
                 downvotes: true,
                 upvotes: true,
+                post: true,
               },
             },
             downvotes: true,
@@ -92,7 +93,11 @@ router.get("/fetchbyid/:id", async (req, res, next) => {
                 upvotes: true,
               },
             },
-            children: true,
+            children: {
+              include: {
+                post: true,
+              },
+            },
             parent: true,
             user: true,
             upvotes: true,
@@ -260,6 +265,7 @@ router.get("/:name", async (req, res, next) => {
                 user: true,
                 downvotes: true,
                 upvotes: true,
+                post: true,
               },
             },
             downvotes: true,
@@ -287,7 +293,11 @@ router.get("/:name", async (req, res, next) => {
                 upvotes: true,
               },
             },
-            children: true,
+            children: {
+              include: {
+                post: true,
+              },
+            },
             parent: true,
             user: true,
             upvotes: true,
@@ -461,6 +471,7 @@ router.put("/join/community", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                post: true,
               },
             },
             downvotes: true,
@@ -561,6 +572,7 @@ router.put("/leave/community", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                post: true,
               },
             },
             downvotes: true,
@@ -661,6 +673,7 @@ router.put("/follow", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                post: true,
               },
             },
             downvotes: true,
@@ -777,6 +790,7 @@ router.put("/unfollow", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                post: true,
               },
             },
 
@@ -958,6 +972,7 @@ router.put("/vote", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                post: true,
               },
             },
 
@@ -1158,6 +1173,7 @@ router.put("/savedstuff", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                post: true,
               },
             },
 
@@ -1322,6 +1338,7 @@ router.put("/hidden", async (req, res, next) => {
             comments: {
               include: {
                 user: true,
+                post: true,
               },
             },
 

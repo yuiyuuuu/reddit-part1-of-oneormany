@@ -18,8 +18,6 @@ import ModeratorCommunities from "./ModeratorCommunities";
 import FollowersIcon from "../svg/FollowersIcon";
 import GearIcon from "./svg/GearIcon";
 
-//asldkfjasdklffmjkldsj
-
 const UserRight = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -202,12 +200,14 @@ const UserRight = () => {
               </div>
             </div>
 
-            <div
-              className='ur-gear'
-              onClick={() => (window.location.href = `/settings/profile`)}
-            >
-              <GearIcon />
-            </div>
+            {authState?.id === selectedUser?.id && (
+              <div
+                className='ur-gear'
+                onClick={() => (window.location.href = `/settings/profile`)}
+              >
+                <GearIcon />
+              </div>
+            )}
           </div>
         </div>
 

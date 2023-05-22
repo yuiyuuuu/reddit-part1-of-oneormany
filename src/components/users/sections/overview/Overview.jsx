@@ -23,7 +23,6 @@ const Overview = () => {
     setMapResults({});
 
     if (!userState?.id) return;
-    if (!authState?.id) return;
 
     const hidden = authState?.hiddenPosts?.map((v) => v.id);
 
@@ -42,7 +41,7 @@ const Overview = () => {
     });
 
     setMapResults(group);
-  }, [userState, authState]);
+  }, [userState]);
 
   if (!userState?.id) return "loading";
 

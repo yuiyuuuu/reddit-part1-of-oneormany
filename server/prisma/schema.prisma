@@ -126,6 +126,11 @@ model User {
 
   //hidden posts
   hiddenPosts Post[] @relation("hiddenPosts")
+
+  //settings stuff below
+  gender String?
+  contentLanguages String[]
+  country String?
 }
 
 model Comment {
