@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { setNavLocation } from "../../store/nav/navLocation";
 import AccountSettings from "./sections/account/AccountSettings";
+import Profile from "./sections/profile/Profile";
 
 import { settingSection } from "./settingsobj";
 
@@ -59,6 +60,8 @@ const SettingsMain = () => {
           {(selectedSection === "account" || !selectedSection) && (
             <AccountSettings authState={authState} />
           )}
+
+          {selectedSection === "profile" && <Profile />}
         </div>
       </div>
     </div>

@@ -2,12 +2,13 @@
 
 ## Notes
 
-Still under construction</br>
+Project not done. Working on other priority projects. Will come back to this when ready.</br>
 Planned:</br>
 
-- Nested comment system -- done</br>
 - Most of reddit community and post features -- posts features mostly done, community moderators and settings still needs work</br>
-- View user profiles and have a karma system -- done</br>
+- Messaging system
+- Notification System
+- Finish settings pages, be able to edit your own profile
 - More once done</br>
 
 ## Deployed Project
