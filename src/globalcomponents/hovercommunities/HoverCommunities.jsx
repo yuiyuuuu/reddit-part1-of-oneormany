@@ -28,6 +28,7 @@ const HoverCommunities = () => {
       style={{
         display: !hcState.display && "none",
         top: hcState?.top,
+        bottom: hcState?.bottom,
         left: hcState?.left,
       }}
     >

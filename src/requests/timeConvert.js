@@ -26,8 +26,6 @@ export function timeConvert(timevalue) {
     minutesDifference: minutesDifference,
   };
 
-  console.log(convertedTimeObj);
-
   const one = convertedTimeObj?.yearsDifference
     ? convertedTimeObj?.yearsDifference
     : convertedTimeObj?.monthsDifference

@@ -22,10 +22,24 @@ export function hoverCommunitiesInitFunction(
         const isHovered = $(userClass).is(":hover");
         if (!isHovered) return;
 
+        const offsettop = $(userClass).offset().top - $(window).scrollTop();
+        const windowheight = window.innerHeight;
+
         dispatch(
           dispatchSetHcState({
             display: true,
-            top: coordinates.top + $(userClass).height() + window.scrollY,
+            top:
+              offsettop < windowheight / 2
+                ? coordinates.top + $(userClass).height() + window.scrollY
+                : "unset",
+
+            bottom:
+              offsettop >= windowheight / 2
+                ? windowheight -
+                  coordinates.bottom +
+                  $(userClass).height() -
+                  window.scrollY
+                : "unset",
             left: coordinates.left,
             community: res,
             id: postOrComment?.id,

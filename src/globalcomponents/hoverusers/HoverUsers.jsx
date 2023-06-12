@@ -29,7 +29,8 @@ const HoverUsers = () => {
     <div
       className='hu-parent'
       style={{
-        top: huState.top,
+        top: huState?.top,
+        bottom: huState?.bottom,
         left: huState.left,
         display: !huState.display && "none",
       }}

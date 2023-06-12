@@ -13,9 +13,6 @@ export function hoverUserInit(dispatch, userClass, postOrComment, userid) {
 
       const coordinates = $(userClass)[0].getBoundingClientRect();
 
-      console.log(postOrComment);
-      console.log(userClass, "userclass");
-
       await makeGetRequest(
         `users/fetchbyid/${userid ? userid : postOrComment?.user?.id}`
       ).then((res) => {
@@ -23,10 +20,24 @@ export function hoverUserInit(dispatch, userClass, postOrComment, userid) {
 
         if (!isHovered) return;
 
+        const offsettop = $(userClass).offset().top - $(window).scrollTop();
+        const windowheight = window.innerHeight;
+
         dispatch(
           dispatchSetHuState({
             display: true,
-            top: coordinates.top + $(userClass).height() + window.scrollY,
+            top:
+              offsettop < windowheight / 2
+                ? coordinates.top + $(userClass).height() + window.scrollY
+                : "unset",
+
+            bottom:
+              offsettop >= windowheight / 2
+                ? windowheight -
+                  coordinates.bottom +
+                  $(userClass).height() -
+                  window.scrollY
+                : "unset",
             left: coordinates.left,
             community: postOrComment?.community,
             user: res,
