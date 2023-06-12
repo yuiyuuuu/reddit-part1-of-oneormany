@@ -22,6 +22,7 @@ const OverviewPost = ({ item }) => {
     const obj = {
       userid: authState.id,
       postid: item.find((v) => v.type === "post").data.id,
+      userToSend: selectedUser?.id,
     };
 
     dispatch(votesUsers(obj, "up"));
@@ -31,6 +32,7 @@ const OverviewPost = ({ item }) => {
     const obj = {
       userid: authState.id,
       postid: item.find((v) => v.type === "post").data.id,
+      userToSend: selectedUser?.id,
     };
 
     dispatch(votesUsers(obj, "down"));
@@ -40,6 +42,7 @@ const OverviewPost = ({ item }) => {
     const obj = {
       userid: authState.id,
       postid: item.find((v) => v.type === "post").data.id,
+      userToSend: selectedUser?.id,
     };
 
     dispatch(votesUsers(obj, "up-remove"));
@@ -49,6 +52,7 @@ const OverviewPost = ({ item }) => {
     const obj = {
       userid: authState.id,
       postid: item.find((v) => v.type === "post").data.id,
+      userToSend: selectedUser?.id,
     };
 
     dispatch(votesUsers(obj, "down-remove"));

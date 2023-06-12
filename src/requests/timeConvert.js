@@ -1,8 +1,13 @@
 export function timeConvert(timevalue) {
   let difference = new Date().getTime() - new Date(timevalue).getTime();
 
-  let yearsDifference = Math.floor(difference / 1000 / 12 / 60 / 60 / 24);
-  difference -= yearsDifference * 1000 * 12 * 60 * 60 * 24;
+  // const month = new Date(timevalue).getMonth().toLowerCase();
+
+  let yearsDifference = Math.floor(difference / 1000 / 60 / 60 / 24 / 30 / 12);
+  difference -= yearsDifference * 1000 * 12 * 60 * 60 * 24 * 30;
+
+  let monthsDifference = Math.floor(difference / 1000 / 60 / 60 / 24 / 30);
+  difference -= monthsDifference * 1000 * 60 * 60 * 24 * 30;
 
   let daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
   difference -= daysDifference * 1000 * 60 * 60 * 24;
@@ -15,13 +20,18 @@ export function timeConvert(timevalue) {
 
   const convertedTimeObj = {
     yearsDifference: yearsDifference,
+    monthsDifference: monthsDifference,
     daysDifference: daysDifference,
     hoursDifference: hoursDifference,
     minutesDifference: minutesDifference,
   };
 
+  console.log(convertedTimeObj);
+
   const one = convertedTimeObj?.yearsDifference
     ? convertedTimeObj?.yearsDifference
+    : convertedTimeObj?.monthsDifference
+    ? convertedTimeObj?.monthsDifference
     : convertedTimeObj?.daysDifference
     ? convertedTimeObj?.daysDifference
     : convertedTimeObj?.hoursDifference
@@ -35,6 +45,10 @@ export function timeConvert(timevalue) {
       ? "years ago"
       : convertedTimeObj?.yearsDifference === 1
       ? "year ago"
+      : convertedTimeObj?.monthsDifference > 1
+      ? "months ago"
+      : convertedTimeObj?.monthsDifference === 1
+      ? "month ago"
       : convertedTimeObj?.daysDifference > 1
       ? "days ago"
       : convertedTimeObj?.daysDifference === 1
